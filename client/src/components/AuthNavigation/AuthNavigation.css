@@ -1,0 +1,63 @@
+.navbarDashboard {
+  display: flex;
+  height: 4rem;
+  background-color: #0066cc;
+  flex: 1;
+  color: #FFF;
+  font-family: Antonio-Regular;
+  border-bottom: 1px solid #FFF;
+  min-width: 110rem; }
+  .navbarDashboard-link {
+    display: flex;
+    flex: 1;
+    font-size: 3rem;
+    margin-left: 3rem;
+    cursor: auto; }
+  .navbarDashboard-home {
+    cursor: pointer; }
+  .navbarDashboard-authlink {
+    font-size: 3rem;
+    margin-top: 1.8rem;
+    margin-right: 3rem;
+    cursor: pointer; }
+
+.navSideMenu {
+  margin-top: 0rem;
+  height: 103rem;
+  width: 22rem;
+  background-color: #3a3a3a;
+  z-index: 5;
+  position: absolute; }
+
+.main-navlink {
+  background-color: #0066cc;
+  height: 4.7rem;
+  width: 22rem;
+  border-bottom: 1px solid #FFF;
+  padding-top: 1.3rem;
+  padding-left: 0rem; }
+
+.menu-links {
+  border-right: 1px solid #FFF;
+  height: 97rem; }
+
+.slider-enter {
+  transform: translate(-100%); }
+
+.slider-enter.slider-enter-active {
+  transform: translate(0%);
+  transition: transform 300ms ease-in-out; }
+
+.slider-leave {
+  transform: translate(0%); }
+
+.slider-leave.slider-leave-active {
+  transform: translate(-100%);
+  transition: transform 300ms ease-in-out; }
+
+.slider-appear {
+  opacity: 0.01; }
+
+.slider-appear.slider-appear-active {
+  opacity: 1;
+  transition: opacity .5s ease-in-out; }
