@@ -1,0 +1,342 @@
+.chatroom {
+  background-color: rgb(65, 65, 65);
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 5rem;
+  height: 100%;
+  background-color: rgb(55, 55, 55);
+  &-container {
+    display: flex;
+    flex-direction: row;
+    height: 60px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  &-select {
+    padding-left: 0.25rem;
+    background-color: #008000;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+  &-logo {
+    margin-top: 6px;
+    width: 80%;
+    padding-bottom: 1rem;
+    margin-left: 10%;
+    height: 50px;
+    cursor: pointer;
+  }
+  &-border {
+    border-top: 1px solid rgb(77, 77, 77);
+    width: 40%;
+    margin-left: 30%;
+  }
+}
+
+.sidebarleft {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 12rem;
+  height: 100%;
+  background-color: rgb(48, 48, 48);
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  &-container {
+    display: flex;
+    flex-direction: row;
+    height: 2rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.25rem;
+    & > input {
+      background-color: rgb(60, 60, 60);
+      text-decoration: none;
+      outline: none;
+      border: 1px solid black;
+      height: 1.5rem;
+      color: white;
+      padding-left: 3%;
+      margin-left: 7%;
+      width: 80%;
+      border-radius: 3px;
+    }
+  }
+  &-border {
+    border-top: 1px solid rgb(77, 77, 77);
+    width: 100%;
+  }
+  &-bordertwo {
+    margin-top: 0.4rem;
+    border-top: 1px solid rgb(77, 77, 77);
+    width: 100%;
+  }
+  &-friendscontainer {
+    display: flex;
+    flex-direction: row;
+    height: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10%;
+  }
+  &-logo {
+    width: 30px;
+  }
+  &-friends {
+    color: #A1A1A1;
+    font-size: 1rem;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 7px;
+    margin-left: 10px;
+  }
+  &-directmessages {
+    color: #A1A1A1;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    margin-left: 1rem;
+  }
+}
+
+.mainarea {
+  background-color: #36393f;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  &-topnav {
+    height: 2.75rem;
+    width: 100%;
+    // background-color: red;
+    border-bottom: 1px solid rgb(77, 77, 77);
+  }
+  &-container {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    &-addserver {
+      width: 20rem;
+      height: 25rem;
+      background-color: #72767d;
+      margin-top: 5rem;
+      border-radius: 5px;
+      border: 1px solid black;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-left: 3rem;
+      & > h1 {
+        font-family: Arial, Helvetica, sans-serif;
+        color: rgb(58, 82, 157);
+      }
+      & > p {
+        width: 65%;
+        color: rgb(206, 206, 206);
+        text-align: center;
+      }
+      & > button {
+        padding: 0.75rem 1.5rem 0.75rem 1.5rem;
+        outline: none;
+        border: none;
+        color: rgb(235, 235, 235);
+        font-size: 0.8rem;
+        background-color: rgb(57, 87, 176);
+        cursor: pointer;
+      }
+    }
+    &-joinserver {
+      width: 20rem;
+      height: 25rem;
+      background-color: #72767d;
+      margin-left: 5rem;
+      margin-top: 5rem;
+      border-radius: 5px;
+      border: 1px solid black;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 3rem;
+      & > h1 {
+        font-family: Arial, Helvetica, sans-serif;
+        color: #006000;
+      }
+      & > p {
+        width: 65%;
+        color: rgb(206, 206, 206);
+        text-align: center;
+      }
+      & > button {
+        padding: 0.75rem 1.5rem 0.75rem 1.5rem;
+        outline: none;
+        border: none;
+        color: rgb(235, 235, 235);
+        font-size: 0.8rem;
+        background-color: #006000;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+
+
+
+
+
+.chatarea {
+  // background-color: green;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  &-container {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    & > input {
+      margin-top:auto;
+      position: relative;
+      bottom: 0.8rem;
+      display: flex;
+      flex: 0.96;
+      height: 2.5rem;
+      padding-left: 0.5rem;
+      font-size: 0.8rem;
+      color: white;
+      background-color: rgb(60, 60, 60);
+      text-decoration: none;
+      outline: none;
+      border: 1px solid black;
+    }
+  }
+}
+
+.sidebarright {
+  display: flex;
+  flex-direction: column;
+  justify-self: flex-end;
+  margin-left: auto;
+  width: 12rem;
+  height: 100%;
+  background-color: rgb(48, 48, 48);
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  &-container {
+    display: flex;
+    flex-direction: row;
+    height: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    & > input {
+      background-color: rgb(60, 60, 60);
+      text-decoration: none;
+      outline: none;
+      border: 1px solid black;
+      height: 1.5rem;
+      color: white;
+      padding-left: 3%;
+      margin-left: 7%;
+      width: 80%;
+      border-radius: 3px;
+    }
+  }
+  &-border {
+    border-top: 1px solid rgb(77, 77, 77);
+    width: 100%;
+  }
+  &-bordertwo {
+    margin-top: 0.4rem;
+    border-top: 1px solid rgb(77, 77, 77);
+    width: 100%;
+  }
+  &-friendscontainer {
+    display: flex;
+    flex-direction: row;
+    height: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10%;
+  }
+  &-logo {
+    width: 30px;
+  }
+  &-friends {
+    color: #A1A1A1;
+    font-size: 1rem;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 7px;
+    margin-left: 10px;
+  }
+  &-authority {
+    color: #A1A1A1;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    margin-left: 1rem;
+  }
+  &-usercontainer {
+    margin-top: 0.5rem;
+    padding-left: 1rem;
+    display: flex;
+    flex-direction: row;
+  }
+  &-user {
+    margin-left: 0.5rem;
+    color: white;
+  }
+}
+
+.userinfo {
+  display: flex;
+  flex-direction: row;
+  background-color: #2d2c2c;
+  border: 1px solid black;
+  margin-top:auto;
+  padding-top: 0.5rem;
+  padding-bottom: 0.1rem;
+  padding-left: 0.5rem;
+  &-online {
+    background-color: #008000;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 2rem;
+    border: 3px solid #303030;
+    margin-left: -0.6rem;
+    margin-top: 1rem;
+  }
+  &-offline {
+    background-color: rgb(230, 0, 0);
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 2rem;
+    border: 3px solid #303030;
+    margin-left: -0.6rem;
+    margin-top: 1rem;
+  }
+}
+
+.username {
+  background-color: white;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 20px;
+  &-image {
+    width: 1.6rem;
+    margin-left: 0.1rem;
+    margin-top: 0.1rem;
+  }
+}
+
+.settings {
+  &-image {
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+    margin-left: 3.2rem;
+  }
+}
+

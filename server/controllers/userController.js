@@ -1,0 +1,190 @@
+const UserModel = require('../models/User');
+const Sequelize = require('sequelize');
+const bcrypt = require('bcryptjs');
+const keys = require('../config/keys');
+const jwt = require('jsonwebtoken');
+const cloudinary = require('cloudinary');
+const Op = Sequelize.Op;
+
+cloudinary.config({
+  cloud_name: keys.cloudinary_name,
+  api_key: keys.cloudinary_key,
+  api_secret: keys.cloudinary_secret
+});
+
+module.exports = {
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} user object
+   */
+  userSignup: async(req, res) => {
+    const { username, password, email } = req.body;
+    if (!username && !password && !email) {
+      return res.status(400).send({'error': 'Missing required fields'});
+    }
+    // check if username or email already exist
+    const user = await UserModel.findOne({ where: {
+      [Op.or]: [{username: username}, {email: email}]
+    }});
+    if(!user) {
+      const result = await UserModel.create(req.body);
+      if(result) {
+        return res.status(200).send(result);
+      } else {
+        return res.status(422).send({"error":"Unknown error creating user"});
+      }
+    } else {
+      return res.status(422).json({"error":"User exists"});
+    }
+  },
+
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} user object
+   */
+  userLogin: async(req, res, next) => {
+    const { email, password } = req.body;
+    const loginUser = await UserModel.findOne({ where: { email: email } });
+    if(loginUser) {
+      loginUser.active = true;
+      let saveLoginUser = await loginUser.save();
+      if(saveLoginUser) {
+        const authentication = bcrypt.compareSync(password, loginUser.password);
+        if(authentication) {
+          const token = jwt.sign({ loginUser }, keys.secret);
+          res.status(200).send(token);
+        } else {
+          res.status(422).send({"error":"invalid-password"});
+        }
+      } else {
+        res.status(422).send({"error":"user-not-found"});
+      }
+    } else {
+      res.status(422).send({"error":"user-not-found"});
+    }
+  },
+
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} user object
+   */
+  userLogout: async(req, res, next) => {
+    const logoutUser = await UserModel.findByPk(req.body.id);
+    if(logoutUser) {
+      logoutUser.active = false;
+      let saveLogoutUser = await logoutUser.save();
+      if(saveLogoutUser) {
+        res.status(200).send(saveLogoutUser);
+      } else {
+        res.status(422).send({"error":"user-logout-failed"});
+      }
+    } else {
+      res.status(422).send({"error":"user-not-found"});
+    }
+  },
+
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {array} list of users
+   */
+  getUsers: async(req, res, next) => {
+    const result = await UserModel.findAll();
+    if(result) {
+      res.status(200).send(result);
+    } else {
+      res.status(422).send({'error':'error fetching all users'});
+    };
+  },
+
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} user object
+   */
+  getSingleUser: async(req, res, next) => {
+    const userId = req.body.userId;
+    // findbypk = findbyid, but findbyid is deprecated
+    const result = await UserModel.findByPk(userId);
+    if(result) {
+      res.status(200).send(result);
+    } else {
+      res.status(422).send({'error':'error fetching that user'});
+    };
+  },
+
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} user object
+   */
+  userUpdate: async(req, res, next) => {
+    const { id, username, email, password } = req.body;
+    const user = await UserModel.findByPk(id);
+    if(user) {
+      let options = ['username', 'email'];
+      if (password) {
+        user.password = password;
+        options.push('password');
+      }
+      user.username = username;
+      user.email = email;
+      let userUpdate = await user.save({ fields: options });
+      if(userUpdate) {
+        res.status(200).send(userUpdate);
+      } else {
+        res.status(422).send('user-update-error');
+      }
+    } else {
+      res.status(422).send({'error':'error finding updated user'});
+    }
+  },
+
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {array} list of users
+   */
+  deleteUser: async(req, res, next) => {
+    const deleteUser = await UserModel.destroy({where: { id: req.body.userId }});
+    if(deleteUser) {
+      const result = await UserModel.findAll();
+      res.status(200).send(result);
+    } else {
+      res.status(422).send({'error':'error deleting user'});
+    }
+  },
+
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} user object
+   */
+  uploadProfileImage: async(req, res, next) => {
+    const { id } = req.body;
+    const user = await UserModel.findByPk(id);
+    if(user) {
+      if (req.files.myFile[0].mimetype === 'image/jpeg' || req.files.myFile[0].mimetype === 'image/png' || req.files.myFile[0].mimetype === 'image/gif') {
+        const encoded = req.files.myFile[0].data.toString('base64');
+        cloudinary.uploader.upload("data:image/png;base64," + encoded, async(result, err) => {
+          if (!result) {
+            res.status(422).send('uploading-file-failed');
+          } else {
+            user.imageUrl = result.url.replace(/^http:\/\//i, 'https://');
+            let userUpdate = await user.save({ fields: ['imageUrl'] });
+            if(userUpdate) {
+              res.status(200).send(userUpdate);
+            } else {
+              res.status(422).send('user-image-not-saved');
+            }
+          }
+        });
+      } else {
+        res.status(422).send('error-reading-file');
+      }
+    }
+  }
+}
