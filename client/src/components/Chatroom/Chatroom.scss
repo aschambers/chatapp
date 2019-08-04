@@ -7,7 +7,6 @@
 }
 
 .chatarea {
-  // background-color: green;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -146,14 +145,5 @@
     width: 1.6rem;
     margin-left: 0.1rem;
     margin-top: 0.1rem;
-  }
-}
-
-.settings {
-  &-image {
-    width: 1.5rem;
-    height: 1.5rem;
-    cursor: pointer;
-    margin-left: 3.2rem;
   }
 }

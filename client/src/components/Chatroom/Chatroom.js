@@ -37,19 +37,18 @@ class Chatroom extends Component {
 
   async componentWillReceiveProps(nextProps) {
     if (nextProps.user) {
-      const { id, username, active/*, type*/ } = nextProps.user;
+      const { id, username, active, type } = nextProps.user;
       this.setState({
         id: id,
         username: username,
         active: active,
-        type: 'admin'
+        type: type
       });
     }
 
     if (nextProps.users && nextProps.users.length) {
       const userList = [];
       for(let i = 0; i < nextProps.users.length; i++) {
-        nextProps.users[i].type = 'admin';
         userList.push(nextProps.users[i]);
       }
       this.setState({ users: userList });
