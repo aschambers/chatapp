@@ -5,6 +5,17 @@
   flex-direction: row;
   width: 100%; }
 
+.contentBackground {
+  position: absolute;
+  display: block;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0.9;
+  background: #2e2e2e; }
+
 .sidebar {
   display: flex;
   flex-direction: column;
@@ -129,11 +140,13 @@
       margin-left: 3rem; }
       .mainarea-container-addserver > h1 {
         font-family: Arial, Helvetica, sans-serif;
-        color: #3a529d; }
+        color: #3a529d;
+        margin-top: 2rem; }
       .mainarea-container-addserver > p {
         width: 65%;
         color: #cecece;
-        text-align: center; }
+        text-align: center;
+        margin-top: 0rem; }
       .mainarea-container-addserver > button {
         padding: 0.75rem 1.5rem 0.75rem 1.5rem;
         outline: none;
@@ -156,11 +169,13 @@
       margin-right: 3rem; }
       .mainarea-container-joinserver > h1 {
         font-family: Arial, Helvetica, sans-serif;
-        color: #006000; }
+        color: #006000;
+        margin-top: 2rem; }
       .mainarea-container-joinserver > p {
         width: 65%;
         color: #cecece;
-        text-align: center; }
+        text-align: center;
+        margin-top: 0rem; }
       .mainarea-container-joinserver > button {
         padding: 0.75rem 1.5rem 0.75rem 1.5rem;
         outline: none;
@@ -177,7 +192,7 @@
   margin-left: 3.2rem;
   margin-right: 0.5rem; }
 
-.modal-settings {
+.usersettings {
   width: 100%;
   height: 100%;
   border-radius: 5px;
@@ -191,10 +206,276 @@
   animation-name: fadeInOpacity;
   animation-iteration-count: 1;
   animation-timing-function: linear;
-  animation-duration: 0.3s; }
+  animation-duration: 0.3s;
+  display: flex;
+  flex-direction: row; }
+  .usersettings-sidebar {
+    height: 100vh;
+    background-color: #2f3136;
+    display: flex;
+    flex-direction: column;
+    padding-left: 15%;
+    padding-right: 5%; }
+    .usersettings-sidebar > h1:first-child {
+      margin-top: 3rem; }
+    .usersettings-sidebar > h1 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      color: #4f545c;
+      width: 8rem; }
+    .usersettings-sidebar > p {
+      font-size: 0.9rem;
+      color: #d5d5d5;
+      cursor: pointer; }
+    .usersettings-sidebar > p:last-child {
+      font-size: 0.9rem;
+      color: #ee0000; }
+  .usersettings-myaccount {
+    padding-left: 2rem;
+    display: flex;
+    flex-direction: column;
+    background-color: #36393f;
+    min-width: 50rem; }
+    .usersettings-myaccount > h1 {
+      color: #e4e4e4;
+      text-transform: uppercase;
+      font-size: 1rem;
+      margin-top: 3rem; }
+    .usersettings-myaccount__container {
+      width: 40rem;
+      height: 10rem;
+      background-color: #292929;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: row; }
+      .usersettings-myaccount__container-image {
+        width: 6rem;
+        height: 6rem;
+        background-color: white;
+        border-radius: 50%;
+        margin-left: 1.5rem;
+        margin-top: 2rem; }
+        .usersettings-myaccount__container-image > img {
+          width: 90%;
+          height: 90%;
+          margin-top: 5%;
+          margin-left: 5%; }
+      .usersettings-myaccount__container-info {
+        display: flex;
+        flex-direction: column;
+        margin-left: 2rem; }
+        .usersettings-myaccount__container-info-username {
+          margin-top: 2rem; }
+          .usersettings-myaccount__container-info-username > span:first-child {
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            color: #606060; }
+          .usersettings-myaccount__container-info-username > span:last-child {
+            color: #e4e4e4;
+            font-size: 1rem; }
+        .usersettings-myaccount__container-info-email {
+          margin-top: 1rem; }
+          .usersettings-myaccount__container-info-email > span:first-child {
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            color: #606060; }
+          .usersettings-myaccount__container-info-email > span:last-child {
+            color: #e4e4e4;
+            font-size: 1rem; }
+      .usersettings-myaccount__container-edit {
+        cursor: pointer;
+        padding: 0.5rem 1rem 0.5rem 1rem;
+        background-color: green;
+        color: #e3e2e2;
+        height: 1.25rem;
+        border-radius: 2px;
+        position: relative;
+        top: 1.5rem;
+        left: 12rem; }
+  .usersettings-authentication {
+    padding-left: 2rem;
+    display: flex;
+    flex-direction: column;
+    background-color: #36393f;
+    min-width: 50rem;
+    height: 61.5vh; }
+    .usersettings-authentication > h1 {
+      color: #e4e4e4;
+      text-transform: uppercase;
+      font-size: 1rem;
+      margin-top: 3rem; }
+    .usersettings-authentication > p {
+      color: #e4e4e4;
+      font-size: 1rem;
+      width: 40rem; }
+    .usersettings-authentication-enable {
+      cursor: pointer;
+      box-sizing: border-box;
+      padding: 0.5rem 1rem 0.5rem 1rem;
+      background-color: green;
+      color: #e3e2e2;
+      width: 5rem;
+      border-radius: 2px; }
+  .usersettings-escape {
+    position: absolute;
+    top: 3rem;
+    right: 3rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border: 1px solid white;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer; }
+    .usersettings-escape > span {
+      height: 80%;
+      width: 80%;
+      position: relative;
+      top: 0.25rem;
+      font-size: 25px;
+      color: white; }
+    .usersettings-escape > p {
+      color: white; }
+
+.servermodal {
+  position: absolute;
+  z-index: 20;
+  width: 40rem;
+  height: 20rem;
+  background-color: white;
+  transform: translate(50%, 25%);
+  border-radius: 5px;
+  animation-name: fadeInOpacity;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-duration: 0.5s; }
+  .servermodal-title {
+    color: #2b56d7;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1.4rem;
+    margin-top: 2rem; }
+  .servermodal-info {
+    font-size: 1.2rem;
+    color: #616161;
+    width: 80%;
+    margin-left: 10%;
+    text-align: center; }
+  .servermodal-name {
+    font-size: 1.2rem;
+    margin-left: 5%;
+    color: #616161; }
+  .servermodal > input {
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #2b56d7;
+    padding-bottom: 0.5rem;
+    padding-left: 0.5rem;
+    font-size: 1.2rem;
+    background-color: #f2f2f2;
+    margin-left: 5%; }
+  .servermodal-region {
+    font-size: 1.2rem;
+    margin-left: 5%;
+    color: #616161; }
+  .servermodal-rules {
+    font-size: 0.8rem;
+    margin-left: 5%;
+    color: #616161; }
+  .servermodal-actions {
+    height: 5rem;
+    width: 100%;
+    background-color: #e9e9e9;
+    position: relative;
+    bottom: 0;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    display: flex;
+    flex-direction: row; }
+    .servermodal-actions > p {
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding-top: 0.75rem;
+      padding-left: 2rem; }
+    .servermodal-actions > button {
+      cursor: pointer;
+      background-color: #335fe4;
+      color: #f7f6f6;
+      height: 2.25rem;
+      box-sizing: border-box;
+      padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 3px;
+      margin-left: 25rem;
+      margin-top: 1.5rem; }
+
+.serverjoin {
+  position: absolute;
+  z-index: 20;
+  width: 40rem;
+  height: 20rem;
+  background-color: white;
+  transform: translate(50%, 25%);
+  border-radius: 5px; }
+  .serverjoin-title {
+    color: #008f00;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1.4rem;
+    margin-top: 2rem; }
+  .serverjoin-info {
+    font-size: 1.2rem;
+    color: #616161;
+    width: 80%;
+    margin-left: 10%;
+    text-align: center; }
+  .serverjoin > input {
+    border: none;
+    outline: none;
+    width: 90%;
+    border-bottom: 1px solid #2b56d7;
+    padding-bottom: 0.5rem;
+    padding-left: 0.5rem;
+    font-size: 1.2rem;
+    background-color: #f2f2f2;
+    margin-left: 5%;
+    margin-top: 2rem; }
+  .serverjoin-actions {
+    height: 5rem;
+    width: 100%;
+    background-color: #e9e9e9;
+    position: relative;
+    bottom: 0;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    margin-top: 4rem; }
+    .serverjoin-actions > p {
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding-top: 0.75rem;
+      padding-left: 2rem; }
+    .serverjoin-actions > button {
+      cursor: pointer;
+      background-color: #008f00;
+      color: #f7f6f6;
+      height: 2.25rem;
+      box-sizing: border-box;
+      padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 3px;
+      margin-left: 25rem;
+      margin-top: 1.5rem; }
 
 @keyframes fadeInOpacity {
   0% {
     opacity: 0; }
   100% {
     opacity: 1; } }
+
+@media (max-width: 1200px) {
+  .usersettings-myaccount > h1 {
+    margin-top: 8rem; }
+  .usersettings-authentication {
+    height: 48.9vh; } }
