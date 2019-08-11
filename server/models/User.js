@@ -64,6 +64,16 @@ const User = sequelize.define('user', {
     type: Sequelize.ARRAY(Sequelize.JSONB),
     defaultValue: [],
     allowNull: true
+  },
+  chatrooms: {
+    type: Sequelize.ARRAY(Sequelize.JSONB),
+    defaultValue: [],
+    allowNull: true
+  },
+  servers: {
+    type: Sequelize.ARRAY(Sequelize.JSONB),
+    defaultValue: [],
+    allowNull: true
   }
 },
 {

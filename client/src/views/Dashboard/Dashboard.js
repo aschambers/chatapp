@@ -1,32 +1,37 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../redux';
 import ReactTooltip from 'react-tooltip';
+import { Redirect } from 'react-router';
 import Chatroom from '../../components/Chatroom/Chatroom';
+import CreateServer from '../../components/CreateServer/CreateServer';
+import JoinServer from '../../components/JoinServer/JoinServer';
 import './Dashboard.css';
 import chatot from '../../assets/images/chatot.png';
 import friends from '../../assets/images/friends.png';
 import settings from '../../assets/images/settings.png';
 
 const Dashboard = (props) => {
+  const [id, setId] = useState('');
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [active, setActive] = useState(false);
   const [chatroom, setChatroom] = useState('');
   const [hover, setHover] = useState('');
+  const [isSettingsOpen, setSettingsOpen] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
-
-  const ref = useRef();
-  const settingsRef = useRef("settings");
-  useOnClickOutside(ref, () => setModalOpen(false));
+  const [currentModal, setCurrentModal] = useState("");
 
   useEffect(() => {
     if(!props.user) {
       props.currentUser();
       window.addEventListener('keydown', detectEscape);
     } else if(props.user) {
-      const { username, imageUrl, active } = props.user;
+      const { id, username, email, imageUrl, active } = props.user;
+      setId(id);
       setUsername(username);
+      setEmail(email);
       setImageUrl(imageUrl);
       setActive(active);
     }
@@ -34,12 +39,26 @@ const Dashboard = (props) => {
 
   const detectEscape = (event) => {
     if (event.keyCode === 27) {
-      setModalOpen(false);
+      setSettingsOpen(false);
     }
+  }
+
+  if(props.logout) {
+    return <Redirect push to="/" />;
+  }
+
+  const userLogout = () => {
+    props.userLogout({ id: id });
+  }
+
+  const toggleModal = (value) => {
+    setModalOpen(true);
+    setCurrentModal(value);
   }
 
   return (
     <div className="chatroom">
+      {isModalOpen ? <span className="contentBackground"></span> : null}
       <div className="sidebar">
         <div className="sidebar-container" data-tip="home" data-place="right" onPointerOver={() => { setHover("") }}>
           {hover === "" && chatroom !== "" ? <span className="sidebar-hover"></span> : null}
@@ -74,7 +93,7 @@ const Dashboard = (props) => {
           </div>
           {active ? <div className="userinfo-online"></div> : null}
           <span style={{ color: 'white' }}>{username}</span>
-          <img className="settings-image" src={settings} alt="settings-icon" ref={settingsRef} onClick={() => { setModalOpen(!isModalOpen); }} />
+          <img className="settings-image" src={settings} alt="settings-icon" onClick={() => { setSettingsOpen(!isSettingsOpen); }} />
         </div>
       </div>
       {chatroom === username ?
@@ -86,44 +105,75 @@ const Dashboard = (props) => {
             <div className="mainarea-container-addserver">
               <h1>Create</h1>
               <p>Create a new server and invite other people to join!</p>
-              <button>Create a server</button>
+              <button onClick={() => { toggleModal("create") }}>Create a server</button>
             </div>
             <div className="mainarea-container-joinserver">
               <h1>Join</h1>
               <p>Enter an secret invite code to join an existing server!</p>
-              <button>Join a server</button>
+              <button onClick={() => { toggleModal("join") }}>Join a server</button>
             </div>
           </div>
         </div>
       }
-      {isModalOpen ?
-        <div className="modal-settings" ref={ref}>
-          Hey, I'm a modal. Click anywhere outside of me to close.
+      {isSettingsOpen ?
+        <div className="usersettings">
+          <div className="usersettings-sidebar">
+            <h1>User Settings</h1>
+            <p>My Account</p>
+            <p>Privacy &amp; Safety</p>
+            <p>Connections</p>
+            <p>Billing</p>
+            <h1>App Settings</h1>
+            <p>Voice &amp; Video</p>
+            <p>Notifications</p>
+            <p>Appearance</p>
+            <p>Language</p>
+            <p onClick={userLogout}>Logout</p>
+          </div>
+          <div className="usersettings-accountcontainer">
+            <div className="usersettings-myaccount">
+              <h1>My Account</h1>
+              <div className="usersettings-myaccount__container">
+                <div className="usersettings-myaccount__container-image">
+                  <img src={imageUrl ? imageUrl : chatot} alt="username-icon" />
+                </div>
+                <div className="usersettings-myaccount__container-info">
+                  <div className="usersettings-myaccount__container-info-username">
+                    <span>Username</span><br/>
+                    <span>{username}</span>
+                  </div>
+                  <div className="usersettings-myaccount__container-info-email">
+                    <span>Email Address</span><br/>
+                    <span>{email}</span>
+                  </div>
+                </div>
+                <div className="usersettings-myaccount__container-edit">
+                  <span>Edit</span>
+                </div>
+              </div>
+            </div>
+            <div className="usersettings-authentication">
+              <h1>Two-Factor Authentication</h1>
+              <p>Protect your account with an extra layer of security. Once configured you'll be required to enter your password and an authentication code from your mobile device to login.</p>
+              <div className="usersettings-authentication-enable">
+                <span>Enable</span>
+              </div>
+            </div>
+            <div className="usersettings-escape" onClick={() => { setSettingsOpen(!isSettingsOpen); }}>
+              <span>&#215;</span>
+              <p>ESC</p>
+            </div>
+          </div>
         </div>
+      : null}
+      {isModalOpen && currentModal === "create" ?
+        <CreateServer setModalOpen={() => { setModalOpen(!isModalOpen) }}/>
+      : null}
+      {isModalOpen && currentModal === "join" ?
+        <JoinServer setModalOpen={() => { setModalOpen(!isModalOpen) }}/>
       : null}
     </div>
   );
-}
-
-const useOnClickOutside = (ref, handler) => {
-  useEffect(() => {
-    const listener = event => {
-      // Do nothing if clicking ref's element, descendent elements or settings icon
-      if (!ref.current || ref.current.contains(event.target) || event.target.className === "settings-image") {
-        return;
-      }
-
-      handler(event);
-    };
-
-    document.addEventListener('mousedown', listener);
-    document.addEventListener('touchstart', listener);
-
-    return () => {
-      document.removeEventListener('mousedown', listener);
-      document.removeEventListener('touchstart', listener);
-    };
-  }, [ref, handler]);
 }
 
 function mapStateToProps({ usersReducer }) {
@@ -131,6 +181,7 @@ function mapStateToProps({ usersReducer }) {
     error: usersReducer.error,
     isLoading: usersReducer.isLoading,
     success: usersReducer.success,
+    logout: usersReducer.logout,
     user: usersReducer.user,
     users: usersReducer.users
   };
