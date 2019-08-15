@@ -7,21 +7,22 @@
 
 .contentBackground {
   position: absolute;
-  display: block;
   z-index: 1;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   opacity: 0.9;
-  background: #2e2e2e; }
+  background-color: #2e2e2e;
+  min-width: 68.4rem; }
 
 .sidebar {
   display: flex;
   flex-direction: column;
   min-width: 5rem;
   height: 100%;
-  background-color: #373737; }
+  background-color: #373737;
+  overflow: auto; }
   .sidebar-container {
     display: flex;
     flex-direction: row;
@@ -337,7 +338,7 @@
     .usersettings-escape > p {
       color: white; }
 
-.servermodal {
+.serverjoin {
   position: absolute;
   z-index: 20;
   width: 40rem;
@@ -348,75 +349,7 @@
   animation-name: fadeInOpacity;
   animation-iteration-count: 1;
   animation-timing-function: linear;
-  animation-duration: 0.5s; }
-  .servermodal-title {
-    color: #2b56d7;
-    text-align: center;
-    text-transform: uppercase;
-    font-size: 1.4rem;
-    margin-top: 2rem; }
-  .servermodal-info {
-    font-size: 1.2rem;
-    color: #616161;
-    width: 80%;
-    margin-left: 10%;
-    text-align: center; }
-  .servermodal-name {
-    font-size: 1.2rem;
-    margin-left: 5%;
-    color: #616161; }
-  .servermodal > input {
-    border: none;
-    outline: none;
-    border-bottom: 1px solid #2b56d7;
-    padding-bottom: 0.5rem;
-    padding-left: 0.5rem;
-    font-size: 1.2rem;
-    background-color: #f2f2f2;
-    margin-left: 5%; }
-  .servermodal-region {
-    font-size: 1.2rem;
-    margin-left: 5%;
-    color: #616161; }
-  .servermodal-rules {
-    font-size: 0.8rem;
-    margin-left: 5%;
-    color: #616161; }
-  .servermodal-actions {
-    height: 5rem;
-    width: 100%;
-    background-color: #e9e9e9;
-    position: relative;
-    bottom: 0;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    display: flex;
-    flex-direction: row; }
-    .servermodal-actions > p {
-      cursor: pointer;
-      font-size: 1.2rem;
-      padding-top: 0.75rem;
-      padding-left: 2rem; }
-    .servermodal-actions > button {
-      cursor: pointer;
-      background-color: #335fe4;
-      color: #f7f6f6;
-      height: 2.25rem;
-      box-sizing: border-box;
-      padding: 0.5rem 1.5rem 1.5rem 1.5rem;
-      font-size: 1rem;
-      border-radius: 3px;
-      margin-left: 25rem;
-      margin-top: 1.5rem; }
-
-.serverjoin {
-  position: absolute;
-  z-index: 20;
-  width: 40rem;
-  height: 20rem;
-  background-color: white;
-  transform: translate(50%, 25%);
-  border-radius: 5px; }
+  animation-duration: 0.3s; }
   .serverjoin-title {
     color: #008f00;
     text-align: center;

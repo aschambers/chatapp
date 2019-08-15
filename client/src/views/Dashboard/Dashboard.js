@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import * as actions from '../../redux';
 import ReactTooltip from 'react-tooltip';
 import { Redirect } from 'react-router';
+import { toast } from 'react-toastify';
+import ToastMessage from '../../components/ToastMessage/ToastMessage';
 import Chatroom from '../../components/Chatroom/Chatroom';
 import CreateServer from '../../components/CreateServer/CreateServer';
 import JoinServer from '../../components/JoinServer/JoinServer';
@@ -22,18 +24,21 @@ const Dashboard = (props) => {
   const [isSettingsOpen, setSettingsOpen] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentModal, setCurrentModal] = useState("");
+  const [region, setRegion] = useState("US West");
+  const [serversList, setServersList] = useState([]);
 
   useEffect(() => {
     if(!props.user) {
       props.currentUser();
       window.addEventListener('keydown', detectEscape);
     } else if(props.user) {
-      const { id, username, email, imageUrl, active } = props.user;
+      const { id, username, email, imageUrl, active, serversList } = props.user;
       setId(id);
       setUsername(username);
       setEmail(email);
       setImageUrl(imageUrl);
       setActive(active);
+      setServersList(serversList);
     }
   }, [props]);
 
@@ -56,8 +61,21 @@ const Dashboard = (props) => {
     setCurrentModal(value);
   }
 
+  const getUpdatedServerList = (closeModal) => {
+    if (closeModal) {
+      setModalOpen(false);
+      toast.dismiss();
+      toast.success('Success, the server was created!', { position: 'bottom-center' });
+      props.getUpdatedUser({ userId: id });
+    } else {
+      toast.dismiss();
+      toast.error('There was an error creating the server!', { position: 'bottom-center' });
+    }
+  }
+
   return (
     <div className="chatroom">
+      <ToastMessage />
       {isModalOpen ? <span className="contentBackground"></span> : null}
       <div className="sidebar">
         <div className="sidebar-container" data-tip="home" data-place="right" onPointerOver={() => { setHover("") }}>
@@ -71,6 +89,16 @@ const Dashboard = (props) => {
           {chatroom === username ? <span className="sidebar-select"></span> : null}
           <img className="sidebar-logo" src={chatot} alt="chatter-icon" onClick={() => { setChatroom(username) }} />
         </div>
+        {serversList && serversList.length > 0 ? serversList.map((item, index)  => {
+          return (
+            <div key={index} className="sidebar-container" data-tip={item.name} data-place="right" onPointerOver={() => { setHover(item.name) }}>
+              {hover === item.name && chatroom !== item.name ? <span className="sidebar-hover"></span> : null}
+              {chatroom === item.name ? <span className="sidebar-select"></span> : null}
+              <img className="sidebar-logo" src={item.imageUrl ? item.imageUrl : chatot} alt="chatter-icon" onClick={() => { setChatroom(item.name) }} />
+              <ReactTooltip delayShow={200} />
+            </div>
+          )
+        }) : null}
       </div>
       <ReactTooltip delayShow={200} />
       <div className="sidebarleft">
@@ -96,7 +124,7 @@ const Dashboard = (props) => {
           <img className="settings-image" src={settings} alt="settings-icon" onClick={() => { setSettingsOpen(!isSettingsOpen); }} />
         </div>
       </div>
-      {chatroom === username ?
+      {chatroom !== "" ?
         <Chatroom /> :
         <div className="mainarea">
           <div className="mainarea-topnav">
@@ -167,7 +195,7 @@ const Dashboard = (props) => {
         </div>
       : null}
       {isModalOpen && currentModal === "create" ?
-        <CreateServer setModalOpen={() => { setModalOpen(!isModalOpen) }}/>
+        <CreateServer id={id} region={region} setRegion={(region) => { setRegion(region) }} setModalOpen={() => { setModalOpen(!isModalOpen) }} getUpdatedServerList={(closeModal) => { getUpdatedServerList(closeModal) }} />
       : null}
       {isModalOpen && currentModal === "join" ?
         <JoinServer setModalOpen={() => { setModalOpen(!isModalOpen) }}/>
@@ -176,14 +204,15 @@ const Dashboard = (props) => {
   );
 }
 
-function mapStateToProps({ usersReducer }) {
+function mapStateToProps({ usersReducer, serversReducer }) {
   return {
     error: usersReducer.error,
     isLoading: usersReducer.isLoading,
     success: usersReducer.success,
     logout: usersReducer.logout,
     user: usersReducer.user,
-    users: usersReducer.users
+    users: usersReducer.users,
+    serversList: serversReducer.serversList
   };
 }
 

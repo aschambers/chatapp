@@ -1,0 +1,208 @@
+.servermodal {
+  position: absolute;
+  z-index: 20;
+  width: 40rem;
+  height: 25rem;
+  background-color: rgb(255, 255, 255);
+  transform: translate(50%, 25%);
+  border-radius: 5px;
+  animation-name: fadeInOpacity;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-duration: 0.5s;
+  &-title {
+    color: rgb(43, 86, 215);
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1.4rem;
+    margin-top: 2rem;
+  }
+  &-info {
+    font-size: 1.2rem;
+    color: rgb(97, 97, 97);
+    width: 80%;
+    margin-left: 10%;
+    text-align: center;
+  }
+  &-name {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    margin-left: 5%;
+    color: rgb(97, 97, 97);
+  }
+  &-input {
+    border: none;
+    outline: none;
+    border-bottom: 1px solid rgb(43, 86, 215);
+    padding-bottom: 0.3rem;
+    padding-top: 0.2rem;
+    padding-left: 0.5rem;
+    font-size: 1.2rem;
+    background-color: rgb(242, 242, 242);
+    margin-left: 5%;
+  }
+  &-region {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    margin-left: 5%;
+    color: rgb(97, 97, 97);
+  }
+  &-rules {
+    font-size: 0.8rem;
+    margin-left: 5%;
+    color: rgb(97, 97, 97);
+  }
+  &-actions {
+    height: 5rem;
+    width: 100%;
+    background-color: rgb(233, 233, 233);
+    position: relative;
+    bottom: 0;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    & > p {
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding-top: 0.75rem;
+      padding-left: 2rem;
+    }
+    & > button {
+      cursor: pointer;
+      background-color: rgb(51, 95, 228);
+      color: rgb(247, 246, 246);
+      height: 2.25rem;
+      box-sizing: border-box;
+      padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 3px;
+      margin-left: 25rem;
+      margin-top: 1.5rem;
+    }
+  }
+  &-select {
+    margin-left: 5%;
+    background-color: white;
+    width: 18.6rem;
+    border: 1px solid rgb(164, 164, 164);
+    border-radius: 8px;
+    padding: 0.4rem 0rem 0.2rem 0.4rem;
+    box-sizing: border-box;
+    & > img {
+      border-radius: 8px;
+    }
+    &-image > img {
+      position: absolute;
+      width: 8rem;
+      height: 8rem;
+      border-radius: 50%;
+      top: 40%;
+      right: 10%;
+      border: 6px solid rgba(203, 203, 203, 0.899);
+      cursor: pointer;
+    }
+    &-image > p {
+      color: white;
+      position: absolute;
+      top: 49%;
+      right: 16%;
+      cursor: pointer;
+    }
+    &-image > p:last-child {
+      color: white;
+      position: absolute;
+      top: 54%;
+      right: 18%;
+      cursor: pointer;
+    }
+    &-current {
+      color: rgb(164, 164, 164);
+      font-size: 1.2rem;
+      margin-left: 0.5rem;
+      position: absolute;
+      padding-top: 0.8rem;
+      margin-top: -0.4rem;
+      padding-right: 3rem;
+      height: 2.3rem;
+    }
+    &-change {
+      color: rgb(43, 86, 215);
+      font-size: 1rem;
+      margin-left: 10rem;
+      position: absolute;
+      margin-top: -0.4rem;
+      height: 1.5rem;
+      padding: 1rem 0.6rem 0.5rem 0.5rem;
+      border-left: 1px solid rgb(164, 164, 164);
+      border-top-right-radius: 8px;
+      border-bottom-right-radius: 8px;
+    }
+    &-change:hover {
+      color: rgb(43, 86, 215);
+      position: absolute;
+      cursor: pointer;
+      margin-top: -0.45rem;
+      height: 1.45rem;
+      padding: 0.95rem 0.5rem 0.5rem 0.5rem;
+      border-top-right-radius: 8px;
+      border-bottom-right-radius: 8px;
+      border: 2px solid rgb(43, 86, 215);
+      background-color: rgb(247, 247, 247);
+    }
+  }
+}
+
+
+.regionmodal {
+  &-container {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+  }
+  &-title {
+    color: rgb(43, 86, 215);
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1.4rem;
+    margin-top: 2rem;
+  }
+  &-select {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-left: 4%;
+    background-color: white;
+    width: 11.2rem;
+    height: 7rem;
+    border: 1px solid rgb(164, 164, 164);
+    border-radius: 8px;
+    padding-top: 1.2rem;
+    box-sizing: border-box;
+    & > img {
+      border-radius: 8px;
+    }
+    &-current {
+      color: rgb(164, 164, 164);
+      font-size: 1.4rem;
+      position: absolute;
+      padding-top: 3.4rem;
+      padding-left: 0.2rem;
+      height: 2.3rem;
+    }
+  }
+  &-select:hover {
+    border: 2px solid rgb(0, 0, 179);
+    cursor: pointer;
+  }
+}
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
