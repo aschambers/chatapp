@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/connection');
 
-const Servers = sequelize.define('servers', {
+const Server = sequelize.define('servers', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -22,10 +22,27 @@ const Servers = sequelize.define('servers', {
     defaultValue: Sequelize.NOW,
     allowNull: false
   },
-  createdBy: {
+  public: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false
+  },
+  region: {
     type: Sequelize.STRING,
     allowNull: false
-  }
+  },
+  imageUrl: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  userId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    references: {
+      type: Sequelize.INTEGER,
+      references: 'users',
+      referencesKey: 'id'
+    }
+  },
 });
 
-module.exports = Servers;
+module.exports = Server;

@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/connection');
 const bcrypt = require('bcryptjs');
+const Server = require('./Server');
 
 const User = sequelize.define('user', {
   id: {
@@ -65,12 +66,12 @@ const User = sequelize.define('user', {
     defaultValue: [],
     allowNull: true
   },
-  chatrooms: {
+  chatroomsList: {
     type: Sequelize.ARRAY(Sequelize.JSONB),
     defaultValue: [],
     allowNull: true
   },
-  servers: {
+  serversList: {
     type: Sequelize.ARRAY(Sequelize.JSONB),
     defaultValue: [],
     allowNull: true
@@ -89,5 +90,8 @@ const User = sequelize.define('user', {
     }
   }
 });
+
+User.hasMany(Server);
+Server.belongsTo(User);
 
 module.exports = User;

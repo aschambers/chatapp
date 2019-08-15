@@ -195,6 +195,21 @@ export const userLogout = params => async dispatch => {
   }
 };
 
+export const getUpdatedUser = params => async dispatch => {
+  dispatch({ type: RETRIEVE_USER_LOADING });
+  try {
+    const response = await axios.post(`${ROOT_URL}/api/v1/getSingleUser`, params);
+    if(response.data) {
+      localStorage.setItem('user', JSON.stringify(response.data));
+      dispatch({ type: RETRIEVE_USER_SUCCESS, payload: response.data });
+    } else {
+      dispatch({ type: RETRIEVE_USER_FAIL });
+    }
+  } catch(err) {
+    dispatch({ type: RETRIEVE_USER_FAIL });
+  }
+};
+
 export const currentUser = () => async dispatch => {
   dispatch({ type: RETRIEVE_USER_LOADING });
   try {
