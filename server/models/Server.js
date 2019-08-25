@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/connection');
+const Category = require('./Category');
 
 const Server = sequelize.define('servers', {
   id: {
@@ -44,5 +45,8 @@ const Server = sequelize.define('servers', {
     }
   },
 });
+
+Server.hasMany(Category);
+Category.belongsTo(Server);
 
 module.exports = Server;

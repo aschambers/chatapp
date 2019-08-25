@@ -7,8 +7,8 @@ module.exports = {
    * @returns {object} chatroom object
    */
   chatroomCreate: async(req, res) => {
-    const { name, server, createdBy } = req.body;
-    if (!name && !server && !createdBy) {
+    const { name, serverId } = req.body;
+    if (!name && !serverId) {
       return res.status(400).send({'error': 'Missing required fields'});
     }
     const result = await ChatroomModel.create(req.body);
@@ -17,6 +17,21 @@ module.exports = {
     } else {
       return res.status(422).send({"error":"Unknown error creating chatroom"});
     }
+  },
+
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {array} list of chatrooms
+   */
+  getChatrooms: async(req, res, next) => {
+    const { serverId } = req.body;
+    const result = await ChatroomModel.findAll({ where: { serverId: serverId } });
+    if(result) {
+      res.status(200).send(result);
+    } else {
+      res.status(422).send({'error':'error fetching all chatrooms'});
+    };
   },
 
   /**
@@ -31,20 +46,6 @@ module.exports = {
     } else {
       res.status(422).send({'error':'error deleting chatroom'});
     }
-  },
-
-  /**
-   * @param {object} req
-   * @param {object} res
-   * @returns {array} list of chatrooms
-   */
-  getChatrooms: async(req, res, next) => {
-    const result = await ChatroomModel.findAll({ where: { server: server } });
-    if(result) {
-      res.status(200).send(result);
-    } else {
-      res.status(422).send({'error':'error fetching all chatrooms'});
-    };
   }
 
 }

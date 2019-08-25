@@ -59,6 +59,9 @@ class Chatroom extends Component {
     return (
       <div className="chatroom">
         <div className="chatarea">
+          <div className="chatarea-topbar">
+            
+          </div>
           <div className="chatarea-container">
             <input placeholder="Send a message!"></input>
           </div>

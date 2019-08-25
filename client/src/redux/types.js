@@ -35,6 +35,13 @@ export const FINDING_SERVER = 'finding_server';
 export const DELETE_SERVER_SUCCESS = 'delete_server_success';
 export const DELETE_SERVER_FAIL = 'delete_server_fail';
 export const DELETING_SERVER = 'deleting_server';
+// categories
+export const CREATE_CATEGORY_SUCCESS = 'create_category_success';
+export const CREATE_CATEGORY_FAIL = 'create_category_fail';
+export const CREATING_CATEGORY = 'creating_category';
+export const FIND_CATEGORY_SUCCESS = 'find_category_success';
+export const FIND_CATEGORY_FAIL = 'find_category_fail';
+export const FINDING_CATEGORY = 'finding_category';
 // chatrooms
 export const CREATE_CHATROOM_SUCCESS = 'create_chatroom_success';
 export const CREATE_CHATROOM_FAIL = 'create_chatroom_fail';
