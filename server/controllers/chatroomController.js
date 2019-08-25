@@ -46,6 +46,32 @@ module.exports = {
     } else {
       res.status(422).send({'error':'error deleting chatroom'});
     }
+  },
+
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {array} chatroom list
+   */
+  chatroomUpdate: async(req, res) => {
+    const { chatroomId, categoryId } = req.body;
+    if (!chatroomId) {
+      return res.status(400).send({'error': 'Missing required fields'});
+    }
+
+    const updateChatroom = await ChatroomModel.findOne({ where: { id: chatroomId }});
+    if (!updateChatroom) return res.status(422).send({'error': 'chatroom not found'});
+
+    const chatroomUpdate = await updateChatroom.update(
+      { categoryId: categoryId },
+      { where:  { id: chatroomId }}
+    );
+
+    if (chatroomUpdate) {
+      return res.status(200).send(chatroomUpdate);
+    } else {
+      return res.status(422).send({"error":"Unknown error updating chatroom"});
+    }
   }
 
 }

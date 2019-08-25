@@ -52,3 +52,6 @@ export const DELETING_CHATROOM = 'deleting_chatroom';
 export const GET_CHATROOMS_SUCCESS = 'delete_chatrooms_success';
 export const GET_CHATROOMS_FAIL = 'delete_chatrooms_fail';
 export const GETTING_CHATROOMS = 'getting_chatrooms';
+export const UPDATE_CHATROOM_SUCCESS = 'update_chatroom_success';
+export const UPDATE_CHATROOM_FAIL = 'update_chatroom_fail';
+export const UPDATING_CHATROOM = 'updating_chatroom';

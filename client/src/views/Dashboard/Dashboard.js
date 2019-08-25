@@ -156,8 +156,12 @@ const Dashboard = (props) => {
             categoryId: +event.target.id.split('-')[0] === 0 ? null : +event.target.id.split('-')[0],
             id: currentDragItem.id,
             name: currentDragItem.name,
-            serverId: currentDragItem.serverId,
+            serverId: currentDragItem.serverId
           }
+          props.chatroomUpdate({
+            chatroomId: currentDragItem.id,
+            categoryId: +event.target.id.split('-')[0] === 0 ? null : +event.target.id.split('-')[0]
+          });
           break;
         }
       }
