@@ -11,9 +11,13 @@ module.exports = {
     if (!name && !serverId) {
       return res.status(400).send({'error': 'Missing required fields'});
     }
+
     const result = await ChatroomModel.create(req.body);
-    if(result) {
-      return res.status(200).send(result);
+    if (!result) return res.status(422).send({"error":"Unknown error creating chatroom"});
+
+    const allChatrooms = await ChatroomModel.findAll({ where: { serverId: serverId } });
+    if(allChatrooms) {
+      return res.status(200).send(allChatrooms);
     } else {
       return res.status(422).send({"error":"Unknown error creating chatroom"});
     }
