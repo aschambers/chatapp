@@ -25,7 +25,7 @@ const Dashboard = (props) => {
   const [email, setEmail] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [active, setActive] = useState(false);
-  const [server, setServer] = useState('metabou');
+  const [server, setServer] = useState('');
   const [serverId, setServerId] = useState(null);
   const [hover, setHover] = useState('');
   const [isSettingsOpen, setSettingsOpen] = useState(false);
