@@ -30,7 +30,7 @@ export default (state = initialState, action) => {
       };
     case CREATE_CHATROOM_SUCCESS:
       return {
-        ...state, isLoading: false, error: false, success: true
+        ...state, isLoading: false, error: false, success: true, chatroomList: action.payload
       };
     case CREATE_CHATROOM_FAIL:
       return {
@@ -54,7 +54,7 @@ export default (state = initialState, action) => {
       };
     case GET_CHATROOMS_SUCCESS:
       return {
-        ...state, isLoading: false, error: false, success: true
+        ...state, isLoading: false, error: false, success: true, chatroomList: action.payload
       };
     case GET_CHATROOMS_FAIL:
       return {
@@ -66,17 +66,31 @@ export default (state = initialState, action) => {
 };
 
 // Actions
-export const createChatroom = params => async dispatch => {
+export const chatroomCreate = params => async dispatch => {
   dispatch({ type: CREATING_CHATROOM });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/createChatroom`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/chatroomCreate`, params);
     if(response.data) {
-      dispatch({ type: CREATE_CHATROOM_SUCCESS });
+      dispatch({ type: CREATE_CHATROOM_SUCCESS, payload: response.data });
     } else {
       dispatch({ type: CREATE_CHATROOM_FAIL });
     }
   } catch(err) {
     dispatch({ type: CREATE_CHATROOM_FAIL });
+  }
+};
+
+export const getChatrooms = params => async dispatch => {
+  dispatch({ type: GETTING_CHATROOMS });
+  try {
+    const response = await axios.post(`${ROOT_URL}/api/v1/getChatrooms`, params);
+    if (response.data) {
+      dispatch({ type: GET_CHATROOMS_SUCCESS, payload: response.data });
+    } else {
+      dispatch({ type: GET_CHATROOMS_FAIL });
+    }
+  } catch (err) {
+    dispatch({ type: GET_CHATROOMS_FAIL });
   }
 };
 
@@ -91,19 +105,5 @@ export const deleteChatroom = params => async dispatch => {
     }
   } catch (err) {
     dispatch({ type: DELETE_CHATROOM_FAIL });
-  }
-};
-
-export const getChatrooms = params => async dispatch => {
-  dispatch({ type: GETTING_CHATROOMS });
-  try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/getChatrooms`, params);
-    if (response.data) {
-      dispatch({ type: GET_CHATROOMS_SUCCESS });
-    } else {
-      dispatch({ type: GET_CHATROOMS_FAIL });
-    }
-  } catch (err) {
-    dispatch({ type: GET_CHATROOMS_FAIL });
   }
 };

@@ -1,3 +1,62 @@
+.categorymodal {
+  &-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    background-color: rgb(40, 40, 40);
+    border-radius: 5px;
+    width: 32rem;
+    height: 18rem;
+    &-title {
+      text-align: center;
+      font-size: 1.4rem;
+      color: white;
+    }
+    &-name {
+      margin-left: 2rem;
+      font-size: 1.2rem;
+      height: 0.8rem;
+      margin-top: 2.5rem;
+      color: white;
+    }
+    & > input {
+      margin-left: 2rem;
+      width: 80%;
+      height: 2rem;
+      border: none;
+      padding-left: 0.5rem;
+      outline: rgb(57, 57, 172);
+      font-size: 1rem;
+    }
+    &-cancel {
+      cursor: pointer;
+      outline: none;
+      border: 1px solid rgb(53, 53, 53);
+      background-color: rgb(53, 53, 53);
+      color: white;
+      font-size: 1rem;
+      box-sizing: border-box;
+      padding: 0.5rem 1rem 0.5rem 1rem;
+      margin-top: 3rem;
+      margin-left: 17rem;
+      margin-right: 1rem;
+    }
+    &-create {
+      cursor: pointer;
+      outline: none;
+      border: none;
+      background-color: rgb(114, 114, 203);
+      color: white;
+      font-size: 1rem;
+      box-sizing: border-box;
+      padding: 0.5rem 1rem 0.5rem 1rem;
+      border-radius: 3px;
+    }
+  }
+}
+
 .chatroom {
   background-color: rgb(65, 65, 65);
   height: 100vh;
@@ -37,12 +96,13 @@
     background-color: #008000;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
+    height: 4rem;
   }
   &-hover {
     padding-left: 0.25rem;
     height: 1.5rem;
     margin-top: 1.5rem;
-    background-color: #3957b0;
+    background-color: #cdcdcd;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
   }
@@ -55,10 +115,11 @@
     border-bottom-right-radius: 5px;
   }
   &-logo {
+    position: fixed;
     margin-top: 6px;
-    width: 80%;
-    padding-bottom: 1rem;
-    margin-left: 10%;
+    width: 4rem;
+    height: 4rem;
+    margin-left: 8px;
     height: 50px;
     cursor: pointer;
   }
@@ -66,6 +127,7 @@
     border-top: 1px solid rgb(77, 77, 77);
     width: 40%;
     margin-left: 30%;
+    margin-top: 0.3rem;
   }
 }
 
@@ -73,7 +135,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  width: 12rem;
+  min-width: 12.5rem;
   height: 100%;
   background-color: rgb(48, 48, 48);
   border-left: 1px solid black;
@@ -84,6 +146,7 @@
     height: 2rem;
     margin-top: 0.5rem;
     margin-bottom: 0.25rem;
+    width: 100%;
     & > input {
       background-color: rgb(60, 60, 60);
       text-decoration: none;
@@ -95,6 +158,124 @@
       margin-left: 7%;
       width: 80%;
       border-radius: 3px;
+    }
+    &-dropdown {
+      cursor: pointer;
+      position: relative;
+      right: 1.5rem;
+      margin-top: 0.4rem;
+      width: 0%;
+    }
+    &-header {
+      background-color: rgb(60, 60, 60);
+      color: white;
+      width: 100%;
+      height: 2.25rem;
+      margin-top: -0.5rem;
+      display: flex;
+      // justify-content: center;
+      padding-left: 0.75rem;
+      padding-top: 1rem;
+      border-bottom: 2px solid rgb(33, 33, 33);
+    }
+  }
+  &-mainchat {
+    height: 5rem;
+    width: 100%;
+    // background-color: yellow;
+    padding-left: 0.5rem;
+    margin-top: 1.5rem;
+    & > div {
+      // background-color: rgb(145, 68, 128);
+      width: 11.5rem;
+      min-height: 2rem;
+      & > div {
+        cursor: pointer;
+        background-color: rgb(75, 75, 75);
+        padding: 0.3rem;
+        border-radius: 2px;
+        margin-bottom: 0.2rem;
+        // border: 2px solid red;
+        & > span {
+          margin-left: 0.2rem;
+          color: rgb(232, 232, 232);
+          position: absolute;
+          margin-top: -0.05rem;
+        }
+      }
+    }
+    &-dropdown {
+      cursor: pointer;
+      position: absolute;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+      & > span {
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        padding-left: 0.5rem;
+        position: relative;
+        top: 0.15rem;
+        color: #7F7F7F;
+      }
+      & > div {
+        // background-color: rgb(145, 68, 128);
+        width: 11.5rem;
+        margin-top: 0.5rem;
+        min-height: 3rem;
+        & > div {
+          cursor: pointer;
+          background-color: rgb(75, 75, 75);
+          padding: 0.3rem;
+          border-radius: 2px;
+          margin-bottom: 0.2rem;
+          & > span {
+            margin-left: 0.2rem;
+            color: rgb(232, 232, 232);
+            position: absolute;
+            margin-top: -0.05rem;
+          }
+        }
+      }
+    }
+    &-outsidechannel {
+      margin-top: 1rem;
+      cursor: pointer;
+      & > p {
+        margin-left: 0.5rem;
+      }
+      & > p > span {
+        color: #7F7F7F;
+        text-transform: lowercase;
+        padding-left: 0.5rem;
+        position: relative;
+        top: -0.3rem;
+        font-size: 1rem;
+      }
+    }
+    &-channel {
+      margin-top: 1rem;
+      cursor: pointer;
+      & > p {
+        margin-left: 1rem;
+      }
+      & > p > span {
+        color: #7F7F7F;
+        text-transform: lowercase;
+        padding-left: 0.5rem;
+        position: relative;
+        top: -0.3rem;
+        font-size: 1rem;
+      }
+    }
+    &-general {
+      padding-left: 1rem;
+      cursor: pointer;
+      & > span {
+        text-transform: lowercase;
+        padding-left: 0.5rem;
+        position: relative;
+        top: -0.2rem;
+      }
     }
   }
   &-border {
@@ -131,6 +312,104 @@
     margin-top: 0.5rem;
     margin-left: 1rem;
   }
+}
+
+.channelarrow {
+  border: solid rgb(92, 92, 92);
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 5px;
+}
+
+.arrow {
+  border: solid rgb(92, 92, 92);
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+
+.serversettings {
+  &-modal {
+    position: absolute;
+    z-index: 2;
+    top: 3.6rem;
+    left: 5.5rem;
+    height: 12.5rem;
+    width: 11.6rem;
+    background-color: rgb(63, 63, 63);
+    border-radius: 5px;
+    &-section {
+      display: flex;
+      flex-direction: row;
+      padding-left: 0.5rem;
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+      outline: none;
+      cursor: pointer;
+      -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+      -khtml-user-select: none; /* Konqueror HTML */
+      -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+      user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+      & > span {
+        font-size: 0.9rem;
+        padding-left: 0.5rem;
+        padding-top: 0.35rem;
+        color: rgb(211, 211, 211);
+      }
+    }
+  }
+}
+
+.arrowleft {
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-right:7px solid rgb(38, 38, 38);
+  position: relative;
+  left: -7px;
+  top: 10px;
+}
+
+.tooltip {
+  position: absolute;
+  left: 5rem;
+  margin-top: 0.8rem;
+  z-index: 900;
+  background-color: rgb(28, 28, 28);
+  color: white;
+  padding: 1px 0.5rem 1px 1rem;
+  height: 2.1rem;
+  min-width: 5rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: help;
+  & > span {
+    position: relative;
+    top: 0.5rem;
+  }
+}
+
+.tooltip::before {
+  content:"\A";
+  border-style: solid;
+  border-width: 7px 7px 7px 0;
+  border-color: transparent rgb(28, 28, 28) transparent transparent;
+  position: absolute;
+  left: -7px;
+  top: 12px;
 }
 
 .mainarea {

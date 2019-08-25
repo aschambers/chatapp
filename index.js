@@ -18,6 +18,7 @@ app.use(function(req, res, next) {
 require('./server/routes/userRoutes')(app);
 require('./server/routes/messageRoutes')(app);
 require('./server/routes/chatroomRoutes')(app);
+require('./server/routes/categoryRoutes')(app);
 require('./server/routes/serverRoutes')(app);
 // client setup
 app.use(express.static(path.join(__dirname, 'client/build')));

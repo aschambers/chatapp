@@ -1,7 +1,8 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/connection');
+const Message = require('./Message');
 
-const Chatrooms = sequelize.define('chatrooms', {
+const Chatroom = sequelize.define('chatrooms', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -9,10 +10,6 @@ const Chatrooms = sequelize.define('chatrooms', {
     primaryKey: true
   },
   name: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  server: {
     type: Sequelize.STRING,
     allowNull: false
   },
@@ -26,10 +23,27 @@ const Chatrooms = sequelize.define('chatrooms', {
     defaultValue: Sequelize.NOW,
     allowNull: false
   },
-  createdBy: {
-    type: Sequelize.STRING,
-    allowNull: false
+  categoryId: {
+    type: Sequelize.INTEGER,
+    allowNull: true,
+    references: {
+      type: Sequelize.INTEGER,
+      references: 'categories',
+      referencesKey: 'id'
+    }
+  },
+  serverId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    references: {
+      type: Sequelize.INTEGER,
+      references: 'categories',
+      referencesKey: 'id'
+    }
   }
 });
 
-module.exports = Chatrooms;
+Chatroom.hasMany(Message);
+Message.belongsTo(Chatroom);
+
+module.exports = Chatroom;

@@ -1,0 +1,16 @@
+.item {
+  padding: 10px;
+  text-align: left; }
+  .item > span > img {
+    margin-left: 5px; }
+  .item > span > span {
+    position: absolute;
+    margin-top: -1px;
+    margin-left: 3px;
+    font-size: 1rem;
+    color: #dadada; }
+
+.item:hover {
+  cursor: pointer;
+  background: #414141;
+  border-radius: 3px; }

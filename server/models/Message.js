@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/connection');
 
-const Messages = sequelize.define('messages', {
+const Message = sequelize.define('messages', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -30,18 +30,24 @@ const Messages = sequelize.define('messages', {
     defaultValue: Sequelize.NOW,
     allowNull: false
   },
-  sentTo: {
-    type: Sequelize.STRING,
-    allowNull: true
+  userId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    references: {
+      type: Sequelize.INTEGER,
+      references: 'users',
+      referencesKey: 'id'
+    }
   },
-  server: {
-    type: Sequelize.STRING,
-    allowNull: true
-  },
-  chatroom: {
-    type: Sequelize.STRING,
-    allowNull: true
+  chatroomId: {
+    type: Sequelize.INTEGER,
+    allowNull: true,
+    references: {
+      type: Sequelize.INTEGER,
+      references: 'chatrooms',
+      referencesKey: 'id'
+    }
   }
 });
 
-module.exports = Messages;
+module.exports = Message;

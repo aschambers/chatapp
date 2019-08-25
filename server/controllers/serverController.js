@@ -45,6 +45,7 @@ module.exports = {
       // Step 5: Add this new server to list of servers for this user
       if (!updateUser.serversList) updateUser.serversList = [];
       updateUser.serversList.push({
+        serverId: newServer.id,
         name: name,
         imageUrl: req.body.imageUrl
       });

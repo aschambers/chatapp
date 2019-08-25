@@ -2,8 +2,9 @@ const Sequelize = require('sequelize');
 const sequelize = require('../config/connection');
 const bcrypt = require('bcryptjs');
 const Server = require('./Server');
+const Message = require('./Message');
 
-const User = sequelize.define('user', {
+const User = sequelize.define('users', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -92,6 +93,8 @@ const User = sequelize.define('user', {
 });
 
 User.hasMany(Server);
+User.hasMany(Message);
 Server.belongsTo(User);
+Message.belongsTo(User);
 
 module.exports = User;

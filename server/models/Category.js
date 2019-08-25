@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/connection');
-const Category = require('./Category');
+const Chatroom = require('./Chatroom');
 
-const Server = sequelize.define('servers', {
+const Category = sequelize.define('categories', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -11,6 +11,10 @@ const Server = sequelize.define('servers', {
   },
   name: {
     type: Sequelize.STRING,
+    allowNull: false
+  },
+  serverId: {
+    type: Sequelize.INTEGER,
     allowNull: false
   },
   createdAt: {
@@ -23,30 +27,17 @@ const Server = sequelize.define('servers', {
     defaultValue: Sequelize.NOW,
     allowNull: false
   },
-  public: {
+  order: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  visible: {
     type: Sequelize.BOOLEAN,
     allowNull: false
-  },
-  region: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  imageUrl: {
-    type: Sequelize.STRING,
-    allowNull: true
-  },
-  userId: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-    references: {
-      type: Sequelize.INTEGER,
-      references: 'users',
-      referencesKey: 'id'
-    }
-  },
+  }
 });
 
-Server.hasMany(Category);
-Category.belongsTo(Server);
+Category.hasMany(Chatroom);
+Chatroom.belongsTo(Category);
 
-module.exports = Server;
+module.exports = Category;
