@@ -7,6 +7,8 @@ import ToastMessage from '../../components/ToastMessage/ToastMessage';
 import Chatroom from '../../components/Chatroom/Chatroom';
 import CreateServer from '../../components/CreateServer/CreateServer';
 import JoinServer from '../../components/JoinServer/JoinServer';
+import CategoryModal from '../../components/CategoryModal/CategoryModal';
+import ChannelModal from '../../components/ChannelModal/ChannelModal';
 import './Dashboard.css';
 import chatot from '../../assets/images/chatot.png';
 import friends from '../../assets/images/friends.png';
@@ -42,6 +44,8 @@ const Dashboard = (props) => {
   const [categories, setCategories] = useState([]);
   const [currentDragItem, setCurrentDragItem] = useState(null);
   const [chatrooms, setChatrooms] = useState([]);
+  const [activeChatroom, setActiveChatroom] = useState("");
+  const [activeChatroomId, setActiveChatroomId] = useState(null);
 
   const ref = useRef();
   useOnClickOutside(ref, () => setShowCategoryModal(false));
@@ -49,6 +53,8 @@ const Dashboard = (props) => {
   useEffect(() => {
     if (props.chatroomList) {
       setChatrooms(props.chatroomList);
+      setActiveChatroom(props.chatroomList[0].name);
+      setActiveChatroomId(props.chatroomList[0].id);
       setShowChannelModal(false);
     }
     if (props.categoryList) {
@@ -131,7 +137,7 @@ const Dashboard = (props) => {
       name: newCategory,
       serverId: serverId,
       order: categories.length,
-      visible: false
+      visible: true
     });
     setNewCategory('');
   }
@@ -182,6 +188,14 @@ const Dashboard = (props) => {
   const setServerProperties = (item) => {
     setServer(item.name);
     setServerId(item.serverId);
+  }
+
+  const setCurrentActiveChatroom = (item, event) => {
+    if (event) {
+      event.stopPropagation();
+    }
+    setActiveChatroom(item.name);
+    setActiveChatroomId(item.id);
   }
 
   return (
@@ -267,32 +281,33 @@ const Dashboard = (props) => {
             : null}
           </div>
 
-          {showChannelModal ? <div ref={ref} className="categorymodal-container">
-            <p className="categorymodal-container-title">Create Channel</p>
-            <p className="categorymodal-container-name">Channel Name</p>
-            <input onChange={(event) => { setNewChannel(event.target.value); }} /><br />
-            <button className="categorymodal-container-cancel" onClick={() => { setShowChannelModal(false); }}>Cancel</button>
-            <button className="categorymodal-container-create" onClick={() => { createNewChannel(); }}>Create</button>
-          </div> : null}
+          {showChannelModal ?
+            <ChannelModal
+              setNewChannel={(event) => { setNewChannel(event.target.value); }}
+              setShowChannelModal={() => { setShowChannelModal(false); }}
+              createNewChannel={() => { createNewChannel(); }}
+            />
+          : null}
 
-          {showCategoryModal ? <div ref={ref} className="categorymodal-container">
-            <p className="categorymodal-container-title">Create Category</p>
-            <p className="categorymodal-container-name">Category Name</p>
-            <input onChange={(event) => { setNewCategory(event.target.value); }} /><br />
-            <button className="categorymodal-container-cancel" onClick={() => { setShowCategoryModal(false); }}>Cancel</button>
-            <button className="categorymodal-container-create" onClick={() => { createNewCategory(); }}>Create</button>
-          </div> : null}
+          {showCategoryModal ?
+            <CategoryModal
+              setNewCategory={(event) => { setNewCategory(event.target.value); }}
+              setShowCategoryModal={() => { setShowCategoryModal(false); }}
+              createNewCategory={() => { createNewCategory(); }}
+            />
+          : null}
 
           <div className="sidebarleft-mainchat">
             <div onDrop={(event) => { dropItem(event); }} onDragOver={(event) => { draggingOverItem(event); }} id={0 + "-" + server}>
               {chatrooms && chatrooms.length > 0 ? chatrooms.filter(chatroom => chatroom.categoryId === null).map((item, index) => {
                 return (
-                  <div key={index} id={0 + "-" + item.name} draggable="true" onDragStart={(event) => { dragItem(item, event); }}>
+                  <div className={activeChatroom === item.name ? "active" : ""} key={index} id={0 + "-" + item.name} draggable="true" onDragStart={(event) => { dragItem(item, event); }} onClick={() => { setCurrentActiveChatroom(item); }}>
                     <img src={numbersign} alt="channel" height={16} width={16} /><span>{item.name}</span>
                   </div>
                 )
               }) : null}
             </div>
+
             {categories && categories.length ? categories.map((group, categoryIndex) => {
               return (
                 <div key={categoryIndex}>
@@ -306,7 +321,7 @@ const Dashboard = (props) => {
                     <div onDrop={(event) => { dropItem(event); }} onDragOver={(event) => { draggingOverItem(event); }} id={group.id + "-" + group.name}>
                       {chatrooms && chatrooms.length > 0 ? chatrooms.filter(chatroom => chatroom.categoryId === group.id).map((item, index) => {
                         return (
-                          <div id={item.categoryId + "-" + item.name} key={index} draggable="true" onDragStart={(event) => { dragItem(item, event); }}>
+                          <div className={activeChatroom === item.name ? "active" : ""} id={item.categoryId + "-" + item.name} key={index} draggable="true" onDragStart={(event) => { dragItem(item, event); }} onClick={(event) => { setCurrentActiveChatroom(item, event); }}>
                             <img src={numbersign} alt="channel" height={16} width={16} /><span>{item.name}</span>
                           </div>
                         );
@@ -316,11 +331,12 @@ const Dashboard = (props) => {
                 </div>
               );
             }) : null}
+
           </div>
         </div>
       }
       {server !== "" ?
-        <Chatroom /> :
+        <Chatroom activeChatroom={activeChatroom} activeChatroomId={activeChatroomId} userId={id} username={username} /> :
         <div className="mainarea">
           <div className="mainarea-topnav">
           </div>

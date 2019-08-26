@@ -5,80 +5,29 @@ const SERVER_URL = keys.server_url;
 module.exports = async(server) => {
   let users = [];
   let messages = [];
-  let setChatMessages = false;
-  // run only on server initial start
-  let setItems = async() => {
-    if(!setChatMessages) {
-      setChatMessages = true;
-      let getMessages = await axios.get(`${SERVER_URL}/api/v1/getMessages`);
-      if(getMessages.data) {
-        let newMessages = [];
-        for(let k = 0; k < getMessages.data.length; k++) {
-          if(getMessages.data[k].type === 'general') {
-            newMessages.push(getMessages.data[k]);
-          }
-        }
-        messages = newMessages;
-        let getUsers = await axios.get(`${SERVER_URL}/api/v1/getUsers`);
-        if(getUsers.data) {
-          let newUsers = [];
-          for(let i = 0; i < getUsers.data.length; i++) {
-            if(getMessages.data && getMessages.data.length) {
-              for(let j = 0; j < getMessages.data.length; j++) {
-                if(getUsers.data[i].username === getMessages.data[j].username && !getUsers.data[i].privateMessages && getMessages.data[j].type === 'private') {
-                  getUsers.data[i].privateMessages = [{
-                    username: getMessages.data[j].username,
-                    sentTo: getMessages.data[j].sentTo,
-                    message: getMessages.data[j].message
-                  }];
-                } else if(getUsers.data[i].username === getMessages.data[j].username && !getUsers.data[i].privateMessages && getMessages.data[j].type === 'personal') {
-                  getUsers.data[i].personalMessages = [{
-                    username: getMessages.data[j].username,
-                    sentTo: getMessages.data[j].sentTo,
-                    message: getMessages.data[j].message
-                  }];
-                } else if(getUsers.data[i].username === getMessages.data[j].username && getMessages.data[j].type === 'private') {
-                  getUsers.data[i].privateMessages.push({
-                    username: getMessages.data[j].username,
-                    sentTo: getMessages.data[j].sentTo,
-                    message: getMessages.data[j].message
-                  });
-                } else if(getUsers.data[i].username === getMessages.data[j].username && getMessages.data[j].type === 'personal') {
-                  getUsers.data[i].personalMessages.push({
-                    username: getMessages.data[j].username,
-                    sentTo: getMessages.data[j].sentTo,
-                    message: getMessages.data[j].message
-                  });
-                } else if(!getUsers.data[i].personalMessages && !getUsers.data[i].privateMessages) {
-                  getUsers.data[i].personalMessages = [];
-                  getUsers.data[i].privateMessages = [];
-                } else if(!getUsers.data[i].personalMessages) {
-                  getUsers.data[i].personalMessages = [];
-                } else if(!getUsers.data[i].privateMessages) {
-                  getUsers.data[i].privateMessages = [];
-                }
-              }
-              newUsers.push(getUsers.data[i]);
-            } else {
-              getUsers.data[i].privateMessages = [];
-              getUsers.data[i].personalMessages = [];
-              newUsers.push(getUsers.data[i]);
-            }
-          }
-          users = newUsers;
-          return true;
-        }
-      }
-    } else {
-      return true;
-    }
-  }
-  // wait for chatroom to setup first
-  await setItems();
 
   const io = require('socket.io')(server);
 
   io.on('connection', (socket) => {
+    socket.on('GET_CHATROOM_MESSAGES', async(data) => {
+      let messages = await axios.post(`${SERVER_URL}/api/v1/getChatroomMessages`, data) || [];
+      if (messages) {
+        io.emit('RECEIVE_CHATROOM_MESSAGE', messages.data.reverse());
+      }
+    });
+
+    socket.on('CHATROOM_MESSAGE', async(data) => {
+      let messages = await axios.post(`${SERVER_URL}/api/v1/messageChatroomCreate`, {
+        username: data.username,
+        message: data.message,
+        userId: data.userId,
+        chatroomId: data.chatroomId
+      });
+      if (messages) {
+        io.emit('RECEIVE_CHATROOM_MESSAGE', messages.data.reverse());
+      }
+    });
+
     socket.on('SEND_USER', function(data) {
       if(users.length > 0) {
         const result = users.filter((item) => {
@@ -116,8 +65,11 @@ module.exports = async(server) => {
       io.emit('RECEIVE_USERS', users);
     });
 
-    socket.on('GET_MESSAGES', function() {
-      io.emit('RECEIVE_MESSAGE', messages);
+    socket.on('GET_MESSAGES', async(data) => {
+      let messages = await axios.post(`${SERVER_URL}/api/v1/getChatroomMessages`, data) || [];
+      if (messages) {
+        io.emit('RECEIVE_MESSAGE', messages.data.reverse());
+      }
     });
 
     socket.on('SEND_MESSAGE', async(data) => {

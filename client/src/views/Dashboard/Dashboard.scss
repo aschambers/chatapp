@@ -1,63 +1,4 @@
-.categorymodal {
-  &-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10;
-    background-color: rgb(40, 40, 40);
-    border-radius: 5px;
-    width: 32rem;
-    height: 18rem;
-    &-title {
-      text-align: center;
-      font-size: 1.4rem;
-      color: white;
-    }
-    &-name {
-      margin-left: 2rem;
-      font-size: 1.2rem;
-      height: 0.8rem;
-      margin-top: 2.5rem;
-      color: white;
-    }
-    & > input {
-      margin-left: 2rem;
-      width: 80%;
-      height: 2rem;
-      border: none;
-      padding-left: 0.5rem;
-      outline: rgb(57, 57, 172);
-      font-size: 1rem;
-    }
-    &-cancel {
-      cursor: pointer;
-      outline: none;
-      border: 1px solid rgb(53, 53, 53);
-      background-color: rgb(53, 53, 53);
-      color: white;
-      font-size: 1rem;
-      box-sizing: border-box;
-      padding: 0.5rem 1rem 0.5rem 1rem;
-      margin-top: 3rem;
-      margin-left: 17rem;
-      margin-right: 1rem;
-    }
-    &-create {
-      cursor: pointer;
-      outline: none;
-      border: none;
-      background-color: rgb(114, 114, 203);
-      color: white;
-      font-size: 1rem;
-      box-sizing: border-box;
-      padding: 0.5rem 1rem 0.5rem 1rem;
-      border-radius: 3px;
-    }
-  }
-}
-
-.chatroom {
+.dashboard {
   background-color: rgb(65, 65, 65);
   height: 100vh;
   display: flex;
@@ -163,17 +104,16 @@
       cursor: pointer;
       position: relative;
       right: 1.5rem;
-      margin-top: 0.4rem;
+      margin-top: 0.2rem;
       width: 0%;
     }
     &-header {
       background-color: rgb(60, 60, 60);
       color: white;
       width: 100%;
-      height: 2.25rem;
-      margin-top: -0.5rem;
+      height: 2rem;
+      margin-top: -0.75rem;
       display: flex;
-      // justify-content: center;
       padding-left: 0.75rem;
       padding-top: 1rem;
       border-bottom: 2px solid rgb(33, 33, 33);
@@ -182,20 +122,23 @@
   &-mainchat {
     height: 5rem;
     width: 100%;
-    // background-color: yellow;
     padding-left: 0.5rem;
     margin-top: 1.5rem;
     & > div {
-      // background-color: rgb(145, 68, 128);
       width: 11.5rem;
       min-height: 2rem;
-      & > div {
+      & > .active {
         cursor: pointer;
         background-color: rgb(75, 75, 75);
         padding: 0.3rem;
         border-radius: 2px;
         margin-bottom: 0.2rem;
-        // border: 2px solid red;
+      }
+      & > div {
+        cursor: pointer;
+        padding: 0.3rem;
+        border-radius: 2px;
+        margin-bottom: 0.2rem;
         & > span {
           margin-left: 0.2rem;
           color: rgb(232, 232, 232);
@@ -218,13 +161,18 @@
         color: #7F7F7F;
       }
       & > div {
-        // background-color: rgb(145, 68, 128);
         width: 11.5rem;
         margin-top: 0.5rem;
         min-height: 3rem;
-        & > div {
+        & > .active {
           cursor: pointer;
           background-color: rgb(75, 75, 75);
+          padding: 0.3rem;
+          border-radius: 2px;
+          margin-bottom: 0.2rem;
+        }
+        & > div {
+          cursor: pointer;
           padding: 0.3rem;
           border-radius: 2px;
           margin-bottom: 0.2rem;
