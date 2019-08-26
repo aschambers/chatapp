@@ -18,7 +18,7 @@ const Message = sequelize.define('messages', {
   },
   type: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: true
   },
   createdAt: {
     type: Sequelize.DATE,

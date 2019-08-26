@@ -1,4 +1,4 @@
-.dashboard {
+.chatroom {
   background-color: #414141;
   height: 100vh;
   display: flex;
@@ -10,8 +10,16 @@
   flex-direction: column;
   flex: 1; }
   .chatarea-topbar {
+    box-sizing: border-box;
     width: 100%;
-    height: 3rem; }
+    height: 2.8rem;
+    border-bottom: 2px solid #1f1f1f;
+    padding: 0.9rem; }
+    .chatarea-topbar > span {
+      color: #f2f2f2;
+      padding-left: 0.2rem;
+      position: absolute;
+      margin-top: -0.1rem; }
   .chatarea-container {
     display: flex;
     flex: 1;
@@ -30,6 +38,22 @@
       text-decoration: none;
       outline: none;
       border: 1px solid black; }
+  .chatarea-messages {
+    height: 31.5rem;
+    overflow: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    padding-left: 2rem; }
+    .chatarea-messages-user {
+      font-size: 1.2rem;
+      color: #50d04a;
+      margin-right: 0.3rem; }
+    .chatarea-messages-time {
+      color: #888888;
+      font-size: 0.8rem; }
+    .chatarea-messages-message {
+      font-size: 1rem;
+      color: white; }
 
 .sidebarright {
   display: flex;
@@ -44,9 +68,9 @@
   .sidebarright-container {
     display: flex;
     flex-direction: row;
-    height: 30px;
-    margin-top: 10px;
-    margin-bottom: 10px; }
+    height: 1.5rem;
+    margin-top: 8px;
+    margin-bottom: 11px; }
     .sidebarright-container > input {
       background-color: #3c3c3c;
       text-decoration: none;

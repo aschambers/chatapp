@@ -22,6 +22,27 @@ module.exports = {
   /**
    * @param {object} req
    * @param {object} res
+   * @returns {array} message list
+   */
+  messageChatroomCreate: async(req, res) => {
+    const { username, message, userId, chatroomId } = req.body;
+    if (!username && !message && !userId && !chatroomId) {
+      return res.status(400).send({'error': 'Missing required fields'});
+    }
+    const result = await MessageModel.create(req.body);
+    if (!result) return res.status(422).send({"error":"Unknown error creating message"});
+
+    const messages = await MessageModel.findAll({ where: { chatroomId: chatroomId } });
+    if (messages) {
+      res.status(200).send(messages);
+    } else {
+      return res.status(422).send({"error":"Unknown error creating message"});
+    }
+  },
+
+  /**
+   * @param {object} req
+   * @param {object} res
    * @returns {object} message object
    */
   messageUpdate: async(req, res, next) => {
@@ -60,8 +81,9 @@ module.exports = {
    * @param {object} res
    * @returns {array} list of messages
    */
-  getMessages: async(req, res, next) => {
-    const result = await MessageModel.findAll();
+  getChatroomMessages: async(req, res, next) => {
+    const { chatroomId } = req.body;
+    const result = await MessageModel.findAll({ where: { chatroomId: chatroomId } });
     if(result) {
       res.status(200).send(result);
     } else {

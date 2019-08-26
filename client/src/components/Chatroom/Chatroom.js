@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../redux';
-// import { ROOT_URL } from '../../config/networkSettings';
-// import io from "socket.io-client";
-// import { Link } from 'react-router-dom';
+import { ROOT_URL } from '../../config/networkSettings';
+import io from "socket.io-client";
+import Moment from 'react-moment';
+import 'moment-timezone';
 import './Chatroom.css';
 import chatot from '../../assets/images/chatot.png';
+import numbersign from '../../assets/images/numbersign.png';
 
 class Chatroom extends Component {
   constructor(props) {
@@ -33,9 +35,28 @@ class Chatroom extends Component {
   async componentDidMount() {
     this.props.currentUser();
     this.props.getUsers();
+
+    this.socket = io(ROOT_URL);
+
+    this.socket.on('connect', () => {
+      this.setState({ socketId: this.socket.id });
+    });
+
+    this.socket.emit('GET_CHATROOM_MESSAGES', {
+      chatroomId: this.props.activeChatroomId
+    });
+
+    this.socket.on('RECEIVE_CHATROOM_MESSAGE', (data) => {
+      this.setState({ messages: data});
+    });
   }
 
   async componentWillReceiveProps(nextProps) {
+    if (nextProps.activeChatroomId) {
+      this.socket.emit('GET_CHATROOM_MESSAGES', {
+        chatroomId: nextProps.activeChatroomId
+      });
+    }
     if (nextProps.user) {
       const { id, username, active, type } = nextProps.user;
       this.setState({
@@ -55,15 +76,38 @@ class Chatroom extends Component {
     }
   }
 
+  sendMessage = (event) => {
+    if (event) {
+      event.preventDefault();
+      this.socket.emit('CHATROOM_MESSAGE', {
+        username: this.props.username,
+        message: this.state.message,
+        userId: this.props.userId,
+        chatroomId: this.props.activeChatroomId
+      });
+      this.setState({ message: "" });
+    }
+  }
+
   render() {
     return (
       <div className="chatroom">
         <div className="chatarea">
           <div className="chatarea-topbar">
-            
+            <img src={numbersign} alt="channel" height={16} width={16} /><span>{this.props.activeChatroom}</span>
+          </div>
+          <div className="chatarea-messages">
+            {this.state.messages && this.state.messages.length > 0 ? this.state.messages.map((item, index) => {
+              return (
+                <div key={index}>
+                  <p><span className="chatarea-messages-user">{item.username}</span> <Moment format="MM/DD/YYYY" className="chatarea-messages-time"><span>{item.createdAt}</span></Moment></p>
+                  <p className="chatarea-messages-message">{item.message}</p>
+                </div>
+              )
+            }) : null}
           </div>
           <div className="chatarea-container">
-            <input placeholder="Send a message!"></input>
+            <input placeholder="Send a message!" type="text" onChange={(event) => { this.setState({ message: event.target.value }); }} value={this.state.message} onKeyDown={(event) => { event.keyCode === 13 && event.shiftKey === false ? this.sendMessage(event) : this.sendMessage(null) }}></input>
           </div>
         </div>
         <div className="sidebarright">
