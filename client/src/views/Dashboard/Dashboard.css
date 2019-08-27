@@ -100,7 +100,7 @@
       background-color: #3c3c3c;
       color: white;
       width: 100%;
-      height: 2rem;
+      height: 1.95rem;
       margin-top: -0.75rem;
       display: flex;
       padding-left: 0.75rem;
@@ -537,6 +537,154 @@
     .usersettings-escape > p {
       color: white; }
 
+.serversettings {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  position: absolute;
+  background-color: #36393f;
+  z-index: 5;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 1;
+  animation-name: fadeInOpacity;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-duration: 0.3s;
+  display: flex;
+  flex-direction: row; }
+  .serversettings-sidebar {
+    height: 100vh;
+    background-color: #2f3136;
+    display: flex;
+    flex-direction: column;
+    padding-left: 15%;
+    padding-right: 5%; }
+    .serversettings-sidebar > h1:first-child {
+      margin-top: 3rem; }
+    .serversettings-sidebar > h1 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      color: #4f545c;
+      width: 9rem; }
+    .serversettings-sidebar > p {
+      font-size: 0.9rem;
+      color: #d5d5d5;
+      cursor: pointer; }
+    .serversettings-sidebar > p:last-child {
+      font-size: 0.9rem;
+      color: #ee0000; }
+  .serversettings-myserver {
+    padding-left: 2rem;
+    display: flex;
+    flex-direction: column;
+    background-color: #36393f;
+    min-width: 50rem; }
+    .serversettings-myserver > h1 {
+      color: #e4e4e4;
+      text-transform: uppercase;
+      font-size: 1rem;
+      margin-top: 3rem; }
+    .serversettings-myserver__container {
+      width: 40rem;
+      height: 12rem;
+      background-color: #292929;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: row; }
+      .serversettings-myserver__container-image {
+        width: 6rem;
+        height: 6rem;
+        background-color: white;
+        border-radius: 50%;
+        margin-left: 1.5rem;
+        margin-top: 2rem; }
+        .serversettings-myserver__container-image > img {
+          width: 90%;
+          height: 90%;
+          margin-top: 5%;
+          margin-left: 5%; }
+      .serversettings-myserver__container-info {
+        display: flex;
+        flex-direction: column;
+        margin-left: 2rem; }
+        .serversettings-myserver__container-info-server {
+          margin-top: 2rem; }
+          .serversettings-myserver__container-info-server > span {
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            color: #606060; }
+          .serversettings-myserver__container-info-server > input {
+            margin-top: 0.2rem;
+            padding-left: 0.2rem;
+            outline: none;
+            font-size: 1rem;
+            width: 18rem; }
+        .serversettings-myserver__container-info-region {
+          margin-top: 1rem; }
+          .serversettings-myserver__container-info-region > span:first-child {
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            color: #606060; }
+          .serversettings-myserver__container-info-region > span:last-child {
+            color: #e4e4e4;
+            font-size: 1rem; }
+      .serversettings-myserver__container-edit {
+        cursor: pointer;
+        padding: 0.5rem 1rem 0.5rem 1rem;
+        background-color: green;
+        color: #e3e2e2;
+        height: 1.25rem;
+        border-radius: 2px;
+        position: relative;
+        top: 1.5rem;
+        left: 12rem; }
+  .serversettings-authentication {
+    padding-left: 2rem;
+    display: flex;
+    flex-direction: column;
+    background-color: #36393f;
+    min-width: 50rem;
+    height: 61.5vh; }
+    .serversettings-authentication > h1 {
+      color: #e4e4e4;
+      text-transform: uppercase;
+      font-size: 1rem;
+      margin-top: 3rem; }
+    .serversettings-authentication > p {
+      color: #e4e4e4;
+      font-size: 1rem;
+      width: 40rem; }
+    .serversettings-authentication-enable {
+      cursor: pointer;
+      box-sizing: border-box;
+      padding: 0.5rem 1rem 0.5rem 1rem;
+      background-color: green;
+      color: #e3e2e2;
+      width: 5rem;
+      border-radius: 2px; }
+  .serversettings-escape {
+    position: absolute;
+    top: 3rem;
+    right: 3rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border: 1px solid white;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer; }
+    .serversettings-escape > span {
+      height: 80%;
+      width: 80%;
+      position: relative;
+      top: 0.25rem;
+      font-size: 25px;
+      color: white; }
+    .serversettings-escape > p {
+      color: white; }
+
 .serverjoin {
   position: absolute;
   z-index: 20;
@@ -599,6 +747,60 @@
       border-radius: 3px;
       margin-left: 25rem;
       margin-top: 1.5rem; }
+
+.servermodalregion {
+  position: absolute;
+  z-index: 20;
+  width: 40rem;
+  height: 25rem;
+  background-color: white;
+  transform: translate(50%, 25%);
+  border-radius: 5px;
+  animation-name: fadeInOpacity;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-duration: 0.5s; }
+  .servermodalregion-select {
+    margin-top: 0.5rem;
+    background-color: white;
+    width: 18.6rem;
+    border: 1px solid #a4a4a4;
+    border-radius: 8px;
+    padding: 0.4rem 0rem 0.2rem 0.4rem;
+    box-sizing: border-box; }
+    .servermodalregion-select > img {
+      border-radius: 8px; }
+    .servermodalregion-select-current {
+      color: #a4a4a4;
+      font-size: 1.2rem;
+      margin-left: 0.5rem;
+      position: absolute;
+      padding-top: 0.8rem;
+      margin-top: -0.4rem;
+      padding-right: 3rem;
+      height: 2.3rem; }
+    .servermodalregion-select-change {
+      color: #2b56d7;
+      font-size: 1rem;
+      margin-left: 10rem;
+      position: absolute;
+      margin-top: -0.4rem;
+      height: 1.5rem;
+      padding: 1rem 0.6rem 0.5rem 0.5rem;
+      border-left: 1px solid #a4a4a4;
+      border-top-right-radius: 8px;
+      border-bottom-right-radius: 8px; }
+    .servermodalregion-select-change:hover {
+      color: #2b56d7;
+      position: absolute;
+      cursor: pointer;
+      margin-top: -0.45rem;
+      height: 1.45rem;
+      padding: 0.95rem 0.5rem 0.5rem 0.5rem;
+      border-top-right-radius: 8px;
+      border-bottom-right-radius: 8px;
+      border: 2px solid #2b56d7;
+      background-color: #f7f7f7; }
 
 @keyframes fadeInOpacity {
   0% {

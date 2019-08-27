@@ -9,6 +9,9 @@ import CreateServer from '../../components/CreateServer/CreateServer';
 import JoinServer from '../../components/JoinServer/JoinServer';
 import CategoryModal from '../../components/CategoryModal/CategoryModal';
 import ChannelModal from '../../components/ChannelModal/ChannelModal';
+import NotificationSettingsModal from '../../components/NotificationSettingsModal/NotificationSettingsModal';
+import PrivacyModal from '../../components/PrivacyModal/PrivacyModal';
+import RegionModal from '../../components/RegionModal/RegionModal';
 import './Dashboard.css';
 import chatot from '../../assets/images/chatot.png';
 import friends from '../../assets/images/friends.png';
@@ -20,6 +23,9 @@ import serversettings from '../../assets/images/serversettings.png';
 import category from '../../assets/images/category.png';
 import createchannel from '../../assets/images/createchannel.png';
 import numbersign from '../../assets/images/numbersign.png';
+import usregion from '../../assets/images/usregion.png';
+import europe from '../../assets/images/europe.png';
+import russia from '../../assets/images/russia.png';
 
 const Dashboard = (props) => {
   const [id, setId] = useState('');
@@ -28,9 +34,13 @@ const Dashboard = (props) => {
   const [imageUrl, setImageUrl] = useState('');
   const [active, setActive] = useState(false);
   const [server, setServer] = useState('');
+  const [serverName, setServerName] = useState('');
   const [serverId, setServerId] = useState(null);
+  const [serverImage, setServerImage] = useState("");
+  const [serverRegion, setServerRegion] = useState("");
   const [hover, setHover] = useState('');
   const [isSettingsOpen, setSettingsOpen] = useState(false);
+  const [isServerSettingsOpen, setIsServerSettingsOpen] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentModal, setCurrentModal] = useState("");
   const [region, setRegion] = useState("US West");
@@ -38,6 +48,8 @@ const Dashboard = (props) => {
   const [serverSettings, showServerSettings] = useState(false);
   const [showChannelModal, setShowChannelModal] = useState(false);
   const [showCategoryModal, setShowCategoryModal] = useState(false);
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+  const [showNotificationSettingsModal, setShowNotificationSettingsModal] = useState(false);
   const [newCategory, setNewCategory] = useState("");
   const [newChannel, setNewChannel] = useState("");
   const [triggerReload, setTriggerReload] = useState(false);
@@ -46,6 +58,7 @@ const Dashboard = (props) => {
   const [chatrooms, setChatrooms] = useState([]);
   const [activeChatroom, setActiveChatroom] = useState("");
   const [activeChatroomId, setActiveChatroomId] = useState(null);
+  const [isChangingRegion, setIsChangingRegion] = useState(false);
 
   const ref = useRef();
   useOnClickOutside(ref, () => setShowCategoryModal(false));
@@ -53,8 +66,10 @@ const Dashboard = (props) => {
   useEffect(() => {
     if (props.chatroomList) {
       setChatrooms(props.chatroomList);
-      setActiveChatroom(props.chatroomList[0].name);
-      setActiveChatroomId(props.chatroomList[0].id);
+      if (props.chatroomList.length > 0) {
+        setActiveChatroom(props.chatroomList[0].name);
+        setActiveChatroomId(props.chatroomList[0].id);
+      }
       setShowChannelModal(false);
     }
     if (props.categoryList) {
@@ -84,6 +99,8 @@ const Dashboard = (props) => {
   const detectEscape = (event) => {
     if (event.keyCode === 27) {
       setSettingsOpen(false);
+      setIsServerSettingsOpen(false);
+      showServerSettings(false);
     }
   }
 
@@ -93,6 +110,12 @@ const Dashboard = (props) => {
 
   const userLogout = () => {
     props.userLogout({ id: id });
+  }
+
+  const deleteServer = () => {
+    props.deleteServer({
+      serverId: serverId
+    });
   }
 
   const toggleModal = (value) => {
@@ -129,6 +152,16 @@ const Dashboard = (props) => {
 
   const displayCategoryModal = () => {
     setShowCategoryModal(true);
+    showServerSettings(false);
+  }
+
+  const displayNotificationSettingsModal = () => {
+    setShowNotificationSettingsModal(!showNotificationSettingsModal);
+    showServerSettings(false);
+  }
+
+  const displayPrivacyModal = () => {
+    setShowPrivacyModal(!showPrivacyModal);
     showServerSettings(false);
   }
 
@@ -186,8 +219,12 @@ const Dashboard = (props) => {
   }
 
   const setServerProperties = (item) => {
+    console.log(item);
     setServer(item.name);
+    setServerName(item.name);
     setServerId(item.serverId);
+    setServerImage(item.imageUrl);
+    setServerRegion(item.region);
   }
 
   const setCurrentActiveChatroom = (item, event) => {
@@ -201,7 +238,7 @@ const Dashboard = (props) => {
   return (
     <div className="dashboard">
       <ToastMessage />
-      {isModalOpen || showCategoryModal || showChannelModal ? <span className="contentBackground"></span> : null}
+      {isModalOpen || showCategoryModal || showChannelModal || showNotificationSettingsModal || showPrivacyModal ? <span className="contentBackground"></span> : null}
       <div className="sidebar">
         <div className="sidebar-container" onPointerOver={() => { setHover("Home") }} onPointerOut={() => { setHover("") }}>
           {hover === "Home" && server !== "" ? <span className="sidebar-hover"></span> : null}
@@ -255,7 +292,7 @@ const Dashboard = (props) => {
                   <img src={invite} alt="invite-people" height={25} width={25} />
                   <span>Invite People</span>
                 </div>
-                <div className="serversettings-modal-section">
+                <div className="serversettings-modal-section" onClick={() => { setIsServerSettingsOpen(!isServerSettingsOpen); }}>
                   <img src={serversettings} alt="server-settings" height={25} width={25} />
                   <span>Server Settings</span>
                 </div>
@@ -269,11 +306,11 @@ const Dashboard = (props) => {
                   <img src={category} alt="server-settings" height={25} width={25} />
                   <span>Create Category</span>
                 </div>
-                <div className="serversettings-modal-section">
+                <div className="serversettings-modal-section" onClick={() => { displayNotificationSettingsModal(); }}>
                   <img src={notification} alt="server-settings" height={25} width={25} />
                   <span>Notification Settings</span>
                 </div>
-                <div className="serversettings-modal-section">
+                <div className="serversettings-modal-section" onClick={() => { displayPrivacyModal(); }}>
                   <img src={privacylock} alt="server-settings" height={25} width={25} />
                   <span>Privacy Settings</span>
                 </div>
@@ -294,6 +331,20 @@ const Dashboard = (props) => {
               setNewCategory={(event) => { setNewCategory(event.target.value); }}
               setShowCategoryModal={() => { setShowCategoryModal(false); }}
               createNewCategory={() => { createNewCategory(); }}
+            />
+          : null}
+
+          {showPrivacyModal ?
+            <PrivacyModal
+              server={server}
+              setShowPrivacyModal={() => { setShowPrivacyModal(false); }}
+            />
+          : null}
+
+          {showNotificationSettingsModal ?
+            <NotificationSettingsModal
+              server={server}
+              setShowNotificationSettingsModal={() => { setShowNotificationSettingsModal(false); }}
             />
           : null}
 
@@ -354,6 +405,63 @@ const Dashboard = (props) => {
           </div>
         </div>
       }
+
+      {isServerSettingsOpen ?
+        <div className="serversettings">
+          {isChangingRegion ? <span className="contentBackground"></span> : null}
+          <div className="serversettings-sidebar">
+            <h1>Server Settings</h1>
+            <p>Overview</p>
+            <p>Moderation</p>
+            <p>Activity Log</p>
+            <p>Roles</p>
+            <h1>User Management</h1>
+            <p>Members</p>
+            <p>Invites</p>
+            <p>Bans</p>
+            <p onClick={deleteServer}>Delete Server</p>
+          </div>
+          <div className="serversettings-servercontainer">
+            <div className="serversettings-myserver">
+              <h1>Server Overview</h1>
+              <div className="serversettings-myserver__container">
+                <div className="serversettings-myserver__container-image">
+                  <img src={serverImage ? serverImage : chatot} alt="server-icon" />
+                </div>
+                <div className="serversettings-myserver__container-info">
+                  <div className="serversettings-myserver__container-info-server">
+                    <span>Server Name</span><br/>
+                    <input onChange={(event) => setServerName(event.target.value)} value={serverName} />
+                  </div>
+                  <div className="serversettings-myserver__container-info-region">
+                    <span>Server Region</span><br/>
+                    <div className="servermodalregion-select">
+                      {serverRegion === "US West" || serverRegion === "US Central" || serverRegion === "US East" ? <img src={usregion} height={35} width={55} alt="server-region" /> : null}
+                      {serverRegion === "Central Europe" || serverRegion === "Western Europe" ? <img src={europe} height={35} width={55} alt="server-region" /> : null}
+                      {serverRegion === "Russia" ? <img src={russia} height={35} width={55} alt="server-region" /> : null}
+                      <span className="servermodalregion-select-current">{serverRegion}</span>
+                      <span className="servermodalregion-select-change" onClick={() => { setIsChangingRegion(true); }}>Change</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="serversettings-escape" onClick={() => { setIsServerSettingsOpen(!isServerSettingsOpen); showServerSettings(false); }}>
+              <span>&#215;</span>
+              <p>ESC</p>
+            </div>
+          </div>
+
+          {isChangingRegion ?
+            <RegionModal
+              setIsChangingRegion={() => { setIsChangingRegion(false); }}
+              setServerRegion={(region) => { setServerRegion(region); setIsChangingRegion(false); }}
+            />
+          : null}
+
+        </div>
+      : null}
+
       {isSettingsOpen ?
         <div className="usersettings">
           <div className="usersettings-sidebar">
@@ -405,9 +513,11 @@ const Dashboard = (props) => {
           </div>
         </div>
       : null}
+
       {isModalOpen && currentModal === "create" ?
         <CreateServer id={id} region={region} setRegion={(region) => { setRegion(region) }} setModalOpen={() => { setModalOpen(!isModalOpen) }} getUpdatedServerList={(closeModal) => { getUpdatedServerList(closeModal) }} />
       : null}
+
       {isModalOpen && currentModal === "join" ?
         <JoinServer setModalOpen={() => { setModalOpen(!isModalOpen) }}/>
       : null}

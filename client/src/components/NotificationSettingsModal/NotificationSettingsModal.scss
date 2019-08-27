@@ -1,0 +1,58 @@
+.categorymodal {
+  &-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    background-color: rgb(40, 40, 40);
+    border-radius: 5px;
+    width: 32rem;
+    height: 18rem;
+    &-title {
+      text-align: center;
+      font-size: 1.4rem;
+      color: white;
+    }
+    &-name {
+      margin-left: 2rem;
+      font-size: 1.2rem;
+      height: 0.8rem;
+      margin-top: 2.5rem;
+      color: white;
+    }
+    & > input {
+      margin-left: 2rem;
+      width: 80%;
+      height: 2rem;
+      border: none;
+      padding-left: 0.5rem;
+      outline: rgb(57, 57, 172);
+      font-size: 1rem;
+    }
+    &-cancel {
+      cursor: pointer;
+      outline: none;
+      border: 1px solid rgb(53, 53, 53);
+      background-color: rgb(53, 53, 53);
+      color: white;
+      font-size: 1rem;
+      box-sizing: border-box;
+      padding: 0.5rem 1rem 0.5rem 1rem;
+      margin-top: 3rem;
+      margin-left: 17rem;
+      margin-right: 1rem;
+    }
+    &-create {
+      cursor: pointer;
+      outline: none;
+      border: none;
+      background-color: rgb(114, 114, 203);
+      color: white;
+      font-size: 1rem;
+      box-sizing: border-box;
+      padding: 0.5rem 1rem 0.5rem 1rem;
+      border-radius: 3px;
+    }
+  }
+}
