@@ -47,7 +47,8 @@ module.exports = {
       updateUser.serversList.push({
         serverId: newServer.id,
         name: name,
-        imageUrl: req.body.imageUrl
+        imageUrl: req.body.imageUrl,
+        region: req.body.region
       });
 
       // Step 6: Update list of servers by userId
