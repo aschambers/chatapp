@@ -1,8 +1,8 @@
 // export const ROOT_URL = 'http://10.0.0.144:5000'; // Lloyd
 // export const ROOT_URL = 'http://192.168.1.133:5000'; // Milan
-// export const ROOT_URL = 'http://192.168.0.105:5000'; // Henry
+export const ROOT_URL = 'http://192.168.0.105:5000'; // Henry
 // export const ROOT_URL = 'http://10.0.0.73:5000'; // Home
-export const ROOT_URL = 'http://192.168.1.107:5000'; // Novo
+// export const ROOT_URL = 'http://192.168.1.107:5000'; // Novo
 // export const ROOT_URL = 'http://192.168.1.106:5000'; // Novo 5ghz
 // export const ROOT_URL = 'http://192.168.1.113:5000'; // Novo access 2.4
 // export const ROOT_URL = 'http://192.168.0.144:5000'; // DMV

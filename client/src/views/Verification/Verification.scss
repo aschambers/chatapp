@@ -1,0 +1,39 @@
+.verification {
+  height: 100vh;
+  background-color:rgba(14, 14, 14, 0.893);
+  display: flex;
+  flex-direction: column;
+  // justify-content: center;
+  align-content: center;
+  & > p {
+    color: white;
+    text-align: center;
+    width: 20rem;
+    margin: 0 auto;
+    margin-top: 20vh;
+    margin-bottom: 1rem;
+  }
+  & > input {
+    width: 19rem;
+    height: 1.5rem;
+    outline: none;
+    padding-left: 0.2rem;
+    font-size: 1rem;
+    align-self: center;
+    margin-bottom: 1rem;
+  }
+  & > button {
+    width: 8rem;
+    align-self: center;
+    padding: 0.5rem;
+    border-radius: 3px;
+    font-size: 1rem;
+    margin-left: 11.5rem;
+
+    background-color: #3D59AB;
+    border: none;
+    height: 2.4rem;
+    color: white;
+    font-size: 1.2rem;
+  }
+}

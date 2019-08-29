@@ -4,6 +4,9 @@ const bcrypt = require('bcryptjs');
 const keys = require('../config/keys');
 const jwt = require('jsonwebtoken');
 const cloudinary = require('cloudinary');
+const sgMail = require('@sendgrid/mail');
+const crypto = require('crypto');
+sgMail.setApiKey(keys.sendgrid_key);
 const Op = Sequelize.Op;
 
 cloudinary.config({
@@ -20,17 +23,33 @@ module.exports = {
    */
   userSignup: async(req, res) => {
     const { username, password, email } = req.body;
+    const token = crypto.randomBytes(64).toString('hex');
     if (!username && !password && !email) {
       return res.status(400).send({'error': 'Missing required fields'});
     }
+    req.body.token = token;
     // check if username or email already exist
     const user = await UserModel.findOne({ where: {
       [Op.or]: [{username: username}, {email: email}]
     }});
-    if(!user) {
+    if (!user) {
+      req.body.isVerified = false;
       const result = await UserModel.create(req.body);
-      if(result) {
-        return res.status(200).send(result);
+      if (result) {
+        const msg = {
+          to: req.body.email,
+          from: 'verification@chatter.com',
+          subject: 'Verify your account',
+          html: 'Please click this link to verify your account.' +
+          '.\n\n' + `${keys.email_link}/Verification?token=${token}&email=${email}`
+        };
+        const sentEmail = await sgMail.send(msg);
+
+        if (sentEmail) {
+          return res.status(200).send(result);
+        } else {
+          return res.status(422).send({"error":"Unknown error creating user"});
+        }
       } else {
         return res.status(422).send({"error":"Unknown error creating user"});
       }
@@ -44,10 +63,43 @@ module.exports = {
    * @param {object} res
    * @returns {object} user object
    */
+  userVerification: async(req, res) => {
+    const { email, token } = req.body;
+
+    const validUser = await UserModel.findOne({ where: {
+      [Op.and]: [{ email: email }, { isVerified: true }]
+    }});
+
+    if (validUser) return res.status(200).send({"success":"Account has already been verified"});
+
+    const user = await UserModel.findOne({ where: {
+      [Op.and]: [{ email: email }, { token: token }]
+    }});
+
+    if (!user) return res.status(422).send({"error":"Error verifying account"});
+
+    const verifyAccount = await user.update(
+      { isVerified: true },
+      { where:  { id: user.id }}
+    );
+
+    if (verifyAccount) {
+      res.status(200).send({"success":"Success verifying account"});
+    } else {
+      res.status(422).send({"error":"Error verifying account"});
+    }
+  },
+
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} user object
+   */
   userLogin: async(req, res, next) => {
     const { email, password } = req.body;
     const loginUser = await UserModel.findOne({ where: { email: email } });
-    if(loginUser) {
+    if (!loginUser.isVerified) return res.status(400).send({"error": "Account not verified"});
+    if (loginUser) {
       loginUser.active = true;
       let saveLoginUser = await loginUser.save();
       if(saveLoginUser) {
