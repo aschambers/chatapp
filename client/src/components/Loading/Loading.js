@@ -6,7 +6,7 @@ const override = css`
   display: block;
   margin: 0 auto;
   border-color: blue;
-  position: absolute;
+  position: fix;
   margin-top: 50vh;
 `;
 

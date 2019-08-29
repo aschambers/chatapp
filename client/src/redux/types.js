@@ -2,6 +2,11 @@
 export const SIGNING_UP_USER = 'signing_up_user';
 export const SIGNUP_USER_FAIL = 'signup_user_fail';
 export const SIGNUP_USER_SUCCESS = 'signup_user_success';
+export const VERIFYING_USER = 'verifying_user';
+export const ALREADY_VERIFIED = 'already_verified';
+export const NOT_VERIFIED = 'not_verified';
+export const VERIFY_USER_FAIL = 'verify_user_fail';
+export const VERIFY_USER_SUCCESS = 'verify_user_success';
 export const LOGGING_IN_USER = 'logging_in_user';
 export const LOGIN_USER_FAIL = 'login_user_fail';
 export const LOGIN_USER_SUCCESS = 'login_user_success';

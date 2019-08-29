@@ -23,6 +23,7 @@
     "socket.io": "^2.2.0"
   },
   "dependencies": {
+    "@sendgrid/mail": "^6.4.0",
     "busboy-body-parser": "^0.3.2",
     "concurrently": "^4.1.1",
     "cors": "^2.8.5",

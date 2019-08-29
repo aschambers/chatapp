@@ -184,16 +184,20 @@ class Chatroom extends Component {
           </div>
           <div className="sidebarright-bordertwo" />
           {this.state.users.length > 0 ? this.state.users.map((user, index)  => {
-            return (
-              <div key={index} className="sidebarright-usercontainer">
-                {user.type === 'user' ? <div className="username">
-                  <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
-                </div> : null}
-                {user.type === 'user' && user.active ? <div className="userinfo-online"></div> : null}
-                {user.type === 'user' && !user.active ? <div className="userinfo-offline"></div> : null}
-                {user.type === 'user' ? <span className="sidebarright-user">{user.username}</span> : null}
-              </div>
-            )
+            if (user.serversList && user.serversList.length > 0 && user.serversList.filter(x => x.serverId === this.props.serverId).length > 0) {
+              return (
+                <div key={index} className="sidebarright-usercontainer">
+                  {user.type === 'user' ? <div className="username">
+                    <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
+                  </div> : null}
+                  {user.type === 'user' && user.active ? <div className="userinfo-online"></div> : null}
+                  {user.type === 'user' && !user.active ? <div className="userinfo-offline"></div> : null}
+                  {user.type === 'user' ? <span className="sidebarright-user">{user.username}</span> : null}
+                </div>
+              )
+            } else {
+              return null;
+            }
           }) : null}
         </div>
       </div>

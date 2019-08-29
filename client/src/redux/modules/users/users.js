@@ -7,6 +7,11 @@ import {
   SIGNING_UP_USER,
   SIGNUP_USER_FAIL,
   SIGNUP_USER_SUCCESS,
+  VERIFYING_USER,
+  ALREADY_VERIFIED,
+  NOT_VERIFIED,
+  VERIFY_USER_FAIL,
+  VERIFY_USER_SUCCESS,
   LOGGING_IN_USER,
   LOGIN_USER_FAIL,
   LOGIN_USER_SUCCESS,
@@ -55,17 +60,37 @@ export default (state = initialState, action) => {
       return {
         ...state, isLoading: false, error: true, success: false
       };
+    case VERIFYING_USER:
+      return {
+        ...state, isLoading: true, error: false, success: false, already: false
+      };
+    case ALREADY_VERIFIED:
+      return {
+        ...state, isLoading: false, error: false, success: false, already: true
+      };
+    case NOT_VERIFIED:
+      return {
+        ...state, isLoading: false, error: false, success: false, notVerified: true
+      };
+    case VERIFY_USER_SUCCESS:
+      return {
+        ...state, isLoading: false, error: false, success: true, already: false
+      };
+    case VERIFY_USER_FAIL:
+      return {
+        ...state, isLoading: false, error: true, success: false, already: false
+      };
     case LOGGING_IN_USER:
       return {
-        ...state, isLoading: true, error: false, success: false
+        ...state, isLoading: true, error: false, success: false, notVerified: false
       };
     case LOGIN_USER_SUCCESS:
       return {
-        ...state, isLoading: false, error: false, success: true, user: action.payload
+        ...state, isLoading: false, error: false, success: true, user: action.payload, notVerified: false
       };
     case LOGIN_USER_FAIL:
       return {
-        ...state, isLoading: false, error: true, logout: false
+        ...state, isLoading: false, error: true, logout: false, notVerified: false
       };
     case LOGGING_OUT_USER:
       return {
@@ -133,7 +158,7 @@ export default (state = initialState, action) => {
       };
     case RESET_USER_VALUES:
       return {
-        ...state, isLoading: false, error: false, success: false, logout: false, user: null
+        ...state, isLoading: false, error: false, success: false, logout: false, user: null, notVerified: false, already: false
       };
     default:
       return state;
@@ -155,6 +180,22 @@ export const userSignup = params => async dispatch => {
   }
 };
 
+export const userVerification = params => async dispatch => {
+  dispatch({ type: VERIFYING_USER });
+  try {
+    const response = await axios.put(`${ROOT_URL}/api/v1/userVerification`, params);
+    if(response.data.success === "Account has already been verified") {
+      dispatch({ type: ALREADY_VERIFIED });
+    } else if (response.data.success === "Success verifying account") {
+      dispatch({ type: VERIFY_USER_SUCCESS });
+    } else {
+      dispatch({ type: VERIFY_USER_FAIL });
+    }
+  } catch(err) {
+    dispatch({ type: VERIFY_USER_FAIL });
+  }
+};
+
 export const userLogin = params => async dispatch => {
   dispatch({ type: LOGGING_IN_USER });
   try {
@@ -172,7 +213,9 @@ export const userLogin = params => async dispatch => {
       dispatch({ type: LOGIN_USER_FAIL });
     }
   } catch (err) {
-    if (err) {
+    if (err.response.data.error === "Account not verified") {
+      dispatch({ type: NOT_VERIFIED });
+    } else {
       dispatch({ type: LOGIN_USER_FAIL });
     }
   }
@@ -286,6 +329,8 @@ export const uploadProfileImage = params => async dispatch => {
     dispatch({ type: UPLOAD_PROFILE_IMAGE_FAIL });
   }
 };
+
+
 
 export function resetValues() {
   return function(dispatch) {

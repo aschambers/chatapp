@@ -387,7 +387,7 @@ const Dashboard = (props) => {
         </div>
       }
       {server !== "" ?
-        <Chatroom activeChatroom={activeChatroom} activeChatroomId={activeChatroomId} userId={id} username={username} /> :
+        <Chatroom activeChatroom={activeChatroom} activeChatroomId={activeChatroomId} userId={id} serverId={serverId} username={username} /> :
         <div className="mainarea">
           <div className="mainarea-topnav">
           </div>

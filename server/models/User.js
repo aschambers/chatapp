@@ -76,6 +76,14 @@ const User = sequelize.define('users', {
     type: Sequelize.ARRAY(Sequelize.JSONB),
     defaultValue: [],
     allowNull: true
+  },
+  isVerified: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false
+  },
+  token: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false
   }
 },
 {

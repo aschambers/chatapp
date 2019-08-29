@@ -10,16 +10,40 @@ import './Login.css';
 const Login = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [notVerified, setNotVerified] = useState(false);
+  const [isRedirect, setIsRedirect] = useState(false);
 
   useEffect(() => {
-    if(props.error) {
+    if (props.notVerified && !notVerified) {
+      setNotVerified(true);
+    }
+
+    if (props.error) {
       toast.dismiss();
       toast.error('Please check your email and password, and try again!', { position: 'bottom-center' });
     }
     props.resetUserValues();
-  });
+  }, [props, notVerified]);
 
-  if(props.success) {
+  const closeToast = () => {
+    setIsRedirect(true);
+  }
+
+  if (notVerified && !isRedirect) {
+    toast.error('Your account has not been verified!', {
+      position: 'bottom-center'
+    });
+
+    setTimeout(() => {
+      closeToast();
+    }, 3000);
+  }
+
+  if (isRedirect) {
+    return <Redirect push to="/Verification" />;
+  }
+
+  if (props.success) {
     return <Redirect push to="/Dashboard" />;
   }
 
@@ -56,7 +80,8 @@ function mapStateToProps({ usersReducer }) {
   return {
     error: usersReducer.error,
     isLoading: usersReducer.isLoading,
-    success: usersReducer.success
+    success: usersReducer.success,
+    notVerified: usersReducer.notVerified
   }
 }
 
