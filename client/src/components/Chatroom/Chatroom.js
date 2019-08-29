@@ -120,70 +120,86 @@ class Chatroom extends Component {
           </div>
           <div className="sidebarright-bordertwo" />
           {this.state.users.length > 0 ? this.state.users.map((user, index)  => {
-            return (
-              <div key={index} className={user.type === 'owner' ? "sidebarright-usercontainer" : ""}>
-                {user.type === 'owner' ? <div className="username">
-                  <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
-                </div> : null}
-                {user.type === 'owner' && user.active ? <div className="userinfo-online"></div> : null}
-                {user.type === 'owner' && !user.active ? <div className="userinfo-offline"></div> : null}
-                {user.type === 'owner' ? <span className="sidebarright-user">{user.username}</span> : null}
-              </div>
-            )
+            if (user.serversList && user.serversList.length > 0 && user.serversList.filter(x => x.serverId === this.props.serverId).length > 0) {
+              return (
+                <div key={index} className={user.type === 'owner' ? "sidebarright-usercontainer" : ""}>
+                  {user.type === 'owner' ? <div className="username">
+                    <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
+                  </div> : null}
+                  {user.type === 'owner' && user.active ? <div className="userinfo-online"></div> : null}
+                  {user.type === 'owner' && !user.active ? <div className="userinfo-offline"></div> : null}
+                  {user.type === 'owner' ? <span className="sidebarright-user">{user.username}</span> : null}
+                </div>
+              );
+            } else {
+              return null;
+            }
           }) : null}
           <div className="sidebarright-authority">
             <span>Administrators</span>
           </div>
           <div className="sidebarright-bordertwo" />
           {this.state.users.length > 0 ? this.state.users.map((user, index)  => {
-            return (
-              <div key={index} className={user.type === 'admin' ? "sidebarright-usercontainer" : ""}>
-                {user.type === 'admin' ? <div className="username">
-                  <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
-                </div> : null}
-                {user.type === 'admin' && user.active ? <div className="userinfo-online"></div> : null}
-                {user.type === 'admin' && !user.active ? <div className="userinfo-offline"></div> : null}
-                {user.type === 'admin' ? <span className="sidebarright-user">{user.username}</span> : null}
-              </div>
-            )
+            if (user.serversList && user.serversList.length > 0 && user.serversList.filter(x => x.serverId === this.props.serverId).length > 0) {
+              return (
+                <div key={index} className={user.type === 'admin' ? "sidebarright-usercontainer" : ""}>
+                  {user.type === 'admin' ? <div className="username">
+                    <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
+                  </div> : null}
+                  {user.type === 'admin' && user.active ? <div className="userinfo-online"></div> : null}
+                  {user.type === 'admin' && !user.active ? <div className="userinfo-offline"></div> : null}
+                  {user.type === 'admin' ? <span className="sidebarright-user">{user.username}</span> : null}
+                </div>
+              );
+            } else {
+              return null;
+            }
           }) : null}
           <div className="sidebarright-authority">
             <span>Moderators</span>
           </div>
           <div className="sidebarright-bordertwo" />
           {this.state.users.length > 0 ? this.state.users.map((user, index)  => {
-            return (
-              <div key={index} className={user.type === 'moderator' ? "sidebarright-usercontainer" : ""}>
-                {user.type === 'moderator' ? <div className="username">
-                  <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
-                </div> : null}
-                {user.type === 'moderator' && user.active ? <div className="userinfo-online"></div> : null}
-                {user.type === 'moderator' && !user.active ? <div className="userinfo-offline"></div> : null}
-                {user.type === 'moderator' ? <span className="sidebarright-user">{user.username}</span> : null}
-              </div>
-            )
+            if (user.serversList && user.serversList.length > 0 && user.serversList.filter(x => x.serverId === this.props.serverId).length > 0) {
+              return (
+                <div key={index} className={user.type === 'moderator' ? "sidebarright-usercontainer" : ""}>
+                  {user.type === 'moderator' ? <div className="username">
+                    <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
+                  </div> : null}
+                  {user.type === 'moderator' && user.active ? <div className="userinfo-online"></div> : null}
+                  {user.type === 'moderator' && !user.active ? <div className="userinfo-offline"></div> : null}
+                  {user.type === 'moderator' ? <span className="sidebarright-user">{user.username}</span> : null}
+                </div>
+              );
+            } else {
+              return null;
+            }
           }) : null}
           <div className="sidebarright-authority">
             <span>Voice</span>
           </div>
           <div className="sidebarright-bordertwo" />
-          {this.state.users.length > 0 ? this.state.users.map((user, index)  => {
-            return (
-              <div key={index} className={user.type === 'voice' ? "sidebarright-usercontainer" : ""}>
-                {user.type === 'voice' ? <div className="username">
-                  <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
-                </div> : null}
-                {user.type === 'voice' && user.active ? <div className="userinfo-online"></div> : null}
-                {user.type === 'voice' && !user.active ? <div className="userinfo-offline"></div> : null}
-                {user.type === 'voice' ? <span className="sidebarright-user">{user.username}</span> : null}
-              </div>
-            )
+          {this.state.users.length > 0 ? this.state.users.map((user, index) => {
+            if (user.serversList && user.serversList.length > 0 && user.serversList.filter(x => x.serverId === this.props.serverId).length > 0) {
+              return (
+                <div key={index} className={user.type === 'voice' ? "sidebarright-usercontainer" : ""}>
+                  {user.type === 'voice' ? <div className="username">
+                    <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
+                  </div> : null}
+                  {user.type === 'voice' && user.active ? <div className="userinfo-online"></div> : null}
+                  {user.type === 'voice' && !user.active ? <div className="userinfo-offline"></div> : null}
+                  {user.type === 'voice' ? <span className="sidebarright-user">{user.username}</span> : null}
+                </div>
+              );
+            } else {
+              return null;
+            }
           }) : null}
           <div className="sidebarright-authority">
             <span>Users</span>
           </div>
           <div className="sidebarright-bordertwo" />
-          {this.state.users.length > 0 ? this.state.users.map((user, index)  => {
+          {this.state.users.length > 0 ? this.state.users.map((user, index) => {
             if (user.serversList && user.serversList.length > 0 && user.serversList.filter(x => x.serverId === this.props.serverId).length > 0) {
               return (
                 <div key={index} className="sidebarright-usercontainer">
