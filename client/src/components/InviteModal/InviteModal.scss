@@ -1,0 +1,227 @@
+.invitemodal {
+  &-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    background-color: rgb(40, 40, 40);
+    border-radius: 5px;
+    width: 32rem;
+    height: 18rem;
+    & > div {
+      & .title {
+        text-align: center;
+        font-size: 1.2rem;
+        margin-top: 2rem;
+        color: white;
+      }
+    }
+    &-title {
+      text-align: center;
+      font-size: 1.4rem;
+      margin-top: 0.8rem;
+      color: white;
+    }
+    &-cancel {
+      cursor: pointer;
+      outline: none;
+      border: 1px solid rgb(53, 53, 53);
+      background-color: rgb(53, 53, 53);
+      color: white;
+      font-size: 1rem;
+      box-sizing: border-box;
+      padding: 0.5rem 1rem 0.5rem 1rem;
+      margin-top: 2.5rem;
+      margin-left: 19.5rem;
+      margin-right: 1rem;
+    }
+    &-create {
+      cursor: pointer;
+      outline: none;
+      border: none;
+      background-color: rgb(114, 114, 203);
+      color: white;
+      font-size: 1rem;
+      box-sizing: border-box;
+      padding: 0.5rem 1rem 0.5rem 1rem;
+      border-radius: 3px;
+    }
+  }
+}
+
+.invite {
+  &-settings {
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    margin-left: 29rem;
+  }
+}
+
+.personal {
+  &-invite {
+    width:64%;
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+    & > span {
+      color: white;
+      margin-right: 1rem;
+      margin-top: 0.2rem;
+    }
+    & > input {
+      font-size: 1rem;
+      padding-left: 0.2rem;
+      height: 1.2rem;
+      width: 12rem;
+    }
+  }
+}
+
+.instant {
+  &-invite {
+    height: 4rem;
+    width: 16rem;
+    color: white;
+    margin-left: 8rem;
+    margin-top: 1rem;
+  }
+}
+
+.changeinvite {
+  margin-bottom: 2rem;
+  margin-top: 2.5rem;
+  & > span {
+    margin-left: 3rem;
+    color: white;
+    position: absolute;
+    margin-top: 0.5rem;
+  }
+}
+
+.switchexpires {
+  margin-top: 2.5rem;
+  height: 2rem;
+  & > span {
+    margin-left: 3rem;
+    color: white;
+    position: absolute;
+    margin-top: 0.5rem;
+  }
+  & > select {
+    margin-left: 22.2rem;
+    position: absolute;
+    margin-top: 0rem;
+    z-index: 5;
+    background: url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png)
+      no-repeat right white;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none;
+    border: none;
+    border-radius: 0;
+    width: 8rem;
+    cursor: pointer;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    background-position-x: 95%;
+    height: 2rem;
+    padding-left: 1rem;
+    font-family: Antonio-Regular;
+    font-size: 1.2rem;
+  }
+}
+
+.invite-changesettings {
+  &-save {
+    cursor: pointer;
+    outline: none;
+    border: none;
+    background-color: rgb(114, 114, 203);
+    color: white;
+    font-size: 1rem;
+    box-sizing: border-box;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    margin-top: 2rem;
+    margin-left: 26rem;
+  }
+}
+
+.invite {
+  &-link {
+    color: white;
+    width: 30rem;
+    margin-left: 1rem;
+  }
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  left: 26.5rem;
+  // top: .9rem;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #0066cc;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #0066cc;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}

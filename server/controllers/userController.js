@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const cloudinary = require('cloudinary');
 const sgMail = require('@sendgrid/mail');
 const crypto = require('crypto');
+const moment = require('moment');
 sgMail.setApiKey(keys.sendgrid_key);
 const Op = Sequelize.Op;
 
@@ -77,6 +78,10 @@ module.exports = {
     }});
 
     if (!user) return res.status(422).send({"error":"Error verifying account"});
+
+    if (moment(user.updatedAt).valueOf() <= moment().add(2, 'hours').valueOf()) {
+      return res.status(422).send({"error":"Error verifying account"});
+    }
 
     const verifyAccount = await user.update(
       { isVerified: true },

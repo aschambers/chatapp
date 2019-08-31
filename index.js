@@ -20,6 +20,7 @@ require('./server/routes/messageRoutes')(app);
 require('./server/routes/chatroomRoutes')(app);
 require('./server/routes/categoryRoutes')(app);
 require('./server/routes/serverRoutes')(app);
+require('./server/routes/inviteRoutes')(app);
 // client setup
 app.use(express.static(path.join(__dirname, 'client/build')));
 app.get('/*', (req, res) => {
