@@ -28,6 +28,9 @@ export const GETTING_USERS_FAIL = 'getting_users_fail';
 export const UPLOADING_PROFILE_IMAGE = 'uploading_profile_image';
 export const UPLOAD_PROFILE_IMAGE_SUCCESS = 'upload_profile_image_success';
 export const UPLOAD_PROFILE_IMAGE_FAIL = 'upload_profile_image_fail';
+export const SENDING_EMAIL = 'sending_email';
+export const SEND_EMAIL_SUCCESS = 'send_email_success';
+export const SEND_EMAIL_FAIL = 'send_email_fail';
 export const RESET_VALUES = 'reset_values';
 export const RESET_USER_VALUES = 'reset_user_values';
 // servers
