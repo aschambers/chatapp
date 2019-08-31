@@ -9,6 +9,7 @@ import CreateServer from '../../components/CreateServer/CreateServer';
 import JoinServer from '../../components/JoinServer/JoinServer';
 import CategoryModal from '../../components/CategoryModal/CategoryModal';
 import ChannelModal from '../../components/ChannelModal/ChannelModal';
+import InviteModal from '../../components/InviteModal/InviteModal';
 import NotificationSettingsModal from '../../components/NotificationSettingsModal/NotificationSettingsModal';
 import PrivacyModal from '../../components/PrivacyModal/PrivacyModal';
 import RegionModal from '../../components/RegionModal/RegionModal';
@@ -46,6 +47,8 @@ const Dashboard = (props) => {
   const [region, setRegion] = useState("US West");
   const [serversList, setServersList] = useState([]);
   const [serverSettings, showServerSettings] = useState(false);
+  const [inviteModal, setInviteModal] = useState(false);
+  const [expires, setExpires] = useState(24);
   const [showChannelModal, setShowChannelModal] = useState(false);
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
@@ -59,11 +62,28 @@ const Dashboard = (props) => {
   const [activeChatroom, setActiveChatroom] = useState("");
   const [activeChatroomId, setActiveChatroomId] = useState(null);
   const [isChangingRegion, setIsChangingRegion] = useState(false);
+  const [inviteEmail, setInviteEmail] = useState("");
+  const [inviteLink, setInviteLink] = useState("");
 
   const ref = useRef();
   useOnClickOutside(ref, () => setShowCategoryModal(false));
 
   useEffect(() => {
+    if (props.inviteLink) {
+      setInviteModal(true);
+      setIsServerSettingsOpen(false);
+      setInviteLink(props.inviteLink);
+    }
+    if (props.inviteEmailSuccess) {
+      setInviteModal(false);
+      setIsServerSettingsOpen(false);
+      toast.dismiss();
+      toast.success('Success, Invite was sent successfully!', { position: 'bottom-center' });
+    }
+    if (props.inviteEmailError) {
+      toast.dismiss();
+      toast.error('Error, Invite was sent successfully!', { position: 'bottom-center' });
+    }
     if (props.chatroomList) {
       setChatrooms(props.chatroomList);
       if (props.chatroomList.length > 0) {
@@ -133,6 +153,28 @@ const Dashboard = (props) => {
       toast.dismiss();
       toast.error('There was an error creating the server!', { position: 'bottom-center' });
     }
+  }
+
+  const setShowInviteModal = () => {
+    setInviteModal(!inviteModal);
+    showServerSettings(false);
+    setInviteLink("");
+  }
+
+  const createInstantInvite = () => {
+    props.inviteCreate({
+      expires: expires,
+      serverId: serverId
+    });
+  }
+
+  const createNewServerInvite = () => {
+    props.inviteEmailCreate({
+      inviteLink: "",
+      expires: expires,
+      serverId: serverId,
+      email: email
+    });
   }
 
   const displayChannelModal = () => {
@@ -219,7 +261,6 @@ const Dashboard = (props) => {
   }
 
   const setServerProperties = (item) => {
-    console.log(item);
     setServer(item.name);
     setServerName(item.name);
     setServerId(item.serverId);
@@ -238,7 +279,7 @@ const Dashboard = (props) => {
   return (
     <div className="dashboard">
       <ToastMessage />
-      {isModalOpen || showCategoryModal || showChannelModal || showNotificationSettingsModal || showPrivacyModal ? <span className="contentBackground"></span> : null}
+      {isModalOpen || showCategoryModal || showChannelModal || showNotificationSettingsModal || showPrivacyModal || inviteModal ? <span className="contentBackground"></span> : null}
       <div className="sidebar">
         <div className="sidebar-container" onPointerOver={() => { setHover("Home") }} onPointerOut={() => { setHover("") }}>
           {hover === "Home" && server !== "" ? <span className="sidebar-hover"></span> : null}
@@ -288,7 +329,7 @@ const Dashboard = (props) => {
             <p className="sidebarleft-container-dropdown" onClick={() => { showServerSettings(!serverSettings); }}><i className="channelarrow down"></i></p>
             {serverSettings ?
               <div className="serversettings-modal">
-                <div className="serversettings-modal-section">
+                <div className="serversettings-modal-section" onClick={() => { setShowInviteModal(); }}>
                   <img src={invite} alt="invite-people" height={25} width={25} />
                   <span>Invite People</span>
                 </div>
@@ -317,6 +358,19 @@ const Dashboard = (props) => {
               </div>
             : null}
           </div>
+
+          {inviteModal ?
+            <InviteModal
+              expires={expires}
+              inviteEmail={inviteEmail}
+              inviteLink={inviteLink}
+              setTimeExpires={(value) => { setExpires(value); }}
+              createNewInvite={() => { createNewServerInvite(); }}
+              setShowInviteModal={() => { setShowInviteModal(false); }}
+              createNewInstantInvite={() => { createInstantInvite(); }}
+              setCurrentInviteEmail={(value) => { setInviteEmail(value); }}
+            />
+          : null}
 
           {showChannelModal ?
             <ChannelModal
@@ -546,7 +600,7 @@ const useOnClickOutside = (ref, handler) => {
   }, [ref, handler]);
 }
 
-function mapStateToProps({ usersReducer, serversReducer, categoriesReducer, chatroomsReducer }) {
+function mapStateToProps({ usersReducer, serversReducer, categoriesReducer, chatroomsReducer, invitesReducer }) {
   return {
     error: usersReducer.error,
     isLoading: usersReducer.isLoading,
@@ -556,7 +610,10 @@ function mapStateToProps({ usersReducer, serversReducer, categoriesReducer, chat
     users: usersReducer.users,
     serversList: serversReducer.serversList,
     categoryList: categoriesReducer.categoryList,
-    chatroomList: chatroomsReducer.chatroomList
+    chatroomList: chatroomsReducer.chatroomList,
+    inviteEmailError: invitesReducer.inviteEmailError,
+    inviteEmailSuccess: invitesReducer.inviteEmailSuccess,
+    inviteLink: invitesReducer.inviteLink
   };
 }
 

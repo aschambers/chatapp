@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 const sequelize = require('../config/connection');
 const Category = require('./Category');
 const Chatroom = require('./Chatroom');
+const Invite = require('./Invite');
 
 const Server = sequelize.define('servers', {
   id: {
@@ -45,11 +46,18 @@ const Server = sequelize.define('servers', {
       referencesKey: 'id'
     }
   },
+  userList: {
+    type: Sequelize.ARRAY(Sequelize.JSONB),
+    defaultValue: [],
+    allowNull: true
+  }
 });
 
 Server.hasMany(Category);
 Server.hasMany(Chatroom);
+Server.hasMany(Invite);
 Category.belongsTo(Server);
 Chatroom.belongsTo(Server);
+Invite.belongsTo(Server);
 
 module.exports = Server;

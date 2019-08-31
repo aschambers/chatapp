@@ -57,6 +57,21 @@ module.exports = {
         { where:  { id: userId }}
       );
 
+      // Step 7: Add user to new server list
+      newServer.userList.push({
+        userId: userId,
+        username: updateUser.username,
+        type: 'owner'
+      });
+
+      // Step 8: Update list of users in server
+      const userListUpdate = await newServer.update(
+        { userList: newServer.userList },
+        { where:  { id: newServer.id }}
+      );
+
+      if (!userListUpdate) return res.status(422).send({'error': 'Failed to update user list on server'});
+
       if (!serversUpdate) return res.status(422).send({'error': 'Failed to update server list'});
       res.status(200).send(serversUpdate.serversList);
     } catch(err) {

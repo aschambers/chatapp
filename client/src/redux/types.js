@@ -63,3 +63,13 @@ export const GETTING_CHATROOMS = 'getting_chatrooms';
 export const UPDATE_CHATROOM_SUCCESS = 'update_chatroom_success';
 export const UPDATE_CHATROOM_FAIL = 'update_chatroom_fail';
 export const UPDATING_CHATROOM = 'updating_chatroom';
+// invites
+export const CREATING_INVITE = 'creating_invite';
+export const CREATE_INVITE_FAIL = 'create_invite_fail';
+export const CREATE_INVITE_SUCCESS = 'create_invite_success';
+export const CREATING_EMAIL_INVITE = 'creating_email_invite';
+export const CREATE_INVITE_EMAIL_FAIL = 'create_invite_email_fail';
+export const CREATE_INVITE_EMAIL_SUCCESS = 'create_invite_email_success';
+export const VERIFYING_SERVER_INVITE = 'verifying_server_invite';
+export const VERIFY_SERVER_INVITE_FAIL = 'verify_server_invite_fail';
+export const VERIFY_SERVER_INVITE_SUCCESS = 'verify_server_invite_success';
