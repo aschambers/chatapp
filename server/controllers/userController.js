@@ -238,5 +238,49 @@ module.exports = {
         res.status(422).send('error-reading-file');
       }
     }
+  },
+
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} user object
+   */
+  sendEmail: async(req, res) => {
+    const { email } = req.body;
+    const token = crypto.randomBytes(64).toString('hex');
+    if (!email) {
+      return res.status(400).send({'error': 'Missing required fields'});
+    }
+    req.body.token = token;
+    // check if username or email already exist
+    const user = await UserModel.findOne({ where: { email: email } });
+    if (user) {
+      const updateAccount = await user.update(
+        { token: token },
+        { where:  { id: user.id }}
+      );
+
+      if (updateAccount) {
+        const msg = {
+          to: req.body.email,
+          from: 'verification@chatter.com',
+          subject: 'Verify your account',
+          html: 'Please click this link to verify your account.' +
+          '.\n\n' + `${keys.email_link}/Verification?token=${token}&email=${email}`
+        };
+        const sentEmail = await sgMail.send(msg);
+
+        if (sentEmail) {
+          return res.status(200).send(user);
+        } else {
+          return res.status(422).send({"error":"Unknown error sending email"});
+        }
+      } else {
+        return res.status(422).send({"error":"Error updating account"});
+      }
+    } else {
+      return res.status(422).send({"error":"User does not exist"});
+    }
   }
+
 }

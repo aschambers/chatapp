@@ -10,4 +10,5 @@ module.exports = function(app) {
   app.put('/api/v1/userUpdate', userController.userUpdate);
   app.post('/api/v1/deleteUser', userController.deleteUser);
   app.put('/api/v1/uploadProfileImage', userController.uploadProfileImage);
+  app.post('/api/v1/sendEmail', userController.sendEmail);
 };

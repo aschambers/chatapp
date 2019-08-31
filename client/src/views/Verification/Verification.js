@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import Loading from '../../components/Loading/Loading';
+import ToastMessage from '../../components/ToastMessage/ToastMessage';
 import { toast } from 'react-toastify';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
@@ -28,6 +29,21 @@ const Verification = (props) => {
       });
     }
 
+    if (props.resultEmail) {
+      toast.success("Please check your email for a verification link!", {
+        position: toast.POSITION.BOTTOM_CENTER
+      });
+      setTimeout(() => {
+        setIsRedirect(true);
+      }, 3000);
+    }
+
+    if (props.noEmail) {
+      toast.error("Email Address does not exist.", {
+        position: toast.POSITION.BOTTOM_CENTER
+      });
+    }
+
     if (props.success && !notVerified) {
       setIsVerified(true);
       setIsLoading(false);
@@ -52,7 +68,7 @@ const Verification = (props) => {
   }
 
   const sendEmail = () => {
-    if (!email) {
+    if (!emailAddress) {
       toast.error("Email Address is required to send a verification email", {
         position: toast.POSITION.BOTTOM_CENTER
       });
@@ -95,6 +111,7 @@ const Verification = (props) => {
     return (
       <div className="verification">
         <Navigation />
+        <ToastMessage />
         <p>Your account has not been verified. Please send another email to verify your account.</p>
         <input value={emailAddress} onChange={(event) => { setEmailAddress(event.target.value); }} />
         <button onClick={() => { sendEmail(); }}>Send Email</button>
@@ -108,7 +125,9 @@ function mapStateToProps({ usersReducer }) {
     error: usersReducer.error,
     isLoading: usersReducer.isLoading,
     success: usersReducer.success,
-    already: usersReducer.already
+    already: usersReducer.already,
+    resultEmail: usersReducer.resultEmail,
+    noEmail: usersReducer.noEmail
   };
 }
 

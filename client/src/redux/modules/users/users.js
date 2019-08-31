@@ -33,6 +33,9 @@ import {
   UPLOADING_PROFILE_IMAGE,
   UPLOAD_PROFILE_IMAGE_FAIL,
   UPLOAD_PROFILE_IMAGE_SUCCESS,
+  SENDING_EMAIL,
+  SEND_EMAIL_FAIL,
+  SEND_EMAIL_SUCCESS,
   RESET_VALUES,
   RESET_USER_VALUES
 } from '../../types';
@@ -152,13 +155,25 @@ export default (state = initialState, action) => {
       };
     case UPLOAD_PROFILE_IMAGE_FAIL:
       return { ...state, isLoading: false, error: true, success: false };
+    case SENDING_EMAIL:
+      return {
+        ...state, isLoading: true, error: false, success: false
+      };
+    case SEND_EMAIL_SUCCESS:
+      return {
+        ...state, isLoading: false, error: false, success: true, resultEmail: true
+      };
+    case SEND_EMAIL_FAIL:
+      return {
+        ...state, isLoading: false, error: true, success: false, noEmail: true
+      };
     case RESET_VALUES:
       return {
         ...state, isLoading: false, error: false, success: false, logout: false
       };
     case RESET_USER_VALUES:
       return {
-        ...state, isLoading: false, error: false, success: false, logout: false, user: null, notVerified: false, already: false
+        ...state, isLoading: false, error: false, success: false, logout: false, user: null, notVerified: false, already: false, resultEmail: false, noEmail: false
       };
     default:
       return state;
@@ -330,7 +345,20 @@ export const uploadProfileImage = params => async dispatch => {
   }
 };
 
-
+export const sendEmail = params => async dispatch => {
+  dispatch({ type: SENDING_EMAIL });
+  try {
+    const response = await axios.post(`${ROOT_URL}/api/v1/sendEmail`, params);
+    if (response.data) {
+      dispatch({ type: SEND_EMAIL_SUCCESS, payload: response.data });
+    } else {
+      dispatch({ type: SEND_EMAIL_FAIL });
+    }
+  } catch(err) {
+    console.log(err);
+    dispatch({ type: SEND_EMAIL_FAIL });
+  }
+}
 
 export function resetValues() {
   return function(dispatch) {
