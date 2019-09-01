@@ -73,3 +73,4 @@ export const CREATE_INVITE_EMAIL_SUCCESS = 'create_invite_email_success';
 export const VERIFYING_SERVER_INVITE = 'verifying_server_invite';
 export const VERIFY_SERVER_INVITE_FAIL = 'verify_server_invite_fail';
 export const VERIFY_SERVER_INVITE_SUCCESS = 'verify_server_invite_success';
+export const RESET_INVITE_VALUES = 'reset_invite_values';

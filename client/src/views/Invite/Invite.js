@@ -10,94 +10,50 @@ import Navigation from '../../components/Navigation/Navigation';
 import './Invite.css';
 
 const Invite = (props) => {
-  const [emailAddress, setEmailAddress] = useState("");
-  const [isVerified, setIsVerified] = useState(false);
-  const [notVerified, setNotVerified] = useState(false);
-  const [alreadyVerified, setAlreadyVerified] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isRedirect, setIsRedirect] = useState(false);
+  const [isRedirectSuccess, setIsRedirectSuccess] = useState(false);
+  const [isRedirectFail, setIsRedirectFail] = useState(false);
+  const [emailAddress, setEmailAddress] = useState("");
   const params = queryString.parse(props.location.search);
   const email = params.email;
   const token = params.token;
 
   useEffect(() => {
-    if (email && token && !isLoading && !notVerified) {
+    if ((!email && !token) && !isRedirectFail) {
+      setIsLoading(false);
+    }
+
+    if (email && token && !isLoading) {
       setIsLoading(true);
-      props.userVerification({
+      props.inviteVerification({
         email: email,
         token: token
       });
     }
 
-    if (props.resultEmail) {
-      toast.success("Please check your email for a verification link!", {
+    if (props.verifySuccess && !isRedirectSuccess) {
+      toast.success("You have been added to the server successfully, please login!", {
         position: toast.POSITION.BOTTOM_CENTER
       });
+      setIsLoading(false);
       setTimeout(() => {
-        setIsRedirect(true);
+        setIsRedirectSuccess(true);
       }, 3000);
     }
 
-    if (props.noEmail) {
-      toast.error("Email Address does not exist.", {
+    if (props.verifyError && !isRedirectFail) {
+      toast.error("Invite has expired or is no longer valid!", {
         position: toast.POSITION.BOTTOM_CENTER
       });
-    }
-
-    if (props.success && !notVerified) {
-      setIsVerified(true);
       setIsLoading(false);
+      setTimeout(() => {
+        setIsRedirectFail(true);
+      }, 3000);
     }
+    props.resetInviteValues();
+  }, [props, email, token, isLoading, isRedirectSuccess, isRedirectFail]);
 
-    if (props.already && !notVerified) {
-      setAlreadyVerified(true);
-      setIsLoading(false);
-    }
-    if (props.error && !notVerified) {
-      setIsLoading(false);
-      setNotVerified(true);
-      if (email) {
-        setEmailAddress(email);
-      }
-    }
-    props.resetUserValues();
-  }, [props, email, token, isLoading, notVerified]);
-
-  const closeToast = () => {
-    setIsRedirect(true);
-  }
-
-  const sendEmail = () => {
-    if (!emailAddress) {
-      toast.error("Email Address is required to send a verification email", {
-        position: toast.POSITION.BOTTOM_CENTER
-      });
-    } else {
-      props.sendEmail({ email: emailAddress });
-    }
-  }
-
-  if (alreadyVerified && !isRedirect) {
-    return (
-      toast.success("Your account has already been verified!", {
-        position: toast.POSITION.BOTTOM_CENTER
-      }, {
-        onClose: closeToast()
-      })
-    );
-  }
-
-  if (isVerified && !isRedirect) {
-    return (
-      toast.success("Your account has been verified!", {
-        position: toast.POSITION.BOTTOM_CENTER
-      }, {
-        onClose: closeToast()
-      })
-    );
-  }
-
-  if (isRedirect) {
+  if (isRedirectSuccess || isRedirectFail) {
     return <Redirect push to="/Login" />;
   }
 
@@ -107,27 +63,31 @@ const Invite = (props) => {
     );
   }
 
-  if (!isLoading && !isVerified) {
-    return (
-      <div className="verification">
-        <Navigation />
-        <ToastMessage />
-        <p>Your account has not been verified. Please send another email to verify your account.</p>
-        <input value={emailAddress} onChange={(event) => { setEmailAddress(event.target.value); }} />
-        <button onClick={() => { sendEmail(); }}>Send Email</button>
-      </div>
-    );
+  const acceptInvite = () => {
+    props.inviteVerification({
+      email: emailAddress,
+      token: token
+    });
   }
+
+  return (
+    <div className="invitepage">
+      <Navigation />
+      <ToastMessage />
+      <p>Please enter your email address to accept the invitation.</p>
+      <input value={emailAddress} onChange={(event) => { setEmailAddress(event.target.value); }} />
+      <button onClick={() => { acceptInvite(); }}>Accept Invite</button>
+    </div>
+  );
 };
 
-function mapStateToProps({ usersReducer }) {
+function mapStateToProps({ invitesReducer }) {
   return {
-    error: usersReducer.error,
-    isLoading: usersReducer.isLoading,
-    success: usersReducer.success,
-    already: usersReducer.already,
-    resultEmail: usersReducer.resultEmail,
-    noEmail: usersReducer.noEmail
+    error: invitesReducer.error,
+    isLoading: invitesReducer.isLoading,
+    success: invitesReducer.success,
+    verifyError: invitesReducer.verifyError,
+    verifySuccess: invitesReducer.verifySuccess
   };
 }
 

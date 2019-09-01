@@ -10,7 +10,8 @@ import {
   CREATE_INVITE_EMAIL_SUCCESS,
   VERIFYING_SERVER_INVITE,
   VERIFY_SERVER_INVITE_FAIL,
-  VERIFY_SERVER_INVITE_SUCCESS
+  VERIFY_SERVER_INVITE_SUCCESS,
+  RESET_INVITE_VALUES
 } from '../../types';
 
 // Initial States
@@ -54,11 +55,16 @@ export default (state = initialState, action) => {
       };
     case VERIFY_SERVER_INVITE_SUCCESS:
       return {
-        ...state, isLoading: false, verifyError: false, verifySuccess: true, userList: action.payload
+        ...state, isLoading: false, verifyError: false, verifySuccess: true
       };
     case VERIFY_SERVER_INVITE_FAIL:
       return {
-        ...state, isLoading: false, verifyError: false, verifySuccess: true
+        ...state, isLoading: false, verifyError: true, verifySuccess: false
+      };
+    case RESET_INVITE_VALUES:
+      return {
+        ...state, isLoading: false, verifyError: false, verifySuccess: false,
+        error: false, success: false, inviteEmailError: false, inviteEmailSuccess: false, inviteLink: null
       };
     default:
       return state;
@@ -71,8 +77,6 @@ export const inviteCreate = params => async dispatch => {
   try {
     const response = await axios.post(`${ROOT_URL}/api/v1/inviteCreate`, params);
     if(response.data) {
-      console.log(response);
-      console.log(response.data);
       dispatch({ type: CREATE_INVITE_SUCCESS, payload: response.data });
     } else {
       dispatch({ type: CREATE_INVITE_FAIL });
@@ -96,12 +100,12 @@ export const inviteEmailCreate = params => async dispatch => {
   }
 };
 
-export const serverFind = params => async dispatch => {
+export const inviteVerification = params => async dispatch => {
   dispatch({ type: VERIFYING_SERVER_INVITE });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/serverFind`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/inviteVerification`, params);
     if(response.data) {
-      dispatch({ type: VERIFY_SERVER_INVITE_SUCCESS, payload: response.data });
+      dispatch({ type: VERIFY_SERVER_INVITE_SUCCESS });
     } else {
       dispatch({ type: VERIFY_SERVER_INVITE_FAIL });
     }
@@ -109,3 +113,9 @@ export const serverFind = params => async dispatch => {
     dispatch({ type: VERIFY_SERVER_INVITE_FAIL });
   }
 };
+
+export function resetInviteValues() {
+  return function(dispatch) {
+    dispatch({ type: RESET_INVITE_VALUES });
+  };
+}

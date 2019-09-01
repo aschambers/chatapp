@@ -568,9 +568,17 @@
       text-transform: uppercase;
       color: #4f545c;
       width: 9rem; }
-    .serversettings-sidebar > p {
+    .serversettings-sidebar-overview, .serversettings-sidebar-moderation, .serversettings-sidebar-activitylog, .serversettings-sidebar-roles, .serversettings-sidebar-members, .serversettings-sidebar-invites, .serversettings-sidebar-bans {
       font-size: 0.9rem;
       color: #d5d5d5;
+      padding: 0.5rem;
+      cursor: pointer; }
+    .serversettings-sidebar-activeitem {
+      font-size: 0.9rem;
+      color: #d5d5d5;
+      background-color: #171717;
+      padding: 0.5rem;
+      border-radius: 3px;
       cursor: pointer; }
     .serversettings-sidebar > p:last-child {
       font-size: 0.9rem;

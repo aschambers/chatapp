@@ -47,7 +47,7 @@ const Login = (props) => {
     return <Redirect push to="/Dashboard" />;
   }
 
-  const userLogin = () => {
+  const userLogin = async() => {
     const params = {
       email: email,
       password: password

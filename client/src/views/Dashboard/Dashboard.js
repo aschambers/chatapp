@@ -64,6 +64,7 @@ const Dashboard = (props) => {
   const [isChangingRegion, setIsChangingRegion] = useState(false);
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteLink, setInviteLink] = useState("");
+  const [activeServerSetting, setActiveServerSetting] = useState("overview");
 
   const ref = useRef();
   useOnClickOutside(ref, () => setShowCategoryModal(false));
@@ -133,9 +134,9 @@ const Dashboard = (props) => {
   }
 
   const deleteServer = () => {
-    props.deleteServer({
-      serverId: serverId
-    });
+    // props.deleteServer({
+    //   serverId: serverId
+    // });
   }
 
   const toggleModal = (value) => {
@@ -465,14 +466,14 @@ const Dashboard = (props) => {
           {isChangingRegion ? <span className="contentBackground"></span> : null}
           <div className="serversettings-sidebar">
             <h1>Server Settings</h1>
-            <p>Overview</p>
-            <p>Moderation</p>
-            <p>Activity Log</p>
-            <p>Roles</p>
+            <p className={activeServerSetting === "overview" ? "serversettings-sidebar-activeitem" : "serversettings-sidebar-overview"} onClick={() => { setActiveServerSetting("overview"); }}>Overview</p>
+            <p className={activeServerSetting === "moderation" ? "serversettings-sidebar-activeitem" : "serversettings-sidebar-moderation"} onClick={() => { setActiveServerSetting("moderation"); }}>Moderation</p>
+            <p className={activeServerSetting === "activitylog" ? "serversettings-sidebar-activeitem" : "serversettings-sidebar-activitylog"} onClick={() => { setActiveServerSetting("activitylog"); }}>Activity Log</p>
+            <p className={activeServerSetting === "roles" ? "serversettings-sidebar-activeitem" : "serversettings-sidebar-roles"} onClick={() => { setActiveServerSetting("roles"); }}>Roles</p>
             <h1>User Management</h1>
-            <p>Members</p>
-            <p>Invites</p>
-            <p>Bans</p>
+            <p className={activeServerSetting === "members" ? "serversettings-sidebar-activeitem" : "serversettings-sidebar-members"} onClick={() => { setActiveServerSetting("members"); }}>Members</p>
+            <p className={activeServerSetting === "invites" ? "serversettings-sidebar-activeitem" : "serversettings-sidebar-invites"} onClick={() => { setActiveServerSetting("invites"); }}>Invites</p>
+            <p className={activeServerSetting === "bans" ? "serversettings-sidebar-activeitem" : "serversettings-sidebar-bans"} onClick={() => { setActiveServerSetting("bans"); }}>Bans</p>
             <p onClick={deleteServer}>Delete Server</p>
           </div>
           <div className="serversettings-servercontainer">
