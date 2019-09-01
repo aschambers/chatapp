@@ -656,9 +656,18 @@
       color: #4f545c;
       width: 9rem;
     }
-    & > p {
+    &-overview, &-moderation, &-activitylog, &-roles, &-members, &-invites, &-bans {
       font-size: 0.9rem;
       color: rgb(213, 213, 213);
+      padding: 0.5rem;
+      cursor: pointer;
+    }
+    &-activeitem {
+      font-size: 0.9rem;
+      color: rgb(213, 213, 213);
+      background-color: rgb(23, 23, 23);
+      padding: 0.5rem;
+      border-radius: 3px;
       cursor: pointer;
     }
     & > p:last-child {

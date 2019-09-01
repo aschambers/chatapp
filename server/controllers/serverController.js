@@ -54,7 +54,7 @@ module.exports = {
       // Step 6: Update list of servers by userId
       const serversUpdate = await updateUser.update(
         { serversList: updateUser.serversList },
-        { where:  { id: userId }}
+        { where: { id: userId }}
       );
 
       // Step 7: Add user to new server list

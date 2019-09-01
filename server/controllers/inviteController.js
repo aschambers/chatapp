@@ -72,11 +72,12 @@ module.exports = {
   inviteVerification: async(req, res) => {
     const { token, email } = req.body;
 
-    const validInvite = await InviteModel.findOne({ where: { token: token, expires: createdAt } });
+    const validInvite = await InviteModel.findOne({ where: { token: token } });
+
     if (!validInvite) return res.status(422).send({"error":"Error verifying invite"});
 
-    if (moment(validInvite.updatedAt).valueOf() <= moment().add(validInvite.expires, 'hours').valueOf()) {
-      return res.status(422).send({"error":"Error verifying invite"});
+    if (moment(validInvite.updatedAt).valueOf() > moment().add(validInvite.expires, 'hours').valueOf()) {
+      return res.status(422).send({"error":"Error verifying invite date"});
     }
 
     const server = await ServerModel.findOne({ where: { id: validInvite.serverId }});
@@ -85,21 +86,56 @@ module.exports = {
     const user = await UserModel.findOne({ where: { email: email }});
     if (!user) return res.status(422).send({'error': 'Failed to find user'});
 
+    if (!user.serversList) user.serversList = [];
+    let foundServerForUser = false;
+
+    for (let i = 0; i < user.serversList.length; i++) {
+      if (user.serversList[i].serverId === server.id) {
+        foundServerForUser = true;
+      }
+    }
+
+    if (!foundServerForUser) {
+      user.serversList.push({
+        serverId: server.id,
+        name: server.name,
+        imageUrl: server.imageUrl,
+        region: server.region
+      });
+    }
+
+    const updateServerList = await user.update(
+      { serversList: user.serversList },
+      { where: { id: user.id }}
+    );
+
+    if (!updateServerList) return res.status(422).send({"error":"Error adding server to user servers list"});
+
     if (!server.userList) server.userList = [];
-    server.userList.push({
-      userId: user.id,
-      username: user.username,
-      type: 'user'
-    });
+    let foundUser = false;
+
+    for (let x = 0; x < user.serversList.length; x++) {
+      if (user.serversList[x].id === user.id) {
+        foundUser = true;
+      }
+    }
+
+    if (!foundUser) {
+      server.userList.push({
+        userId: user.id,
+        username: user.username,
+        type: 'user'
+      });
+    }
 
     const updateUserList = await server.update(
       { userList: server.userList },
-      { where:  { id: server.id }}
+      { where: { id: server.id }}
     );
 
-    if (!updateUserList) return res.status(200).send({"error":"Error adding users to server list"});
+    if (!updateUserList) return res.status(422).send({"error":"Error adding users to server list"});
 
-    res.status(200).send(server);
+    res.status(200).send({"success":"Success adding user to server list"});
   }
 
 }

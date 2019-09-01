@@ -1,17 +1,17 @@
-.invite {
+.invitepage {
   height: 100vh;
   background-color: rgba(14, 14, 14, 0.893);
   display: flex;
   flex-direction: column;
   align-content: center; }
-  .invite > p {
+  .invitepage > p {
     color: white;
     text-align: center;
     width: 20rem;
     margin: 0 auto;
     margin-top: 20vh;
     margin-bottom: 1rem; }
-  .invite > input {
+  .invitepage > input {
     width: 19rem;
     height: 1.5rem;
     outline: none;
@@ -19,7 +19,7 @@
     font-size: 1rem;
     align-self: center;
     margin-bottom: 1rem; }
-  .invite > button {
+  .invitepage > button {
     width: 8rem;
     align-self: center;
     padding: 0.5rem;
