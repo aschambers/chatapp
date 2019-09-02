@@ -89,6 +89,20 @@ module.exports = {
     if (!user) return res.status(422).send({'error':'error deleting server'});
     res.status(200).send(user.serversList);
   },
+  // findUserList
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {array} list of servers
+   */
+  findUserList: async(req, res, next) => {
+    const server = await ServerModel.findByPk(req.body.serverId);
+    if (server && server.userList) {
+      res.status(200).send(server.userList);
+    } else {
+      res.status(422).send({'error':'Error finding server'});
+    }
+  },
 
   /**
    * @param {object} req

@@ -42,7 +42,7 @@ export default (state = initialState, action) => {
       };
     case FIND_SERVER_SUCCESS:
       return {
-        ...state, isLoading: false, error: false, success: true, serversList: action.payload
+        ...state, isLoading: false, error: false, success: true, serverUserList: action.payload
       };
     case FIND_SERVER_FAIL:
       return {
@@ -89,6 +89,20 @@ export const serverFind = params => async dispatch => {
   dispatch({ type: FINDING_SERVER });
   try {
     const response = await axios.post(`${ROOT_URL}/api/v1/serverFind`, params);
+    if(response.data) {
+      dispatch({ type: FIND_SERVER_SUCCESS, payload: response.data });
+    } else {
+      dispatch({ type: FIND_SERVER_FAIL });
+    }
+  } catch(err) {
+    dispatch({ type: FIND_SERVER_FAIL });
+  }
+};
+
+export const findUserList = params => async dispatch => {
+  dispatch({ type: FINDING_SERVER });
+  try {
+    const response = await axios.post(`${ROOT_URL}/api/v1/findUserList`, params);
     if(response.data) {
       dispatch({ type: FIND_SERVER_SUCCESS, payload: response.data });
     } else {

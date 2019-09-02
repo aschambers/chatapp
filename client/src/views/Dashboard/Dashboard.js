@@ -39,6 +39,7 @@ const Dashboard = (props) => {
   const [serverId, setServerId] = useState(null);
   const [serverImage, setServerImage] = useState("");
   const [serverRegion, setServerRegion] = useState("");
+  const [serverUserList, setServerUserList] = useState([]);
   const [hover, setHover] = useState('');
   const [isSettingsOpen, setSettingsOpen] = useState(false);
   const [isServerSettingsOpen, setIsServerSettingsOpen] = useState(false);
@@ -70,6 +71,10 @@ const Dashboard = (props) => {
   useOnClickOutside(ref, () => setShowCategoryModal(false));
 
   useEffect(() => {
+    if (props.serverUserList) {
+      setServerUserList(props.serverUserList);
+    }
+
     if (props.inviteLink) {
       setInviteModal(true);
       setIsServerSettingsOpen(false);
@@ -122,6 +127,7 @@ const Dashboard = (props) => {
       setSettingsOpen(false);
       setIsServerSettingsOpen(false);
       showServerSettings(false);
+      setActiveServerSetting("overview");
     }
   }
 
@@ -267,6 +273,9 @@ const Dashboard = (props) => {
     setServerId(item.serverId);
     setServerImage(item.imageUrl);
     setServerRegion(item.region);
+    props.findUserList({
+      serverId: item.serverId
+    });
   }
 
   const setCurrentActiveChatroom = (item, event) => {
@@ -442,7 +451,7 @@ const Dashboard = (props) => {
         </div>
       }
       {server !== "" ?
-        <Chatroom activeChatroom={activeChatroom} activeChatroomId={activeChatroomId} userId={id} serverId={serverId} username={username} /> :
+        <Chatroom activeChatroom={activeChatroom} activeChatroomId={activeChatroomId} userId={id} serverId={serverId} username={username} serverUserList={serverUserList} /> :
         <div className="mainarea">
           <div className="mainarea-topnav">
           </div>
@@ -477,31 +486,42 @@ const Dashboard = (props) => {
             <p onClick={deleteServer}>Delete Server</p>
           </div>
           <div className="serversettings-servercontainer">
-            <div className="serversettings-myserver">
-              <h1>Server Overview</h1>
-              <div className="serversettings-myserver__container">
-                <div className="serversettings-myserver__container-image">
-                  <img src={serverImage ? serverImage : chatot} alt="server-icon" />
-                </div>
-                <div className="serversettings-myserver__container-info">
-                  <div className="serversettings-myserver__container-info-server">
-                    <span>Server Name</span><br/>
-                    <input onChange={(event) => setServerName(event.target.value)} value={serverName} />
+            {activeServerSetting === "overview" ?
+              <div className="serversettings-myserver">
+                <h1>Server Overview</h1>
+                <div className="serversettings-myserver__container">
+                  <div className="serversettings-myserver__container-image">
+                    <img src={serverImage ? serverImage : chatot} alt="server-icon" />
                   </div>
-                  <div className="serversettings-myserver__container-info-region">
-                    <span>Server Region</span><br/>
-                    <div className="servermodalregion-select">
-                      {serverRegion === "US West" || serverRegion === "US Central" || serverRegion === "US East" ? <img src={usregion} height={35} width={55} alt="server-region" /> : null}
-                      {serverRegion === "Central Europe" || serverRegion === "Western Europe" ? <img src={europe} height={35} width={55} alt="server-region" /> : null}
-                      {serverRegion === "Russia" ? <img src={russia} height={35} width={55} alt="server-region" /> : null}
-                      <span className="servermodalregion-select-current">{serverRegion}</span>
-                      <span className="servermodalregion-select-change" onClick={() => { setIsChangingRegion(true); }}>Change</span>
+                  <div className="serversettings-myserver__container-info">
+                    <div className="serversettings-myserver__container-info-server">
+                      <span>Server Name</span><br/>
+                      <input onChange={(event) => setServerName(event.target.value)} value={serverName} />
+                    </div>
+                    <div className="serversettings-myserver__container-info-region">
+                      <span>Server Region</span><br/>
+                      <div className="servermodalregion-select">
+                        {serverRegion === "US West" || serverRegion === "US Central" || serverRegion === "US East" ? <img src={usregion} height={35} width={55} alt="server-region" /> : null}
+                        {serverRegion === "Central Europe" || serverRegion === "Western Europe" ? <img src={europe} height={35} width={55} alt="server-region" /> : null}
+                        {serverRegion === "Russia" ? <img src={russia} height={35} width={55} alt="server-region" /> : null}
+                        <span className="servermodalregion-select-current">{serverRegion}</span>
+                        <span className="servermodalregion-select-change" onClick={() => { setIsChangingRegion(true); }}>Change</span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="serversettings-escape" onClick={() => { setIsServerSettingsOpen(!isServerSettingsOpen); showServerSettings(false); }}>
+            : null}
+
+            {activeServerSetting === "members" ?
+              <div className="serversettings-members">
+                <h1>Server Members</h1>
+                {console.log(serverUserList)}
+                <p>{serverUserList.length} Members</p>
+              </div>
+            : null}
+
+            <div className="serversettings-escape" onClick={() => { setIsServerSettingsOpen(!isServerSettingsOpen); showServerSettings(false); setActiveServerSetting("overview"); }}>
               <span>&#215;</span>
               <p>ESC</p>
             </div>
@@ -610,11 +630,12 @@ function mapStateToProps({ usersReducer, serversReducer, categoriesReducer, chat
     user: usersReducer.user,
     users: usersReducer.users,
     serversList: serversReducer.serversList,
+    serverUserList: serversReducer.serverUserList,
     categoryList: categoriesReducer.categoryList,
     chatroomList: chatroomsReducer.chatroomList,
     inviteEmailError: invitesReducer.inviteEmailError,
     inviteEmailSuccess: invitesReducer.inviteEmailSuccess,
-    inviteLink: invitesReducer.inviteLink
+    inviteLink: invitesReducer.inviteLink,
   };
 }
 
