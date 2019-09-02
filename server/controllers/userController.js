@@ -1,4 +1,5 @@
 const UserModel = require('../models/User');
+const ServerModel = require('../models/Server');
 const Sequelize = require('sequelize');
 const bcrypt = require('bcryptjs');
 const keys = require('../config/keys');
@@ -106,6 +107,29 @@ module.exports = {
     if (!loginUser.isVerified) return res.status(400).send({"error": "Account not verified"});
     if (loginUser) {
       loginUser.active = true;
+
+      const servers = await ServerModel.findAll();
+      if (servers && servers.length) {
+        for (let i = 0; i < servers.length; i++) {
+          if (servers[i].userList && servers[i].userList.length) {
+            for (let j = 0; j < servers[i].userList.length; j++) {
+              if (+servers[i].userList[j].userId === +loginUser.id) {
+                servers[i].userList[j].active = true;
+
+                const serversUpdate = await servers[i].update(
+                  { userList: servers[i].userList },
+                  { where: { id: servers[i].id }}
+                );
+
+                if (!serversUpdate) {
+                  res.status(422).send({"error":"error-updating-userlist"});
+                }
+              }
+            }
+          }
+        }
+      }
+
       let saveLoginUser = await loginUser.save();
       if(saveLoginUser) {
         const authentication = bcrypt.compareSync(password, loginUser.password);

@@ -582,7 +582,8 @@
       cursor: pointer; }
     .serversettings-sidebar > p:last-child {
       font-size: 0.9rem;
-      color: #ee0000; }
+      color: #ee0000;
+      padding: 0.5rem; }
   .serversettings-myserver {
     padding-left: 2rem;
     display: flex;
@@ -639,6 +640,71 @@
             color: #e4e4e4;
             font-size: 1rem; }
       .serversettings-myserver__container-edit {
+        cursor: pointer;
+        padding: 0.5rem 1rem 0.5rem 1rem;
+        background-color: green;
+        color: #e3e2e2;
+        height: 1.25rem;
+        border-radius: 2px;
+        position: relative;
+        top: 1.5rem;
+        left: 12rem; }
+  .serversettings-members {
+    padding-left: 2rem;
+    display: flex;
+    flex-direction: column;
+    background-color: #36393f;
+    min-width: 50rem; }
+    .serversettings-members > h1 {
+      color: #e4e4e4;
+      text-transform: uppercase;
+      font-size: 1rem;
+      margin-top: 3rem; }
+    .serversettings-members__container {
+      width: 40rem;
+      height: 12rem;
+      background-color: #292929;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: row; }
+      .serversettings-members__container-image {
+        width: 6rem;
+        height: 6rem;
+        background-color: white;
+        border-radius: 50%;
+        margin-left: 1.5rem;
+        margin-top: 2rem; }
+        .serversettings-members__container-image > img {
+          width: 90%;
+          height: 90%;
+          margin-top: 5%;
+          margin-left: 5%; }
+      .serversettings-members__container-info {
+        display: flex;
+        flex-direction: column;
+        margin-left: 2rem; }
+        .serversettings-members__container-info-server {
+          margin-top: 2rem; }
+          .serversettings-members__container-info-server > span {
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            color: #606060; }
+          .serversettings-members__container-info-server > input {
+            margin-top: 0.2rem;
+            padding-left: 0.2rem;
+            outline: none;
+            font-size: 1rem;
+            width: 18rem; }
+        .serversettings-members__container-info-region {
+          margin-top: 1rem; }
+          .serversettings-members__container-info-region > span:first-child {
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            color: #606060; }
+          .serversettings-members__container-info-region > span:last-child {
+            color: #e4e4e4;
+            font-size: 1rem; }
+      .serversettings-members__container-edit {
         cursor: pointer;
         padding: 0.5rem 1rem 0.5rem 1rem;
         background-color: green;
