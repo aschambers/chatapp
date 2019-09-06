@@ -63,6 +63,7 @@ export const GETTING_CHATROOMS = 'getting_chatrooms';
 export const UPDATE_CHATROOM_SUCCESS = 'update_chatroom_success';
 export const UPDATE_CHATROOM_FAIL = 'update_chatroom_fail';
 export const UPDATING_CHATROOM = 'updating_chatroom';
+export const RESET_CHATROOM_VALUES = 'reset_chatroom_values';
 // invites
 export const CREATING_INVITE = 'creating_invite';
 export const CREATE_INVITE_FAIL = 'create_invite_fail';

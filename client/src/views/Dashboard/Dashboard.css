@@ -107,10 +107,11 @@
       padding-top: 1rem;
       border-bottom: 2px solid #212121; }
   .sidebarleft-mainchat {
-    height: 5rem;
+    height: 0rem;
     width: 100%;
-    padding-left: 0.5rem;
-    margin-top: 1.5rem; }
+    padding-left: 0.5rem; }
+    .sidebarleft-mainchat > div:first-child {
+      min-height: 1rem; }
     .sidebarleft-mainchat > div {
       width: 11.5rem;
       min-height: 2rem; }
@@ -119,6 +120,9 @@
         background-color: #4b4b4b;
         padding: 0.3rem;
         border-radius: 2px;
+        margin-bottom: 0.2rem; }
+      .sidebarleft-mainchat > div > .inactive {
+        cursor: pointer;
         margin-bottom: 0.2rem; }
       .sidebarleft-mainchat > div > div {
         cursor: pointer;
@@ -277,6 +281,44 @@
       padding-left: 0.5rem;
       padding-top: 0.35rem;
       color: lightgray; }
+
+.serversettings-members-count {
+  color: lightgray; }
+
+.serversettings-user {
+  width: 21rem;
+  background-color: #4f4f4f;
+  display: flex;
+  flex-direction: row;
+  margin-top: 0.4rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  height: 5.5rem; }
+  .serversettings-user > span > p {
+    color: white; }
+
+.serversettings-user:hover {
+  border: 2px solid #008000; }
+
+.serversettings-logo {
+  background-color: #e8e8e8;
+  border-radius: 50%;
+  margin-left: 0.8rem;
+  height: 4rem;
+  margin-top: 0.75rem;
+  margin-right: 1.5rem; }
+
+.serversettings-add {
+  width: 100%;
+  position: relative; }
+  .serversettings-add-image {
+    height: 1.3rem;
+    position: absolute;
+    right: 1.5rem;
+    top: 2rem;
+    border: 1px solid black;
+    border-radius: 50%;
+    padding: 0.2rem; }
 
 .arrowleft {
   width: 0;
@@ -559,25 +601,29 @@
     background-color: #2f3136;
     display: flex;
     flex-direction: column;
-    padding-left: 15%;
-    padding-right: 5%; }
+    padding-left: 8rem;
+    padding-right: 1rem; }
     .serversettings-sidebar > h1:first-child {
-      margin-top: 3rem; }
+      margin-top: 3rem;
+      margin-bottom: 1rem; }
     .serversettings-sidebar > h1 {
       font-size: 0.8rem;
       text-transform: uppercase;
       color: #4f545c;
-      width: 9rem; }
+      width: 9rem;
+      margin-bottom: 1rem; }
     .serversettings-sidebar-overview, .serversettings-sidebar-moderation, .serversettings-sidebar-activitylog, .serversettings-sidebar-roles, .serversettings-sidebar-members, .serversettings-sidebar-invites, .serversettings-sidebar-bans {
       font-size: 0.9rem;
       color: #d5d5d5;
       padding: 0.5rem;
+      margin-top: -0.5rem;
       cursor: pointer; }
     .serversettings-sidebar-activeitem {
       font-size: 0.9rem;
       color: #d5d5d5;
-      background-color: #171717;
+      background-color: #414141;
       padding: 0.5rem;
+      margin-top: -0.5rem;
       border-radius: 3px;
       cursor: pointer; }
     .serversettings-sidebar > p:last-child {
@@ -626,9 +672,11 @@
             color: #606060; }
           .serversettings-myserver__container-info-server > input {
             margin-top: 0.2rem;
-            padding-left: 0.2rem;
+            padding-left: 0.3rem;
             outline: none;
+            border: none;
             font-size: 1rem;
+            height: 1.5rem;
             width: 18rem; }
         .serversettings-myserver__container-info-region {
           margin-top: 1rem; }
@@ -654,7 +702,7 @@
     display: flex;
     flex-direction: column;
     background-color: #36393f;
-    min-width: 50rem; }
+    width: 40rem; }
     .serversettings-members > h1 {
       color: #e4e4e4;
       text-transform: uppercase;

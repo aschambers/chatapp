@@ -6,14 +6,12 @@ import Loading from './components/Loading/Loading';
 
 const Dashboard = lazy(() => import("./views/Dashboard/Dashboard"));
 const Verification = lazy(() => import("./views/Verification/Verification"));
-const Invite = lazy(() => import("./views/Invite/Invite"));
 
 const Main = () => (
   <Suspense fallback={<Loading />}>
     <Switch>
       <PrivateRoute path="/Dashboard" component={Dashboard} />
       <Route path="/Verification" component={Verification} />
-      <Route path="/Invite" component={Invite} />
       <Route path="/" component={Home} />
     </Switch>
   </Suspense>

@@ -61,6 +61,7 @@ module.exports = {
       newServer.userList.push({
         userId: userId,
         username: updateUser.username,
+        imageUrl: updateUser.imageUrl,
         type: 'owner'
       });
 
