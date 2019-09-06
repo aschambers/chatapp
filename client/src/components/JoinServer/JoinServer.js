@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../redux';
 import './JoinServer.css';
 
 const JoinServer = (props) => {
+  const [inviteCode, setInviteCode] = useState("");
   const ref = useRef();
   useOnClickOutside(ref, () => props.setModalOpen(false));
 
@@ -11,10 +12,10 @@ const JoinServer = (props) => {
     <div ref={ref} className="serverjoin">
       <h1 className="serverjoin-title">Join a server</h1>
       <p className="serverjoin-info">Enter an invite code below to join an existing server.</p>
-      <input placeholder="Enter an invite code" />
+      <input placeholder="Enter an invite code" value={inviteCode} onChange={(event) => { setInviteCode(event.target.value); }} />
       <div className="serverjoin-actions">
         <p onClick={props.setModalOpen}>&larr; Back</p>
-        <button>Join</button>
+        <button onClick={() => { props.joinServer(inviteCode)}}>Join</button>
       </div>
     </div>
   );

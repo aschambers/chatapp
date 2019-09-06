@@ -31,7 +31,7 @@ export default (state = initialState, action) => {
       };
     case CREATE_INVITE_SUCCESS:
       return {
-        ...state, isLoading: false, error: false, success: true, inviteLink: action.payload
+        ...state, isLoading: false, error: false, success: true, inviteCode: action.payload
       };
     case CREATE_INVITE_FAIL:
       return {
@@ -43,11 +43,11 @@ export default (state = initialState, action) => {
       };
     case CREATE_INVITE_EMAIL_SUCCESS:
       return {
-        ...state, isLoading: false, inviteEmailError: false, inviteEmailSuccess: true, inviteLink: ""
+        ...state, isLoading: false, inviteEmailError: false, inviteEmailSuccess: true, inviteCode: ""
       };
     case CREATE_INVITE_EMAIL_FAIL:
       return {
-        ...state, isLoading: false, inviteEmailError: true, inviteEmailSuccess: false, inviteLink: ""
+        ...state, isLoading: false, inviteEmailError: true, inviteEmailSuccess: false, inviteCode: ""
       };
     case VERIFYING_SERVER_INVITE:
       return {
@@ -64,7 +64,7 @@ export default (state = initialState, action) => {
     case RESET_INVITE_VALUES:
       return {
         ...state, isLoading: false, verifyError: false, verifySuccess: false,
-        error: false, success: false, inviteEmailError: false, inviteEmailSuccess: false, inviteLink: null
+        error: false, success: false, inviteEmailError: false, inviteEmailSuccess: false, inviteCode: null
       };
     default:
       return state;

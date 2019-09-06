@@ -1,4 +1,6 @@
 const ChatroomModel = require('../models/Chatroom');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 module.exports = {
   /**
@@ -11,6 +13,12 @@ module.exports = {
     if (!name && !serverId) {
       return res.status(400).send({'error': 'Missing required fields'});
     }
+
+    const existingChatroom = await ChatroomModel.findOne({ where: { [Op.and]: [{ serverId: serverId }, { name: name }] } });
+
+    if (existingChatroom) return res.status(422).send({"error":"Chatroom exists"});
+    
+    console.log(existingChatroom);
 
     const result = await ChatroomModel.create(req.body);
     if (!result) return res.status(422).send({"error":"Unknown error creating chatroom"});

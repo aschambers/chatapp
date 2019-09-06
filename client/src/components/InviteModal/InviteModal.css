@@ -127,7 +127,10 @@
 .invite-link {
   color: white;
   width: 30rem;
-  margin-left: 1rem; }
+  margin-left: 1rem;
+  display: flex;
+  justify-content: center;
+  cursor: copy; }
 
 /* The switch - the box around the slider */
 .switch {

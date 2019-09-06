@@ -156,6 +156,29 @@ module.exports = {
     const logoutUser = await UserModel.findByPk(req.body.id);
     if(logoutUser) {
       logoutUser.active = false;
+
+      const servers = await ServerModel.findAll();
+      if (servers && servers.length) {
+        for (let i = 0; i < servers.length; i++) {
+          if (servers[i].userList && servers[i].userList.length) {
+            for (let j = 0; j < servers[i].userList.length; j++) {
+              if (+servers[i].userList[j].userId === +logoutUser.id) {
+                servers[i].userList[j].active = false;
+
+                const serversUpdate = await servers[i].update(
+                  { userList: servers[i].userList },
+                  { where: { id: servers[i].id }}
+                );
+
+                if (!serversUpdate) {
+                  res.status(422).send({"error":"error-updating-userlist"});
+                }
+              }
+            }
+          }
+        }
+      }
+
       let saveLogoutUser = await logoutUser.save();
       if(saveLogoutUser) {
         res.status(200).send(saveLogoutUser);

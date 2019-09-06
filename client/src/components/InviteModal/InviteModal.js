@@ -39,9 +39,9 @@ const InviteModal = (props) => {
         </div> :
         <div>
           <img className="invite-settings" src={settings} alt="settings-icon" onClick={() => { setInviteExpiresModal(true); }} />
-          <p className="invitemodal-container-title">{instantFormat ? "Create Instant Invite" : "Send Personal Invite"}</p>
-          {instantFormat && props.inviteLink ? <span className="invite-link">{props.inviteLink}</span> : null}
-          {instantFormat && !props.inviteLink ? <img src={instant} alt="instant-invite" className="instant-invite" /> : null}
+          <p className="invitemodal-container-title">{instantFormat && !props.inviteCode ? "Create Instant Invite" : instantFormat && props.inviteCode ? "Use Invite Code" : "Send Personal Invite"}</p>
+          {instantFormat && props.inviteCode ? <span className="invite-link">{props.inviteCode}</span> : null}
+          {instantFormat && !props.inviteCode ? <img src={instant} alt="instant-invite" className="instant-invite" /> : null}
           {!instantFormat ? <div className="personal-invite">
             <span>Email Address: </span>
             <input value={props.inviteEmail} onChange={(event) => { props.setCurrentInviteEmail(event.target.value); }} />

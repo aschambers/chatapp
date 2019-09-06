@@ -16,7 +16,7 @@ module.exports = {
   inviteCreate: async(req, res) => {
     const { expires, serverId } = req.body;
     req.body.token = crypto.randomBytes(12).toString('hex');
-    req.body.code = crypto.randomBytes(32).toString('hex');
+    req.body.code = 'invite-' + crypto.randomBytes(12).toString('hex');
 
     if (!expires || !serverId) {
       return res.status(400).send({'error': 'Missing required fields'});
@@ -25,8 +25,8 @@ module.exports = {
     const result = await InviteModel.create(req.body);
     if (!result) return res.status(422).json({"error":"Unable to create invite"});
 
-    const inviteLink = `${keys.email_link}/Invite?token=${result.token}`
-    return res.status(200).send(inviteLink);
+    const inviteCode = `${result.code}`
+    return res.status(200).send(inviteCode);
   },
 
   /**
@@ -37,7 +37,7 @@ module.exports = {
   inviteEmailCreate: async(req, res) => {
     const { expires, serverId, email } = req.body;
     req.body.token = crypto.randomBytes(12).toString('hex');
-    req.body.code = crypto.randomBytes(32).toString('hex');
+    req.body.code = 'invite-' + crypto.randomBytes(12).toString('hex');
 
     if (!expires || !serverId || !email) {
       return res.status(400).send({'error': 'Missing required fields'});
@@ -53,7 +53,7 @@ module.exports = {
       to: req.body.email,
       from: 'invite@chatter.com',
       subject: 'Invitation to join server',
-      html: 'Please use this link to join the server the server ' + server.name + '.\n\n' + `${keys.email_link}/Invite?token=${result.token}&email=${email}`
+      html: 'Please use this invite code to join the server ' + server.name + '.\n\n' + `${result.code}`
     };
     const sentEmail = await sgMail.send(msg);
 
@@ -70,9 +70,9 @@ module.exports = {
    * @returns {object} server object
    */
   inviteVerification: async(req, res) => {
-    const { token, email } = req.body;
+    const { code, email } = req.body;
 
-    const validInvite = await InviteModel.findOne({ where: { token: token } });
+    const validInvite = await InviteModel.findOne({ where: { code: code } });
 
     if (!validInvite) return res.status(422).send({"error":"Error verifying invite"});
 
@@ -95,14 +95,14 @@ module.exports = {
       }
     }
 
-    if (!foundServerForUser) {
-      user.serversList.push({
-        serverId: server.id,
-        name: server.name,
-        imageUrl: server.imageUrl,
-        region: server.region
-      });
-    }
+    if (foundServerForUser) return res.status(422).send({"error":"You have already joined the server"});
+
+    user.serversList.push({
+      serverId: server.id,
+      name: server.name,
+      imageUrl: server.imageUrl,
+      region: server.region
+    });
 
     const updateServerList = await user.update(
       { serversList: user.serversList },
@@ -124,6 +124,7 @@ module.exports = {
       server.userList.push({
         userId: user.id,
         username: user.username,
+        imageUrl: user.imageUrl,
         type: 'user'
       });
     }

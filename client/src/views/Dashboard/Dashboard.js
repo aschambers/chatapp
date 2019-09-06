@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../redux';
 import { Redirect } from 'react-router';
 import { toast } from 'react-toastify';
+import './Dashboard.css';
 import ToastMessage from '../../components/ToastMessage/ToastMessage';
 import Chatroom from '../../components/Chatroom/Chatroom';
 import CreateServer from '../../components/CreateServer/CreateServer';
@@ -13,7 +14,6 @@ import InviteModal from '../../components/InviteModal/InviteModal';
 import NotificationSettingsModal from '../../components/NotificationSettingsModal/NotificationSettingsModal';
 import PrivacyModal from '../../components/PrivacyModal/PrivacyModal';
 import RegionModal from '../../components/RegionModal/RegionModal';
-import './Dashboard.css';
 import chatot from '../../assets/images/chatot.png';
 import friends from '../../assets/images/friends.png';
 import settings from '../../assets/images/settings.png';
@@ -27,6 +27,7 @@ import numbersign from '../../assets/images/numbersign.png';
 import usregion from '../../assets/images/usregion.png';
 import europe from '../../assets/images/europe.png';
 import russia from '../../assets/images/russia.png';
+import add from '../../assets/images/add.png';
 
 const Dashboard = (props) => {
   const [id, setId] = useState('');
@@ -64,21 +65,40 @@ const Dashboard = (props) => {
   const [activeChatroomId, setActiveChatroomId] = useState(null);
   const [isChangingRegion, setIsChangingRegion] = useState(false);
   const [inviteEmail, setInviteEmail] = useState("");
-  const [inviteLink, setInviteLink] = useState("");
+  const [inviteCode, setInviteCode] = useState("");
   const [activeServerSetting, setActiveServerSetting] = useState("overview");
 
   const ref = useRef();
   useOnClickOutside(ref, () => setShowCategoryModal(false));
 
   useEffect(() => {
+    if (props.verifySuccess) {
+      setModalOpen(false);
+      toast.dismiss();
+      toast.success('Success, you have joined the server!', { position: 'bottom-center' });
+      props.resetInviteValues();
+    }
+  
+    if (props.verifyError) {
+      toast.dismiss();
+      toast.error('Error joining server!', { position: 'bottom-center' });
+      props.resetInviteValues();
+    }
+  
     if (props.serverUserList) {
       setServerUserList(props.serverUserList);
     }
 
-    if (props.inviteLink) {
+    if (props.chatroomError) {
+      toast.dismiss();
+      toast.error('Error, Error creating chatroom!', { position: 'bottom-center' });
+      props.resetChatroomValues();
+    }
+
+    if (props.inviteCode) {
       setInviteModal(true);
       setIsServerSettingsOpen(false);
-      setInviteLink(props.inviteLink);
+      setInviteCode(props.inviteCode);
     }
     if (props.inviteEmailSuccess) {
       setInviteModal(false);
@@ -88,15 +108,17 @@ const Dashboard = (props) => {
     }
     if (props.inviteEmailError) {
       toast.dismiss();
-      toast.error('Error, Invite was sent successfully!', { position: 'bottom-center' });
+      toast.error('Error, Invite could not be sent!', { position: 'bottom-center' });
     }
-    if (props.chatroomList) {
+    if (props.chatroomList && props.chatroomSuccess) {
       setChatrooms(props.chatroomList);
       if (props.chatroomList.length > 0) {
         setActiveChatroom(props.chatroomList[0].name);
         setActiveChatroomId(props.chatroomList[0].id);
       }
       setShowChannelModal(false);
+      setNewChannel('');
+      props.resetChatroomValues();
     }
     if (props.categoryList) {
       setCategories(props.categoryList);
@@ -165,7 +187,8 @@ const Dashboard = (props) => {
   const setShowInviteModal = () => {
     setInviteModal(!inviteModal);
     showServerSettings(false);
-    setInviteLink("");
+    setInviteCode("");
+    props.resetInviteValues();
   }
 
   const createInstantInvite = () => {
@@ -177,7 +200,7 @@ const Dashboard = (props) => {
 
   const createNewServerInvite = () => {
     props.inviteEmailCreate({
-      inviteLink: "",
+      inviteCode: "",
       expires: expires,
       serverId: serverId,
       email: email
@@ -194,9 +217,8 @@ const Dashboard = (props) => {
       name: newChannel,
       serverId: serverId,
       order: categories.length,
-      visible: false
+      visible: true
     });
-    setNewChannel('');
   }
 
   const displayCategoryModal = () => {
@@ -286,6 +308,13 @@ const Dashboard = (props) => {
     setActiveChatroomId(item.id);
   }
 
+  const joinServer = (value) => {
+    props.inviteVerification({
+      code: value,
+      email: email
+    });
+  }
+
   return (
     <div className="dashboard">
       <ToastMessage />
@@ -373,7 +402,7 @@ const Dashboard = (props) => {
             <InviteModal
               expires={expires}
               inviteEmail={inviteEmail}
-              inviteLink={inviteLink}
+              inviteCode={inviteCode}
               setTimeExpires={(value) => { setExpires(value); }}
               createNewInvite={() => { createNewServerInvite(); }}
               setShowInviteModal={() => { setShowInviteModal(false); }}
@@ -412,7 +441,7 @@ const Dashboard = (props) => {
             />
           : null}
 
-          <div className="sidebarleft-mainchat">
+          <div className="sidebarleft-mainchat" style={{ marginTop: chatrooms && chatrooms.length ? '0.5rem' : '0rem' }}>
             <div onDrop={(event) => { dropItem(event); }} onDragOver={(event) => { draggingOverItem(event); }} id={0 + "-" + server}>
               {chatrooms && chatrooms.length > 0 ? chatrooms.filter(chatroom => chatroom.categoryId === null).map((item, index) => {
                 return (
@@ -424,8 +453,10 @@ const Dashboard = (props) => {
             </div>
 
             {categories && categories.length ? categories.map((group, categoryIndex) => {
+              const height = chatrooms.filter(chatroom => chatroom.categoryId === group.id).length;
+              const itemHeight = group.visible === true ? `${height * 2}rem` : '0rem';
               return (
-                <div key={categoryIndex}>
+                <div key={categoryIndex} style={{ marginBottom: itemHeight }}>
                   <span
                     className="sidebarleft-mainchat-dropdown"
                     onClick={() => { setItemVisibility(group); }}
@@ -436,7 +467,7 @@ const Dashboard = (props) => {
                     <div onDrop={(event) => { dropItem(event); }} onDragOver={(event) => { draggingOverItem(event); }} id={group.id + "-" + group.name}>
                       {chatrooms && chatrooms.length > 0 ? chatrooms.filter(chatroom => chatroom.categoryId === group.id).map((item, index) => {
                         return (
-                          <div className={activeChatroom === item.name ? "active" : ""} id={item.categoryId + "-" + item.name} key={index} draggable="true" onDragStart={(event) => { dragItem(item, event); }} onClick={(event) => { setCurrentActiveChatroom(item, event); }}>
+                          <div className={activeChatroom === item.name ? "active" : "inactive"} id={item.categoryId + "-" + item.name} key={index} draggable="true" onDragStart={(event) => { dragItem(item, event); }} onClick={(event) => { setCurrentActiveChatroom(item, event); }}>
                             <img src={numbersign} alt="channel" height={16} width={16} /><span>{item.name}</span>
                           </div>
                         );
@@ -450,6 +481,7 @@ const Dashboard = (props) => {
           </div>
         </div>
       }
+
       {server !== "" ?
         <Chatroom activeChatroom={activeChatroom} activeChatroomId={activeChatroomId} userId={id} serverId={serverId} username={username} serverUserList={serverUserList} /> :
         <div className="mainarea">
@@ -516,8 +548,21 @@ const Dashboard = (props) => {
             {activeServerSetting === "members" ?
               <div className="serversettings-members">
                 <h1>Server Members</h1>
-                {console.log(serverUserList)}
-                <p>{serverUserList.length} Members</p>
+                <p className="serversettings-members-count">{serverUserList.length} Members</p>
+                {serverUserList && serverUserList.length > 0 ? serverUserList.map((item, index)  => {
+                  return (
+                    <div key={index} className="serversettings-user">
+                      <img className="serversettings-logo" src={item.imageUrl ? item.imageUrl : chatot} alt="chatter-icon" />
+                      <span>
+                        <p>{item.type}</p>
+                        <p>{item.username}</p>
+                      </span>
+                      <span className="serversettings-add">
+                        <img src={add} alt="add-icon" className="serversettings-add-image" />
+                      </span>
+                    </div>
+                  )
+                }) : null}
               </div>
             : null}
 
@@ -594,7 +639,10 @@ const Dashboard = (props) => {
       : null}
 
       {isModalOpen && currentModal === "join" ?
-        <JoinServer setModalOpen={() => { setModalOpen(!isModalOpen) }}/>
+        <JoinServer
+          joinServer={(value) => { joinServer(value); }}
+          setModalOpen={() => { setModalOpen(!isModalOpen) }}
+        />
       : null}
     </div>
   );
@@ -633,9 +681,13 @@ function mapStateToProps({ usersReducer, serversReducer, categoriesReducer, chat
     serverUserList: serversReducer.serverUserList,
     categoryList: categoriesReducer.categoryList,
     chatroomList: chatroomsReducer.chatroomList,
+    chatroomSuccess: chatroomsReducer.success,
+    chatroomError: chatroomsReducer.error,
     inviteEmailError: invitesReducer.inviteEmailError,
     inviteEmailSuccess: invitesReducer.inviteEmailSuccess,
-    inviteLink: invitesReducer.inviteLink,
+    inviteCode: invitesReducer.inviteCode,
+    verifySuccess: invitesReducer.verifySuccess,
+    verifyError: invitesReducer.verifyError
   };
 }
 

@@ -13,7 +13,8 @@ import {
   GET_CHATROOMS_SUCCESS,
   UPDATING_CHATROOM,
   UPDATE_CHATROOM_FAIL,
-  UPDATE_CHATROOM_SUCCESS
+  UPDATE_CHATROOM_SUCCESS,
+  RESET_CHATROOM_VALUES
 } from '../../types';
 
 // Initial States
@@ -74,6 +75,10 @@ export default (state = initialState, action) => {
     case UPDATE_CHATROOM_FAIL:
       return {
         ...state, isLoading: false, error: true, success: false
+      };
+    case RESET_CHATROOM_VALUES:
+      return {
+        ...state, isLoading: false, error: false, success: false
       };
     default:
       return state;
@@ -136,3 +141,9 @@ export const chatroomUpdate = params => async dispatch => {
     dispatch({ type: UPDATE_CHATROOM_FAIL });
   }
 };
+
+export function resetChatroomValues() {
+  return function(dispatch) {
+    dispatch({ type: RESET_CHATROOM_VALUES });
+  };
+}
