@@ -78,13 +78,13 @@ const Dashboard = (props) => {
       toast.success('Success, you have joined the server!', { position: 'bottom-center' });
       props.resetInviteValues();
     }
-  
+
     if (props.verifyError) {
       toast.dismiss();
       toast.error('Error joining server!', { position: 'bottom-center' });
       props.resetInviteValues();
     }
-  
+
     if (props.serverUserList) {
       setServerUserList(props.serverUserList);
     }
@@ -126,12 +126,6 @@ const Dashboard = (props) => {
     }
     if(!props.user) {
       props.currentUser();
-      props.categoryFindAll({
-        serverId: 1
-      });
-      props.getChatrooms({
-        serverId: 1
-      });
       window.addEventListener('keydown', detectEscape);
     } else if(props.user) {
       const { id, username, email, imageUrl, active, serversList } = props.user;
@@ -296,6 +290,12 @@ const Dashboard = (props) => {
     setServerImage(item.imageUrl);
     setServerRegion(item.region);
     props.findUserList({
+      serverId: item.serverId
+    });
+    props.categoryFindAll({
+      serverId: item.serverId
+    });
+    props.getChatrooms({
       serverId: item.serverId
     });
   }
@@ -669,7 +669,7 @@ const useOnClickOutside = (ref, handler) => {
   }, [ref, handler]);
 }
 
-function mapStateToProps({ usersReducer, serversReducer, categoriesReducer, chatroomsReducer, invitesReducer }) {
+const mapStateToProps = ({ usersReducer, serversReducer, categoriesReducer, chatroomsReducer, invitesReducer }) => {
   return {
     error: usersReducer.error,
     isLoading: usersReducer.isLoading,

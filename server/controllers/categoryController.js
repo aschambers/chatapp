@@ -1,4 +1,6 @@
 const CategoryModel = require('../models/Category');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 module.exports = {
   /**
@@ -11,6 +13,8 @@ module.exports = {
     if (!name && !serverId && !order && !visible) {
       return res.status(400).send({'error': 'Missing required fields'});
     }
+    const findCategory = await CategoryModel.findOne({ where: { [Op.and]: [{ serverId: serverId }, { name: name }] } });
+    if (findCategory) return res.status(422).send({"error":"Unknown error creating category"});
     const result = await CategoryModel.create(req.body);
     if (!result) return res.status(422).send({"error":"Unknown error creating category"});
     const categories = await CategoryModel.findAll({ where: { serverId: serverId } });

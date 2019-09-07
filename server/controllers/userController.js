@@ -80,13 +80,13 @@ module.exports = {
 
     if (!user) return res.status(422).send({"error":"Error verifying account"});
 
-    if (moment(user.updatedAt).valueOf() <= moment().add(2, 'hours').valueOf()) {
+    if (moment(user.updatedAt).valueOf() >= moment().add(2, 'hours').valueOf()) {
       return res.status(422).send({"error":"Error verifying account"});
     }
 
     const verifyAccount = await user.update(
       { isVerified: true },
-      { where:  { id: user.id }}
+      { where: { id: user.id }}
     );
 
     if (verifyAccount) {
