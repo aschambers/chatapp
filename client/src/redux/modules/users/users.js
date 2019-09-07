@@ -355,7 +355,6 @@ export const sendEmail = params => async dispatch => {
       dispatch({ type: SEND_EMAIL_FAIL });
     }
   } catch(err) {
-    console.log(err);
     dispatch({ type: SEND_EMAIL_FAIL });
   }
 }
