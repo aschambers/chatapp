@@ -10,7 +10,8 @@ import {
   FIND_SERVER_SUCCESS,
   DELETING_SERVER,
   DELETE_SERVER_FAIL,
-  DELETE_SERVER_SUCCESS
+  DELETE_SERVER_SUCCESS,
+  RESET_SERVER_VALUES
 } from '../../types';
 
 // Initial States
@@ -58,7 +59,11 @@ export default (state = initialState, action) => {
       };
     case DELETE_SERVER_FAIL:
       return {
-        ...state, isLoading: false, error: true, logout: false
+        ...state, isLoading: false, error: true, success: false
+      };
+    case RESET_SERVER_VALUES:
+      return {
+        ...state, isLoading: false, error: false, success: false
       };
     default:
       return state;
@@ -126,3 +131,9 @@ export const serverDelete = params => async dispatch => {
     dispatch({ type: DELETE_SERVER_FAIL });
   }
 };
+
+export function resetServerValues() {
+  return function(dispatch) {
+    dispatch({ type: RESET_SERVER_VALUES });
+  };
+}

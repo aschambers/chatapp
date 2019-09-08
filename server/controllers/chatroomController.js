@@ -17,8 +17,6 @@ module.exports = {
     const existingChatroom = await ChatroomModel.findOne({ where: { [Op.and]: [{ serverId: serverId }, { name: name }] } });
 
     if (existingChatroom) return res.status(422).send({"error":"Chatroom exists"});
-    
-    console.log(existingChatroom);
 
     const result = await ChatroomModel.create(req.body);
     if (!result) return res.status(422).send({"error":"Unknown error creating chatroom"});
