@@ -24,14 +24,14 @@ const Login = (props) => {
 
     if (props.forgotPassError) {
       toast.dismiss();
-      toast.error('Error Requesting Password!', { position: toast.POSITION.TOP_CENTER });
+      toast.error('Error Requesting Password!', { position: toast.POSITION.BOTTOM_CENTER });
     }
 
     if (props.forgotPassSuccess) {
       setResetModal(false);
       setResetEmail('');
       toast.dismiss();
-      toast.success('Success, please check your email for instructions!', { position: toast.POSITION.TOP_CENTER });
+      toast.success('Success, please check your email for instructions!', { position: toast.POSITION.BOTTOM_CENTER });
     }
 
     if (props.notVerified && !notVerified) {

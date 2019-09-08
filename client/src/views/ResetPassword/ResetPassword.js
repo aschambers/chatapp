@@ -21,6 +21,7 @@ const ResetPassword = (props) => {
   useEffect(() => {
     if (props.resetPassSuccess) {
       setIsLoading(false);
+      toast.dismiss();
       toast.success("Password was reset successfully!", {
         position: toast.POSITION.BOTTOM_CENTER
       });
@@ -31,6 +32,7 @@ const ResetPassword = (props) => {
 
     if (props.resetPassError) {
       setIsLoading(false);
+      toast.dismiss();
       toast.error("Password was unable to be reset.", {
         position: toast.POSITION.BOTTOM_CENTER
       });
@@ -50,6 +52,12 @@ const ResetPassword = (props) => {
   }
 
   const resetPassword = () => {
+    if (password !== confirmPassword) {
+      toast.dismiss();
+      toast.error("Password and Confirm Password do not match.", {
+        position: toast.POSITION.BOTTOM_CENTER
+      });
+    }
     setIsLoading(true);
     props.resetPassword({
       token: token,
