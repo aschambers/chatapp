@@ -114,8 +114,8 @@ module.exports = {
     if (!server.userList) server.userList = [];
     let foundUser = false;
 
-    for (let x = 0; x < user.serversList.length; x++) {
-      if (user.serversList[x].id === user.id) {
+    for (let x = 0; x < server.userList.length; x++) {
+      if (server.userList[x].id === user.id) {
         foundUser = true;
       }
     }
@@ -136,7 +136,7 @@ module.exports = {
 
     if (!updateUserList) return res.status(422).send({"error":"Error adding users to server list"});
 
-    res.status(200).send({"success":"Success adding user to server list"});
+    res.status(200).send(updateServerList.serversList);
   }
 
 }

@@ -55,7 +55,7 @@ export default (state = initialState, action) => {
       };
     case VERIFY_SERVER_INVITE_SUCCESS:
       return {
-        ...state, isLoading: false, verifyError: false, verifySuccess: true
+        ...state, isLoading: false, verifyError: false, verifySuccess: true, inviteServersList: action.payload
       };
     case VERIFY_SERVER_INVITE_FAIL:
       return {
@@ -105,7 +105,7 @@ export const inviteVerification = params => async dispatch => {
   try {
     const response = await axios.post(`${ROOT_URL}/api/v1/inviteVerification`, params);
     if(response.data) {
-      dispatch({ type: VERIFY_SERVER_INVITE_SUCCESS });
+      dispatch({ type: VERIFY_SERVER_INVITE_SUCCESS, payload: response.data });
     } else {
       dispatch({ type: VERIFY_SERVER_INVITE_FAIL });
     }

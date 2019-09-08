@@ -1,5 +1,6 @@
 const ServerModel = require('../models/Server');
 const UserModel = require('../models/User');
+const ChatroomModel = require('../models/Chatroom');
 const keys = require('../config/keys');
 const cloudinary = require('cloudinary');
 
@@ -62,7 +63,8 @@ module.exports = {
         userId: userId,
         username: updateUser.username,
         imageUrl: updateUser.imageUrl,
-        type: 'owner'
+        type: 'owner',
+        active: true
       });
 
       // Step 8: Update list of users in server
@@ -74,6 +76,14 @@ module.exports = {
       if (!userListUpdate) return res.status(422).send({'error': 'Failed to update user list on server'});
 
       if (!serversUpdate) return res.status(422).send({'error': 'Failed to update server list'});
+
+      // Step 9: Create general chatroom in server
+      req.body.name = "general";
+      req.body.serverId = newServer.id;
+
+      const result = await ChatroomModel.create(req.body);
+      if (!result) return res.status(422).send({"error":"Unknown error creating chatroom"});
+
       res.status(200).send(serversUpdate.serversList);
     } catch(err) {
       res.status(422).send('error-creating-server');

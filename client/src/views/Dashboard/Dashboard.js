@@ -77,6 +77,7 @@ const Dashboard = (props) => {
       toast.dismiss();
       toast.success('Success, you have joined the server!', { position: 'bottom-center' });
       props.resetInviteValues();
+      props.getUpdatedUser({ userId: id });
     }
 
     if (props.verifyError) {
@@ -136,7 +137,7 @@ const Dashboard = (props) => {
       setActive(active);
       setServersList(serversList);
     }
-  }, [props]);
+  }, [props, id]);
 
   const detectEscape = (event) => {
     if (event.keyCode === 27) {
@@ -687,7 +688,8 @@ const mapStateToProps = ({ usersReducer, serversReducer, categoriesReducer, chat
     inviteEmailSuccess: invitesReducer.inviteEmailSuccess,
     inviteCode: invitesReducer.inviteCode,
     verifySuccess: invitesReducer.verifySuccess,
-    verifyError: invitesReducer.verifyError
+    verifyError: invitesReducer.verifyError,
+    inviteServersList: invitesReducer.inviteServersList,
   };
 }
 

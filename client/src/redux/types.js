@@ -43,6 +43,7 @@ export const FINDING_SERVER = 'finding_server';
 export const DELETE_SERVER_SUCCESS = 'delete_server_success';
 export const DELETE_SERVER_FAIL = 'delete_server_fail';
 export const DELETING_SERVER = 'deleting_server';
+export const RESET_SERVER_VALUES = 'reset_server_values';
 // categories
 export const CREATE_CATEGORY_SUCCESS = 'create_category_success';
 export const CREATE_CATEGORY_FAIL = 'create_category_fail';
