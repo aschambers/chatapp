@@ -67,6 +67,7 @@ const Dashboard = (props) => {
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteCode, setInviteCode] = useState("");
   const [activeServerSetting, setActiveServerSetting] = useState("overview");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const ref = useRef();
   useOnClickOutside(ref, () => setShowCategoryModal(false));
@@ -88,6 +89,14 @@ const Dashboard = (props) => {
 
     if (props.serverUserList) {
       setServerUserList(props.serverUserList);
+      const index = props.serverUserList.findIndex(x => x.username === username);
+      if (index > -1) {
+        if (props.serverUserList[index].type === 'admin' || props.serverUserList[index].type === 'owner') {
+          setIsAdmin(true);
+        } else if (props.serverUserList[index].type !== 'admin' || props.serverUserList[index].type !== 'owner') {
+          setIsAdmin(false);
+        }
+      }
     }
 
     if (props.chatroomError) {
@@ -137,7 +146,7 @@ const Dashboard = (props) => {
       setActive(active);
       setServersList(serversList);
     }
-  }, [props, id]);
+  }, [props, id, username]);
 
   const detectEscape = (event) => {
     if (event.keyCode === 27) {
@@ -242,16 +251,19 @@ const Dashboard = (props) => {
   }
 
   const dragItem = (item, event) => {
+    if (!isAdmin) return false;
     setCurrentDragItem(item);
     event.dataTransfer.setData("text", event.target.id);
   }
 
   const draggingOverItem = (event) => {
+    if (!isAdmin) return false;
     event.preventDefault();
     event.stopPropagation();
   }
 
   const dropItem = (event) => {
+    if (!isAdmin) return false;
     event.preventDefault();
     const newChatrooms = chatrooms || [];
     if (event.target.id !== currentDragItem.category && event.target.id) {
@@ -366,7 +378,7 @@ const Dashboard = (props) => {
         <div className="sidebarleft">
           <div className="sidebarleft-container">
             <p className="sidebarleft-container-header">{server}</p>
-            <p className="sidebarleft-container-dropdown" onClick={() => { showServerSettings(!serverSettings); }}><i className="channelarrow down"></i></p>
+            {isAdmin ? <p className="sidebarleft-container-dropdown" onClick={() => { showServerSettings(!serverSettings); }}><i className="channelarrow down"></i></p> : null}
             {serverSettings ?
               <div className="serversettings-modal">
                 <div className="serversettings-modal-section" onClick={() => { setShowInviteModal(); }}>
