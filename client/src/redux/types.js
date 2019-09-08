@@ -31,6 +31,12 @@ export const UPLOAD_PROFILE_IMAGE_FAIL = 'upload_profile_image_fail';
 export const SENDING_EMAIL = 'sending_email';
 export const SEND_EMAIL_SUCCESS = 'send_email_success';
 export const SEND_EMAIL_FAIL = 'send_email_fail';
+export const CHECKING_FORGOT_PASSWORD = 'checking_forgot_password';
+export const FORGOT_PASSWORD_SUCCESS = 'forgot_password_success';
+export const FORGOT_PASSWORD_FAIL = 'forgot_password_fail';
+export const CHECKING_RESET_PASSWORD = 'checking_reset_password';
+export const RESET_PASSWORD_SUCCESS = 'reset_password_success';
+export const RESET_PASSWORD_FAIL = 'reset_password_fail';
 export const RESET_VALUES = 'reset_values';
 export const RESET_USER_VALUES = 'reset_user_values';
 // servers

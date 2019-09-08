@@ -36,6 +36,12 @@ import {
   SENDING_EMAIL,
   SEND_EMAIL_FAIL,
   SEND_EMAIL_SUCCESS,
+  CHECKING_FORGOT_PASSWORD,
+  FORGOT_PASSWORD_FAIL,
+  FORGOT_PASSWORD_SUCCESS,
+  CHECKING_RESET_PASSWORD,
+  RESET_PASSWORD_FAIL,
+  RESET_PASSWORD_SUCCESS,
   RESET_VALUES,
   RESET_USER_VALUES
 } from '../../types';
@@ -167,13 +173,37 @@ export default (state = initialState, action) => {
       return {
         ...state, isLoading: false, error: true, success: false, noEmail: true
       };
+    case CHECKING_FORGOT_PASSWORD:
+      return {
+        ...state, isLoading: true, forgotPassError: false, forgotPassSuccess: false
+      };
+    case FORGOT_PASSWORD_SUCCESS:
+      return {
+        ...state, isLoading: false, forgotPassError: false, forgotPassSuccess: true
+      };
+    case FORGOT_PASSWORD_FAIL:
+      return {
+        ...state, isLoading: false, forgotPassError: true, forgotPassSuccess: false
+      };
+    case CHECKING_RESET_PASSWORD:
+      return {
+        ...state, isLoading: true, resetPassError: false, resetPassSuccess: false
+      };
+    case RESET_PASSWORD_SUCCESS:
+      return {
+        ...state, isLoading: false, resetPassError: false, resetPassSuccess: true
+      };
+    case RESET_PASSWORD_FAIL:
+      return {
+        ...state, isLoading: false, resetPassError: true, resetPassSuccess: false
+      };
     case RESET_VALUES:
       return {
         ...state, isLoading: false, error: false, success: false, logout: false
       };
     case RESET_USER_VALUES:
       return {
-        ...state, isLoading: false, error: false, success: false, logout: false, user: null, notVerified: false, already: false, resultEmail: false, noEmail: false
+        ...state, isLoading: false, error: false, success: false, logout: false, user: null, notVerified: false, already: false, resultEmail: false, noEmail: false, forgotPassError: false, forgotPassSuccess: false, resetPassError: false, resetPassSuccess: false
       };
     default:
       return state;
@@ -358,6 +388,34 @@ export const sendEmail = params => async dispatch => {
     dispatch({ type: SEND_EMAIL_FAIL });
   }
 }
+
+export const forgotPassword = params => async dispatch => {
+  try {
+    dispatch({ type: CHECKING_FORGOT_PASSWORD });
+    const response = await axios.post(`${ROOT_URL}/api/v1/forgotPassword`, params);
+    if (response.data) {
+      dispatch({ type: FORGOT_PASSWORD_SUCCESS, payload: 'forgot-password-fail' });
+    } else {
+      dispatch({ type: FORGOT_PASSWORD_FAIL, payload: 'forgot-password-fail' });
+    }
+  } catch (err) {
+    dispatch({ type: FORGOT_PASSWORD_FAIL, payload: 'forgot-password-fail' });
+  }
+};
+
+export const resetPassword = params => async dispatch => {
+  try {
+    dispatch({ type: CHECKING_RESET_PASSWORD });
+    const response = await axios.post(`${ROOT_URL}/api/v1/resetPassword`, params);
+    if (response.data) {
+      dispatch({ type: RESET_PASSWORD_SUCCESS, payload: 'forgot-password-fail' });
+    } else {
+      dispatch({ type: RESET_PASSWORD_FAIL, payload: 'forgot-password-fail' });
+    }
+  } catch (err) {
+    dispatch({ type: RESET_PASSWORD_FAIL, payload: 'forgot-password-fail' });
+  }
+};
 
 export function resetValues() {
   return function(dispatch) {

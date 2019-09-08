@@ -56,7 +56,7 @@
     border-bottom-right-radius: 5px;
   }
   &-logo {
-    position: fixed;
+    // position: fixed;
     margin-top: 6px;
     width: 4rem;
     height: 4rem;
@@ -492,13 +492,15 @@
   }
 }
 
-.settings {
-  &-image {
+.userinfo {
+  display: block;
+  & > img {
     width: 1.5rem;
     height: 1.5rem;
     cursor: pointer;
-    margin-left: 3.2rem;
+    margin: auto;
     margin-right: 0.5rem;
+    margin-top: 0.1rem;
   }
 }
 

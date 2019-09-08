@@ -43,7 +43,7 @@ module.exports = {
           from: 'verification@chatter.com',
           subject: 'Verify your account',
           html: 'Please click this link to verify your account.' +
-          '.\n\n' + `${keys.email_link}/Verification?token=${token}&email=${email}`
+          '\n\n' + `${keys.email_link}/Verification?token=${token}&email=${email}`
         };
         const sentEmail = await sgMail.send(msg);
 
@@ -104,6 +104,8 @@ module.exports = {
   userLogin: async(req, res, next) => {
     const { email, password } = req.body;
     const loginUser = await UserModel.findOne({ where: { email: email } });
+
+    if (!loginUser) return res.status(422).send({"error":"user-not-found"});
     if (!loginUser.isVerified) return res.status(400).send({"error": "Account not verified"});
     if (loginUser) {
       loginUser.active = true;
@@ -332,6 +334,72 @@ module.exports = {
       }
     } else {
       return res.status(422).send({"error":"User does not exist"});
+    }
+  },
+
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {string} success
+   */
+  forgotPassword: async(req, res) => {
+    const { email } = req.body;
+    const token = crypto.randomBytes(20).toString('hex');
+
+    if (!email) {
+      return res.status(400).send({'error': 'Missing required fields'});
+    }
+
+    const user = await UserModel.findOne({ where: { email: email } });
+    if (!user) return res.status(422).send({"error":"Error resetting password"});
+
+    const updateUser = await user.update(
+      { resetPasswordToken: token },
+      { where: { id: user.id }}
+    );
+
+    if (!updateUser) return res.status(422).send('token not saved');
+
+    const msg = {
+      to: req.body.email,
+      from: 'resetpassword@chatter.com',
+      subject: 'Reset Password',
+      html: 'Please click this link to reset your password.' +
+      '.\n\n' + `${keys.email_link}/ResetPassword?token=${token}&email=${email}`
+    };
+    const sentEmail = await sgMail.send(msg);
+
+    if (!sentEmail) return res.status(422).send({"error":"Error resetting password"});
+
+    return res.status(200).send({"success":"Success sending email"});
+  },
+
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {string} success
+   */
+  resetPassword: async(req, res) => {
+    const { token, password } = req.body;
+
+    if (!token) {
+      return res.status(400).send({'error': 'Missing required fields'});
+    }
+
+    const user = await UserModel.findOne({ where: { resetPasswordToken: token } });
+
+    if (!user) return res.status(422).send({"error":"Error resetting password"});
+
+    if (moment(user.updatedAt).valueOf() >= moment().add(2, 'hours').valueOf()) {
+      return res.status(422).send({"error":"Error resetting password"});
+    }
+
+    user.password = password;
+    let userUpdate = await user.save({ fields: ['password'] });
+    if(userUpdate) {
+      res.status(200).send(userUpdate);
+    } else {
+      res.status(422).send('user-image-not-saved');
     }
   }
 

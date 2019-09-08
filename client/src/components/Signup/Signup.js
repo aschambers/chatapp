@@ -16,7 +16,7 @@ const Signup = (props) => {
   useEffect(() => {
     if(props.success) {
       toast.dismiss();
-      toast.success('You signed up successfully!', {
+      toast.success('You signed up successfully, please check for an email to verify your account!', {
         position: toast.POSITION.BOTTOM_CENTER,
       });
       setTimeout(() => {
