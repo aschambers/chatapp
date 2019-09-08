@@ -52,6 +52,7 @@
       margin-top: 1rem;
       cursor: pointer; }
     .authcontainerlogin__section > p {
+      cursor: pointer;
       display: flex;
       justify-self: flex-start;
       margin-top: -0.5rem;
