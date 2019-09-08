@@ -47,7 +47,19 @@ class Chatroom extends Component {
     });
 
     this.socket.on('RECEIVE_CHATROOM_MESSAGE', (data) => {
-      this.setState({ messages: data});
+      // scroll to latest message after rendering messages in firefox
+      if (navigator.userAgent.search("Firefox") > -1) {
+        this.setState({ messages: data.reverse() }, () => {
+          if (data && data.length > 0) {
+            const element = "message" + (this.state.messages.length - 1);
+            if (document.getElementById(element)) {
+              document.getElementById(element).scrollIntoView();
+            }
+          }
+        });
+      } else if (navigator.userAgent.search("Firefox") < 0) {
+        this.setState({ messages: data });
+      }
     });
   }
 
@@ -96,10 +108,10 @@ class Chatroom extends Component {
           <div className="chatarea-topbar">
             <img src={numbersign} alt="channel" height={16} width={16} /><span>{this.props.activeChatroom}</span>
           </div>
-          <div className="chatarea-messages">
+          <div id="chatareamessages" className="chatarea-messages">
             {this.state.messages && this.state.messages.length > 0 ? this.state.messages.map((item, index) => {
               return (
-                <div key={index}>
+                <div id={"message" + index} key={index}>
                   <p><span className="chatarea-messages-user">{item.username}</span> <Moment format="MM/DD/YYYY" className="chatarea-messages-time"><span>{item.createdAt}</span></Moment></p>
                   <p className="chatarea-messages-message">{item.message}</p>
                 </div>

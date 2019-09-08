@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
+import useOnClickOutside from '../../utils/useOnClickOutside';
 import settings from '../../assets/images/settings.png';
 import instant from '../../assets/images/instant.png';
 import './InviteModal.css';
@@ -52,27 +53,6 @@ const InviteModal = (props) => {
       }
     </div>
   );
-}
-
-const useOnClickOutside = (ref, handler) => {
-  useEffect(() => {
-    const listener = event => {
-      // Do nothing if clicking ref's element or descendent elements
-      if (!ref.current || ref.current.contains(event.target)) {
-        return;
-      }
-
-      handler(event);
-    };
-
-    document.addEventListener('mousedown', listener);
-    document.addEventListener('touchstart', listener);
-
-    return () => {
-      document.removeEventListener('mousedown', listener);
-      document.removeEventListener('touchstart', listener);
-    };
-  }, [ref, handler]);
 }
 
 export default InviteModal;

@@ -11,6 +11,9 @@ import {
   VERIFYING_SERVER_INVITE,
   VERIFY_SERVER_INVITE_FAIL,
   VERIFY_SERVER_INVITE_SUCCESS,
+  FINDING_INVITES,
+  FIND_INVITE_FAIL,
+  FIND_INVITE_SUCCESS,
   RESET_INVITE_VALUES
 } from '../../types';
 
@@ -61,10 +64,22 @@ export default (state = initialState, action) => {
       return {
         ...state, isLoading: false, verifyError: true, verifySuccess: false
       };
+    case FINDING_INVITES:
+      return {
+        ...state, isLoading: true, findInvitesError: false, findInvitesSuccess: false
+      };
+    case FIND_INVITE_SUCCESS:
+      return {
+        ...state, isLoading: false, findInvitesError: false, findInvitesSuccess: true, inviteServersList: action.payload
+      };
+    case FIND_INVITE_FAIL:
+      return {
+        ...state, isLoading: false, findInvitesError: true, findInvitesSuccess: false
+      };
     case RESET_INVITE_VALUES:
       return {
         ...state, isLoading: false, verifyError: false, verifySuccess: false,
-        error: false, success: false, inviteEmailError: false, inviteEmailSuccess: false, inviteCode: null
+        error: false, success: false, inviteEmailError: false, inviteEmailSuccess: false, inviteCode: null, findInvitesError: false, findInvitesSuccess: false
       };
     default:
       return state;
@@ -111,6 +126,20 @@ export const inviteVerification = params => async dispatch => {
     }
   } catch(err) {
     dispatch({ type: VERIFY_SERVER_INVITE_FAIL });
+  }
+};
+
+export const findInvites = params => async dispatch => {
+  dispatch({ type: FINDING_INVITES });
+  try {
+    const response = await axios.post(`${ROOT_URL}/api/v1/findInvites`, params);
+    if(response.data) {
+      dispatch({ type: FIND_INVITE_SUCCESS, payload: response.data });
+    } else {
+      dispatch({ type: FIND_INVITE_FAIL });
+    }
+  } catch(err) {
+    dispatch({ type: FIND_INVITE_FAIL });
   }
 };
 

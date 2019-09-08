@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
+import useOnClickOutside from '../../utils/useOnClickOutside';
 import { connect } from 'react-redux';
 import * as actions from '../../redux';
 import './JoinServer.css';
@@ -19,27 +20,6 @@ const JoinServer = (props) => {
       </div>
     </div>
   );
-}
-
-const useOnClickOutside = (ref, handler) => {
-  useEffect(() => {
-    const listener = event => {
-      // Do nothing if clicking ref's element or descendent elements
-      if (!ref.current || ref.current.contains(event.target)) {
-        return;
-      }
-
-      handler(event);
-    };
-
-    document.addEventListener('mousedown', listener);
-    document.addEventListener('touchstart', listener);
-
-    return () => {
-      document.removeEventListener('mousedown', listener);
-      document.removeEventListener('touchstart', listener);
-    };
-  }, [ref, handler]);
 }
 
 function mapStateToProps({ usersReducer }) {
