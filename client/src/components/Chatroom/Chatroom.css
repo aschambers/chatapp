@@ -8,7 +8,8 @@
 .chatarea {
   display: flex;
   flex-direction: column;
-  flex: 1; }
+  flex: 1;
+  min-height: 0; }
   .chatarea-topbar {
     box-sizing: border-box;
     width: 100%;
@@ -23,7 +24,8 @@
   .chatarea-container {
     display: flex;
     flex: 1;
-    justify-content: center; }
+    justify-content: center;
+    min-height: 0; }
     .chatarea-container > input {
       margin-top: auto;
       position: relative;
@@ -39,11 +41,23 @@
       outline: none;
       border: 1px solid black; }
   .chatarea-messages {
-    height: 31.5rem;
-    overflow: auto;
     display: flex;
     flex-direction: column-reverse;
+    min-height: 0rem;
+    max-height: 31.5rem;
+    overflow: auto;
     padding-left: 2rem; }
+
+@-moz-document url-prefix() {
+  .chatarea-messages {
+    display: block;
+    max-height: 33.5rem; } }
+    .chatarea-messages > div {
+      margin-top: -1rem; }
+
+@-moz-document url-prefix() {
+  .chatarea-messages > div {
+    margin-top: 0rem; } }
     .chatarea-messages-user {
       font-size: 1.2rem;
       color: #50d04a;
@@ -52,6 +66,7 @@
       color: #888888;
       font-size: 0.8rem; }
     .chatarea-messages-message {
+      margin-top: -0.5rem;
       font-size: 1rem;
       color: white; }
 

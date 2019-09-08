@@ -18,7 +18,7 @@ const Invite = sequelize.define('invites', {
   },
   code: {
     type: Sequelize.STRING,
-    allowNull: true
+    allowNull: false
   },
   email: {
     type: Sequelize.STRING,

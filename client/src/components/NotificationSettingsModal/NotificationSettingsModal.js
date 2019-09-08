@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
+import useOnClickOutside from '../../utils/useOnClickOutside';
 import './NotificationSettingsModal.css';
 
 const NotificationSettingsModal = (props) => {
@@ -6,33 +7,20 @@ const NotificationSettingsModal = (props) => {
   useOnClickOutside(ref, () => props.setShowNotificationSettingsModal(false));
 
   return (
-    <div ref={ref} className="categorymodal-container">
-      <p className="categorymodal-container-title">Privacy Settings - {props.server}</p>
-      <p className="categorymodal-container-name">Direct Messages</p>
-      <div><span>Allow direct messages from server members.</span></div>
+    <div ref={ref} className="notificationsmodal-container">
+      <p className="notificationsmodal-container-title">Notification Settings</p>
+      <p className="notificationsmodal-container-name">Alerts</p>
+      <div className="notificationsmodal-container-allow">
+        <span>Allow notifications for activity on chatter</span>
+        <label className="switchnotify">
+          <input type="checkbox" onChange={() => { props.setAllowPushNotifications(); }} checked={props.setAllowPushNotifications} />
+          <span className="slidernotify roundnotify"></span>
+        </label>
+      </div>
+      <button className="notificationsmodal-container-cancel" onClick={() => { props.setShowNotificationSettingsModal(false); }}>Cancel</button>
+      <button className="notificationsmodal-container-create" onClick={() => { props.setShowNotificationSettingsModal(false); }}>Save</button>
     </div>
   );
-}
-
-const useOnClickOutside = (ref, handler) => {
-  useEffect(() => {
-    const listener = event => {
-      // Do nothing if clicking ref's element or descendent elements
-      if (!ref.current || ref.current.contains(event.target)) {
-        return;
-      }
-
-      handler(event);
-    };
-
-    document.addEventListener('mousedown', listener);
-    document.addEventListener('touchstart', listener);
-
-    return () => {
-      document.removeEventListener('mousedown', listener);
-      document.removeEventListener('touchstart', listener);
-    };
-  }, [ref, handler]);
 }
 
 export default NotificationSettingsModal;

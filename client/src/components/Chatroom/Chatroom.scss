@@ -10,6 +10,7 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+  min-height: 0;
   &-topbar {
     box-sizing: border-box;
     width: 100%;
@@ -27,6 +28,7 @@
     display: flex;
     flex: 1;
     justify-content: center;
+    min-height: 0;
     & > input {
       margin-top:auto;
       position: relative;
@@ -44,11 +46,22 @@
     }
   }
   &-messages {
-    height: 31.5rem;
-    overflow: auto;
     display: flex;
     flex-direction: column-reverse;
+    min-height: 0rem;
+    max-height: 31.5rem;
+    @-moz-document url-prefix() {
+      display: block;
+      max-height: 33.5rem;
+    }
+    overflow: auto;
     padding-left: 2rem;
+    & > div {
+      margin-top: -1rem;
+      @-moz-document url-prefix() {
+        margin-top: 0rem;
+      }
+    }
     &-user {
       font-size: 1.2rem;
       color: rgb(80, 208, 74);
@@ -59,6 +72,7 @@
       font-size: 0.8rem;
     }
     &-message {
+      margin-top: -0.5rem;
       font-size: 1rem;
       color: white;
     }

@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
+import useOnClickOutside from '../../utils/useOnClickOutside';
 import { connect } from 'react-redux';
 import * as actions from '../../redux';
 import { Redirect } from 'react-router';
 import { toast } from 'react-toastify';
+import Moment from 'react-moment';
+import 'moment-timezone';
 import './Dashboard.css';
 import ToastMessage from '../../components/ToastMessage/ToastMessage';
 import Chatroom from '../../components/Chatroom/Chatroom';
@@ -67,12 +70,23 @@ const Dashboard = (props) => {
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteCode, setInviteCode] = useState("");
   const [activeServerSetting, setActiveServerSetting] = useState("overview");
+  const [activeUserSetting, setActiveUserSetting] = useState("myaccount");
   const [isAdmin, setIsAdmin] = useState(false);
+  const [serverInvites, setServerInvites] = useState([]);
+  const [allowDirectMessages, setAllowDirectMessages] = useState(false);
 
   const ref = useRef();
   useOnClickOutside(ref, () => setShowCategoryModal(false));
 
   useEffect(() => {
+    if (props.findInvitesSuccess || props.findInvitesError) {
+      if (props.findInvitesSuccess) {
+        setServerInvites(props.inviteServersList);
+      }
+      props.resetInviteValues();
+      setActiveServerSetting("invites");
+    }
+
     if (props.verifySuccess) {
       setModalOpen(false);
       toast.dismiss();
@@ -328,6 +342,12 @@ const Dashboard = (props) => {
     });
   }
 
+  const getInvites = () => {
+    props.findInvites({
+      serverId: serverId
+    });
+  }
+
   return (
     <div className="dashboard">
       <ToastMessage />
@@ -378,7 +398,7 @@ const Dashboard = (props) => {
         <div className="sidebarleft">
           <div className="sidebarleft-container">
             <p className="sidebarleft-container-header">{server}</p>
-            {isAdmin ? <p className="sidebarleft-container-dropdown" onClick={() => { showServerSettings(!serverSettings); }}><i className="channelarrow down"></i></p> : null}
+            {isAdmin ? <div className="sidebarleft-container-dropdown" onClick={() => { showServerSettings(!serverSettings); }}>{!serverSettings ? <i className="channelarrow down"></i> : <span className="cancel">&#10005;</span>}</div> : null}
             {serverSettings ?
               <div className="serversettings-modal">
                 <div className="serversettings-modal-section" onClick={() => { setShowInviteModal(); }}>
@@ -443,6 +463,8 @@ const Dashboard = (props) => {
           {showPrivacyModal ?
             <PrivacyModal
               server={server}
+              allowDirectMessages={allowDirectMessages}
+              setAllowDirectMessages={() => { setAllowDirectMessages(true); }}
               setShowPrivacyModal={() => { setShowPrivacyModal(false); }}
             />
           : null}
@@ -526,7 +548,7 @@ const Dashboard = (props) => {
             <p className={activeServerSetting === "roles" ? "serversettings-sidebar-activeitem" : "serversettings-sidebar-roles"} onClick={() => { setActiveServerSetting("roles"); }}>Roles</p>
             <h1>User Management</h1>
             <p className={activeServerSetting === "members" ? "serversettings-sidebar-activeitem" : "serversettings-sidebar-members"} onClick={() => { setActiveServerSetting("members"); }}>Members</p>
-            <p className={activeServerSetting === "invites" ? "serversettings-sidebar-activeitem" : "serversettings-sidebar-invites"} onClick={() => { setActiveServerSetting("invites"); }}>Invites</p>
+            <p className={activeServerSetting === "invites" ? "serversettings-sidebar-activeitem" : "serversettings-sidebar-invites"} onClick={() => { getInvites(); }}>Invites</p>
             <p className={activeServerSetting === "bans" ? "serversettings-sidebar-activeitem" : "serversettings-sidebar-bans"} onClick={() => { setActiveServerSetting("bans"); }}>Bans</p>
             <p onClick={deleteServer}>Delete Server</p>
           </div>
@@ -571,7 +593,28 @@ const Dashboard = (props) => {
                         <p>{item.username}</p>
                       </span>
                       <span className="serversettings-add">
-                        <img src={add} alt="add-icon" className="serversettings-add-image" />
+                        <img src={add} alt="add-icon" className="serversettings-user-add-image" />
+                      </span>
+                    </div>
+                  )
+                }) : null}
+              </div>
+            : null}
+
+            {activeServerSetting === "invites" ?
+              <div className="serversettings-invites">
+                <h1>Server Invites</h1>
+                <p className="serversettings-invites-count">{serverInvites.length === 1 ? '1 Invite' : `${serverInvites.length} Invites`} </p>
+                {serverInvites && serverInvites.length > 0 ? serverInvites.map((item, index)  => {
+                  return (
+                    <div key={index} className="serversettings-invite">
+                      <span>
+                        <p>Code: {item.code}</p>
+                        <p>Created: <Moment format="MM/DD/YYYY">{item.createdAt}</Moment> at <Moment format="LT">{item.createdAt}</Moment></p>
+                        <p>Expiration: {item.expires} hours</p>
+                      </span>
+                      <span className="serversettings-add">
+                        <img src={add} alt="add-icon" className="serversettings-invite-add-image" />
                       </span>
                     </div>
                   )
@@ -599,50 +642,54 @@ const Dashboard = (props) => {
         <div className="usersettings">
           <div className="usersettings-sidebar">
             <h1>User Settings</h1>
-            <p>My Account</p>
-            <p>Privacy &amp; Safety</p>
-            <p>Connections</p>
-            <p>Billing</p>
+            <p className={activeUserSetting === "myaccount" ? "usersettings-sidebar-activeitem" : "usersettings-sidebar-myaccount"} onClick={() => { setActiveUserSetting("myaccount"); }}>My Account</p>
+            <p className={activeUserSetting === "privacy" ? "usersettings-sidebar-activeitem" : "usersettings-sidebar-privacy"} onClick={() => { setActiveUserSetting("privacy"); }}>Privacy &amp; Safety</p>
+            <p className={activeUserSetting === "connections" ? "usersettings-sidebar-activeitem" : "usersettings-sidebar-connections"} onClick={() => { setActiveUserSetting("connections"); }}>Connections</p>
+            <p className={activeUserSetting === "billing" ? "usersettings-sidebar-activeitem" : "usersettings-sidebar-billing"} onClick={() => { setActiveUserSetting("billing"); }}>Billing</p>
             <h1>App Settings</h1>
-            <p>Voice &amp; Video</p>
-            <p>Notifications</p>
-            <p>Appearance</p>
-            <p>Language</p>
+            <p className={activeUserSetting === "voice" ? "usersettings-sidebar-activeitem" : "usersettings-sidebar-voice"} onClick={() => { setActiveUserSetting("voice"); }}>Voice &amp; Video</p>
+            <p className={activeUserSetting === "notifications" ? "usersettings-sidebar-activeitem" : "usersettings-sidebar-notifications"} onClick={() => { setActiveUserSetting("notifications"); }}>Notifications</p>
+            <p className={activeUserSetting === "appearance" ? "usersettings-sidebar-activeitem" : "usersettings-sidebar-appearance"} onClick={() => { setActiveUserSetting("appearance"); }}>Appearance</p>
+            <p className={activeUserSetting === "language" ? "usersettings-sidebar-activeitem" : "usersettings-sidebar-language"} onClick={() => { setActiveUserSetting("language"); }}>Language</p>
             <p onClick={userLogout}>Logout</p>
           </div>
-          <div className="usersettings-accountcontainer">
-            <div className="usersettings-myaccount">
-              <h1>My Account</h1>
-              <div className="usersettings-myaccount__container">
-                <div className="usersettings-myaccount__container-image">
-                  <img src={imageUrl ? imageUrl : chatot} alt="username-icon" />
-                </div>
-                <div className="usersettings-myaccount__container-info">
-                  <div className="usersettings-myaccount__container-info-username">
-                    <span>Username</span><br/>
-                    <span>{username}</span>
+
+          {activeUserSetting === "myaccount" ?
+            <div className="usersettings-accountcontainer">
+              <div className="usersettings-myaccount">
+                <h1>My Account</h1>
+                <div className="usersettings-myaccount__container">
+                  <div className="usersettings-myaccount__container-image">
+                    <img src={imageUrl ? imageUrl : chatot} alt="username-icon" />
                   </div>
-                  <div className="usersettings-myaccount__container-info-email">
-                    <span>Email Address</span><br/>
-                    <span>{email}</span>
+                  <div className="usersettings-myaccount__container-info">
+                    <div className="usersettings-myaccount__container-info-username">
+                      <span>Username</span><br/>
+                      <span>{username}</span>
+                    </div>
+                    <div className="usersettings-myaccount__container-info-email">
+                      <span>Email Address</span><br/>
+                      <span>{email}</span>
+                    </div>
+                  </div>
+                  <div className="usersettings-myaccount__container-edit">
+                    <span>Edit</span>
                   </div>
                 </div>
-                <div className="usersettings-myaccount__container-edit">
-                  <span>Edit</span>
+              </div>
+              <div className="usersettings-authentication">
+                <h1>Two-Factor Authentication</h1>
+                <p>Protect your account with an extra layer of security. Once configured you'll be required to enter your password and an authentication code from your mobile device to login.</p>
+                <div className="usersettings-authentication-enable">
+                  <span>Enable</span>
                 </div>
               </div>
             </div>
-            <div className="usersettings-authentication">
-              <h1>Two-Factor Authentication</h1>
-              <p>Protect your account with an extra layer of security. Once configured you'll be required to enter your password and an authentication code from your mobile device to login.</p>
-              <div className="usersettings-authentication-enable">
-                <span>Enable</span>
-              </div>
-            </div>
-            <div className="usersettings-escape" onClick={() => { setSettingsOpen(!isSettingsOpen); }}>
-              <span>&#215;</span>
-              <p>ESC</p>
-            </div>
+          : null}
+
+          <div className="usersettings-escape" onClick={() => { setSettingsOpen(!isSettingsOpen); }}>
+            <span>&#215;</span>
+            <p>ESC</p>
           </div>
         </div>
       : null}
@@ -659,27 +706,6 @@ const Dashboard = (props) => {
       : null}
     </div>
   );
-}
-
-const useOnClickOutside = (ref, handler) => {
-  useEffect(() => {
-    const listener = event => {
-      // Do nothing if clicking ref's element or descendent elements
-      if (!ref.current || ref.current.contains(event.target)) {
-        return;
-      }
-
-      handler(event);
-    };
-
-    document.addEventListener('mousedown', listener);
-    document.addEventListener('touchstart', listener);
-
-    return () => {
-      document.removeEventListener('mousedown', listener);
-      document.removeEventListener('touchstart', listener);
-    };
-  }, [ref, handler]);
 }
 
 const mapStateToProps = ({ usersReducer, serversReducer, categoriesReducer, chatroomsReducer, invitesReducer }) => {
@@ -702,6 +728,8 @@ const mapStateToProps = ({ usersReducer, serversReducer, categoriesReducer, chat
     verifySuccess: invitesReducer.verifySuccess,
     verifyError: invitesReducer.verifyError,
     inviteServersList: invitesReducer.inviteServersList,
+    findInvitesSuccess: invitesReducer.findInvitesSuccess,
+    findInvitesError: invitesReducer.findInvitesError
   };
 }
 

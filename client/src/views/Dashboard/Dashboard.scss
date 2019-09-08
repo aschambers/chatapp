@@ -268,6 +268,23 @@
   }
 }
 
+.cancel {
+  color: rgb(92, 92, 92);
+  display: block;
+  font-size: 1.2rem;
+  animation-name: fadeInOpacity;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-duration: 0.3s;
+  outline: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 .channelarrow {
   border: solid rgb(92, 92, 92);
   border-width: 0 2px 2px 0;
@@ -302,6 +319,10 @@
     width: 11.6rem;
     background-color: rgb(63, 63, 63);
     border-radius: 5px;
+    animation-name: fadeInOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+    animation-duration: 0.3s;
     &-section {
       display: flex;
       flex-direction: row;
@@ -329,6 +350,11 @@
       color: rgb(211, 211, 211);
     }
   }
+  &-invites {
+    &-count {
+      color: rgb(211, 211, 211);
+    }
+  }
   &-user {
     width: 21rem;
     background-color: rgb(79, 79, 79);
@@ -338,13 +364,58 @@
     cursor: pointer;
     border-radius: 0.5rem;
     height: 5.5rem;
+    position: relative;
     & > span {
       & > p {
         color: white;
       }
     }
+    &-add {
+      &-image {
+        display: inline-block;
+        position: absolute;
+        right: 1.5rem;
+        top: 2rem;
+        height: 1.3rem;
+        border: 1px solid black;
+        border-radius: 50%;
+        padding: 0.2rem;
+      }
+    }
   }
   &-user:hover {
+    border: 2px solid #008000;
+  }
+  &-invite {
+    width: 25rem;
+    background-color: rgb(79, 79, 79);
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.4rem;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    height: 7.5rem;
+    position: relative;
+    & > span {
+      & > p {
+        white-space: nowrap;
+        color: white;
+        margin-left: 1rem;
+      }
+    }
+    &-add {
+      &-image {
+        height: 1.3rem;
+        position: absolute;
+        right: 1.5rem;
+        top: 3rem;
+        border: 1px solid black;
+        border-radius: 50%;
+        padding: 0.2rem;
+      }
+    }
+  }
+  &-invite:hover {
     border: 2px solid #008000;
   }
   &-logo {
@@ -354,19 +425,6 @@
     height: 4rem;
     margin-top: 0.75rem;
     margin-right: 1.5rem;
-  }
-  &-add {
-    width: 100%;
-    position: relative;
-    &-image {
-      height: 1.3rem;
-      position: absolute;
-      right: 1.5rem;
-      top: 2rem;
-      border: 1px solid black;
-      border-radius: 50%;
-      padding: 0.2rem;
-    }
   }
 }
 
@@ -530,21 +588,42 @@
     padding-right: 5%;
     & > h1:first-child {
       margin-top: 3rem;
+      margin-bottom: 1rem;
     }
     & > h1 {
       font-size: 0.8rem;
       text-transform: uppercase;
       color: #4f545c;
       width: 8rem;
+      margin-bottom: 1rem;
     }
     & > p {
       font-size: 0.9rem;
       color: rgb(213, 213, 213);
       cursor: pointer;
     }
+    &-myaccount, &-privacy, &-connections, &-billing, &-voice, &-notifications, &-appearance, &-language {
+      font-size: 0.9rem;
+      color: rgb(213, 213, 213);
+      padding: 0.5rem;
+      margin-top: -0.5rem;
+      cursor: pointer;
+    }
+    &-activeitem {
+      font-size: 0.9rem;
+      color: rgb(213, 213, 213);
+      background-color: rgb(65, 65, 65);
+      padding: 0.5rem;
+      margin-top: -0.5rem;
+      border-radius: 3px;
+      cursor: pointer;
+    }
     & > p:last-child {
       font-size: 0.9rem;
       color: rgb(238, 0, 0);
+      padding: 0.5rem;
+      margin-top: -0.5rem;
+      cursor: pointer;
     }
   }
   &-myaccount {
@@ -889,6 +968,48 @@
         position: relative;
         top: 1.5rem;
         left: 12rem;
+      }
+    }
+  }
+
+  &-invites {
+    padding-left: 2rem;
+    display: flex;
+    flex-direction: column;
+    background-color: #36393f;
+    width: 40rem;
+    & > h1 {
+      color: rgb(228, 228, 228);
+      text-transform: uppercase;
+      font-size: 1rem;
+      margin-top: 3rem;
+    }
+    &__container {
+      width: 40rem;
+      height: 12rem;
+      background-color: #292929;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: row;
+      &-info {
+        display: flex;
+        flex-direction: column;
+        margin-left: 2rem;
+        &-server {
+          margin-top: 2rem;
+          & > span {
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            color: #606060;
+          }
+          & > input {
+            margin-top: 0.2rem;
+            padding-left: 0.2rem;
+            outline: none;
+            font-size: 1rem;
+            width: 18rem;
+          }
+        }
       }
     }
   }

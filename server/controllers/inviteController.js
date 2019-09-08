@@ -137,6 +137,21 @@ module.exports = {
     if (!updateUserList) return res.status(422).send({"error":"Error adding users to server list"});
 
     res.status(200).send(updateServerList.serversList);
+  },
+
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {array} invites
+   */
+  findInvites: async(req, res) => {
+    const { serverId } = req.body;
+
+    const invitesList = await InviteModel.findAll({ where: { serverId: serverId } });
+
+    if (!invitesList) return res.status(422).json({"error":"Unable to find invites"});
+
+    return res.status(200).send(invitesList);
   }
 
 }

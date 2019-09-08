@@ -226,6 +226,22 @@
     margin-top: 0.5rem;
     margin-left: 1rem; }
 
+.cancel {
+  color: #5c5c5c;
+  display: block;
+  font-size: 1.2rem;
+  animation-name: fadeInOpacity;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-duration: 0.3s;
+  outline: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+
 .channelarrow {
   border: solid #5c5c5c;
   border-width: 0 2px 2px 0;
@@ -254,7 +270,11 @@
   height: 12.5rem;
   width: 11.6rem;
   background-color: #3f3f3f;
-  border-radius: 5px; }
+  border-radius: 5px;
+  animation-name: fadeInOpacity;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-duration: 0.3s; }
   .serversettings-modal-section {
     display: flex;
     flex-direction: row;
@@ -284,6 +304,9 @@
 .serversettings-members-count {
   color: lightgray; }
 
+.serversettings-invites-count {
+  color: lightgray; }
+
 .serversettings-user {
   width: 21rem;
   background-color: #4f4f4f;
@@ -292,11 +315,47 @@
   margin-top: 0.4rem;
   cursor: pointer;
   border-radius: 0.5rem;
-  height: 5.5rem; }
+  height: 5.5rem;
+  position: relative; }
   .serversettings-user > span > p {
     color: white; }
+  .serversettings-user-add-image {
+    display: inline-block;
+    position: absolute;
+    right: 1.5rem;
+    top: 2rem;
+    height: 1.3rem;
+    border: 1px solid black;
+    border-radius: 50%;
+    padding: 0.2rem; }
 
 .serversettings-user:hover {
+  border: 2px solid #008000; }
+
+.serversettings-invite {
+  width: 25rem;
+  background-color: #4f4f4f;
+  display: flex;
+  flex-direction: row;
+  margin-top: 0.4rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  height: 7.5rem;
+  position: relative; }
+  .serversettings-invite > span > p {
+    white-space: nowrap;
+    color: white;
+    margin-left: 1rem; }
+  .serversettings-invite-add-image {
+    height: 1.3rem;
+    position: absolute;
+    right: 1.5rem;
+    top: 3rem;
+    border: 1px solid black;
+    border-radius: 50%;
+    padding: 0.2rem; }
+
+.serversettings-invite:hover {
   border: 2px solid #008000; }
 
 .serversettings-logo {
@@ -306,18 +365,6 @@
   height: 4rem;
   margin-top: 0.75rem;
   margin-right: 1.5rem; }
-
-.serversettings-add {
-  width: 100%;
-  position: relative; }
-  .serversettings-add-image {
-    height: 1.3rem;
-    position: absolute;
-    right: 1.5rem;
-    top: 2rem;
-    border: 1px solid black;
-    border-radius: 50%;
-    padding: 0.2rem; }
 
 .arrowleft {
   width: 0;
@@ -461,19 +508,38 @@
     padding-left: 15%;
     padding-right: 5%; }
     .usersettings-sidebar > h1:first-child {
-      margin-top: 3rem; }
+      margin-top: 3rem;
+      margin-bottom: 1rem; }
     .usersettings-sidebar > h1 {
       font-size: 0.8rem;
       text-transform: uppercase;
       color: #4f545c;
-      width: 8rem; }
+      width: 8rem;
+      margin-bottom: 1rem; }
     .usersettings-sidebar > p {
       font-size: 0.9rem;
       color: #d5d5d5;
       cursor: pointer; }
+    .usersettings-sidebar-myaccount, .usersettings-sidebar-privacy, .usersettings-sidebar-connections, .usersettings-sidebar-billing, .usersettings-sidebar-voice, .usersettings-sidebar-notifications, .usersettings-sidebar-appearance, .usersettings-sidebar-language {
+      font-size: 0.9rem;
+      color: #d5d5d5;
+      padding: 0.5rem;
+      margin-top: -0.5rem;
+      cursor: pointer; }
+    .usersettings-sidebar-activeitem {
+      font-size: 0.9rem;
+      color: #d5d5d5;
+      background-color: #414141;
+      padding: 0.5rem;
+      margin-top: -0.5rem;
+      border-radius: 3px;
+      cursor: pointer; }
     .usersettings-sidebar > p:last-child {
       font-size: 0.9rem;
-      color: #ee0000; }
+      color: #ee0000;
+      padding: 0.5rem;
+      margin-top: -0.5rem;
+      cursor: pointer; }
   .usersettings-myaccount {
     padding-left: 2rem;
     display: flex;
@@ -764,6 +830,40 @@
         position: relative;
         top: 1.5rem;
         left: 12rem; }
+  .serversettings-invites {
+    padding-left: 2rem;
+    display: flex;
+    flex-direction: column;
+    background-color: #36393f;
+    width: 40rem; }
+    .serversettings-invites > h1 {
+      color: #e4e4e4;
+      text-transform: uppercase;
+      font-size: 1rem;
+      margin-top: 3rem; }
+    .serversettings-invites__container {
+      width: 40rem;
+      height: 12rem;
+      background-color: #292929;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: row; }
+      .serversettings-invites__container-info {
+        display: flex;
+        flex-direction: column;
+        margin-left: 2rem; }
+        .serversettings-invites__container-info-server {
+          margin-top: 2rem; }
+          .serversettings-invites__container-info-server > span {
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            color: #606060; }
+          .serversettings-invites__container-info-server > input {
+            margin-top: 0.2rem;
+            padding-left: 0.2rem;
+            outline: none;
+            font-size: 1rem;
+            width: 18rem; }
   .serversettings-authentication {
     padding-left: 2rem;
     display: flex;
