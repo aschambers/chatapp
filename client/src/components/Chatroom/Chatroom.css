@@ -41,8 +41,8 @@
       outline: none;
       border: 1px solid black; }
   .chatarea-messages {
-    height: 31.5rem;
-    overflow: auto;
+    height: 84vh;
+    overflow: hidden;
     display: flex;
     flex-direction: column-reverse;
     padding-left: 2rem; }
@@ -50,7 +50,7 @@
 @-moz-document url-prefix() {
   .chatarea-messages {
     margin-top: 0rem;
-    min-height: 33.5rem;
+    min-height: 87vh;
     display: block; } }
     .chatarea-messages > div {
       margin-top: -1rem; }
@@ -68,6 +68,8 @@
     .chatarea-messages-message {
       font-size: 1rem;
       color: white; }
+  .chatarea-messages:hover {
+    overflow: auto; }
 
 .sidebarright {
   display: flex;
