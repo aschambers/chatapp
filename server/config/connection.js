@@ -2,7 +2,8 @@ const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize("chatappdb", "devuser", "rubiks42", {
   dialect: "postgres",
-  host: "127.0.0.1",
+  host: "chatappdb1.crmkekcbvhcf.us-west-1.rds.amazonaws.com",
+  // host: "127.0.0.1",
   port: 5432,
   pool: {
     max: 5,
@@ -11,7 +12,8 @@ const sequelize = new Sequelize("chatappdb", "devuser", "rubiks42", {
     aquire: 60000
   },
   dialectOptions: {
-    socketPath: "127.0.0.1",
+    socketPath: "chatappdb1.crmkekcbvhcf.us-west-1.rds.amazonaws.com",
+    // socketPath: "127.0.0.1"
   }
 });
 
