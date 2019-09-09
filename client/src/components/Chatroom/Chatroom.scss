@@ -46,15 +46,15 @@
     }
   }
   &-messages {
+    height: 31.5rem;
+    overflow: auto;
     display: flex;
     flex-direction: column-reverse;
-    min-height: 0rem;
-    max-height: 31.5rem;
     @-moz-document url-prefix() {
+      margin-top: 0rem;
+      min-height: 33.5rem;
       display: block;
-      max-height: 33.5rem;
     }
-    overflow: auto;
     padding-left: 2rem;
     & > div {
       margin-top: -1rem;
@@ -72,7 +72,6 @@
       font-size: 0.8rem;
     }
     &-message {
-      margin-top: -0.5rem;
       font-size: 1rem;
       color: white;
     }
