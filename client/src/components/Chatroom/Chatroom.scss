@@ -46,13 +46,13 @@
     }
   }
   &-messages {
-    height: 31.5rem;
-    overflow: auto;
+    height: 84vh;
+    overflow: hidden;
     display: flex;
     flex-direction: column-reverse;
     @-moz-document url-prefix() {
       margin-top: 0rem;
-      min-height: 33.5rem;
+      min-height: 87vh;
       display: block;
     }
     padding-left: 2rem;
@@ -75,6 +75,9 @@
       font-size: 1rem;
       color: white;
     }
+  }
+  &-messages:hover {
+    overflow: auto;
   }
 }
 
