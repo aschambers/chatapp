@@ -3,6 +3,7 @@ const sequelize = require('../config/connection');
 const bcrypt = require('bcryptjs');
 const Server = require('./Server');
 const Message = require('./Message');
+const Friend = require('./Friend');
 
 const User = sequelize.define('users', {
   id: {
@@ -102,7 +103,13 @@ const User = sequelize.define('users', {
 
 User.hasMany(Server);
 User.hasMany(Message);
+User.hasMany(Friend);
 Server.belongsTo(User);
 Message.belongsTo(User);
+Friend.belongsTo(User);
+
+// Many-to-many relationship
+// User.belongsToMany(Friend, { as: 'Friends', through: { model: Friend, unique: false }, foreignKey: 'user_id' });
+// Friend.belongsToMany(User, { as: 'Users', through: { model: User, unique: false }, foreignKey: 'friend_id' });
 
 module.exports = User;

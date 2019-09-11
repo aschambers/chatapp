@@ -63,6 +63,13 @@
       }
     }
     &-user {
+      cursor: context-menu;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
       font-size: 1.2rem;
       color: rgb(80, 208, 74);
       margin-right: 0.3rem;
@@ -145,6 +152,13 @@
     margin-left: 1rem;
   }
   &-usercontainer {
+    cursor: context-menu;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
     margin-top: 0.5rem;
     padding-left: 1rem;
     display: flex;
