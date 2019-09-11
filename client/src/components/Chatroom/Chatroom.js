@@ -110,6 +110,7 @@ class Chatroom extends Component {
   }
 
   privateMessageUser = () => {
+    this.setState({ messages: [] });
     this.props.privateMessageUser(this.state.rightClickedUser);
   }
 
