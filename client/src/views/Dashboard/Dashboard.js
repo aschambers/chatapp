@@ -89,40 +89,12 @@ const Dashboard = (props) => {
     }
 
     if (props.friendsList && props.findFriendsSuccess) {
-      // const testFriendsList = [{
-      //   userId: 1,
-      //   friendId: 2,
-      //   username: 'alan',
-      //   imageUrl: null
-      // }, {
-      //   userId: 1,
-      //   friendId: 3,
-      //   username: 'ryan',
-      //   imageUrl: null
-      // }, {
-      //   userId: 1,
-      //   friendId: 4,
-      //   username: 'nathan',
-      //   imageUrl: null
-      // }, {
-      //   userId: 1,
-      //   friendId: 5,
-      //   username: 'milan',
-      //   imageUrl: null
-      // }, {
-      //   userId: 1,
-      //   friendId: 6,
-      //   username: 'karen',
-      //   imageUrl: null
-      // }];
       setFriendsList(props.friendsList);
-      // setFriendsList(testFriendsList);
       props.resetFriendValues();
     }
 
     if (props.friendsList && props.createFriendSuccess) {
       setFriendsList(props.friendsList);
-      setServer("");
       props.resetFriendValues();
     }
 
@@ -402,6 +374,7 @@ const Dashboard = (props) => {
   }
 
   const privateMessageUser = (user) => {
+    setServer("");
     setCurrentFriend(user);
     props.friendCreate({
       userId: id,
@@ -613,7 +586,7 @@ const Dashboard = (props) => {
           serverId={serverId}
           username={username}
           serverUserList={serverUserList}
-          privateMessageUser={(user) => { privateMessageUser(user) }} 
+          privateMessageUser={(user) => { privateMessageUser(user) }}
         />
       : null}
 
