@@ -583,7 +583,7 @@ const Dashboard = (props) => {
         </div>
       }
 
-      {server !== "" ?
+      {server !== "" && activeChatroom !== "" ?
         <Chatroom
           activeChatroom={activeChatroom}
           activeChatroomId={activeChatroomId}

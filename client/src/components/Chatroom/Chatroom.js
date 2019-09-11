@@ -31,7 +31,12 @@ class Chatroom extends Component {
       socketId: "",
       currentSocket: "",
       rightClickedUser: {},
-      userModalOpen: false
+      userModalOpen: false,
+      namespace: null,
+      room: null,
+      serverId: null,
+      previousRoom: null,
+      currentChatroom: null
     }
   }
 
@@ -42,11 +47,13 @@ class Chatroom extends Component {
     this.socket = io(ROOT_URL);
 
     this.socket.on('connect', () => {
-      this.setState({ socketId: this.socket.id });
+      this.setState({ socketId: this.socket.id, namespace: `${ROOT_URL}/${this.props.serverId}`, room: `${ROOT_URL}/${this.props.serverId}/${this.props.activeChatroom}`, previousRoom: `${ROOT_URL}/${this.props.serverId}/${this.props.activeChatroom}`, serverId: this.props.serverId, currentChatroom: this.props.activeChatroom, chatroomId: this.props.activeChatroomId });
     });
 
-    this.socket.to(`${this.socket.id}`).emit('GET_CHATROOM_MESSAGES', {
-      chatroomId: this.props.activeChatroomId
+    this.socket.emit('GET_CHATROOM_MESSAGES', {
+      chatroomId: this.props.activeChatroomId,
+      previousRoom: `${ROOT_URL}/${this.props.serverId}/${this.props.activeChatroom}`,
+      room: `${ROOT_URL}/${this.props.serverId}/${this.props.activeChatroom}`
     });
 
     this.socket.on('RECEIVE_CHATROOM_MESSAGES', (data) => {
@@ -67,11 +74,21 @@ class Chatroom extends Component {
   }
 
   async componentWillReceiveProps(nextProps) {
-    if (nextProps.activeChatroomId) {
-      this.socket.emit('GET_CHATROOM_MESSAGES', {
+    if (nextProps.activeChatroom !== this.state.currentChatroom) {
+      this.setState({
+        previousRoom: this.state.room,
+        room: `${ROOT_URL}/${nextProps.serverId}/${nextProps.activeChatroom}`,
+        serverId: nextProps.serverId,
+        currentChatroom: nextProps.activeChatroom,
         chatroomId: nextProps.activeChatroomId
       });
+      this.socket.emit('GET_CHATROOM_MESSAGES', {
+        chatroomId: nextProps.activeChatroomId,
+        previousRoom: this.state.previousRoom,
+        room: `${ROOT_URL}/${nextProps.serverId}/${nextProps.activeChatroom}`
+      });
     }
+
     if (nextProps.user) {
       const { id, username, active, type } = nextProps.user;
       this.setState({
@@ -94,12 +111,14 @@ class Chatroom extends Component {
   sendMessage = (event) => {
     if (event) {
       event.preventDefault();
-      this.socket.emit('CHATROOM_MESSAGE', {
+      const data = {
         username: this.props.username,
         message: this.state.message,
         userId: this.props.userId,
-        chatroomId: this.props.activeChatroomId
-      });
+        chatroomId: this.state.chatroomId,
+        room: this.state.room
+      };
+      this.socket.emit('CHATROOM_MESSAGE', data);
       this.setState({ message: "" });
     }
   }
