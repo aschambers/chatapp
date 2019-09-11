@@ -9,6 +9,7 @@ import 'moment-timezone';
 import './Dashboard.css';
 import ToastMessage from '../../components/ToastMessage/ToastMessage';
 import Chatroom from '../../components/Chatroom/Chatroom';
+import ChatroomFriend from '../../components/ChatroomFriend/ChatroomFriend';
 import CreateServer from '../../components/CreateServer/CreateServer';
 import JoinServer from '../../components/JoinServer/JoinServer';
 import CategoryModal from '../../components/CategoryModal/CategoryModal';
@@ -33,7 +34,7 @@ import russia from '../../assets/images/russia.png';
 import add from '../../assets/images/add.png';
 
 const Dashboard = (props) => {
-  const [id, setId] = useState('');
+  const [id, setId] = useState(null);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [imageUrl, setImageUrl] = useState('');
@@ -74,11 +75,62 @@ const Dashboard = (props) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [serverInvites, setServerInvites] = useState([]);
   const [allowDirectMessages, setAllowDirectMessages] = useState(false);
+  const [friendsList, setFriendsList] = useState(null);
+  const [currentFriend, setCurrentFriend] = useState(null);
 
   const ref = useRef();
   useOnClickOutside(ref, () => setShowCategoryModal(false));
 
   useEffect(() => {
+    if (friendsList === null && id !== null) {
+      props.findFriends({
+        userId: id
+      });
+    }
+
+    if (props.friendsList && props.findFriendsSuccess) {
+      // const testFriendsList = [{
+      //   userId: 1,
+      //   friendId: 2,
+      //   username: 'alan',
+      //   imageUrl: null
+      // }, {
+      //   userId: 1,
+      //   friendId: 3,
+      //   username: 'ryan',
+      //   imageUrl: null
+      // }, {
+      //   userId: 1,
+      //   friendId: 4,
+      //   username: 'nathan',
+      //   imageUrl: null
+      // }, {
+      //   userId: 1,
+      //   friendId: 5,
+      //   username: 'milan',
+      //   imageUrl: null
+      // }, {
+      //   userId: 1,
+      //   friendId: 6,
+      //   username: 'karen',
+      //   imageUrl: null
+      // }];
+      setFriendsList(props.friendsList);
+      // setFriendsList(testFriendsList);
+      props.resetFriendValues();
+    }
+
+    if (props.friendsList && props.createFriendSuccess) {
+      setFriendsList(props.friendsList);
+      setServer("");
+      props.resetFriendValues();
+    }
+
+    if (props.friendsList && props.deleteFriendSuccess) {
+      setFriendsList(props.friendsList);
+      props.resetFriendValues();
+    }
+
     if (props.findInvitesSuccess || props.findInvitesError) {
       if (props.findInvitesSuccess) {
         setServerInvites(props.inviteServersList);
@@ -160,7 +212,7 @@ const Dashboard = (props) => {
       setActive(active);
       setServersList(serversList);
     }
-  }, [props, id, username]);
+  }, [props, id, username, friendsList]);
 
   const detectEscape = (event) => {
     if (event.keyCode === 27) {
@@ -316,6 +368,7 @@ const Dashboard = (props) => {
     setServerId(item.serverId);
     setServerImage(item.imageUrl);
     setServerRegion(item.region);
+    setCurrentFriend(null);
     props.findUserList({
       serverId: item.serverId
     });
@@ -349,15 +402,34 @@ const Dashboard = (props) => {
   }
 
   const privateMessageUser = (user) => {
-    setServer("");
-    console.log(user);
+    setCurrentFriend(user);
+    props.friendCreate({
+      userId: id,
+      friendId: user.userId,
+      username: user.username,
+      imageUrl: user.imageUrl
+    });
+  }
+
+  const deleteFriend = (event, friend) => {
+    event.stopPropagation();
+    // setCurrentFriend(null);
+    // props.friendDelete({
+    //   userId: id,
+    //   friendId: friend.friendId
+    // });
+  }
+
+  const clickSetCurrentFriend = (event, friend) => {
+    event.stopPropagation();
+    setCurrentFriend(friend);
   }
 
   return (
     <div className="dashboard">
       <ToastMessage />
       {isModalOpen || showCategoryModal || showChannelModal || showNotificationSettingsModal || showPrivacyModal || inviteModal ? <span className="contentBackground"></span> : null}
-      <div className="sidebar">
+      <div className="sidebar" onClick={() => { setCurrentFriend(null); }}>
         <div className="sidebar-container" onPointerOver={() => { setHover("Home") }} onPointerOut={() => { setHover("") }}>
           {hover === "Home" && server !== "" ? <span className="sidebar-hover"></span> : null}
           {server === "" ? <span className="sidebar-select"></span> : null}
@@ -391,6 +463,17 @@ const Dashboard = (props) => {
             <span>Private Messages</span>
           </div>
           <div className="sidebarleft-bordertwo" />
+          <div className="sidebarleft-listfriends">
+            {friendsList && friendsList.length ? friendsList.map((item, index) => {
+              return (
+                <div key={index} className={currentFriend && item.username === currentFriend.username ? "sidebarleft-currentfriend-active" : "sidebarleft-currentfriend"} onClick={(event) => { clickSetCurrentFriend(event, item); }}>
+                  <img className="sidebarleft-currentfriend-image" src={item.imageUrl ? item.imageUrl : chatot} alt="username-icon" />
+                  <span className="sidebarleft-currentfriend-username">{item.username}</span>
+                  <span className="sidebarleft-currentfriend-remove" onClick={(event) => { deleteFriend(event, item); }}>&#10005;</span>
+                </div>
+              );
+            }) : null}
+          </div>
           <div className="userinfo">
             <div className="username">
               <img className="username-image" src={imageUrl ? imageUrl : chatot} alt="username-icon" />
@@ -523,14 +606,27 @@ const Dashboard = (props) => {
       }
 
       {server !== "" ?
-        <Chatroom 
+        <Chatroom
           activeChatroom={activeChatroom}
           activeChatroomId={activeChatroomId}
           userId={id}
           serverId={serverId}
           username={username}
           serverUserList={serverUserList}
-          privateMessageUser={(user) => { privateMessageUser(user) }} /> :
+          privateMessageUser={(user) => { privateMessageUser(user) }} 
+        />
+      : null}
+
+      {server === "" && currentFriend !== null ?
+        <ChatroomFriend
+          userId={id}
+          username={username}
+          friendId={currentFriend.friendId}
+          friendUsername={currentFriend.username}
+        />
+      : null}
+
+      {server === "" && currentFriend === null ?
         <div className="mainarea">
           <div className="mainarea-topnav">
           </div>
@@ -547,7 +643,7 @@ const Dashboard = (props) => {
             </div>
           </div>
         </div>
-      }
+      : null}
 
       {isServerSettingsOpen ?
         <div className="serversettings">
@@ -707,7 +803,13 @@ const Dashboard = (props) => {
       : null}
 
       {isModalOpen && currentModal === "create" ?
-        <CreateServer id={id} region={region} setRegion={(region) => { setRegion(region) }} setModalOpen={() => { setModalOpen(!isModalOpen) }} getUpdatedServerList={(closeModal) => { getUpdatedServerList(closeModal) }} />
+        <CreateServer
+          id={id}
+          region={region}
+          setRegion={(region) => { setRegion(region) }}
+          setModalOpen={() => { setModalOpen(!isModalOpen) }}
+          getUpdatedServerList={(closeModal) => { getUpdatedServerList(closeModal) }}
+        />
       : null}
 
       {isModalOpen && currentModal === "join" ?
@@ -720,7 +822,7 @@ const Dashboard = (props) => {
   );
 }
 
-const mapStateToProps = ({ usersReducer, serversReducer, categoriesReducer, chatroomsReducer, invitesReducer }) => {
+const mapStateToProps = ({ usersReducer, serversReducer, categoriesReducer, chatroomsReducer, invitesReducer, friendsReducer }) => {
   return {
     error: usersReducer.error,
     isLoading: usersReducer.isLoading,
@@ -741,7 +843,11 @@ const mapStateToProps = ({ usersReducer, serversReducer, categoriesReducer, chat
     verifyError: invitesReducer.verifyError,
     inviteServersList: invitesReducer.inviteServersList,
     findInvitesSuccess: invitesReducer.findInvitesSuccess,
-    findInvitesError: invitesReducer.findInvitesError
+    findInvitesError: invitesReducer.findInvitesError,
+    createFriendSuccess: friendsReducer.createFriendSuccess,
+    deleteFriendSuccess: friendsReducer.deleteFriendSuccess,
+    findFriendsSuccess: friendsReducer.findFriendsSuccess,
+    friendsList: friendsReducer.friendsList
   };
 }
 

@@ -49,7 +49,7 @@ class Chatroom extends Component {
       chatroomId: this.props.activeChatroomId
     });
 
-    this.socket.on('RECEIVE_CHATROOM_MESSAGE', (data) => {
+    this.socket.on('RECEIVE_CHATROOM_MESSAGES', (data) => {
       // scroll to latest message after rendering messages in firefox
       if (navigator.userAgent.search("Firefox") > -1) {
         this.setState({ messages: data.reverse() }, () => {

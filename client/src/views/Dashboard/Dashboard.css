@@ -225,6 +225,49 @@
     font-size: 0.8rem;
     margin-top: 0.5rem;
     margin-left: 1rem; }
+  .sidebarleft-currentfriend:first-child {
+    margin-top: 0.75rem; }
+  .sidebarleft-currentfriend {
+    display: flex;
+    flex-direction: row;
+    background-color: #4a4a4a;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-left: 5%;
+    width: 90%;
+    border-radius: 3px;
+    position: relative;
+    cursor: pointer; }
+    .sidebarleft-currentfriend-image {
+      height: 2rem;
+      width: 2rem;
+      border-radius: 50%;
+      background-color: white;
+      margin-left: 1rem;
+      margin-right: 1rem; }
+    .sidebarleft-currentfriend-username {
+      margin-top: 0.5rem;
+      color: white; }
+    .sidebarleft-currentfriend-remove {
+      cursor: pointer;
+      position: absolute;
+      margin-left: 90%;
+      margin-top: 0.5rem; }
+    .sidebarleft-currentfriend-active {
+      display: flex;
+      flex-direction: row;
+      background-color: #008000;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      margin-left: 5%;
+      width: 90%;
+      border-radius: 3px;
+      position: relative;
+      cursor: pointer; }
+    .sidebarleft-currentfriend-active:first-child {
+      margin-top: 0.75rem; }
 
 .cancel {
   color: #5c5c5c;

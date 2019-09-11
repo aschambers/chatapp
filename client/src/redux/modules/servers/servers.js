@@ -27,15 +27,15 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case CREATING_SERVER:
       return {
-        ...state, isLoading: true, error: false, success: false
+        ...state, isLoading: true, createServerError: false, createServerSuccess: false
       };
     case CREATE_SERVER_SUCCESS:
       return {
-        ...state, isLoading: false, error: false, success: true, serversList: action.payload
+        ...state, isLoading: false, createServerError: false, createServerSuccess: true, serversList: action.payload
       };
     case CREATE_SERVER_FAIL:
       return {
-        ...state, isLoading: false, error: true, success: false
+        ...state, isLoading: false, createServerError: true, createServerSuccess: false
       };
     case FINDING_SERVER:
       return {

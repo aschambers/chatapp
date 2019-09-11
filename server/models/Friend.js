@@ -43,6 +43,10 @@ const Friend = sequelize.define('friends', {
       references: 'users',
       referencesKey: 'id'
     }
+  },
+  activeFriend: {
+    type: Sequelize.STRING,
+    allowNull: false
   }
 });
 

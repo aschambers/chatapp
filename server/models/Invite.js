@@ -42,7 +42,7 @@ const Invite = sequelize.define('invites', {
       references: 'servers',
       referencesKey: 'id'
     }
-  },
+  }
 });
 
 module.exports = Invite;

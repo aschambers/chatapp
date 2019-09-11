@@ -21,10 +21,10 @@ const CreateServer = (props) => {
   useOnClickOutside(ref, () => props.setModalOpen(false));
 
   useEffect(() => {
-    if (props.success) {
+    if (props.createServerSuccess) {
       props.getUpdatedServerList(true);
       props.resetServerValues();
-    } else if (props.error) {
+    } else if (props.createServerError) {
       props.getUpdatedServerList(false);
       props.resetServerValues();
     }
@@ -121,9 +121,9 @@ const CreateServer = (props) => {
 
 function mapStateToProps({ serversReducer }) {
   return {
-    error: serversReducer.error,
+    createServerError: serversReducer.createServerError,
     isLoading: serversReducer.isLoading,
-    success: serversReducer.success
+    createServerSuccess: serversReducer.createServerSuccess
   };
 }
 
