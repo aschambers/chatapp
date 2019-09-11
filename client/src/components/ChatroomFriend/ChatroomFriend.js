@@ -28,7 +28,7 @@ class ChatroomFriend extends Component {
 
     this.socket.emit('GET_PRIVATE_MESSAGES', {
       userId: this.props.userId,
-      friendId: this.props.friendId
+      friendId: this.props.friendId !== null ? this.props.friendId : this.props.userId
     });
 
     this.socket.on('RECEIVE_PRIVATE_MESSAGES', (data) => {
@@ -55,7 +55,7 @@ class ChatroomFriend extends Component {
         username: this.props.username,
         message: this.state.message,
         userId: this.props.userId,
-        friendId: this.props.friendId
+        friendId: this.props.friendId !== null ? this.props.friendId : this.props.userId
       });
       this.setState({ message: "" });
     }

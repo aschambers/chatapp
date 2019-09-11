@@ -386,11 +386,12 @@ const Dashboard = (props) => {
 
   const deleteFriend = (event, friend) => {
     event.stopPropagation();
-    // setCurrentFriend(null);
-    // props.friendDelete({
-    //   userId: id,
-    //   friendId: friend.friendId
-    // });
+    setCurrentFriend(null);
+    setServer("");
+    props.friendDelete({
+      userId: id,
+      friendId: friend.friendId
+    });
   }
 
   const clickSetCurrentFriend = (event, friend) => {
@@ -438,13 +439,17 @@ const Dashboard = (props) => {
           <div className="sidebarleft-bordertwo" />
           <div className="sidebarleft-listfriends">
             {friendsList && friendsList.length ? friendsList.map((item, index) => {
-              return (
-                <div key={index} className={currentFriend && item.username === currentFriend.username ? "sidebarleft-currentfriend-active" : "sidebarleft-currentfriend"} onClick={(event) => { clickSetCurrentFriend(event, item); }}>
-                  <img className="sidebarleft-currentfriend-image" src={item.imageUrl ? item.imageUrl : chatot} alt="username-icon" />
-                  <span className="sidebarleft-currentfriend-username">{item.username}</span>
-                  <span className="sidebarleft-currentfriend-remove" onClick={(event) => { deleteFriend(event, item); }}>&#10005;</span>
-                </div>
-              );
+              if (item.activeFriend) {
+                return (
+                  <div key={index} className={currentFriend && item.username === currentFriend.username ? "sidebarleft-currentfriend-active" : "sidebarleft-currentfriend"} onClick={(event) => { clickSetCurrentFriend(event, item); }}>
+                    <img className="sidebarleft-currentfriend-image" src={item.imageUrl ? item.imageUrl : chatot} alt="username-icon" />
+                    <span className="sidebarleft-currentfriend-username">{item.username}</span>
+                    <span className="sidebarleft-currentfriend-remove" onClick={(event) => { deleteFriend(event, item); }}>&#10005;</span>
+                  </div>
+                );
+              } else {
+                return null;
+              }
             }) : null}
           </div>
           <div className="userinfo">
