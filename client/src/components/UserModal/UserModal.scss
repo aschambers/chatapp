@@ -1,10 +1,11 @@
-.serverjoin {
+.usermodal {
   position: absolute;
   z-index: 20;
-  width: 40rem;
-  height: 20rem;
+  width: 30rem;
+  height: 15rem;
   background-color: rgb(255, 255, 255);
-  transform: translate(50%, 25%);
+  left: 50%;
+  transform: translate(-50%, 50%);
   border-radius: 5px;
   animation-name: fadeInOpacity;
   animation-iteration-count: 1;
@@ -52,17 +53,19 @@
       font-size: 1.2rem;
       padding-top: 0.75rem;
       padding-left: 2rem;
+      width: 8rem;
     }
     & > button {
       cursor: pointer;
       background-color: #008f00;
       color: rgb(247, 246, 246);
       height: 2.25rem;
+      width: 10rem;
       box-sizing: border-box;
       padding: 0.5rem 1.5rem 1.5rem 1.5rem;
       font-size: 1rem;
       border-radius: 3px;
-      margin-left: 25rem;
+      margin-left: 8rem;
       margin-top: 1.5rem;
     }
   }

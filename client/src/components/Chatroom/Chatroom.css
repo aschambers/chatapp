@@ -59,6 +59,13 @@
   .chatarea-messages > div {
     margin-top: 0rem; } }
     .chatarea-messages-user {
+      cursor: context-menu;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
       font-size: 1.2rem;
       color: #50d04a;
       margin-right: 0.3rem; }
@@ -127,6 +134,13 @@
     margin-top: 0.5rem;
     margin-left: 1rem; }
   .sidebarright-usercontainer {
+    cursor: context-menu;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
     margin-top: 0.5rem;
     padding-left: 1rem;
     display: flex;

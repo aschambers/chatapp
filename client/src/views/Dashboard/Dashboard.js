@@ -348,6 +348,11 @@ const Dashboard = (props) => {
     });
   }
 
+  const privateMessageUser = (user) => {
+    setServer("");
+    console.log(user);
+  }
+
   return (
     <div className="dashboard">
       <ToastMessage />
@@ -518,7 +523,14 @@ const Dashboard = (props) => {
       }
 
       {server !== "" ?
-        <Chatroom activeChatroom={activeChatroom} activeChatroomId={activeChatroomId} userId={id} serverId={serverId} username={username} serverUserList={serverUserList} /> :
+        <Chatroom 
+          activeChatroom={activeChatroom}
+          activeChatroomId={activeChatroomId}
+          userId={id}
+          serverId={serverId}
+          username={username}
+          serverUserList={serverUserList}
+          privateMessageUser={(user) => { privateMessageUser(user) }} /> :
         <div className="mainarea">
           <div className="mainarea-topnav">
           </div>

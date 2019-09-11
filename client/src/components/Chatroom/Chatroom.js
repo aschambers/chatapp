@@ -5,6 +5,7 @@ import { ROOT_URL } from '../../config/networkSettings';
 import io from "socket.io-client";
 import Moment from 'react-moment';
 import 'moment-timezone';
+import UserModal from '../../components/UserModal/UserModal';
 import './Chatroom.css';
 import chatot from '../../assets/images/chatot.png';
 import numbersign from '../../assets/images/numbersign.png';
@@ -28,7 +29,9 @@ class Chatroom extends Component {
       personalMessages: [],
       userDetails: false,
       socketId: "",
-      currentSocket: ""
+      currentSocket: "",
+      rightClickedUser: {},
+      userModalOpen: false
     }
   }
 
@@ -101,6 +104,15 @@ class Chatroom extends Component {
     }
   }
 
+  contextMenu = (event, item) => {
+    event.preventDefault();
+    this.setState({ rightClickedUser: item, userModalOpen: true });
+  }
+
+  privateMessageUser = () => {
+    this.props.privateMessageUser(this.state.rightClickedUser);
+  }
+
   render() {
     return (
       <div className="chatroom">
@@ -112,7 +124,7 @@ class Chatroom extends Component {
             {this.state.messages && this.state.messages.length > 0 ? this.state.messages.map((item, index) => {
               return (
                 <div id={"message" + index} key={index}>
-                  <p><span className="chatarea-messages-user">{item.username}</span> <Moment format="MM/DD/YYYY" className="chatarea-messages-time"><span>{item.createdAt}</span></Moment></p>
+                  <p><span className="chatarea-messages-user" onClick={this.handleClick} onContextMenu={(event) => { this.contextMenu(event, item); }}>{item.username}</span> <Moment format="MM/DD/YYYY" className="chatarea-messages-time"><span>{item.createdAt}</span></Moment></p>
                   <p className="chatarea-messages-message">{item.message}</p>
                 </div>
               )
@@ -133,7 +145,7 @@ class Chatroom extends Component {
           <div className="sidebarright-bordertwo" />
           {this.props.serverUserList.length > 0 ? this.props.serverUserList.map((user, index)  => {
             return (
-              <div key={index} className={user.type === 'owner' ? "sidebarright-usercontainer" : ""}>
+              <div key={index} className={user.type === 'owner' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.contextMenu(event, user); }}>
                 {user.type === 'owner' ? <div className="username">
                   <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
                 </div> : null}
@@ -149,7 +161,7 @@ class Chatroom extends Component {
           <div className="sidebarright-bordertwo" />
           {this.props.serverUserList.length > 0 ? this.props.serverUserList.map((user, index)  => {
             return (
-              <div key={index} className={user.type === 'admin' ? "sidebarright-usercontainer" : ""}>
+              <div key={index} className={user.type === 'admin' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.contextMenu(event, user); }}>
                 {user.type === 'admin' ? <div className="username">
                   <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
                 </div> : null}
@@ -165,7 +177,7 @@ class Chatroom extends Component {
           <div className="sidebarright-bordertwo" />
           {this.state.users.length > 0 ? this.state.users.map((user, index)  => {
             return (
-              <div key={index} className={user.type === 'moderator' ? "sidebarright-usercontainer" : ""}>
+              <div key={index} className={user.type === 'moderator' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.contextMenu(event, user); }}>
                 {user.type === 'moderator' ? <div className="username">
                   <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
                 </div> : null}
@@ -181,7 +193,7 @@ class Chatroom extends Component {
           <div className="sidebarright-bordertwo" />
           {this.props.serverUserList.length > 0 ? this.props.serverUserList.map((user, index) => {
             return (
-              <div key={index} className={user.type === 'voice' ? "sidebarright-usercontainer" : ""}>
+              <div key={index} className={user.type === 'voice' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.contextMenu(event, user); }}>
                 {user.type === 'voice' ? <div className="username">
                   <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
                 </div> : null}
@@ -197,7 +209,7 @@ class Chatroom extends Component {
           <div className="sidebarright-bordertwo" />
           {this.props.serverUserList.length > 0 ? this.props.serverUserList.map((user, index) => {
             return (
-              <div key={index} className="sidebarright-usercontainer">
+              <div key={index} className={user.type === 'user' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.contextMenu(event, user); }}>
                 {user.type === 'user' ? <div className="username">
                   <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
                 </div> : null}
@@ -208,6 +220,14 @@ class Chatroom extends Component {
             )
           }) : null}
         </div>
+        {this.state.userModalOpen ?
+          <UserModal
+            userId={this.state.rightClickedUser.userId}
+            username={this.state.rightClickedUser.username}
+            setUserModalOpen={() => { this.setState({ userModalOpen: false }); }}
+            setPrivateMessageUser={() => { this.privateMessageUser(); }}
+          />
+        : null}
       </div>
     );
   }
