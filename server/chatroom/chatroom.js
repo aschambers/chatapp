@@ -10,8 +10,10 @@ module.exports = async(server) => {
 
   io.on('connection', (socket) => {
     socket.on('GET_CHATROOM_MESSAGES', async(data) => {
+      socket.leave(data.previousRoom);
+      socket.join(data.room);
       let messages = await axios.post(`${SERVER_URL}/api/v1/getChatroomMessages`, data) || [];
-      io.emit('RECEIVE_CHATROOM_MESSAGES', messages.data.reverse());
+      io.in(data.room).emit('RECEIVE_CHATROOM_MESSAGES', messages.data.reverse());
     });
 
     socket.on('GET_PRIVATE_MESSAGES', async(data) => {
@@ -27,7 +29,7 @@ module.exports = async(server) => {
         chatroomId: data.chatroomId
       });
       if (messages) {
-        io.emit('RECEIVE_CHATROOM_MESSAGES', messages.data.reverse());
+        io.in(data.room).emit('RECEIVE_CHATROOM_MESSAGES', messages.data.reverse());
       }
     });
 
