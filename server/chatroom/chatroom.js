@@ -11,9 +11,12 @@ module.exports = async(server) => {
   io.on('connection', (socket) => {
     socket.on('GET_CHATROOM_MESSAGES', async(data) => {
       let messages = await axios.post(`${SERVER_URL}/api/v1/getChatroomMessages`, data) || [];
-      if (messages) {
-        io.emit('RECEIVE_CHATROOM_MESSAGE', messages.data.reverse());
-      }
+      io.emit('RECEIVE_CHATROOM_MESSAGES', messages.data.reverse());
+    });
+
+    socket.on('GET_PRIVATE_MESSAGES', async(data) => {
+      let messages = await axios.post(`${SERVER_URL}/api/v1/getPrivateMessages`, data) || [];
+      io.emit('RECEIVE_PRIVATE_MESSAGES', messages.data.reverse());
     });
 
     socket.on('CHATROOM_MESSAGE', async(data) => {
@@ -24,7 +27,19 @@ module.exports = async(server) => {
         chatroomId: data.chatroomId
       });
       if (messages) {
-        io.emit('RECEIVE_CHATROOM_MESSAGE', messages.data.reverse());
+        io.emit('RECEIVE_CHATROOM_MESSAGES', messages.data.reverse());
+      }
+    });
+
+    socket.on('SEND_PRIVATE_MESSAGE', async(data) => {
+      let messages = await axios.post(`${SERVER_URL}/api/v1/messagePrivateCreate`, {
+        username: data.username,
+        message: data.message,
+        userId: data.userId,
+        friendId: data.friendId
+      });
+      if (messages) {
+        io.emit('RECEIVE_PRIVATE_MESSAGES', messages.data.reverse());
       }
     });
 

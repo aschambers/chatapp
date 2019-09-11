@@ -6,4 +6,6 @@ module.exports = function(app) {
   app.post('/api/v1/messageUpdate', messageController.messageUpdate);
   app.post('/api/v1/messageDelete', messageController.messageDelete);
   app.post('/api/v1/getChatroomMessages', messageController.getChatroomMessages);
+  app.post('/api/v1/getPrivateMessages', messageController.getPrivateMessages);
+  app.post('/api/v1/messagePrivateCreate', messageController.messagePrivateCreate);
 };

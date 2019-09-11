@@ -5,6 +5,7 @@ import chatroomsReducer from '../modules/chatrooms/chatrooms';
 import categoriesReducer from '../modules/categories/categories';
 import serversReducer from '../modules/servers/servers';
 import invitesReducer from '../modules/invites/invites';
+import friendsReducer from '../modules/friends/friends';
 
 export default function configureStore() {
   const reducers = combineReducers({
@@ -12,7 +13,8 @@ export default function configureStore() {
     chatroomsReducer,
     categoriesReducer,
     serversReducer,
-    invitesReducer
+    invitesReducer,
+    friendsReducer
   });
   const store = createStore(reducers, applyMiddleware(thunk));
   return store;

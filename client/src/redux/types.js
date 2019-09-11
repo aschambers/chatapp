@@ -85,3 +85,14 @@ export const FINDING_INVITES = 'finding_invites';
 export const FIND_INVITE_FAIL = 'find_invite_fail';
 export const FIND_INVITE_SUCCESS = 'find_invite_success';
 export const RESET_INVITE_VALUES = 'reset_invite_values';
+// friends
+export const CREATING_FRIEND = 'creating_friend';
+export const CREATE_FRIEND_FAIL = 'create_friend_fail';
+export const CREATE_FRIEND_SUCCESS = 'create_friend_success';
+export const DELETING_FRIEND = 'deleting_friend';
+export const DELETE_FRIEND_FAIL = 'delete_friend_fail';
+export const DELETE_FRIEND_SUCCESS = 'delete_friend_success';
+export const FINDING_FRIENDS = 'finding_friends';
+export const FIND_FRIENDS_FAIL = 'find_friends_fail';
+export const FIND_FRIENDS_SUCCESS = 'find_friends_success';
+export const RESET_FRIEND_VALUES = 'reset_friend_values';
