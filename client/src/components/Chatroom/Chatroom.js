@@ -45,7 +45,7 @@ class Chatroom extends Component {
       this.setState({ socketId: this.socket.id });
     });
 
-    this.socket.emit('GET_CHATROOM_MESSAGES', {
+    this.socket.to(`${this.socket.id}`).emit('GET_CHATROOM_MESSAGES', {
       chatroomId: this.props.activeChatroomId
     });
 
