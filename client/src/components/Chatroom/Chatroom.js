@@ -108,6 +108,12 @@ class Chatroom extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.socket.emit('LEAVE_CHATROOMS', {
+      room: this.state.room
+    });
+  }
+
   sendMessage = (event) => {
     if (event) {
       event.preventDefault();

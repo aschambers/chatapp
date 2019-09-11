@@ -9,6 +9,11 @@ module.exports = async(server) => {
   const io = require('socket.io')(server);
 
   io.on('connection', (socket) => {
+    socket.on('LEAVE_CHATROOMS', async(data) => {
+      socket.leave(data.room);
+      socket.disconnect(true);
+    });
+
     socket.on('GET_CHATROOM_MESSAGES', async(data) => {
       socket.leave(data.previousRoom);
       socket.join(data.room);
@@ -17,8 +22,10 @@ module.exports = async(server) => {
     });
 
     socket.on('GET_PRIVATE_MESSAGES', async(data) => {
+      socket.leave(data.previousRoom);
+      socket.join(data.room);
       let messages = await axios.post(`${SERVER_URL}/api/v1/getPrivateMessages`, data) || [];
-      io.emit('RECEIVE_PRIVATE_MESSAGES', messages.data.reverse());
+      io.in(data.room).emit('RECEIVE_PRIVATE_MESSAGES', messages.data.reverse());
     });
 
     socket.on('CHATROOM_MESSAGE', async(data) => {
@@ -41,7 +48,7 @@ module.exports = async(server) => {
         friendId: data.friendId
       });
       if (messages) {
-        io.emit('RECEIVE_PRIVATE_MESSAGES', messages.data.reverse());
+        io.in(data.room).emit('RECEIVE_PRIVATE_MESSAGES', messages.data.reverse());
       }
     });
 

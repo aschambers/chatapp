@@ -16,6 +16,10 @@ class ChatroomFriend extends Component {
       messages: [],
       socketId: "",
       currentSocket: "",
+      userId: null,
+      friendId: null,
+      room: null,
+      previousRoom: null
     }
   }
 
@@ -23,12 +27,16 @@ class ChatroomFriend extends Component {
     this.socket = io(ROOT_URL);
 
     this.socket.on('connect', () => {
-      this.setState({ socketId: this.socket.id });
+      this.setState({ socketId: this.socket.id, userId: this.props.userId, friendId: this.props.friendId, room: `${ROOT_URL}/${this.props.userId}/${this.props.friendId}`, previousRoom: `${ROOT_URL}/${this.props.userId}/${this.props.friendId}` });
     });
+
+    console.log(this.props);
 
     this.socket.emit('GET_PRIVATE_MESSAGES', {
       userId: this.props.userId,
-      friendId: this.props.friendId !== null ? this.props.friendId : this.props.userId
+      friendId: this.props.friendId !== null ? this.props.friendId : this.props.userId,
+      room: `${ROOT_URL}/${this.props.userId}/${this.props.friendId}`,
+      previousRoom: `${ROOT_URL}/${this.props.userId}/${this.props.friendId}`
     });
 
     this.socket.on('RECEIVE_PRIVATE_MESSAGES', (data) => {
@@ -48,6 +56,29 @@ class ChatroomFriend extends Component {
     });
   }
 
+  async componentWillReceiveProps(nextProps) {
+    if (nextProps.friendId !== this.state.friendId) {
+      this.setState({
+        previousRoom: this.state.room,
+        room: `${ROOT_URL}/${nextProps.friendId}`,
+        userId: nextProps.userId,
+        friendId: nextProps.friendId
+      });
+      this.socket.emit('GET_PRIVATE_MESSAGES', {
+        userId: nextProps.userId,
+        friendId: nextProps.friendId,
+        previousRoom: this.state.previousRoom,
+        room: `${ROOT_URL}/${nextProps.userId}/${nextProps.friendId}`
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    this.socket.emit('LEAVE_CHATROOMS', {
+      room: this.state.room
+    });
+  }
+
   sendMessage = (event) => {
     if (event) {
       event.preventDefault();
@@ -55,7 +86,8 @@ class ChatroomFriend extends Component {
         username: this.props.username,
         message: this.state.message,
         userId: this.props.userId,
-        friendId: this.props.friendId !== null ? this.props.friendId : this.props.userId
+        friendId: this.props.friendId !== null ? this.props.friendId : this.props.userId,
+        room: this.state.room
       });
       this.setState({ message: "" });
     }
