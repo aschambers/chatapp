@@ -47,13 +47,13 @@ class Chatroom extends Component {
     this.socket = io(ROOT_URL);
 
     this.socket.on('connect', () => {
-      this.setState({ socketId: this.socket.id, namespace: `${ROOT_URL}/${this.props.serverId}`, room: `${ROOT_URL}/${this.props.serverId}/${this.props.activeChatroom}`, previousRoom: `${ROOT_URL}/${this.props.serverId}/${this.props.activeChatroom}`, serverId: this.props.serverId, currentChatroom: this.props.activeChatroom, chatroomId: this.props.activeChatroomId });
+      this.setState({ socketId: this.socket.id, namespace: `${ROOT_URL}/${this.props.serverId}`, room: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`, previousRoom: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`, serverId: this.props.serverId, currentChatroom: this.props.activeChatroom, chatroomId: this.props.activeChatroomId });
     });
 
     this.socket.emit('GET_CHATROOM_MESSAGES', {
       chatroomId: this.props.activeChatroomId,
-      previousRoom: `${ROOT_URL}/${this.props.serverId}/${this.props.activeChatroom}`,
-      room: `${ROOT_URL}/${this.props.serverId}/${this.props.activeChatroom}`
+      previousRoom: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`,
+      room: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`
     });
 
     this.socket.on('RECEIVE_CHATROOM_MESSAGES', (data) => {
@@ -74,18 +74,18 @@ class Chatroom extends Component {
   }
 
   async componentWillReceiveProps(nextProps) {
-    if (nextProps.activeChatroom !== this.state.currentChatroom) {
+    if (nextProps.activeChatroomId !== this.state.chatroomId) {
       this.setState({
-        previousRoom: this.state.room,
-        room: `${ROOT_URL}/${nextProps.serverId}/${nextProps.activeChatroom}`,
+        previousRoom: `${ROOT_URL}/chatroom/${nextProps.serverId}/${this.state.chatroomId}`,
+        room: `${ROOT_URL}/chatroom/${nextProps.serverId}/${nextProps.activeChatroomId}`,
         serverId: nextProps.serverId,
         currentChatroom: nextProps.activeChatroom,
         chatroomId: nextProps.activeChatroomId
       });
       this.socket.emit('GET_CHATROOM_MESSAGES', {
         chatroomId: nextProps.activeChatroomId,
-        previousRoom: this.state.previousRoom,
-        room: `${ROOT_URL}/${nextProps.serverId}/${nextProps.activeChatroom}`
+        previousRoom: `${ROOT_URL}/chatroom/${nextProps.serverId}/${this.state.chatroomId}`,
+        room: `${ROOT_URL}/chatroom/${nextProps.serverId}/${nextProps.activeChatroomId}`
       });
     }
 
