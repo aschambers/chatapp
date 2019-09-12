@@ -47,7 +47,11 @@ const Friend = sequelize.define('friends', {
   activeFriend: {
     type: Sequelize.STRING,
     allowNull: false
-  }
+  },
+  groupId: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
 });
 
 module.exports = Friend;

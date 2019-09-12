@@ -33,9 +33,30 @@ module.exports = async(server) => {
       }
     });
 
+    socket.on('GET_PERSONAL_MESSAGES', async(data) => {
+      socket.leave(data.previousRoom);
+      socket.join(data.room);
+      let messages = await axios.post(`${SERVER_URL}/api/v1/getPersonalMessages`, data) || [];
+      io.in(data.room).emit('RECEIVE_PERSONAL_MESSAGES', messages.data.reverse());
+    });
+
     socket.on('GET_PRIVATE_MESSAGES', async(data) => {
+      socket.leave(data.previousRoom);
+      socket.join(data.room);
       let messages = await axios.post(`${SERVER_URL}/api/v1/getPrivateMessages`, data) || [];
-      io.emit('RECEIVE_PRIVATE_MESSAGES', messages.data.reverse());
+      io.in(data.room).emit('RECEIVE_PRIVATE_MESSAGES', messages.data.reverse());
+    });
+
+    socket.on('SEND_PERSONAL_MESSAGE', async(data) => {
+      let messages = await axios.post(`${SERVER_URL}/api/v1/messagePersonalCreate`, {
+        username: data.username,
+        message: data.message,
+        userId: data.userId,
+        friendId: data.friendId
+      });
+      if (messages) {
+        io.in(data.room).emit('RECEIVE_PERSONAL_MESSAGES', messages.data.reverse());
+      }
     });
 
     socket.on('SEND_PRIVATE_MESSAGE', async(data) => {
@@ -46,10 +67,14 @@ module.exports = async(server) => {
         friendId: data.friendId
       });
       if (messages) {
-        io.emit('RECEIVE_PRIVATE_MESSAGES', messages.data.reverse());
+        io.in(data.room).emit('RECEIVE_PRIVATE_MESSAGES', messages.data.reverse());
       }
     });
 
+
+
+
+    // user actions
     socket.on('SEND_USER', function(data) {
       if(users.length > 0) {
         const result = users.filter((item) => {

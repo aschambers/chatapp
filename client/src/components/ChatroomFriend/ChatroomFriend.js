@@ -18,6 +18,7 @@ class ChatroomFriend extends Component {
       currentSocket: "",
       userId: null,
       friendId: null,
+      groupId: null,
       room: null,
       previousRoom: null
     }
@@ -27,17 +28,38 @@ class ChatroomFriend extends Component {
     this.socket = io(ROOT_URL);
 
     this.socket.on('connect', () => {
-      this.setState({ socketId: this.socket.id, userId: this.props.userId, friendId: this.props.friendId, room: `${ROOT_URL}/${this.props.userId}/${this.props.friendId}`, previousRoom: `${ROOT_URL}/${this.props.userId}/${this.props.friendId}` });
+      this.setState({ socketId: this.socket.id, userId: this.props.userId, friendId: this.props.friendId, groupId: this.props.groupId });
     });
 
-    this.socket.emit('GET_PRIVATE_MESSAGES', {
+    const data = {
       userId: this.props.userId,
-      friendId: this.props.friendId !== null ? this.props.friendId : this.props.userId,
-      room: `${ROOT_URL}/${this.props.userId}/${this.props.friendId}`,
-      previousRoom: `${ROOT_URL}/${this.props.userId}/${this.props.friendId}`
-    });
+      friendId: this.props.friendId !== null ? this.props.friendId: this.props.userId,
+      room: `${ROOT_URL}/friends/${this.props.groupdId}`,
+      previousRoom: `${ROOT_URL}/friends/${this.props.groupdId}`
+    };
+    if (data.userId === data.friendId) {
+      this.socket.emit('GET_PERSONAL_MESSAGES', data);
+    } else if (data.userId !== data.friendId) {
+      this.socket.emit('GET_PRIVATE_MESSAGES', data);
+    }
 
     this.socket.on('RECEIVE_PRIVATE_MESSAGES', (data) => {
+      // scroll to latest message after rendering messages in firefox
+      if (navigator.userAgent.search("Firefox") > -1) {
+        this.setState({ messages: data.reverse() }, () => {
+          if (data && data.length > 0) {
+            const element = "message" + (this.state.messages.length - 1);
+            if (document.getElementById(element)) {
+              document.getElementById(element).scrollIntoView();
+            }
+          }
+        });
+      } else if (navigator.userAgent.search("Firefox") < 0) {
+        this.setState({ messages: data });
+      }
+    });
+
+    this.socket.on('RECEIVE_PERSONAL_MESSAGES', (data) => {
       // scroll to latest message after rendering messages in firefox
       if (navigator.userAgent.search("Firefox") > -1) {
         this.setState({ messages: data.reverse() }, () => {
@@ -55,19 +77,25 @@ class ChatroomFriend extends Component {
   }
 
   async componentWillReceiveProps(nextProps) {
-    if (nextProps.friendId !== this.state.friendId) {
+    if (nextProps.groupId !== this.state.groupId) {
       this.setState({
-        previousRoom: this.state.room,
-        room: `${ROOT_URL}/${nextProps.friendId}`,
-        userId: nextProps.userId,
-        friendId: nextProps.friendId
-      });
-      this.socket.emit('GET_PRIVATE_MESSAGES', {
         userId: nextProps.userId,
         friendId: nextProps.friendId,
-        previousRoom: this.state.previousRoom,
-        room: `${ROOT_URL}/${nextProps.userId}/${nextProps.friendId}`
+        groupId: nextProps.groupId,
+        room: `${ROOT_URL}/friends/${nextProps.groupId}`,
+        previousRoom: `${ROOT_URL}/friends/${this.state.groupId}`
       });
+      const data = {
+        userId: nextProps.userId,
+        friendId: nextProps.friendId,
+        room: `${ROOT_URL}/friends/${nextProps.groupId}`,
+        previousRoom: `${ROOT_URL}/friends/${this.state.groupId}`
+      };
+      if (data.userId === data.friendId) {
+        this.socket.emit('GET_PERSONAL_MESSAGES', data);
+      } else if (data.userId !== data.friendId) {
+        this.socket.emit('GET_PRIVATE_MESSAGES', data);
+      }
     }
   }
 
@@ -80,13 +108,19 @@ class ChatroomFriend extends Component {
   sendMessage = (event) => {
     if (event) {
       event.preventDefault();
-      this.socket.emit('SEND_PRIVATE_MESSAGE', {
+      const data = {
         username: this.props.username,
         message: this.state.message,
         userId: this.props.userId,
         friendId: this.props.friendId !== null ? this.props.friendId : this.props.userId,
-        room: this.state.room
-      });
+        room: `${ROOT_URL}/friends/${this.props.groupdId}`,
+        previousRoom: `${ROOT_URL}/friends/${this.state.groupId}`
+      }
+      if (data.userId === data.friendId) {
+        this.socket.emit('SEND_PERSONAL_MESSAGE', data);
+      } else if (data.userId !== data.friendId) {
+        this.socket.emit('SEND_PRIVATE_MESSAGE', data);
+      }
       this.setState({ message: "" });
     }
   }

@@ -605,6 +605,7 @@ const Dashboard = (props) => {
 
       {server === "" && currentFriend !== null ?
         <ChatroomFriend
+          groupId={currentFriend.groupId}
           userId={id}
           username={username}
           friendId={currentFriend.friendId}

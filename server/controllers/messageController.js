@@ -101,9 +101,29 @@ module.exports = {
   getPrivateMessages: async(req, res, next) => {
     const { userId, friendId } = req.body;
     const result = await MessageModel.findAll({ where: {
+      [Op.or]: [
+        { [Op.and]: [{ userId: userId }, { friendId: friendId }, { chatroomId: null }] },
+        { [Op.and]: [{ userId: friendId }, { friendId: userId }, { chatroomId: null }] },
+      ]
+    }});
+    if(result) {
+      res.status(200).send(result);
+    } else {
+      res.status(422).send({'error':'error fetching all messages'});
+    };
+  },
+
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {array} list of messages
+   */
+  getPersonalMessages: async(req, res, next) => {
+    const { userId, friendId } = req.body;
+    const result = await MessageModel.findAll({ where: {
       [Op.and]: [
         { chatroomId: null },
-        { [Op.or]: [{ userId: userId }, { userId: friendId }] }
+        { [Op.and]: [{ userId: userId }, { friendId: userId }] }
       ]
     }});
     if(result) {
@@ -127,9 +147,35 @@ module.exports = {
     if (!result) return res.status(422).send({"error":"Unknown error creating message"});
 
     const messages = await MessageModel.findAll({ where: {
+      [Op.or]: [
+        { [Op.and]: [{ userId: userId }, { friendId: friendId }, { chatroomId: null }] },
+        { [Op.and]: [{ userId: friendId }, { friendId: userId }, { chatroomId: null }] },
+      ]
+    }});
+    if (messages) {
+      res.status(200).send(messages);
+    } else {
+      return res.status(422).send({"error":"Unknown error creating message"});
+    }
+  },
+
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {array} message list
+   */
+  messagePersonalCreate: async(req, res) => {
+    const { username, message, userId, friendId } = req.body;
+    if (!username && !message && !userId && !friendId) {
+      return res.status(400).send({'error': 'Missing required fields'});
+    }
+    const result = await MessageModel.create(req.body);
+    if (!result) return res.status(422).send({"error":"Unknown error creating message"});
+
+    const messages = await MessageModel.findAll({ where: {
       [Op.and]: [
         { chatroomId: null },
-        { [Op.or]: [{ userId: userId }, { userId: friendId }] }
+        { [Op.and]: [{ userId: userId }, { friendId: userId }] }
       ]
     }});
     if (messages) {
