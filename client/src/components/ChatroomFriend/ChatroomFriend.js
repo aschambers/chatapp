@@ -30,8 +30,6 @@ class ChatroomFriend extends Component {
       this.setState({ socketId: this.socket.id, userId: this.props.userId, friendId: this.props.friendId, room: `${ROOT_URL}/${this.props.userId}/${this.props.friendId}`, previousRoom: `${ROOT_URL}/${this.props.userId}/${this.props.friendId}` });
     });
 
-    console.log(this.props);
-
     this.socket.emit('GET_PRIVATE_MESSAGES', {
       userId: this.props.userId,
       friendId: this.props.friendId !== null ? this.props.friendId : this.props.userId,

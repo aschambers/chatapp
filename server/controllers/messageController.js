@@ -101,7 +101,10 @@ module.exports = {
   getPrivateMessages: async(req, res, next) => {
     const { userId, friendId } = req.body;
     const result = await MessageModel.findAll({ where: {
-      [Op.and]: [{ userId: userId }, { friendId: friendId }]
+      [Op.and]: [
+        { chatroomId: null },
+        { [Op.or]: [{ userId: userId }, { userId: friendId }] }
+      ]
     }});
     if(result) {
       res.status(200).send(result);
@@ -124,7 +127,10 @@ module.exports = {
     if (!result) return res.status(422).send({"error":"Unknown error creating message"});
 
     const messages = await MessageModel.findAll({ where: {
-      [Op.and]: [{ userId: userId }, { friendId: friendId }]
+      [Op.and]: [
+        { chatroomId: null },
+        { [Op.or]: [{ userId: userId }, { userId: friendId }] }
+      ]
     }});
     if (messages) {
       res.status(200).send(messages);
