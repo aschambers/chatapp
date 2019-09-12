@@ -1,4 +1,5 @@
 const FriendModel = require('../models/Friend');
+const crypto = require('crypto');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
@@ -10,6 +11,7 @@ module.exports = {
    */
   friendCreate: async(req, res) => {
     const { username, friendUsername, userId, friendId } = req.body;
+    req.body.groupId = crypto.randomBytes(32).toString('hex');
 
     if (!username || !friendUsername || !userId || !friendId) {
       return res.status(400).send({'error': 'Missing required fields'});
