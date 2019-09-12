@@ -9,9 +9,9 @@ module.exports = {
    * @returns {array} friend list
    */
   friendCreate: async(req, res) => {
-    const { username, userId, friendId } = req.body;
+    const { username, friendUsername, userId, friendId } = req.body;
 
-    if (!username || !userId || !friendId) {
+    if (!username || !friendUsername || !userId || !friendId) {
       return res.status(400).send({'error': 'Missing required fields'});
     }
 
@@ -28,6 +28,29 @@ module.exports = {
       const result = await FriendModel.save(req.body);
       if (!result) return res.status(422).json({"error":"Unable to add friend back"});
     }
+
+    const userFinder = await FriendModel.findOne({ where: {
+      [Op.and]: [{ userId: friendId }, { friendId: userId }]
+    }});
+
+    const user = req.body.friendId;
+    const friend = req.body.userId;
+    if (!userFinder) {
+      req.body.userId = user;
+      req.body.friendId = friend;
+      req.body.username = req.body.friendUsername;
+      const result = await FriendModel.create(req.body);
+      if (!result) return res.status(422).json({"error":"Unable to create friend"});
+    } else if (userFinder) {
+      req.body.userId = user;
+      req.body.friendId = friend;
+      req.body.username = req.body.friendUsername;
+      const result = await FriendModel.save(req.body);
+      if (!result) return res.status(422).json({"error":"Unable to add friend back"});
+    }
+
+    req.body.userId = friend;
+    req.body.friendId = user;
 
     const friendsList = await FriendModel.findAll({ where: { userId: userId }});
     return res.status(200).send(friendsList);

@@ -380,6 +380,7 @@ const Dashboard = (props) => {
       userId: id,
       friendId: user.userId,
       username: user.username,
+      friendUsername: username,
       imageUrl: user.imageUrl
     });
   }
@@ -399,6 +400,13 @@ const Dashboard = (props) => {
     setCurrentFriend(friend);
   }
 
+  const setHomeServer = () => {
+    setServer("");
+    props.findFriends({
+      userId: id
+    });
+  }
+
   return (
     <div className="dashboard">
       <ToastMessage />
@@ -407,7 +415,7 @@ const Dashboard = (props) => {
         <div className="sidebar-container" onPointerOver={() => { setHover("Home") }} onPointerOut={() => { setHover("") }}>
           {hover === "Home" && server !== "" ? <span className="sidebar-hover"></span> : null}
           {server === "" ? <span className="sidebar-select"></span> : null}
-          <img className="sidebar-logo" src={chatot} alt="chatter-icon-logo" onClick={() => { setServer("") }} />
+          <img className="sidebar-logo" src={chatot} alt="chatter-icon-logo" onClick={() => { setHomeServer(); }} />
           {hover === "Home" ? <span className="tooltip"><span>Home</span></span> : null}
         </div>
         <div className="sidebar-border" />
