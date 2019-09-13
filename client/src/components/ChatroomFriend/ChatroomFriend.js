@@ -34,8 +34,8 @@ class ChatroomFriend extends Component {
     const data = {
       userId: this.props.userId,
       friendId: this.props.friendId !== null ? this.props.friendId: this.props.userId,
-      room: `${ROOT_URL}/friends/${this.props.groupdId}`,
-      previousRoom: `${ROOT_URL}/friends/${this.props.groupdId}`
+      room: `${ROOT_URL}/friends/${this.props.groupId}`,
+      previousRoom: `${ROOT_URL}/friends/${this.props.groupId}`
     };
     if (data.userId === data.friendId) {
       this.socket.emit('GET_PERSONAL_MESSAGES', data);
@@ -113,7 +113,7 @@ class ChatroomFriend extends Component {
         message: this.state.message,
         userId: this.props.userId,
         friendId: this.props.friendId !== null ? this.props.friendId : this.props.userId,
-        room: `${ROOT_URL}/friends/${this.props.groupdId}`,
+        room: `${ROOT_URL}/friends/${this.props.groupId}`,
         previousRoom: `${ROOT_URL}/friends/${this.state.groupId}`
       }
       if (data.userId === data.friendId) {
