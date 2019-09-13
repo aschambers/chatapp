@@ -16,9 +16,8 @@
       margin-top: -0.1rem; }
   .privatechatarea-container {
     display: flex;
-    flex: 1;
     justify-content: center;
-    min-height: 0; }
+    height: 11%; }
     .privatechatarea-container > input {
       margin-top: auto;
       position: relative;
@@ -34,7 +33,8 @@
       outline: none;
       border: 1px solid black; }
   .privatechatarea-messages {
-    height: 90vh;
+    height: 89%;
+    margin-bottom: auto;
     overflow: hidden;
     display: flex;
     flex-direction: column-reverse;
@@ -42,15 +42,13 @@
 
 @-moz-document url-prefix() {
   .privatechatarea-messages {
-    margin-top: 0rem;
-    min-height: 93vh;
-    display: block; } }
+    flex-direction: column; } }
     .privatechatarea-messages > div {
-      margin-top: -1rem; }
+      line-height: 0.5rem; }
 
 @-moz-document url-prefix() {
-  .privatechatarea-messages > div {
-    margin-top: 0rem; } }
+  .privatechatarea-messages > div:first-child {
+    margin-top: auto; } }
     .privatechatarea-messages-user {
       cursor: context-menu;
       -webkit-touch-callout: none;

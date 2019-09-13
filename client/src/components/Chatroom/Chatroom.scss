@@ -10,11 +10,10 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  min-height: 0;
   &-topbar {
     box-sizing: border-box;
     width: 100%;
-    height: 2.8rem;
+    height: 7.2%;
     border-bottom: 2px solid #212121;
     padding: 0.9rem;
     & > span {
@@ -26,9 +25,8 @@
   }
   &-container {
     display: flex;
-    flex: 1;
     justify-content: center;
-    min-height: 0;
+    height: 11%;
     & > input {
       margin-top:auto;
       position: relative;
@@ -46,20 +44,21 @@
     }
   }
   &-messages {
-    height: 84vh;
+    height: 81.8%;
+    margin-bottom: auto;
     overflow: hidden;
     display: flex;
     flex-direction: column-reverse;
     @-moz-document url-prefix() {
-      margin-top: 0rem;
-      min-height: 87vh;
-      display: block;
+      flex-direction: column;
     }
     padding-left: 2rem;
     & > div {
-      margin-top: -1rem;
+      line-height: 0.5rem;
+    }
+    & > div:first-child {
       @-moz-document url-prefix() {
-        margin-top: 0rem;
+        margin-top: auto;
       }
     }
     &-user {
