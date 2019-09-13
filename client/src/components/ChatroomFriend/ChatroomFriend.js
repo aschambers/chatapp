@@ -29,19 +29,20 @@ class ChatroomFriend extends Component {
 
     this.socket.on('connect', () => {
       this.setState({ socketId: this.socket.id, userId: this.props.userId, friendId: this.props.friendId, groupId: this.props.groupId });
-    });
 
-    const data = {
-      userId: this.props.userId,
-      friendId: this.props.friendId !== null ? this.props.friendId: this.props.userId,
-      room: `${ROOT_URL}/friends/${this.props.groupId}`,
-      previousRoom: `${ROOT_URL}/friends/${this.props.groupId}`
-    };
-    if (data.userId === data.friendId) {
-      this.socket.emit('GET_PERSONAL_MESSAGES', data);
-    } else if (data.userId !== data.friendId) {
-      this.socket.emit('GET_PRIVATE_MESSAGES', data);
-    }
+      const data = {
+        socketId: this.socket.id,
+        userId: this.props.userId,
+        friendId: this.props.friendId !== null ? this.props.friendId: this.props.userId,
+        room: `${ROOT_URL}/friends/${this.props.groupId}`,
+        previousRoom: `${ROOT_URL}/friends/${this.props.groupId}`
+      };
+      if (data.userId === data.friendId) {
+        this.socket.emit('GET_PERSONAL_MESSAGES', data);
+      } else if (data.userId !== data.friendId) {
+        this.socket.emit('GET_PRIVATE_MESSAGES', data);
+      }
+    });
 
     this.socket.on('RECEIVE_PRIVATE_MESSAGES', (data) => {
       // scroll to latest message after rendering messages in firefox
@@ -77,7 +78,7 @@ class ChatroomFriend extends Component {
   }
 
   async componentWillReceiveProps(nextProps) {
-    if (nextProps.groupId !== this.state.groupId) {
+    if (nextProps.groupId !== this.state.groupId && this.state.groupdId !== undefined) {
       this.setState({
         userId: nextProps.userId,
         friendId: nextProps.friendId,
@@ -86,6 +87,7 @@ class ChatroomFriend extends Component {
         previousRoom: `${ROOT_URL}/friends/${this.state.groupId}`
       });
       const data = {
+        socketId: this.state.socketId,
         userId: nextProps.userId,
         friendId: nextProps.friendId,
         room: `${ROOT_URL}/friends/${nextProps.groupId}`,

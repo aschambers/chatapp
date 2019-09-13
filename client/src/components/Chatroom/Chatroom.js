@@ -48,12 +48,13 @@ class Chatroom extends Component {
 
     this.socket.on('connect', () => {
       this.setState({ socketId: this.socket.id, namespace: `${ROOT_URL}/${this.props.serverId}`, room: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`, previousRoom: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`, serverId: this.props.serverId, currentChatroom: this.props.activeChatroom, chatroomId: this.props.activeChatroomId });
-    });
 
-    this.socket.emit('GET_CHATROOM_MESSAGES', {
-      chatroomId: this.props.activeChatroomId,
-      previousRoom: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`,
-      room: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`
+      this.socket.emit('GET_CHATROOM_MESSAGES', {
+        socketId: this.socket.id,
+        chatroomId: this.props.activeChatroomId,
+        previousRoom: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`,
+        room: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`
+      });
     });
 
     this.socket.on('RECEIVE_CHATROOM_MESSAGES', (data) => {
@@ -74,7 +75,7 @@ class Chatroom extends Component {
   }
 
   async componentWillReceiveProps(nextProps) {
-    if (nextProps.activeChatroomId !== this.state.chatroomId) {
+    if (nextProps.activeChatroomId !== this.state.chatroomId && this.state.chatroomId !== undefined) {
       this.setState({
         previousRoom: `${ROOT_URL}/chatroom/${nextProps.serverId}/${this.state.chatroomId}`,
         room: `${ROOT_URL}/chatroom/${nextProps.serverId}/${nextProps.activeChatroomId}`,
@@ -83,6 +84,7 @@ class Chatroom extends Component {
         chatroomId: nextProps.activeChatroomId
       });
       this.socket.emit('GET_CHATROOM_MESSAGES', {
+        socketId: this.state.socketId,
         chatroomId: nextProps.activeChatroomId,
         previousRoom: `${ROOT_URL}/chatroom/${nextProps.serverId}/${this.state.chatroomId}`,
         room: `${ROOT_URL}/chatroom/${nextProps.serverId}/${nextProps.activeChatroomId}`
