@@ -375,7 +375,6 @@ const Dashboard = (props) => {
 
   const privateMessageUser = (user) => {
     setServer("");
-    setCurrentFriend(user);
     props.friendCreate({
       userId: id,
       friendId: user.userId,
@@ -705,7 +704,9 @@ const Dashboard = (props) => {
                     <div key={index} className="serversettings-invite">
                       <span>
                         <p>Code: {item.code}</p>
-                        <p>Created: <Moment format="MM/DD/YYYY">{item.createdAt}</Moment> at <Moment format="LT">{item.createdAt}</Moment></p>
+                        <p>
+                          Created: <Moment format="MM/DD/YYYY" date={item.createdAt} /> at <Moment date={item.createdAt} format="LT" />
+                        </p>
                         <p>Expiration: {item.expires} hours</p>
                       </span>
                       <span className="serversettings-add">

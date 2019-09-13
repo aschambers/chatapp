@@ -135,7 +135,10 @@ class ChatroomFriend extends Component {
             {this.state.messages && this.state.messages.length > 0 ? this.state.messages.map((item, index) => {
               return (
                 <div id={"message" + index} key={index}>
-                  <p><span className="privatechatarea-messages-user">{item.username}</span> <Moment format="MM/DD/YYYY" className="privatechatarea-messages-time"><span>{item.createdAt}</span></Moment></p>
+                  <p>
+                    <span className="privatechatarea-messages-user">{item.username}</span>
+                    <Moment format="MM/DD/YYYY" date={item.createdAt} className="privatechatarea-messages-time" />
+                  </p>
                   <p className="privatechatarea-messages-message">{item.message}</p>
                 </div>
               )
