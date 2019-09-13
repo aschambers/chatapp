@@ -52,7 +52,7 @@ module.exports = async(server) => {
         friendId: data.friendId
       });
       if (messages) {
-        io.to(data.socketId).emit('RECEIVE_PERSONAL_MESSAGES', messages.data.reverse());
+        io.in(data.room).emit('RECEIVE_PERSONAL_MESSAGES', messages.data.reverse());
       }
     });
 
