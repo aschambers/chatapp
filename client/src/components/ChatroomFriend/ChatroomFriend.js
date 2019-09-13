@@ -78,7 +78,7 @@ class ChatroomFriend extends Component {
   }
 
   async componentWillReceiveProps(nextProps) {
-    if (nextProps.groupId !== this.state.groupId && this.state.groupdId !== undefined) {
+    if (nextProps.groupId !== this.state.groupId && this.state.groupId !== undefined) {
       this.setState({
         userId: nextProps.userId,
         friendId: nextProps.friendId,
