@@ -152,7 +152,10 @@ class Chatroom extends Component {
             {this.state.messages && this.state.messages.length > 0 ? this.state.messages.map((item, index) => {
               return (
                 <div id={"message" + index} key={index}>
-                  <p><span className="chatarea-messages-user" onClick={this.handleClick} onContextMenu={(event) => { this.contextMenu(event, item); }}>{item.username}</span> <Moment format="MM/DD/YYYY" className="chatarea-messages-time"><span>{item.createdAt}</span></Moment></p>
+                  <p>
+                    <span className="chatarea-messages-user" onClick={this.handleClick} onContextMenu={(event) => { this.contextMenu(event, item); }}>{item.username}</span>
+                    <Moment format="MM/DD/YYYY" date={item.createdAt} className="chatarea-messages-time" />
+                  </p>
                   <p className="chatarea-messages-message">{item.message}</p>
                 </div>
               )
