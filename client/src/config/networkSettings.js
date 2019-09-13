@@ -3,9 +3,9 @@
 // export const ROOT_URL = 'http://10.0.0.74:5000'; // Nathan
 // export const ROOT_URL = 'http://192.168.43.28:5000'; // MyWifiOnly
 // export const ROOT_URL = 'http://192.168.0.105:5000'; // Henry
-// export const ROOT_URL = 'https://chattersanctum.com'; // Server
+export const ROOT_URL = 'https://chattersanctum.com'; // Server
 // export const ROOT_URL = 'http://10.0.0.73:5000'; // Home
-export const ROOT_URL = 'http://192.168.1.108:5000'; // Novo
+// export const ROOT_URL = 'http://192.168.1.108:5000'; // Novo
 // export const ROOT_URL = 'http://192.168.1.106:5000'; // Novo 5ghz
 // export const ROOT_URL = 'http://192.168.1.113:5000'; // Novo access 2.4
 // export const ROOT_URL = 'http://192.168.0.144:5000'; // DMV
