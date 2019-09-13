@@ -8,12 +8,11 @@
 .chatarea {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  min-height: 0; }
+  flex: 1; }
   .chatarea-topbar {
     box-sizing: border-box;
     width: 100%;
-    height: 2.8rem;
+    height: 7.2%;
     border-bottom: 2px solid #212121;
     padding: 0.9rem; }
     .chatarea-topbar > span {
@@ -23,9 +22,8 @@
       margin-top: -0.1rem; }
   .chatarea-container {
     display: flex;
-    flex: 1;
     justify-content: center;
-    min-height: 0; }
+    height: 11%; }
     .chatarea-container > input {
       margin-top: auto;
       position: relative;
@@ -41,7 +39,8 @@
       outline: none;
       border: 1px solid black; }
   .chatarea-messages {
-    height: 84vh;
+    height: 81.8%;
+    margin-bottom: auto;
     overflow: hidden;
     display: flex;
     flex-direction: column-reverse;
@@ -49,15 +48,13 @@
 
 @-moz-document url-prefix() {
   .chatarea-messages {
-    margin-top: 0rem;
-    min-height: 87vh;
-    display: block; } }
+    flex-direction: column; } }
     .chatarea-messages > div {
-      margin-top: -1rem; }
+      line-height: 0.5rem; }
 
 @-moz-document url-prefix() {
-  .chatarea-messages > div {
-    margin-top: 0rem; } }
+  .chatarea-messages > div:first-child {
+    margin-top: auto; } }
     .chatarea-messages-user {
       cursor: context-menu;
       -webkit-touch-callout: none;

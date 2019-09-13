@@ -18,9 +18,8 @@
   }
   &-container {
     display: flex;
-    flex: 1;
     justify-content: center;
-    min-height: 0;
+    height: 11%;
     & > input {
       margin-top:auto;
       position: relative;
@@ -38,20 +37,21 @@
     }
   }
   &-messages {
-    height: 90vh;
+    height: 89%;
+    margin-bottom: auto;
     overflow: hidden;
     display: flex;
     flex-direction: column-reverse;
     @-moz-document url-prefix() {
-      margin-top: 0rem;
-      min-height: 93vh;
-      display: block;
+      flex-direction: column;
     }
     padding-left: 2rem;
     & > div {
-      margin-top: -1rem;
+      line-height: 0.5rem;
+    }
+    & > div:first-child {
       @-moz-document url-prefix() {
-        margin-top: 0rem;
+        margin-top: auto;
       }
     }
     &-user {
