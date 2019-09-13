@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "4ba985de7d0ca68d9fd5d4380ab0ca25",
+    "revision": "a60308f3bd0e24582790b9c1bf19b506",
     "url": "/index.html"
   },
   {
@@ -8,8 +8,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/css/2.39017165.chunk.css"
   },
   {
-    "revision": "037bb17d247ddf5649b3",
-    "url": "/static/css/4.66d2522a.chunk.css"
+    "revision": "4c09d6af1d17c8af9833",
+    "url": "/static/css/4.346b4637.chunk.css"
   },
   {
     "revision": "af5998fdb2ef43d80b01",
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/css/6.0c3fa314.chunk.css"
   },
   {
-    "revision": "32ce9ff60984c2358003",
-    "url": "/static/css/main.f4046e8e.chunk.css"
+    "revision": "46d1cc50226ed3291cdb",
+    "url": "/static/css/main.49da75b2.chunk.css"
   },
   {
     "revision": "53d04df8b798b9390a3f",
@@ -32,8 +32,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/js/3.da1be372.chunk.js"
   },
   {
-    "revision": "037bb17d247ddf5649b3",
-    "url": "/static/js/4.b350ea71.chunk.js"
+    "revision": "4c09d6af1d17c8af9833",
+    "url": "/static/js/4.d8acee29.chunk.js"
   },
   {
     "revision": "af5998fdb2ef43d80b01",
@@ -44,12 +44,24 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/js/6.f1cc94c8.chunk.js"
   },
   {
-    "revision": "32ce9ff60984c2358003",
+    "revision": "46d1cc50226ed3291cdb",
     "url": "/static/js/main.0b06c8ce.chunk.js"
   },
   {
-    "revision": "1ed8169f6894d6e1287c",
-    "url": "/static/js/runtime~main.d5170c67.js"
+    "revision": "16be71a7c22afd981f81",
+    "url": "/static/js/runtime~main.d79a63bf.js"
+  },
+  {
+    "revision": "25cd38a8b03ff96775c2e00d31052010",
+    "url": "/static/media/Antonio-Regular.25cd38a8.ttf"
+  },
+  {
+    "revision": "1e99b0442583593743adb5d91d7c0669",
+    "url": "/static/media/BebasNeue Bold.1e99b044.ttf"
+  },
+  {
+    "revision": "9042a37caa7fb0389371de54dd886b38",
+    "url": "/static/media/BebasNeue Regular.9042a37c.ttf"
   },
   {
     "revision": "7eb68b80d0016066ae1bda295c223dc3",

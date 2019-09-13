@@ -469,10 +469,10 @@ const Dashboard = (props) => {
             <img className="settings-image" src={settings} alt="settings-icon" onClick={() => { setSettingsOpen(!isSettingsOpen); }} />
           </div>
         </div> :
-        <div className="sidebarleft">
-          <div className="sidebarleft-container">
-            <p className="sidebarleft-container-header">{server}</p>
-            {isAdmin ? <div className="sidebarleft-container-dropdown" onClick={() => { showServerSettings(!serverSettings); }}>{!serverSettings ? <i className="channelarrow down"></i> : <span className="cancel">&#10005;</span>}</div> : null}
+        <div className="sidebarleftchat">
+          <div className="sidebarleftchat-container">
+            <p className="sidebarleftchat-container-header">{server}</p>
+            {isAdmin ? <div className="sidebarleftchat-container-dropdown" onClick={() => { showServerSettings(!serverSettings); }}>{!serverSettings ? <i className="channelarrow down"></i> : <span className="cancel">&#10005;</span>}</div> : null}
             {serverSettings ?
               <div className="serversettings-modal">
                 <div className="serversettings-modal-section" onClick={() => { setShowInviteModal(); }}>

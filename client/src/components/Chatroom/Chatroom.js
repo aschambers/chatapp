@@ -58,7 +58,7 @@ class Chatroom extends Component {
 
     this.socket.on('RECEIVE_CHATROOM_MESSAGES', (data) => {
       // scroll to latest message after rendering messages in firefox
-      if (navigator.userAgent.search("Firefox") > -1) {
+      if (navigator.userAgent.search("Firefox") > -1 || navigator.userAgent.search("Edge") > -1) {
         this.setState({ messages: data.reverse() }, () => {
           if (data && data.length > 0) {
             const element = "message" + (this.state.messages.length - 1);
@@ -67,7 +67,7 @@ class Chatroom extends Component {
             }
           }
         });
-      } else if (navigator.userAgent.search("Firefox") < 0) {
+      } else if (navigator.userAgent.search("Firefox") < 0 || navigator.userAgent.search("Edge") < 0) {
         this.setState({ messages: data });
       }
     });
