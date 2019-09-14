@@ -856,7 +856,7 @@
     flex-direction: column;
     background-color: #36393f;
     width: 40rem; }
-    .serversettings-members > h1 {
+    .serversettings-members-title {
       color: #e4e4e4;
       text-transform: uppercase;
       font-size: 1rem;

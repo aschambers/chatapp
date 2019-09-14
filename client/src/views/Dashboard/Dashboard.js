@@ -18,6 +18,7 @@ import InviteModal from '../../components/InviteModal/InviteModal';
 import NotificationSettingsModal from '../../components/NotificationSettingsModal/NotificationSettingsModal';
 import PrivacyModal from '../../components/PrivacyModal/PrivacyModal';
 import RegionModal from '../../components/RegionModal/RegionModal';
+import UserManagement from '../../components/UserManagement/UserManagement';
 import chatot from '../../assets/images/chatot.png';
 import friends from '../../assets/images/friends.png';
 import settings from '../../assets/images/settings.png';
@@ -70,13 +71,16 @@ const Dashboard = (props) => {
   const [isChangingRegion, setIsChangingRegion] = useState(false);
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteCode, setInviteCode] = useState("");
-  const [activeServerSetting, setActiveServerSetting] = useState("overview");
+  const [activeServerSetting, setActiveServerSetting] = useState("members");
   const [activeUserSetting, setActiveUserSetting] = useState("myaccount");
   const [isAdmin, setIsAdmin] = useState(false);
   const [serverInvites, setServerInvites] = useState([]);
   const [allowDirectMessages, setAllowDirectMessages] = useState(false);
   const [friendsList, setFriendsList] = useState(null);
   const [currentFriend, setCurrentFriend] = useState(null);
+  const [serverUser, setServerUser] = useState(null);
+  const [serverUserRole, setServerUserRole] = useState("admin");
+  const [showUserManagement, setShowUserManagement] = useState(false);
 
   const ref = useRef();
   useOnClickOutside(ref, () => setShowCategoryModal(false));
@@ -123,6 +127,12 @@ const Dashboard = (props) => {
       toast.dismiss();
       toast.error('Error joining server!', { position: 'bottom-center' });
       props.resetInviteValues();
+    }
+
+    if (props.updateRoleSuccess) {
+      setShowUserManagement(false);
+      setServerUserRole("admin");
+      setServerUser(null);
     }
 
     if (props.serverUserList) {
@@ -406,6 +416,23 @@ const Dashboard = (props) => {
     });
   }
 
+  const setActiveServerUser = (user) => {
+    setShowUserManagement(true);
+    setServerUser(user);
+  }
+
+  const setSaveServerUser = () => {
+    const data = {
+      active: true,
+      imageUrl: null,
+      type: serverUserRole,
+      userId: 2,
+      username: "alan",
+      serverId: serverId
+    }
+    props.updateUserRole(data);
+  }
+
   return (
     <div className="dashboard">
       <ToastMessage />
@@ -633,7 +660,7 @@ const Dashboard = (props) => {
 
       {isServerSettingsOpen ?
         <div className="serversettings">
-          {isChangingRegion ? <span className="contentBackground"></span> : null}
+          {isChangingRegion || showUserManagement ? <span className="contentBackground"></span> : null}
           <div className="serversettings-sidebar">
             <h1>Server Settings</h1>
             <p className={activeServerSetting === "overview" ? "serversettings-sidebar-activeitem" : "serversettings-sidebar-overview"} onClick={() => { setActiveServerSetting("overview"); }}>Overview</p>
@@ -676,22 +703,33 @@ const Dashboard = (props) => {
 
             {activeServerSetting === "members" ?
               <div className="serversettings-members">
-                <h1>Server Members</h1>
-                <p className="serversettings-members-count">{serverUserList.length} Members</p>
-                {serverUserList && serverUserList.length > 0 ? serverUserList.map((item, index)  => {
-                  return (
-                    <div key={index} className="serversettings-user">
-                      <img className="serversettings-logo" src={item.imageUrl ? item.imageUrl : chatot} alt="chatter-icon" />
-                      <span>
-                        <p>{item.type}</p>
-                        <p>{item.username}</p>
-                      </span>
-                      <span className="serversettings-add">
-                        <img src={add} alt="add-icon" className="serversettings-user-add-image" />
-                      </span>
-                    </div>
-                  )
-                }) : null}
+                {showUserManagement ?
+                  <UserManagement
+                    serverUser={serverUser}
+                    serverUserRole={serverUserRole}
+                    setShowUserManagement={() => { setShowUserManagement(false); setServerUserRole("admin"); setServerUser(null); }}
+                    setServerUserRole={(role) => { setServerUserRole(role); }}
+                    setSaveServerUser={setSaveServerUser}
+                  />
+                : <div>
+                    <h1 className="serversettings-members-title">Server Members</h1>
+                    <p className="serversettings-members-count">{serverUserList.length} Members</p>
+                    {serverUserList && serverUserList.length > 0 ? serverUserList.map((item, index)  => {
+                      return (
+                        <div key={index} className="serversettings-user" onClick={() => { setActiveServerUser(item); }}>
+                          <img className="serversettings-logo" src={item.imageUrl ? item.imageUrl : chatot} alt="chatter-icon" />
+                          <span>
+                            <p>{item.type}</p>
+                            <p>{item.username}</p>
+                          </span>
+                          <span className="serversettings-add">
+                            <img src={add} alt="add-icon" className="serversettings-user-add-image" />
+                          </span>
+                        </div>
+                      )
+                    }) : null}
+                  </div>
+                }
               </div>
             : null}
 
@@ -820,6 +858,8 @@ const mapStateToProps = ({ usersReducer, serversReducer, categoriesReducer, chat
     users: usersReducer.users,
     serversList: serversReducer.serversList,
     serverUserList: serversReducer.serverUserList,
+    updateRoleSuccess: serversReducer.updateRoleSuccess,
+    updateRoleError: serversReducer.updateRoleSuccess,
     categoryList: categoriesReducer.categoryList,
     chatroomList: chatroomsReducer.chatroomList,
     chatroomSuccess: chatroomsReducer.success,
