@@ -33,6 +33,7 @@ import usregion from '../../assets/images/usregion.png';
 import europe from '../../assets/images/europe.png';
 import russia from '../../assets/images/russia.png';
 import add from '../../assets/images/add.png';
+import owner from '../../assets/images/owner.png';
 
 const Dashboard = (props) => {
   const [id, setId] = useState(null);
@@ -71,7 +72,7 @@ const Dashboard = (props) => {
   const [isChangingRegion, setIsChangingRegion] = useState(false);
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteCode, setInviteCode] = useState("");
-  const [activeServerSetting, setActiveServerSetting] = useState("members");
+  const [activeServerSetting, setActiveServerSetting] = useState("overview");
   const [activeUserSetting, setActiveUserSetting] = useState("myaccount");
   const [isAdmin, setIsAdmin] = useState(false);
   const [serverInvites, setServerInvites] = useState([]);
@@ -715,18 +716,33 @@ const Dashboard = (props) => {
                     <h1 className="serversettings-members-title">Server Members</h1>
                     <p className="serversettings-members-count">{serverUserList.length} Members</p>
                     {serverUserList && serverUserList.length > 0 ? serverUserList.map((item, index)  => {
-                      return (
-                        <div key={index} className="serversettings-user" onClick={() => { setActiveServerUser(item); }}>
-                          <img className="serversettings-logo" src={item.imageUrl ? item.imageUrl : chatot} alt="chatter-icon" />
-                          <span>
-                            <p>{item.type}</p>
-                            <p>{item.username}</p>
-                          </span>
-                          <span className="serversettings-add">
-                            <img src={add} alt="add-icon" className="serversettings-user-add-image" />
-                          </span>
-                        </div>
-                      )
+                      if (item.type === "owner") {
+                        return (
+                          <div key={index} className="serversettings-owner">
+                            <img className="serversettings-logo" src={item.imageUrl ? item.imageUrl : chatot} alt="chatter-icon" />
+                            <span>
+                              <p>{item.type}</p>
+                              <p>{item.username}</p>
+                            </span>
+                            <span className="serversettings-add">
+                              <img src={owner} alt="add-icon" className="serversettings-user-add-image" />
+                            </span>
+                          </div>
+                        )
+                      } else {
+                        return (
+                          <div key={index} className="serversettings-user" onClick={() => { setActiveServerUser(item); }}>
+                            <img className="serversettings-logo" src={item.imageUrl ? item.imageUrl : chatot} alt="chatter-icon" />
+                            <span>
+                              <p>{item.type}</p>
+                              <p>{item.username}</p>
+                            </span>
+                            <span className="serversettings-add">
+                              <img src={add} alt="add-icon" className="serversettings-user-add-image" />
+                            </span>
+                          </div>
+                        )
+                      }
                     }) : null}
                   </div>
                 }
