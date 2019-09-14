@@ -103,9 +103,9 @@ module.exports = {
     const result = await MessageModel.findAll({ where: {
       [Op.or]: [
         { [Op.and]: [{ userId: userId }, { friendId: friendId }, { chatroomId: null }] },
-        { [Op.and]: [{ userId: friendId }, { friendId: userId }, { chatroomId: null }] },
-      ], order: [['updatedAt', 'DESC']]
-    }});
+        { [Op.and]: [{ userId: friendId }, { friendId: userId }, { chatroomId: null }] }
+      ]
+    }, order: [['updatedAt', 'DESC']] });
     if(result) {
       res.status(200).send(result);
     } else {
@@ -124,8 +124,8 @@ module.exports = {
       [Op.and]: [
         { chatroomId: null },
         { [Op.and]: [{ userId: userId }, { friendId: userId }] }
-      ], order: [['updatedAt', 'DESC']]
-    }});
+      ]
+    }, order: [['updatedAt', 'DESC']] });
     if(result) {
       res.status(200).send(result);
     } else {
@@ -149,9 +149,9 @@ module.exports = {
     const messages = await MessageModel.findAll({ where: {
       [Op.or]: [
         { [Op.and]: [{ userId: userId }, { friendId: friendId }, { chatroomId: null }] },
-        { [Op.and]: [{ userId: friendId }, { friendId: userId }, { chatroomId: null }] },
-      ], order: [['updatedAt', 'DESC']]
-    }});
+        { [Op.and]: [{ userId: friendId }, { friendId: userId }, { chatroomId: null }] }
+      ]
+    }, order: [['updatedAt', 'DESC']] });
     if (messages) {
       res.status(200).send(messages);
     } else {
@@ -176,8 +176,8 @@ module.exports = {
       [Op.and]: [
         { chatroomId: null },
         { [Op.and]: [{ userId: userId }, { friendId: userId }] }
-      ], order: [['updatedAt', 'DESC']]
-    }});
+      ]
+    }, order: [['updatedAt', 'DESC']] });
     if (messages) {
       res.status(200).send(messages);
     } else {
