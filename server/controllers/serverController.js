@@ -146,7 +146,7 @@ module.exports = {
 
     if (!updateServer) return res.status(422).json({"error":"error-finding-server"});
 
-    const index = updateServer.userList.findIndex(x => x.username === username);
+    const index = updateServer.userList.findIndex(x => x.userId === userId);
 
     if (index < 0) return res.status(422).json({"error":"error-finding-user-on-server"});
 

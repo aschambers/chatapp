@@ -427,8 +427,8 @@ const Dashboard = (props) => {
       active: true,
       imageUrl: null,
       type: serverUserRole,
-      userId: 2,
-      username: "alan",
+      userId: serverUser.userId,
+      username: serverUser.username,
       serverId: serverId
     }
     props.updateUserRole(data);
