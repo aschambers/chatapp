@@ -186,6 +186,7 @@ class Chatroom extends Component {
               </div>
             );
           }) : null}
+          {this.props.serverUserList.length > 0 && this.props.serverUserList.some(item => item['type'] === 'owner') ? <div className="sidebarright-bordertwo" /> : null}
           <div className="sidebarright-authority">
             <span>Administrators</span>
           </div>
@@ -202,11 +203,12 @@ class Chatroom extends Component {
               </div>
             );
           }) : null}
+          {this.props.serverUserList.length > 0 && this.props.serverUserList.some(item => item['type'] === 'admin') ? <div className="sidebarright-bordertwo" /> : null}
           <div className="sidebarright-authority">
             <span>Moderators</span>
           </div>
           <div className="sidebarright-bordertwo" />
-          {this.state.users.length > 0 ? this.state.users.map((user, index)  => {
+          {this.props.serverUserList.length > 0 ? this.props.serverUserList.map((user, index)  => {
             return (
               <div key={index} className={user.type === 'moderator' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.contextMenu(event, user); }}>
                 {user.type === 'moderator' ? <div className="username">
@@ -218,6 +220,7 @@ class Chatroom extends Component {
               </div>
             );
           }) : null}
+          {this.props.serverUserList.length > 0 && this.props.serverUserList.some(item => item['type'] === 'moderator') ? <div className="sidebarright-bordertwo" /> : null}
           <div className="sidebarright-authority">
             <span>Voice</span>
           </div>
@@ -234,6 +237,7 @@ class Chatroom extends Component {
               </div>
             );
           }) : null}
+          {this.props.serverUserList.length > 0 && this.props.serverUserList.some(item => item['type'] === 'voice') ? <div className="sidebarright-bordertwo" /> : null}
           <div className="sidebarright-authority">
             <span>Users</span>
           </div>

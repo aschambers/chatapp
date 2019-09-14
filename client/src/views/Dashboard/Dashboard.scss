@@ -452,6 +452,34 @@
       color: rgb(211, 211, 211);
     }
   }
+  &-owner {
+    width: 21rem;
+    background-color: rgb(79, 79, 79);
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.4rem;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    height: 5.5rem;
+    position: relative;
+    & > span {
+      & > p {
+        color: white;
+      }
+    }
+    &-add {
+      &-image {
+        display: inline-block;
+        position: absolute;
+        right: 1.5rem;
+        top: 2rem;
+        height: 1.3rem;
+        border: 1px solid black;
+        border-radius: 50%;
+        padding: 0.2rem;
+      }
+    }
+  }
   &-user {
     width: 21rem;
     background-color: rgb(79, 79, 79);
