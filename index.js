@@ -3,7 +3,7 @@ const path = require('path');
 const busboyBodyParser = require('busboy-body-parser');
 // express setup
 const app = express();
-app.use(busboyBodyParser({ multi: true }));
+app.use(busboyBodyParser({ limit: '50mb', multi: true }));
 app.use(express.json());
 // cors
 const cors = require('cors');

@@ -15,7 +15,7 @@ module.exports = async(server) => {
       socket.leave(data.previousRoom);
       socket.join(data.room);
       let messages = await axios.post(`${SERVER_URL}/api/v1/getChatroomMessages`, data) || [];
-      io.to(data.socketId).emit('RECEIVE_CHATROOM_MESSAGES', messages.data.reverse());
+      io.to(data.socketId).emit('RECEIVE_CHATROOM_MESSAGES', messages.data);
     });
 
     socket.on('CHATROOM_MESSAGE', async(data) => {
@@ -26,7 +26,7 @@ module.exports = async(server) => {
         chatroomId: data.chatroomId
       });
       if (messages) {
-        io.in(data.room).emit('RECEIVE_CHATROOM_MESSAGES', messages.data.reverse());
+        io.in(data.room).emit('RECEIVE_CHATROOM_MESSAGES', messages.data);
       }
     });
 
@@ -34,14 +34,14 @@ module.exports = async(server) => {
       socket.leave(data.previousRoom);
       socket.join(data.room);
       let messages = await axios.post(`${SERVER_URL}/api/v1/getPersonalMessages`, data) || [];
-      io.to(data.socketId).emit('RECEIVE_PERSONAL_MESSAGES', messages.data.reverse());
+      io.to(data.socketId).emit('RECEIVE_PERSONAL_MESSAGES', messages.data);
     });
 
     socket.on('GET_PRIVATE_MESSAGES', async(data) => {
       socket.leave(data.previousRoom);
       socket.join(data.room);
       let messages = await axios.post(`${SERVER_URL}/api/v1/getPrivateMessages`, data) || [];
-      io.to(data.socketId).emit('RECEIVE_PRIVATE_MESSAGES', messages.data.reverse());
+      io.to(data.socketId).emit('RECEIVE_PRIVATE_MESSAGES', messages.data);
     });
 
     socket.on('SEND_PERSONAL_MESSAGE', async(data) => {
@@ -52,7 +52,7 @@ module.exports = async(server) => {
         friendId: data.friendId
       });
       if (messages) {
-        io.in(data.room).emit('RECEIVE_PERSONAL_MESSAGES', messages.data.reverse());
+        io.in(data.room).emit('RECEIVE_PERSONAL_MESSAGES', messages.data);
       }
     });
 
@@ -64,7 +64,7 @@ module.exports = async(server) => {
         friendId: data.friendId
       });
       if (messages) {
-        io.in(data.room).emit('RECEIVE_PRIVATE_MESSAGES', messages.data.reverse());
+        io.in(data.room).emit('RECEIVE_PRIVATE_MESSAGES', messages.data);
       }
     });
 

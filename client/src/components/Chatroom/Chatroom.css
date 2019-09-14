@@ -47,14 +47,20 @@
     display: flex;
     flex-direction: column-reverse;
     padding-left: 2rem; }
+    @supports (-ms-ime-align: auto) {
+      .chatarea-messages {
+        flex-direction: column; } }
 
-@-moz-document url-prefix(), @supports (-ms-ime-align: auto) {
+@-moz-document url-prefix() {
   .chatarea-messages {
     flex-direction: column; } }
     .chatarea-messages > div {
       line-height: 0.5rem; }
+    @supports (-ms-ime-align: auto) {
+      .chatarea-messages > div:first-child {
+        margin-top: auto; } }
 
-@-moz-document url-prefix(), @supports (-ms-ime-align: auto) {
+@-moz-document url-prefix() {
   .chatarea-messages > div:first-child {
     margin-top: auto; } }
     .chatarea-messages-user {
