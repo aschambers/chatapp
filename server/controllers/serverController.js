@@ -127,6 +127,47 @@ module.exports = {
     } else {
       res.status(422).send({'error':'error deleting server'});
     }
+  },
+
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {array} server list
+   */
+  updateUserRole: async(req, res, next) => {
+    const { active, imageUrl, type, userId, username, serverId } = req.body;
+
+    if (!active || !type || !userId || !username || !serverId) {
+      return res.status(400).send({'error': 'Missing required fields'});
+    }
+
+    // const updateServerRole =
+    const updateServer = await ServerModel.findOne({ where: { id: req.body.serverId } });
+
+    if (!updateServer) return res.status(422).json({"error":"error-finding-server"});
+
+    const index = updateServer.userList.findIndex(x => x.username === username);
+
+    if (index < 0) return res.status(422).json({"error":"error-finding-user-on-server"});
+
+    updateServer.userList[index] = {
+      type: type,
+      active: active,
+      userId: userId,
+      imageUrl: imageUrl,
+      username: username
+    }
+
+    const result = await updateServer.update(
+      { userList: updateServer.userList },
+      { where: { id: serverId }}
+    );
+
+    if (result) {
+      res.status(200).send(updateServer.userList);
+    } else {
+      res.status(422).send({'error':'Error finding server'});
+    }
   }
 
 }

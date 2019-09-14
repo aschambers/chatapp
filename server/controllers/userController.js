@@ -42,8 +42,7 @@ module.exports = {
           to: req.body.email,
           from: 'verification@chatter.com',
           subject: 'Verify your account',
-          html: 'Please click this link to verify your account.' +
-          '\n\n' + `${keys.email_link}/Verification?token=${token}&email=${email}`
+          html: 'Please click this link to verify your account. <br>' + `${keys.email_link}/Verification?token=${token}&email=${email}`
         };
         const sentEmail = await sgMail.send(msg);
 
@@ -319,8 +318,7 @@ module.exports = {
           to: req.body.email,
           from: 'verification@chatter.com',
           subject: 'Verify your account',
-          html: 'Please click this link to verify your account.' +
-          '.\n\n' + `${keys.email_link}/Verification?token=${token}&email=${email}`
+          html: 'Please click this link to verify your account. <br>' + `${keys.email_link}/Verification?token=${token}&email=${email}`
         };
         const sentEmail = await sgMail.send(msg);
 
@@ -364,8 +362,7 @@ module.exports = {
       to: req.body.email,
       from: 'resetpassword@chatter.com',
       subject: 'Reset Password',
-      html: 'Please click this link to reset your password.' +
-      '.\n\n' + `${keys.email_link}/ResetPassword?token=${token}&email=${email}`
+      html: 'Please click this link to reset your password. <br>' + `${keys.email_link}/ResetPassword?token=${token}&email=${email}`
     };
     const sentEmail = await sgMail.send(msg);
 

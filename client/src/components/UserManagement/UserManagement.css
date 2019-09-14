@@ -1,0 +1,73 @@
+.usermanagementroles {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  background-color: #282828;
+  border-radius: 5px;
+  width: 32rem;
+  height: 18rem; }
+  .usermanagementroles > h1 {
+    text-align: center;
+    color: white;
+    font-size: 1.4rem;
+    margin-top: 2rem; }
+  .usermanagementroles > p {
+    margin-left: 3rem;
+    color: white;
+    margin-top: 2rem;
+    font-size: 1.2rem; }
+  .usermanagementroles > select {
+    margin-left: 18rem;
+    position: absolute;
+    margin-top: 6.3rem;
+    z-index: 5;
+    background: url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat right white;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none;
+    border: none;
+    border-radius: 0;
+    width: 11rem;
+    cursor: pointer;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    background-position-x: 95%;
+    height: 2rem;
+    padding-left: 1rem;
+    font-family: Antonio-Regular;
+    font-size: 1.2rem; }
+  .usermanagementroles-activity {
+    display: flex;
+    flex-direction: row; }
+  .usermanagementroles-cancel {
+    cursor: pointer;
+    outline: none;
+    border: none;
+    background-color: black;
+    color: white;
+    font-size: 1rem;
+    box-sizing: border-box;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    width: 5rem;
+    height: 2.1rem;
+    margin-top: 5rem;
+    margin-left: 18rem; }
+  .usermanagementroles-save {
+    cursor: pointer;
+    outline: none;
+    border: none;
+    background-color: #7272cb;
+    color: white;
+    font-size: 1rem;
+    box-sizing: border-box;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    width: 5rem;
+    height: 2rem;
+    margin-top: 5rem;
+    margin-left: 1rem; }

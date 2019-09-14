@@ -1,0 +1,78 @@
+self.__precacheManifest = (self.__precacheManifest || []).concat([
+  {
+    "revision": "2895db25ed5ed68e59e79ad969cecb48",
+    "url": "/index.html"
+  },
+  {
+    "revision": "60b21d09c062bd5f5e4f",
+    "url": "/static/css/2.39017165.chunk.css"
+  },
+  {
+    "revision": "0d3f837c3eedfd386f50",
+    "url": "/static/css/4.3f6083ff.chunk.css"
+  },
+  {
+    "revision": "378988f831a7d9b7b3d8",
+    "url": "/static/css/5.a2490990.chunk.css"
+  },
+  {
+    "revision": "da2a69f12090aa8d10b9",
+    "url": "/static/css/6.0c3fa314.chunk.css"
+  },
+  {
+    "revision": "3c5acdf184dd99732ad7",
+    "url": "/static/css/main.49da75b2.chunk.css"
+  },
+  {
+    "revision": "60b21d09c062bd5f5e4f",
+    "url": "/static/js/2.604bbdc9.chunk.js"
+  },
+  {
+    "revision": "8e3413bcc3b61647afaa",
+    "url": "/static/js/3.c36c8dc9.chunk.js"
+  },
+  {
+    "revision": "0d3f837c3eedfd386f50",
+    "url": "/static/js/4.2ce663f8.chunk.js"
+  },
+  {
+    "revision": "378988f831a7d9b7b3d8",
+    "url": "/static/js/5.249b86e0.chunk.js"
+  },
+  {
+    "revision": "da2a69f12090aa8d10b9",
+    "url": "/static/js/6.c34d3fc8.chunk.js"
+  },
+  {
+    "revision": "3c5acdf184dd99732ad7",
+    "url": "/static/js/main.50876b5f.chunk.js"
+  },
+  {
+    "revision": "a44c0ec9fb535a01a6ed",
+    "url": "/static/js/runtime~main.b902b624.js"
+  },
+  {
+    "revision": "25cd38a8b03ff96775c2e00d31052010",
+    "url": "/static/media/Antonio-Regular.25cd38a8.ttf"
+  },
+  {
+    "revision": "1e99b0442583593743adb5d91d7c0669",
+    "url": "/static/media/BebasNeue Bold.1e99b044.ttf"
+  },
+  {
+    "revision": "9042a37caa7fb0389371de54dd886b38",
+    "url": "/static/media/BebasNeue Regular.9042a37c.ttf"
+  },
+  {
+    "revision": "7eb68b80d0016066ae1bda295c223dc3",
+    "url": "/static/media/chatterapp.7eb68b80.png"
+  },
+  {
+    "revision": "8fc4fc5d06ac8b81d857dc2f388bbd29",
+    "url": "/static/media/europe.8fc4fc5d.png"
+  },
+  {
+    "revision": "16a4158a79c0aefee6fcab72f561d918",
+    "url": "/static/media/numbersign.16a4158a.png"
+  }
+]);

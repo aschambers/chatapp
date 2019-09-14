@@ -11,6 +11,9 @@ import {
   DELETING_SERVER,
   DELETE_SERVER_FAIL,
   DELETE_SERVER_SUCCESS,
+  UPDATING_USER_ROLE,
+  UPDATE_USER_ROLE_FAIL,
+  UPDATE_USER_ROLE_SUCCESS,
   RESET_SERVER_VALUES
 } from '../../types';
 
@@ -64,6 +67,18 @@ export default (state = initialState, action) => {
     case RESET_SERVER_VALUES:
       return {
         ...state, isLoading: false, error: false, success: false
+      };
+    case UPDATING_USER_ROLE:
+      return {
+        ...state, isLoading: true, updateRoleError: false, updateRoleSuccess: false
+      };
+    case UPDATE_USER_ROLE_SUCCESS:
+      return {
+        ...state, isLoading: false, updateRoleError: false, updateRoleSuccess: true, serverUserList: action.payload
+      };
+    case UPDATE_USER_ROLE_FAIL:
+      return {
+        ...state, isLoading: false, updateRoleError: true, updateRoleSuccess: false
       };
     default:
       return state;
@@ -129,6 +144,20 @@ export const serverDelete = params => async dispatch => {
     }
   } catch (err) {
     dispatch({ type: DELETE_SERVER_FAIL });
+  }
+};
+
+export const updateUserRole = params => async dispatch => {
+  dispatch({ type: UPDATING_USER_ROLE });
+  try {
+    const response = await axios.post(`${ROOT_URL}/api/v1/updateUserRole`, params);
+    if (response.data) {
+      dispatch({ type: UPDATE_USER_ROLE_SUCCESS, payload: response.data });
+    } else {
+      dispatch({ type: UPDATE_USER_ROLE_FAIL });
+    }
+  } catch (err) {
+    dispatch({ type: UPDATE_USER_ROLE_FAIL });
   }
 };
 
