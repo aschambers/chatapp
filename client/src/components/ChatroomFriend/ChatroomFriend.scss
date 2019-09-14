@@ -29,7 +29,10 @@
     overflow: hidden;
     display: flex;
     flex-direction: column-reverse;
-    @-moz-document url-prefix(), @supports (-ms-ime-align: auto) {
+    @supports (-ms-ime-align:auto) {
+      flex-direction: column;
+    }
+    @-moz-document url-prefix() {
       flex-direction: column;
     }
     padding-left: 2rem;
@@ -37,7 +40,10 @@
       line-height: 0.5rem;
     }
     & > div:first-child {
-      @-moz-document url-prefix(), @supports (-ms-ime-align: auto) {
+      @supports (-ms-ime-align:auto) {
+        margin-top: auto;
+      }
+      @-moz-document url-prefix() {
         margin-top: auto;
       }
     }
