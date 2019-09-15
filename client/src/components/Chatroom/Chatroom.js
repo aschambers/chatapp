@@ -269,19 +269,23 @@ class Chatroom extends Component {
                       </div>
                     : null}
                     {this.state.userModalOpen && this.state.rightClickedUser.id === item.id ?
-                      <div ref={this.ref} className="chatarea-messages-usermodal">
+                      <div ref={this.ref} className={this.state.serverUserList.length > 0
+                        && this.state.serverUserList.some(serverItem => serverItem['username'] !== this.state.username
+                        && (serverItem['username'] === item.username && serverItem['type'] !== 'owner' && serverItem['type'] !== 'admin')) ?"chatarea-messages-usermodalmod" : "chatarea-messages-usermodal"}>
                         <span onClick={() => { this.setState({ userModalOpen: false }); }}>&#10005;</span>
-                        <p onClick={() => { this.privateMessageUser(); }} className="chatarea-messages-usermodal-privatemessage">Send Message</p>
+                        <p onClick={() => { this.privateMessageUser(); }} className={this.state.serverUserList.length > 0
+                        && this.state.serverUserList.some(serverItem => serverItem['username'] !== this.state.username
+                        && (serverItem['username'] === item.username && serverItem['type'] !== 'owner' && serverItem['type'] !== 'admin')) ? "chatarea-messages-usermodalmod-privatemessage" : "chatarea-messages-usermodal-privatemessage"}>Send Message</p>
 
                         {this.state.serverUserList.length > 0
                         && this.state.serverUserList.some(serverItem => serverItem['username'] !== this.state.username
                         && (serverItem['username'] === item.username && serverItem['type'] !== 'owner' && serverItem['type'] !== 'admin'))
-                        ? <p onClick={() => { this.kickUser(item); }} className="chatarea-messages-usermodal-kick">Kick {item.username}</p> : null}
+                        ? <p onClick={() => { this.kickUser(item); }} className="chatarea-messages-usermodalmod-kick">Kick {item.username}</p> : null}
 
                         {this.state.serverUserList.length > 0
                         && this.state.serverUserList.some(serverItem => serverItem['username'] !== this.state.username
                         && (serverItem['username'] === item.username && serverItem['type'] !== 'owner' && serverItem['type'] !== 'admin'))
-                        ? <p onClick={() => { this.banUser(item); }} className="chatarea-messages-usermodal-kick">Ban {item.username}</p> : null}
+                        ? <p onClick={() => { this.banUser(item); }} className="chatarea-messages-usermodalmod-ban">Ban {item.username}</p> : null}
                       </div>
                     : null}
                   </div>
