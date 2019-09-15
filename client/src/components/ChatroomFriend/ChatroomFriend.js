@@ -25,7 +25,8 @@ class ChatroomFriend extends Component {
       editMessage: null,
       messageMenu: false,
       editingMessage: null,
-      newMessage: ""
+      newMessage: "",
+      hover: ""
     }
   }
 
@@ -151,7 +152,7 @@ class ChatroomFriend extends Component {
   }
 
   editUserMessage = () => {
-    this.setState({ editingMessage: this.state.editMessage, newMessage: this.state.editMessage.message }, () => {
+    this.setState({ editingMessage: this.state.editMessage, newMessage: this.state.editMessage.message, hover: "" }, () => {
       this.setState({ editMessage: null, messageMenu: false });
     });
   }

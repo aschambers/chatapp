@@ -41,7 +41,8 @@ class Chatroom extends Component {
       editMessage: null,
       messageMenu: false,
       editingMessage: null,
-      newMessage: ""
+      newMessage: "",
+      hover: ""
     }
   }
 
@@ -165,7 +166,7 @@ class Chatroom extends Component {
   }
 
   editChatroomMessage = () => {
-    this.setState({ editingMessage: this.state.editMessage, newMessage: this.state.editMessage.message }, () => {
+    this.setState({ editingMessage: this.state.editMessage, newMessage: this.state.editMessage.message, hover: "" }, () => {
       this.setState({ editMessage: null, messageMenu: false });
     });
   }
