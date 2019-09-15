@@ -46,6 +46,7 @@
   }
   &-messages {
     height: 100%;
+    width: 100%;
     margin-bottom: auto;
     overflow: hidden;
     display: flex;
@@ -59,7 +60,8 @@
     }
     padding-left: 2rem;
     & > div {
-      line-height: 0.5rem;
+      display: inline-block;
+      line-height: 1.1rem;
     }
     & > div:first-child {
       @supports (-ms-ime-align:auto) {
@@ -68,6 +70,9 @@
       @-moz-document url-prefix() {
         margin-top: auto;
       }
+    }
+    &-container {
+      margin-top: 0rem;
     }
     &-user {
       cursor: context-menu;
@@ -87,6 +92,8 @@
     }
     &-message {
       font-size: 1rem;
+      margin-top: -1rem;
+      width: 90%;
       color: white;
     }
     &-editmessage {
@@ -118,7 +125,7 @@
     &-editmenu {
       background-color: black;
       width: 4rem;
-      height: 3rem;
+      height: 4rem;
       position: absolute;
       right: 1rem;
       z-index: 2;

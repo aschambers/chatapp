@@ -23,6 +23,7 @@
       border: 1px solid black; }
   .privatechatarea-messages {
     height: 100%;
+    width: 100%;
     margin-bottom: auto;
     overflow: hidden;
     display: flex;
@@ -36,7 +37,7 @@
   .privatechatarea-messages {
     flex-direction: column; } }
     .privatechatarea-messages > div {
-      line-height: 0.5rem; }
+      line-height: 1.1rem; }
     @supports (-ms-ime-align: auto) {
       .privatechatarea-messages > div:first-child {
         margin-top: auto; } }
@@ -44,6 +45,8 @@
 @-moz-document url-prefix() {
   .privatechatarea-messages > div:first-child {
     margin-top: auto; } }
+    .privatechatarea-messages-container {
+      margin-top: 0rem; }
     .privatechatarea-messages-user {
       cursor: context-menu;
       -webkit-touch-callout: none;
@@ -60,6 +63,8 @@
       font-size: 0.8rem; }
     .privatechatarea-messages-message {
       font-size: 1rem;
+      margin-top: -1rem;
+      width: 90%;
       color: white; }
     .privatechatarea-messages-editmessage {
       border: none;
@@ -82,12 +87,12 @@
       display: inline-block;
       position: absolute;
       right: 1rem;
-      margin-top: -2rem;
+      margin-top: -3rem;
       cursor: pointer; }
     .privatechatarea-messages-editmenu {
       background-color: black;
       width: 4rem;
-      height: 3rem;
+      height: 4rem;
       position: absolute;
       right: 1rem;
       z-index: 2;
