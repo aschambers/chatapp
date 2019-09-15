@@ -21,6 +21,9 @@ import {
   RETRIEVE_USER_LOADING,
   RETRIEVE_USER_FAIL,
   RETRIEVE_USER_SUCCESS,
+  RETRIEVE_UPDATED_USER_LOADING,
+  RETRIEVE_UPDATED_USER_FAIL,
+  RETRIEVE_UPDATED_USER_SUCCESS,
   RETRIEVE_SOCKET_USER_LOADING,
   RETRIEVE_SOCKET_USER_FAIL,
   RETRIEVE_SOCKET_USER_SUCCESS,
@@ -115,15 +118,27 @@ export default (state = initialState, action) => {
       };
     case RETRIEVE_USER_LOADING:
       return {
-        ...state, isLoading: true, error: false, success: false
+        ...state, isLoading: true, retrieveUserError: false, retrieveUserSuccess: false,
       };
     case RETRIEVE_USER_SUCCESS:
       return {
-        ...state, user: action.payload
+        ...state, isLoading: false, retrieveUserError: false, retrieveUserSuccess: true, user: action.payload
       };
     case RETRIEVE_USER_FAIL:
       return {
-        ...state, isLoading: false, error: true, success: false
+        ...state, isLoading: false, retrieveUserError: true, retrieveUserSuccess: false,
+      };
+    case RETRIEVE_UPDATED_USER_LOADING:
+      return {
+        ...state, isLoading: true, retrieveUpdatedUserError: false, retrieveUpdatedUserSuccess: false,
+      };
+    case RETRIEVE_UPDATED_USER_SUCCESS:
+      return {
+        ...state, isLoading: false, retrieveUpdatedUserError: false, retrieveUpdatedUserSuccess: true, user: action.payload
+      };
+    case RETRIEVE_UPDATED_USER_FAIL:
+      return {
+        ...state, isLoading: false, retrieveUpdatedUserError: true, retrieveUpdatedUserSuccess: false,
       };
     case RETRIEVE_SOCKET_USER_LOADING:
       return {
@@ -199,7 +214,7 @@ export default (state = initialState, action) => {
       };
     case RESET_VALUES:
       return {
-        ...state, isLoading: false, error: false, success: false, logout: false
+        ...state, isLoading: false, error: false, success: false, logout: false, retrieveUserError: false, retrieveUserSuccess: false, retrieveUpdatedUserError: false, retrieveUpdatedUserSuccess: false
       };
     case RESET_USER_VALUES:
       return {
@@ -284,17 +299,17 @@ export const userLogout = params => async dispatch => {
 };
 
 export const getUpdatedUser = params => async dispatch => {
-  dispatch({ type: RETRIEVE_USER_LOADING });
+  dispatch({ type: RETRIEVE_UPDATED_USER_LOADING });
   try {
     const response = await axios.post(`${ROOT_URL}/api/v1/getSingleUser`, params);
     if(response.data) {
       localStorage.setItem('user', JSON.stringify(response.data));
-      dispatch({ type: RETRIEVE_USER_SUCCESS, payload: response.data });
+      dispatch({ type: RETRIEVE_UPDATED_USER_SUCCESS, payload: response.data });
     } else {
-      dispatch({ type: RETRIEVE_USER_FAIL });
+      dispatch({ type: RETRIEVE_UPDATED_USER_FAIL });
     }
   } catch(err) {
-    dispatch({ type: RETRIEVE_USER_FAIL });
+    dispatch({ type: RETRIEVE_UPDATED_USER_FAIL });
   }
 };
 

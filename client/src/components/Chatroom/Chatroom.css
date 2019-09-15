@@ -82,7 +82,7 @@
       font-size: 0.8rem; }
     .chatarea-messages-message {
       font-size: 1rem;
-      margin-top: -1rem;
+      margin-top: 0rem;
       width: 94%;
       color: white; }
     .chatarea-messages-editmessage {
@@ -126,6 +126,34 @@
         margin-right: 0.3rem; }
       .chatarea-messages-editmenu > p {
         color: white;
+        margin-left: 0.6rem;
+        margin-top: 0.7rem;
+        font-size: 0.8rem;
+        cursor: pointer; }
+    .chatarea-messages-usermodal {
+      background-color: black;
+      width: 8rem;
+      height: 6rem;
+      position: absolute;
+      left: 2rem;
+      z-index: 2;
+      border-radius: 4px;
+      margin-top: -4rem; }
+      .chatarea-messages-usermodal > span {
+        cursor: pointer;
+        color: white;
+        position: absolute;
+        right: 0;
+        margin-top: 0.3rem;
+        margin-right: 0.3rem; }
+      .chatarea-messages-usermodal-privatemessage {
+        color: white;
+        margin-left: 0.6rem;
+        margin-top: 0.7rem;
+        font-size: 0.8rem;
+        cursor: pointer; }
+      .chatarea-messages-usermodal-kick, .chatarea-messages-usermodal-ban {
+        color: red;
         margin-left: 0.6rem;
         margin-top: 0.7rem;
         font-size: 0.8rem;

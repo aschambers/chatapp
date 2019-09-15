@@ -44,14 +44,14 @@ const Dashboard = (props) => {
   const [server, setServer] = useState('');
   const [serverName, setServerName] = useState('');
   const [serverId, setServerId] = useState(null);
-  const [serverImage, setServerImage] = useState("");
-  const [serverRegion, setServerRegion] = useState("");
+  const [serverImage, setServerImage] = useState('');
+  const [serverRegion, setServerRegion] = useState('');
   const [serverUserList, setServerUserList] = useState([]);
   const [hover, setHover] = useState('');
   const [isSettingsOpen, setSettingsOpen] = useState(false);
   const [isServerSettingsOpen, setIsServerSettingsOpen] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [currentModal, setCurrentModal] = useState("");
+  const [currentModal, setCurrentModal] = useState('');
   const [region, setRegion] = useState("US West");
   const [serversList, setServersList] = useState([]);
   const [serverSettings, showServerSettings] = useState(false);
@@ -61,17 +61,17 @@ const Dashboard = (props) => {
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [showNotificationSettingsModal, setShowNotificationSettingsModal] = useState(false);
-  const [newCategory, setNewCategory] = useState("");
-  const [newChannel, setNewChannel] = useState("");
+  const [newCategory, setNewCategory] = useState('');
+  const [newChannel, setNewChannel] = useState('');
   const [triggerReload, setTriggerReload] = useState(false);
   const [categories, setCategories] = useState([]);
   const [currentDragItem, setCurrentDragItem] = useState(null);
   const [chatrooms, setChatrooms] = useState([]);
-  const [activeChatroom, setActiveChatroom] = useState("");
+  const [activeChatroom, setActiveChatroom] = useState('');
   const [activeChatroomId, setActiveChatroomId] = useState(null);
   const [isChangingRegion, setIsChangingRegion] = useState(false);
-  const [inviteEmail, setInviteEmail] = useState("");
-  const [inviteCode, setInviteCode] = useState("");
+  const [inviteEmail, setInviteEmail] = useState('');
+  const [inviteCode, setInviteCode] = useState('');
   const [activeServerSetting, setActiveServerSetting] = useState("overview");
   const [activeUserSetting, setActiveUserSetting] = useState("myaccount");
   const [isAdmin, setIsAdmin] = useState(false);
@@ -82,6 +82,8 @@ const Dashboard = (props) => {
   const [serverUser, setServerUser] = useState(null);
   const [serverUserRole, setServerUserRole] = useState("admin");
   const [showUserManagement, setShowUserManagement] = useState(false);
+  const [openServerItem, setOpenServerItem] = useState(null);
+  const [didMount, setDidMount] = useState(false);
 
   const ref = useRef();
   useOnClickOutside(ref, () => setShowCategoryModal(false));
@@ -183,10 +185,15 @@ const Dashboard = (props) => {
       setCategories(props.categoryList);
       setShowCategoryModal(false);
     }
-    if(!props.user) {
+  }, [props, id, username, friendsList]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', detectEscape);
+    if(!props.user && !didMount) {
+      setDidMount(true);
       props.currentUser();
-      window.addEventListener('keydown', detectEscape);
-    } else if(props.user) {
+    } else if (props.user && props.retrieveUserSuccess) {
+      props.resetValues();
       const { id, username, email, imageUrl, active, serversList } = props.user;
       setId(id);
       setUsername(username);
@@ -194,8 +201,56 @@ const Dashboard = (props) => {
       setImageUrl(imageUrl);
       setActive(active);
       setServersList(serversList);
+    } else if(props.user && props.retrieveUpdatedUserSuccess) {
+      props.resetValues();
+      const { id, username, email, imageUrl, active, serversList } = props.user;
+      setId(id);
+      setUsername(username);
+      setEmail(email);
+      setImageUrl(imageUrl);
+      setActive(active);
+      setServersList(serversList);
+      if (openServerItem && serversList && serversList.length > 0) {
+        const index = serversList.findIndex(x => x.serverId === openServerItem.serverId);
+        if (index > -1) {
+          setServer(openServerItem.name);
+          setServerName(openServerItem.name);
+          setServerId(openServerItem.serverId);
+          setServerImage(openServerItem.imageUrl);
+          setServerRegion(openServerItem.region);
+          setCurrentFriend(null);
+          props.findUserList({
+            serverId: openServerItem.serverId
+          });
+          props.categoryFindAll({
+            serverId: openServerItem.serverId
+          });
+          props.getChatrooms({
+            serverId: openServerItem.serverId
+          });
+          setOpenServerItem(null);
+        } else {
+          setOpenServerItem(null);
+          setServer('');
+          setServerName('');
+          setServerId(null);
+          toast.info('You have been removed from the server by an admin!', { position: 'bottom-center' });
+        }
+      } else if (openServerItem && !serversList) {
+        setOpenServerItem(null);
+        setServer('');
+        setServerName('');
+        setServerId(null);
+        toast.info('You have been removed from the server by an admin!', { position: 'bottom-center' });
+      } else if (openServerItem && serversList && serversList.length < 1) {
+        setOpenServerItem(null);
+        setServer('');
+        setServerName('');
+        setServerId(null);
+        toast.info('You have been removed from this server an admin!', { position: 'bottom-center' });
+      }
     }
-  }, [props, id, username, friendsList]);
+  }, [props, openServerItem, didMount]);
 
   const detectEscape = (event) => {
     if (event.keyCode === 27) {
@@ -240,7 +295,7 @@ const Dashboard = (props) => {
   const setShowInviteModal = () => {
     setInviteModal(!inviteModal);
     showServerSettings(false);
-    setInviteCode("");
+    setInviteCode('');
     props.resetInviteValues();
   }
 
@@ -253,7 +308,7 @@ const Dashboard = (props) => {
 
   const createNewServerInvite = () => {
     props.inviteEmailCreate({
-      inviteCode: "",
+      inviteCode: '',
       expires: expires,
       serverId: serverId,
       email: email
@@ -346,21 +401,8 @@ const Dashboard = (props) => {
   }
 
   const setServerProperties = (item) => {
-    setServer(item.name);
-    setServerName(item.name);
-    setServerId(item.serverId);
-    setServerImage(item.imageUrl);
-    setServerRegion(item.region);
-    setCurrentFriend(null);
-    props.findUserList({
-      serverId: item.serverId
-    });
-    props.categoryFindAll({
-      serverId: item.serverId
-    });
-    props.getChatrooms({
-      serverId: item.serverId
-    });
+    props.getUpdatedUser({ userId: id });
+    setOpenServerItem(item);
   }
 
   const setCurrentActiveChatroom = (item, event) => {
@@ -385,7 +427,7 @@ const Dashboard = (props) => {
   }
 
   const privateMessageUser = (user) => {
-    setServer("");
+    setServer('');
     props.friendCreate({
       userId: id,
       friendId: user.userId,
@@ -398,7 +440,7 @@ const Dashboard = (props) => {
   const deleteFriend = (event, friend) => {
     event.stopPropagation();
     setCurrentFriend(null);
-    setServer("");
+    setServer('');
     props.friendDelete({
       userId: id,
       friendId: friend.friendId
@@ -411,7 +453,7 @@ const Dashboard = (props) => {
   }
 
   const setHomeServer = () => {
-    setServer("");
+    setServer('');
     props.findFriends({
       userId: id
     });
@@ -434,21 +476,30 @@ const Dashboard = (props) => {
     props.updateUserRole(data);
   }
 
+  const leaveServer = () => {
+    props.getUpdatedUser({ userId: id });
+    setTriggerReload(!triggerReload);
+    setServer('');
+    setServerName('');
+    setServerId(null);
+    toast.info('You have been removed from the server by an admin!', { position: 'bottom-center' });
+  }
+
   return (
     <div className="dashboard">
       <ToastMessage />
       {isModalOpen || showCategoryModal || showChannelModal || showNotificationSettingsModal || showPrivacyModal || inviteModal ? <span className="contentBackground"></span> : null}
       <div className="sidebar" onClick={() => { setCurrentFriend(null); }}>
-        <div className="sidebar-container" onPointerOver={() => { setHover("Home") }} onPointerOut={() => { setHover("") }}>
-          {hover === "Home" && server !== "" ? <span className="sidebar-hover"></span> : null}
-          {server === "" ? <span className="sidebar-select"></span> : null}
+        <div className="sidebar-container" onPointerOver={() => { setHover("Home") }} onPointerOut={() => { setHover('') }}>
+          {hover === "Home" && server !== '' ? <span className="sidebar-hover"></span> : null}
+          {server === '' ? <span className="sidebar-select"></span> : null}
           <img className="sidebar-logo" src={chatot} alt="chatter-icon-logo" onClick={() => { setHomeServer(); }} />
           {hover === "Home" ? <span className="tooltip"><span>Home</span></span> : null}
         </div>
         <div className="sidebar-border" />
         {serversList && serversList.length > 0 ? serversList.map((item, index)  => {
           return (
-            <div key={index} className="sidebar-container" onPointerOver={() => { setHover(item.name) }} onPointerOut={() => { setHover("") }}>
+            <div key={index} className="sidebar-container" onPointerOver={() => { setHover(item.name) }} onPointerOut={() => { setHover('') }}>
               {hover === item.name && server !== item.name && server !== "Home" ? <span className="sidebar-hover"></span> : null}
               {server === item.name ? <span className="sidebar-select"></span> : null}
               <img className="sidebar-logo" src={item.imageUrl ? item.imageUrl : chatot} alt="chatter-icon" onClick={() => { setServerProperties(item); }} />
@@ -457,7 +508,7 @@ const Dashboard = (props) => {
           )
         }) : null}
       </div>
-      {server === "" ?
+      {server === '' ?
         <div className="sidebarleft">
           <div className="sidebarleft-container">
             <input placeholder="Find or start a conversation"></input>
@@ -581,7 +632,7 @@ const Dashboard = (props) => {
             <div onDrop={(event) => { dropItem(event); }} onDragOver={(event) => { draggingOverItem(event); }} id={0 + "-" + server}>
               {chatrooms && chatrooms.length > 0 ? chatrooms.filter(chatroom => chatroom.categoryId === null).map((item, index) => {
                 return (
-                  <div className={activeChatroom === item.name ? "active" : ""} key={index} id={0 + "-" + item.name} draggable="true" onDragStart={(event) => { dragItem(item, event); }} onClick={() => { setCurrentActiveChatroom(item); }}>
+                  <div className={activeChatroom === item.name ? "active" : ''} key={index} id={0 + "-" + item.name} draggable="true" onDragStart={(event) => { dragItem(item, event); }} onClick={() => { setCurrentActiveChatroom(item); }}>
                     <img src={numbersign} alt="channel" height={16} width={16} /><span>{item.name}</span>
                   </div>
                 )
@@ -618,7 +669,7 @@ const Dashboard = (props) => {
         </div>
       }
 
-      {server !== "" && activeChatroom !== "" && activeChatroomId !== null ?
+      {server !== '' && activeChatroom !== '' && activeChatroomId !== null ?
         <Chatroom
           activeChatroom={activeChatroom}
           activeChatroomId={activeChatroomId}
@@ -627,10 +678,11 @@ const Dashboard = (props) => {
           username={username}
           serverUserList={serverUserList}
           privateMessageUser={(user) => { privateMessageUser(user) }}
+          leaveServer={() => { leaveServer(); }}
         />
       : null}
 
-      {server === "" && currentFriend !== null ?
+      {server === '' && currentFriend !== null ?
         <ChatroomFriend
           groupId={currentFriend.groupId}
           userId={id}
@@ -640,7 +692,7 @@ const Dashboard = (props) => {
         />
       : null}
 
-      {server === "" && currentFriend === null ?
+      {server === '' && currentFriend === null ?
         <div className="mainarea">
           <div className="mainarea-topnav">
           </div>
@@ -872,6 +924,10 @@ const mapStateToProps = ({ usersReducer, serversReducer, categoriesReducer, chat
     logout: usersReducer.logout,
     user: usersReducer.user,
     users: usersReducer.users,
+    retrieveUserError: usersReducer.retrieveUserError,
+    retrieveUserSuccess: usersReducer.retrieveUserSuccess,
+    retrieveUpdatedUserError: usersReducer.retrieveUpdatedUserError,
+    retrieveUpdatedUserSuccess: usersReducer.retrieveUpdatedUserSuccess,
     serversList: serversReducer.serversList,
     serverUserList: serversReducer.serverUserList,
     updateRoleSuccess: serversReducer.updateRoleSuccess,
