@@ -25,11 +25,11 @@
   }
   &-messages {
     height: 100%;
-    width: 100%;
     margin-bottom: auto;
     overflow: hidden;
     display: flex;
     flex-direction: column-reverse;
+    position: relative;
     @supports (-ms-ime-align:auto) {
       flex-direction: column;
     }
@@ -96,7 +96,7 @@
       display: inline-block;
       position: absolute;
       right: 1rem;
-      margin-top: -3rem;
+      margin-top: 0.5rem;
       cursor: pointer;
     }
     &-editmenu {
@@ -107,7 +107,7 @@
       right: 1rem;
       z-index: 2;
       border-radius: 4px;
-      margin-top: -3.5rem;
+      margin-top: -1rem;
       & > span {
         cursor: pointer;
         color: white;

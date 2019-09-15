@@ -23,11 +23,11 @@
       border: 1px solid black; }
   .privatechatarea-messages {
     height: 100%;
-    width: 100%;
     margin-bottom: auto;
     overflow: hidden;
     display: flex;
     flex-direction: column-reverse;
+    position: relative;
     padding-left: 2rem; }
     @supports (-ms-ime-align: auto) {
       .privatechatarea-messages {
@@ -87,7 +87,7 @@
       display: inline-block;
       position: absolute;
       right: 1rem;
-      margin-top: -3rem;
+      margin-top: 0.5rem;
       cursor: pointer; }
     .privatechatarea-messages-editmenu {
       background-color: black;
@@ -97,7 +97,7 @@
       right: 1rem;
       z-index: 2;
       border-radius: 4px;
-      margin-top: -3.5rem; }
+      margin-top: -1rem; }
       .privatechatarea-messages-editmenu > span {
         cursor: pointer;
         color: white;

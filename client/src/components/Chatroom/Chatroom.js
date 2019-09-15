@@ -172,7 +172,7 @@ class Chatroom extends Component {
   }
 
   detectEscape = (event) => {
-    if (event.keyCode === 27) {
+    if (event.keyCode === 27 && !this.state.messageMenu) {
       this.setState({ editingMessage: this.state.editMessage, newMessage: "" });
     }
   }
@@ -204,16 +204,16 @@ class Chatroom extends Component {
                   <p className="chatarea-messages-container">
                     <span className="chatarea-messages-user" onClick={this.handleClick} onContextMenu={(event) => { this.contextMenu(event, item); }}>{item.username}</span>
                     <Moment format="MM/DD/YYYY" date={item.updatedAt} className="chatarea-messages-time" />
+                    {this.state.hover === ("message" + index) ? <span className="chatarea-messages-menu" onClick={() => { this.openMessageMenu(item); }}><img src={editwhite} height={15} width={15} alt="edit message" /></span> : null}
+                    {this.state.messageMenu && this.state.editMessage.id === item.id ?
+                      <div className="chatarea-messages-editmenu">
+                        <span onClick={() => { this.setState({ editMessage: null, messageMenu: false }); }}>&#10005;</span>
+                        <p onClick={() => { this.editChatroomMessage(); }}>Edit</p>
+                        <p onClick={() => { this.deleteChatroomMessage(); }}>Delete</p>
+                      </div>
+                    : null}
                   </p>
                   {this.state.editingMessage !== null && this.state.editingMessage.id === item.id ? <span><input className="chatarea-messages-editmessage" onChange={(event) => { this.setState({ newMessage: event.target.value }) }} value={this.state.newMessage} onKeyDown={(event) => { event.keyCode === 13 && event.shiftKey === false ? this.sendEditedMessage(event) : this.sendMessage(null) }} /><p className="chatarea-messages-editmessage-note">escape to cancel • enter to save</p></span> : <p className="chatarea-messages-message">{item.message}</p>}
-                  {this.state.hover === ("message" + index) ? <span className="chatarea-messages-menu" onClick={() => { this.openMessageMenu(item); }}><img src={editwhite} height={15} width={15} alt="edit message" /></span> : null}
-                  {this.state.messageMenu && this.state.editMessage.id === item.id ?
-                    <div className="chatarea-messages-editmenu">
-                      <span onClick={() => { this.setState({ editMessage: null, messageMenu: false }); }}>&#10005;</span>
-                      <p onClick={() => { this.editChatroomMessage(); }}>Edit</p>
-                      <p onClick={() => { this.deleteChatroomMessage(); }}>Delete</p>
-                    </div>
-                  : null}
                 </div>
               )
             }) : null}

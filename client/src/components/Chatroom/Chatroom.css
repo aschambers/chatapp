@@ -1,5 +1,5 @@
 .chatroom {
-  background-color: #414141;
+  background-color: #36393f;
   height: 100vh;
   display: flex;
   flex-direction: row;
@@ -41,7 +41,6 @@
       border: 1px solid black; }
   .chatarea-messages {
     height: 100%;
-    width: 100%;
     margin-bottom: auto;
     overflow: hidden;
     display: flex;
@@ -84,13 +83,13 @@
     .chatarea-messages-message {
       font-size: 1rem;
       margin-top: -1rem;
-      width: 90%;
+      width: 94%;
       color: white; }
     .chatarea-messages-editmessage {
       border: none;
       outline: none;
       flex: 1;
-      width: 90%;
+      width: 94%;
       padding-left: 0.5rem;
       background-color: #303030;
       border-radius: 3px;
@@ -106,18 +105,18 @@
     .chatarea-messages-menu {
       display: inline-block;
       position: absolute;
-      right: 3rem;
-      margin-top: -2rem;
+      right: 2rem;
+      margin-top: 0.5rem;
       cursor: pointer; }
     .chatarea-messages-editmenu {
       background-color: black;
       width: 4rem;
       height: 4rem;
       position: absolute;
-      right: 3rem;
+      right: 2rem;
       z-index: 2;
       border-radius: 4px;
-      margin-top: -3.5rem; }
+      margin-top: -1rem; }
       .chatarea-messages-editmenu > span {
         cursor: pointer;
         color: white;
