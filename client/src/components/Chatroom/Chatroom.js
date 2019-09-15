@@ -5,7 +5,6 @@ import { ROOT_URL } from '../../config/networkSettings';
 import io from "socket.io-client";
 import Moment from 'react-moment';
 import 'moment-timezone';
-import UserModal from '../../components/UserModal/UserModal';
 import './Chatroom.css';
 import chatot from '../../assets/images/chatot.png';
 import numbersign from '../../assets/images/numbersign.png';
@@ -14,6 +13,8 @@ import editwhite from '../../assets/images/editwhite.png';
 class Chatroom extends Component {
   constructor(props) {
     super(props);
+    this.ref = React.createRef();
+    this.useOnClickOutside(this.ref, () => this.setState({ messageMenu: false, userModalOpen: false }));
 
     this.state = {
       id: "",
@@ -42,11 +43,35 @@ class Chatroom extends Component {
       messageMenu: false,
       editingMessage: null,
       newMessage: "",
-      hover: ""
+      hover: "",
+      serverUserList: []
     }
   }
 
+  useOnClickOutside = (ref, handler) => {
+    const listener = event => {
+      // Do nothing if clicking ref's element or descendent elements
+      if (!ref.current || ref.current.contains(event.target)) {
+        return;
+      }
+
+      handler(event);
+    };
+
+    document.addEventListener('mousedown', listener);
+    document.addEventListener('touchstart', listener);
+
+    return () => {
+      document.removeEventListener('mousedown', listener);
+      document.removeEventListener('touchstart', listener);
+    };
+  }
+
   async componentDidMount() {
+    const serverIndex = this.props.serverUserList.findIndex(x => x.username === this.props.username);
+    if (serverIndex < 0) {
+      this.props.leaveServer();
+    }
     window.addEventListener('keydown', this.detectEscape);
     this.props.currentUser();
     this.props.getUsers();
@@ -54,7 +79,7 @@ class Chatroom extends Component {
     this.socket = io(ROOT_URL);
 
     this.socket.on('connect', () => {
-      this.setState({ socketId: this.socket.id, namespace: `${ROOT_URL}/${this.props.serverId}`, room: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`, previousRoom: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`, serverId: this.props.serverId, currentChatroom: this.props.activeChatroom, chatroomId: this.props.activeChatroomId });
+      this.setState({ serverUserList: this.props.serverUserList, socketId: this.socket.id, namespace: `${ROOT_URL}/${this.props.serverId}`, room: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`, previousRoom: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`, serverId: this.props.serverId, currentChatroom: this.props.activeChatroom, chatroomId: this.props.activeChatroomId });
 
       this.socket.emit('GET_CHATROOM_MESSAGES', {
         socketId: this.socket.id,
@@ -78,6 +103,15 @@ class Chatroom extends Component {
         });
       } else if (navigator.userAgent.search("Firefox") < 0 || navigator.userAgent.search("Edge") < 0) {
         this.setState({ messages: data });
+      }
+    });
+
+    this.socket.on('RECEIVE_SERVER_LIST', (data) => {
+      const index = data.findIndex(x => x.username === this.state.username);
+      if (index < 0) {
+        this.props.leaveServer();
+      } else if (index > -1) {
+        this.setState({ userModalOpen: false, rightClickedUser: null, serverUserList: data });
       }
     });
   }
@@ -141,7 +175,7 @@ class Chatroom extends Component {
 
   contextMenu = (event, item) => {
     event.preventDefault();
-    this.setState({ rightClickedUser: item, userModalOpen: true });
+    this.setState({ rightClickedUser: item, userModalOpen: true, messageMenu: false, editingMessage: null });
   }
 
   privateMessageUser = () => {
@@ -190,6 +224,28 @@ class Chatroom extends Component {
     this.socket.emit('EDIT_CHATROOM_MESSAGE', data);
   }
 
+  kickUser = (user) => {
+    const data = {
+      serverId: this.state.serverId,
+      chatroomId: this.state.chatroomId,
+      type: 'user',
+      userId: user.userId,
+      room: this.state.room
+    };
+    this.socket.emit('KICK_SERVER_USER', data);
+  }
+
+  banUser = (user) => {
+    const data = {
+      serverId: this.state.serverId,
+      chatroomId: this.state.chatroomId,
+      type: 'user',
+      userId: user.userId,
+      room: this.state.room
+    };
+    this.socket.emit('BAN_SERVER_USER', data);
+  }
+
   render() {
     return (
       <div className="chatroom">
@@ -201,18 +257,34 @@ class Chatroom extends Component {
             {this.state.messages && this.state.messages.length > 0 ? this.state.messages.map((item, index) => {
               return (
                 <div id={"message" + index} key={index} onMouseEnter={() => { this.setState({ hover: (this.state.editingMessage || this.state.messageMenu || (this.props.userId !== item.userId)) ? "" : ("message" + index) }) }} onMouseLeave={() => { this.setState({ hover: "" }); }}>
-                  <p className="chatarea-messages-container">
+                  <div className="chatarea-messages-container">
                     <span className="chatarea-messages-user" onClick={this.handleClick} onContextMenu={(event) => { this.contextMenu(event, item); }}>{item.username}</span>
                     <Moment format="MM/DD/YYYY" date={item.updatedAt} className="chatarea-messages-time" />
                     {this.state.hover === ("message" + index) ? <span className="chatarea-messages-menu" onClick={() => { this.openMessageMenu(item); }}><img src={editwhite} height={15} width={15} alt="edit message" /></span> : null}
                     {this.state.messageMenu && this.state.editMessage.id === item.id ?
-                      <div className="chatarea-messages-editmenu">
+                      <div className="chatarea-messages-editmenu" ref={this.ref}>
                         <span onClick={() => { this.setState({ editMessage: null, messageMenu: false }); }}>&#10005;</span>
                         <p onClick={() => { this.editChatroomMessage(); }}>Edit</p>
                         <p onClick={() => { this.deleteChatroomMessage(); }}>Delete</p>
                       </div>
                     : null}
-                  </p>
+                    {this.state.userModalOpen && this.state.rightClickedUser.id === item.id ?
+                      <div ref={this.ref} className="chatarea-messages-usermodal">
+                        <span onClick={() => { this.setState({ userModalOpen: false }); }}>&#10005;</span>
+                        <p onClick={() => { this.privateMessageUser(); }} className="chatarea-messages-usermodal-privatemessage">Send Message</p>
+
+                        {this.state.serverUserList.length > 0
+                        && this.state.serverUserList.some(serverItem => serverItem['username'] !== this.state.username
+                        && (serverItem['username'] === item.username && serverItem['type'] !== 'owner' && serverItem['type'] !== 'admin'))
+                        ? <p onClick={() => { this.kickUser(item); }} className="chatarea-messages-usermodal-kick">Kick {item.username}</p> : null}
+
+                        {this.state.serverUserList.length > 0
+                        && this.state.serverUserList.some(serverItem => serverItem['username'] !== this.state.username
+                        && (serverItem['username'] === item.username && serverItem['type'] !== 'owner' && serverItem['type'] !== 'admin'))
+                        ? <p onClick={() => { this.banUser(item); }} className="chatarea-messages-usermodal-kick">Ban {item.username}</p> : null}
+                      </div>
+                    : null}
+                  </div>
                   {this.state.editingMessage !== null && this.state.editingMessage.id === item.id ? <span><input className="chatarea-messages-editmessage" onChange={(event) => { this.setState({ newMessage: event.target.value }) }} value={this.state.newMessage} onKeyDown={(event) => { event.keyCode === 13 && event.shiftKey === false ? this.sendEditedMessage(event) : this.sendMessage(null) }} /><p className="chatarea-messages-editmessage-note">escape to cancel • enter to save</p></span> : <p className="chatarea-messages-message">{item.message}</p>}
                 </div>
               )
@@ -231,7 +303,7 @@ class Chatroom extends Component {
             <span>Room Owners</span>
           </div>
           <div className="sidebarright-bordertwo" />
-          {this.props.serverUserList.length > 0 ? this.props.serverUserList.map((user, index)  => {
+          {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index)  => {
             return (
               <div key={index} className={user.type === 'owner' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.contextMenu(event, user); }}>
                 {user.type === 'owner' ? <div className="username">
@@ -243,12 +315,12 @@ class Chatroom extends Component {
               </div>
             );
           }) : null}
-          {this.props.serverUserList.length > 0 && this.props.serverUserList.some(item => item['type'] === 'owner') ? <div className="sidebarright-bordertwo" /> : null}
+          {this.state.serverUserList.length > 0 && this.state.serverUserList.some(item => item['type'] === 'owner') ? <div className="sidebarright-bordertwo" /> : null}
           <div className="sidebarright-authority">
             <span>Administrators</span>
           </div>
           <div className="sidebarright-bordertwo" />
-          {this.props.serverUserList.length > 0 ? this.props.serverUserList.map((user, index)  => {
+          {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index)  => {
             return (
               <div key={index} className={user.type === 'admin' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.contextMenu(event, user); }}>
                 {user.type === 'admin' ? <div className="username">
@@ -260,12 +332,12 @@ class Chatroom extends Component {
               </div>
             );
           }) : null}
-          {this.props.serverUserList.length > 0 && this.props.serverUserList.some(item => item['type'] === 'admin') ? <div className="sidebarright-bordertwo" /> : null}
+          {this.state.serverUserList.length > 0 && this.state.serverUserList.some(item => item['type'] === 'admin') ? <div className="sidebarright-bordertwo" /> : null}
           <div className="sidebarright-authority">
             <span>Moderators</span>
           </div>
           <div className="sidebarright-bordertwo" />
-          {this.props.serverUserList.length > 0 ? this.props.serverUserList.map((user, index)  => {
+          {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index)  => {
             return (
               <div key={index} className={user.type === 'moderator' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.contextMenu(event, user); }}>
                 {user.type === 'moderator' ? <div className="username">
@@ -277,12 +349,12 @@ class Chatroom extends Component {
               </div>
             );
           }) : null}
-          {this.props.serverUserList.length > 0 && this.props.serverUserList.some(item => item['type'] === 'moderator') ? <div className="sidebarright-bordertwo" /> : null}
+          {this.state.serverUserList.length > 0 && this.state.serverUserList.some(item => item['type'] === 'moderator') ? <div className="sidebarright-bordertwo" /> : null}
           <div className="sidebarright-authority">
             <span>Voice</span>
           </div>
           <div className="sidebarright-bordertwo" />
-          {this.props.serverUserList.length > 0 ? this.props.serverUserList.map((user, index) => {
+          {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index) => {
             return (
               <div key={index} className={user.type === 'voice' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.contextMenu(event, user); }}>
                 {user.type === 'voice' ? <div className="username">
@@ -294,12 +366,12 @@ class Chatroom extends Component {
               </div>
             );
           }) : null}
-          {this.props.serverUserList.length > 0 && this.props.serverUserList.some(item => item['type'] === 'voice') ? <div className="sidebarright-bordertwo" /> : null}
+          {this.state.serverUserList.length > 0 && this.state.serverUserList.some(item => item['type'] === 'voice') ? <div className="sidebarright-bordertwo" /> : null}
           <div className="sidebarright-authority">
             <span>Users</span>
           </div>
           <div className="sidebarright-bordertwo" />
-          {this.props.serverUserList.length > 0 ? this.props.serverUserList.map((user, index) => {
+          {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index) => {
             return (
               <div key={index} className={user.type === 'user' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.contextMenu(event, user); }}>
                 {user.type === 'user' ? <div className="username">
@@ -312,14 +384,6 @@ class Chatroom extends Component {
             )
           }) : null}
         </div>
-        {this.state.userModalOpen ?
-          <UserModal
-            userId={this.state.rightClickedUser.userId}
-            username={this.state.rightClickedUser.username}
-            setUserModalOpen={() => { this.setState({ userModalOpen: false }); }}
-            setPrivateMessageUser={() => { this.privateMessageUser(); }}
-          />
-        : null}
       </div>
     );
   }

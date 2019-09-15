@@ -127,6 +127,27 @@ module.exports = async(server) => {
       }
     });
 
+    socket.on('KICK_SERVER_USER', async(data) => {
+      let userList = await axios.post(`${SERVER_URL}/api/v1/kickServerUser`, {
+        serverId: data.serverId,
+        type: data.type,
+        userId: data.userId
+      });
+      if (userList) {
+        io.in(data.room).emit('RECEIVE_SERVER_LIST', userList.data);
+      }
+    });
+
+    socket.on('BAN_SERVER_USER', async(data) => {
+      let userList = await axios.post(`${SERVER_URL}/api/v1/banServerUser`, {
+        serverId: data.serverId,
+        type: data.type,
+        userId: data.userId
+      });
+      if (userList) {
+        io.in(data.room).emit('RECEIVE_SERVER_LIST', userList);
+      }
+    });
 
 
 

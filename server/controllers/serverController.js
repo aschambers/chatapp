@@ -1,6 +1,7 @@
 const ServerModel = require('../models/Server');
 const UserModel = require('../models/User');
 const ChatroomModel = require('../models/Chatroom');
+const MessageModel = require('../models/Message');
 const keys = require('../config/keys');
 const cloudinary = require('cloudinary');
 
@@ -167,6 +168,110 @@ module.exports = {
     } else {
       res.status(422).send({'error':'Error finding server'});
     }
+  },
+
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {array} server list
+   */
+  kickServerUser: async(req, res, next) => {
+    const { serverId, type, userId } = req.body;
+
+    if (!serverId || !type || !userId) {
+      return res.status(400).send({'error': 'Missing required fields'});
+    }
+
+    // user
+    const updateUser = await UserModel.findByPk(userId);
+
+    if (!updateUser) return res.status(422).json({"error":"error-finding-user"});
+
+    const userIndex = updateUser.serversList.findIndex(x => x.serverId === serverId);
+
+    if (userIndex < 0) return res.status(422).json({"error":"error-finding-server-user"});
+
+    updateUser.serversList.splice(userIndex, 1);
+
+    const updateUserSuccess = await updateUser.update(
+      { serversList: updateUser.serversList },
+      { where: { id: userId }}
+    );
+    if (!updateUserSuccess) return res.status(422).json({"error":"error-saving-user"});
+
+    // server
+    const updateServer = await ServerModel.findByPk(serverId);
+
+    if (!updateServer) return res.status(422).json({"error":"error-finding-server"});
+
+    const index = updateServer.userList.findIndex(x => x.userId === userId);
+
+    if (index < 0) return res.status(422).json({"error":"error-finding-user-on-server"});
+
+    updateServer.userList.splice(index, 1);
+
+    const updateSuccess = await updateServer.update(
+      { userList: updateServer.userList },
+      { where: { id: serverId }}
+    );
+
+    if (updateSuccess) {
+      res.status(200).send(updateServer.userList);
+    } else {
+      res.status(422).send({'error':'error fetching all server users'});
+    };
+  },
+
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {array} server list
+   */
+  banServerUser: async(req, res, next) => {
+    const { serverId, type, userId } = req.body;
+
+    if (!serverId || !type || !userId) {
+      return res.status(400).send({'error': 'Missing required fields'});
+    }
+
+    // user
+    const updateUser = await UserModel.findByPk(userId);
+
+    if (!updateUser) return res.status(422).json({"error":"error-finding-user"});
+
+    const userIndex = updateUser.serversList.findIndex(x => x.serverId === serverId);
+
+    if (userIndex < 0) return res.status(422).json({"error":"error-finding-server-user"});
+
+    updateUser.serversList.splice(userIndex, 1);
+
+    const updateUserSuccess = await updateUser.update(
+      { serversList: updateUser.serversList },
+      { where: { id: userId }}
+    );
+    if (!updateUserSuccess) return res.status(422).json({"error":"error-saving-user"});
+
+    // server
+    const updateServer = await ServerModel.findByPk(serverId);
+
+    if (!updateServer) return res.status(422).json({"error":"error-finding-server"});
+
+    const index = updateServer.userList.findIndex(x => x.userId === userId);
+
+    if (index < 0) return res.status(422).json({"error":"error-finding-user-on-server"});
+
+    updateServer.userList.splice(index, 1);
+
+    const updateSuccess = await updateServer.update(
+      { userList: updateServer.userList },
+      { where: { id: serverId }}
+    );
+
+    if (updateSuccess) {
+      res.status(200).send(updateServer.userList);
+    } else {
+      res.status(422).send({'error':'error fetching all server users'});
+    };
   }
 
 }
