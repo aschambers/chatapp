@@ -183,7 +183,7 @@ class ChatroomFriend extends Component {
             {this.state.messages && this.state.messages.length > 0 ? this.state.messages.map((item, index) => {
               return (
                 <div id={"message" + index} key={index} onMouseEnter={() => { this.setState({ hover: (this.state.editingMessage || this.state.messageMenu || (this.props.userId !== item.userId)) ? "" : ("message" + index) }) }} onMouseLeave={() => { this.setState({ hover: "" }); }}>
-                  <p>
+                  <p className="privatechatarea-messages-container">
                     <span className="privatechatarea-messages-user">{item.username}</span>
                     <Moment format="MM/DD/YYYY" date={item.updatedAt} className="privatechatarea-messages-time" />
                   </p>

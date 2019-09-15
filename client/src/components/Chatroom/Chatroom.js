@@ -200,7 +200,7 @@ class Chatroom extends Component {
             {this.state.messages && this.state.messages.length > 0 ? this.state.messages.map((item, index) => {
               return (
                 <div id={"message" + index} key={index} onMouseEnter={() => { this.setState({ hover: (this.state.editingMessage || this.state.messageMenu || (this.props.userId !== item.userId)) ? "" : ("message" + index) }) }} onMouseLeave={() => { this.setState({ hover: "" }); }}>
-                  <p>
+                  <p className="chatarea-messages-container">
                     <span className="chatarea-messages-user" onClick={this.handleClick} onContextMenu={(event) => { this.contextMenu(event, item); }}>{item.username}</span>
                     <Moment format="MM/DD/YYYY" date={item.updatedAt} className="chatarea-messages-time" />
                   </p>
