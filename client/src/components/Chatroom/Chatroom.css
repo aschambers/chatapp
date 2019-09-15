@@ -106,7 +106,7 @@
     .chatarea-messages-menu {
       display: inline-block;
       position: absolute;
-      right: 1rem;
+      right: 3rem;
       margin-top: -2rem;
       cursor: pointer; }
     .chatarea-messages-editmenu {
