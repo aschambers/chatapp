@@ -50,6 +50,7 @@
     overflow: hidden;
     display: flex;
     flex-direction: column-reverse;
+    position: relative;
     @supports (-ms-ime-align:auto) {
       flex-direction: column;
     }
@@ -87,6 +88,57 @@
     &-message {
       font-size: 1rem;
       color: white;
+    }
+    &-editmessage {
+      border: none;
+      outline: none;
+      flex: 1;
+      width: 90%;
+      padding-left: 0.5rem;
+      background-color: #303030;
+      border-radius: 3px;
+      color: white;
+      height: 1.5rem;
+      border: 1px solid black;
+      font-size: 1rem;
+      &-note {
+        color: white;
+        margin-top: 0.3rem;
+        font-size: 0.6rem;
+        margin-left: 0.1rem;
+      }
+    }
+    &-menu {
+      display: inline-block;
+      position: absolute;
+      right: 1rem;
+      margin-top: -2rem;
+      cursor: pointer;
+    }
+    &-editmenu {
+      background-color: black;
+      width: 4rem;
+      height: 3rem;
+      position: absolute;
+      right: 1rem;
+      z-index: 2;
+      border-radius: 4px;
+      margin-top: -3.5rem;
+      & > span {
+        cursor: pointer;
+        color: white;
+        position: absolute;
+        right: 0;
+        margin-top: 0.3rem;
+        margin-right: 0.3rem;
+      }
+      & > p {
+        color: white;
+        margin-left: 0.6rem;
+        margin-top: 0.7rem;
+        font-size: 0.8rem;
+        cursor: pointer;
+      }
     }
   }
   &-messages:hover {

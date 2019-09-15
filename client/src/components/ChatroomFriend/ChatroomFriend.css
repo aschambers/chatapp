@@ -61,5 +61,50 @@
     .privatechatarea-messages-message {
       font-size: 1rem;
       color: white; }
+    .privatechatarea-messages-editmessage {
+      border: none;
+      outline: none;
+      flex: 1;
+      width: 90%;
+      padding-left: 0.5rem;
+      background-color: #303030;
+      border-radius: 3px;
+      color: white;
+      height: 1.5rem;
+      border: 1px solid black;
+      font-size: 1rem; }
+      .privatechatarea-messages-editmessage-note {
+        color: white;
+        margin-top: 0.3rem;
+        font-size: 0.6rem;
+        margin-left: 0.1rem; }
+    .privatechatarea-messages-menu {
+      display: inline-block;
+      position: absolute;
+      right: 1rem;
+      margin-top: -2rem;
+      cursor: pointer; }
+    .privatechatarea-messages-editmenu {
+      background-color: black;
+      width: 4rem;
+      height: 3rem;
+      position: absolute;
+      right: 1rem;
+      z-index: 2;
+      border-radius: 4px;
+      margin-top: -3.5rem; }
+      .privatechatarea-messages-editmenu > span {
+        cursor: pointer;
+        color: white;
+        position: absolute;
+        right: 0;
+        margin-top: 0.3rem;
+        margin-right: 0.3rem; }
+      .privatechatarea-messages-editmenu > p {
+        color: white;
+        margin-left: 0.6rem;
+        margin-top: 0.7rem;
+        font-size: 0.8rem;
+        cursor: pointer; }
   .privatechatarea-messages:hover {
     overflow: auto; }

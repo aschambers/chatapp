@@ -30,6 +30,27 @@ module.exports = async(server) => {
       }
     });
 
+    socket.on('DELETE_CHATROOM_MESSAGE', async(data) => {
+      let messages = await axios.post(`${SERVER_URL}/api/v1/messageChatroomDelete`, {
+        chatroomId: data.chatroomId,
+        messageId: data.messageId
+      });
+      if (messages) {
+        io.in(data.room).emit('RECEIVE_CHATROOM_MESSAGES', messages.data);
+      }
+    });
+
+    socket.on('EDIT_CHATROOM_MESSAGE', async(data) => {
+      let messages = await axios.post(`${SERVER_URL}/api/v1/messageChatroomEdit`, {
+        chatroomId: data.chatroomId,
+        messageId: data.messageId,
+        message: data.message
+      });
+      if (messages) {
+        io.in(data.room).emit('RECEIVE_CHATROOM_MESSAGES', messages.data);
+      }
+    });
+
     socket.on('GET_PERSONAL_MESSAGES', async(data) => {
       socket.leave(data.previousRoom);
       socket.join(data.room);
@@ -64,6 +85,44 @@ module.exports = async(server) => {
         friendId: data.friendId
       });
       if (messages) {
+        io.in(data.room).emit('RECEIVE_PRIVATE_MESSAGES', messages.data);
+      }
+    });
+
+    socket.on('DELETE_USER_MESSAGE', async(data) => {
+      if (data.userId === data.friendId) {
+        const messages = await axios.post(`${SERVER_URL}/api/v1/messagePersonalDelete`, {
+          userId: data.userId,
+          friendId: data.friendId,
+          messageId: data.messageId
+        });
+        io.to(data.socketId).emit('RECEIVE_PERSONAL_MESSAGES', messages.data);
+      } else if (data.userId !== data.friendId) {
+        const messages = await axios.post(`${SERVER_URL}/api/v1/messagePrivateDelete`, {
+          userId: data.userId,
+          friendId: data.friendId,
+          messageId: data.messageId
+        });
+        io.to(data.socketId).emit('RECEIVE_PRIVATE_MESSAGES', messages.data);
+      }
+    });
+
+    socket.on('EDIT_USER_MESSAGE', async(data) => {
+      if (data.userId === data.friendId) {
+        let messages = await axios.post(`${SERVER_URL}/api/v1/messagePersonalEdit`, {
+          userId: data.userId,
+          friendId: data.friendId,
+          messageId: data.messageId,
+          message: data.message
+        });
+        io.in(data.room).emit('RECEIVE_PERSONAL_MESSAGES', messages.data);
+      } else if (data.userId !== data.friendId) {
+        let messages = await axios.post(`${SERVER_URL}/api/v1/messagePrivateEdit`, {
+          userId: data.userId,
+          friendId: data.friendId,
+          messageId: data.messageId,
+          message: data.message
+        });
         io.in(data.room).emit('RECEIVE_PRIVATE_MESSAGES', messages.data);
       }
     });

@@ -9,6 +9,7 @@ import UserModal from '../../components/UserModal/UserModal';
 import './Chatroom.css';
 import chatot from '../../assets/images/chatot.png';
 import numbersign from '../../assets/images/numbersign.png';
+import editwhite from '../../assets/images/editwhite.png';
 
 class Chatroom extends Component {
   constructor(props) {
@@ -36,11 +37,16 @@ class Chatroom extends Component {
       room: null,
       serverId: null,
       previousRoom: null,
-      currentChatroom: null
+      currentChatroom: null,
+      editMessage: null,
+      messageMenu: false,
+      editingMessage: null,
+      newMessage: ""
     }
   }
 
   async componentDidMount() {
+    window.addEventListener('keydown', this.detectEscape);
     this.props.currentUser();
     this.props.getUsers();
 
@@ -58,6 +64,7 @@ class Chatroom extends Component {
     });
 
     this.socket.on('RECEIVE_CHATROOM_MESSAGES', (data) => {
+      this.setState({ messageMenu: false, editMessage: null, editingMessage: null, newMessage: "" });
       // scroll to latest message after rendering messages in firefox
       if (navigator.userAgent.search("Firefox") > -1 || navigator.userAgent.search("Edge") > -1) {
         this.setState({ messages: data.reverse() }, () => {
@@ -141,6 +148,47 @@ class Chatroom extends Component {
     this.props.privateMessageUser(this.state.rightClickedUser);
   }
 
+  openMessageMenu = (item) => {
+    this.setState({ messageMenu: true, editMessage: item });
+  }
+
+  deleteChatroomMessage = () => {
+    const data = {
+      username: this.props.username,
+      message: this.state.message,
+      userId: this.props.userId,
+      chatroomId: this.state.chatroomId,
+      messageId: this.state.editMessage.id,
+      room: this.state.room
+    };
+    this.socket.emit('DELETE_CHATROOM_MESSAGE', data);
+  }
+
+  editChatroomMessage = () => {
+    this.setState({ editingMessage: this.state.editMessage, newMessage: this.state.editMessage.message }, () => {
+      this.setState({ editMessage: null, messageMenu: false });
+    });
+  }
+
+  detectEscape = (event) => {
+    if (event.keyCode === 27) {
+      this.setState({ editingMessage: this.state.editMessage, newMessage: "" });
+    }
+  }
+
+  sendEditedMessage = (event) => {
+    event.preventDefault();
+    const data = {
+      username: this.props.username,
+      message: this.state.newMessage,
+      userId: this.props.userId,
+      chatroomId: this.state.chatroomId,
+      messageId: this.state.editingMessage.id,
+      room: this.state.room
+    };
+    this.socket.emit('EDIT_CHATROOM_MESSAGE', data);
+  }
+
   render() {
     return (
       <div className="chatroom">
@@ -151,12 +199,20 @@ class Chatroom extends Component {
           <div id="chatareamessages" className="chatarea-messages">
             {this.state.messages && this.state.messages.length > 0 ? this.state.messages.map((item, index) => {
               return (
-                <div id={"message" + index} key={index}>
+                <div id={"message" + index} key={index} onMouseEnter={() => { this.setState({ hover: (this.state.editingMessage || this.state.messageMenu || (this.props.userId !== item.userId)) ? "" : ("message" + index) }) }} onMouseLeave={() => { this.setState({ hover: "" }); }}>
                   <p>
                     <span className="chatarea-messages-user" onClick={this.handleClick} onContextMenu={(event) => { this.contextMenu(event, item); }}>{item.username}</span>
-                    <Moment format="MM/DD/YYYY" date={item.createdAt} className="chatarea-messages-time" />
+                    <Moment format="MM/DD/YYYY" date={item.updatedAt} className="chatarea-messages-time" />
                   </p>
-                  <p className="chatarea-messages-message">{item.message}</p>
+                  {this.state.editingMessage !== null && this.state.editingMessage.id === item.id ? <span><input className="chatarea-messages-editmessage" onChange={(event) => { this.setState({ newMessage: event.target.value }) }} value={this.state.newMessage} onKeyDown={(event) => { event.keyCode === 13 && event.shiftKey === false ? this.sendEditedMessage(event) : this.sendMessage(null) }} /><p className="chatarea-messages-editmessage-note">escape to cancel • enter to save</p></span> : <p className="chatarea-messages-message">{item.message}</p>}
+                  {this.state.hover === ("message" + index) ? <span className="chatarea-messages-menu" onClick={() => { this.openMessageMenu(item); }}><img src={editwhite} height={15} width={15} alt="edit message" /></span> : null}
+                  {this.state.messageMenu && this.state.editMessage.id === item.id ?
+                    <div className="chatarea-messages-editmenu">
+                      <span onClick={() => { this.setState({ editMessage: null, messageMenu: false }); }}>&#10005;</span>
+                      <p onClick={() => { this.editChatroomMessage(); }}>Edit</p>
+                      <p onClick={() => { this.deleteChatroomMessage(); }}>Delete</p>
+                    </div>
+                  : null}
                 </div>
               )
             }) : null}
