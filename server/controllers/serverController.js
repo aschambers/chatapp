@@ -141,7 +141,6 @@ module.exports = {
       return res.status(400).send({'error': 'Missing required fields'});
     }
 
-    // const updateServerRole =
     const updateServer = await ServerModel.findOne({ where: { id: req.body.serverId } });
 
     if (!updateServer) return res.status(422).json({"error":"error-finding-server"});
