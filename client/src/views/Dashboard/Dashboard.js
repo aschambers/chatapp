@@ -931,7 +931,7 @@ const mapStateToProps = ({ usersReducer, serversReducer, categoriesReducer, chat
     serversList: serversReducer.serversList,
     serverUserList: serversReducer.serverUserList,
     updateRoleSuccess: serversReducer.updateRoleSuccess,
-    updateRoleError: serversReducer.updateRoleSuccess,
+    updateRoleError: serversReducer.updateRoleError,
     categoryList: categoriesReducer.categoryList,
     chatroomList: chatroomsReducer.chatroomList,
     chatroomSuccess: chatroomsReducer.success,

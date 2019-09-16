@@ -11,6 +11,8 @@ import editwhite from '../../assets/images/editwhite.png';
 class ChatroomFriend extends Component {
   constructor(props) {
     super(props);
+    this.ref = React.createRef();
+    this.useOnClickOutside(this.ref, () => this.setState({ messageMenu: false }));
 
     this.state = {
       message: "",
@@ -28,6 +30,25 @@ class ChatroomFriend extends Component {
       newMessage: "",
       hover: ""
     }
+  }
+
+  useOnClickOutside = (ref, handler) => {
+    const listener = event => {
+      // Do nothing if clicking ref's element or descendent elements
+      if (!ref.current || ref.current.contains(event.target)) {
+        return;
+      }
+
+      handler(event);
+    };
+
+    document.addEventListener('mousedown', listener);
+    document.addEventListener('touchstart', listener);
+
+    return () => {
+      document.removeEventListener('mousedown', listener);
+      document.removeEventListener('touchstart', listener);
+    };
   }
 
   async componentDidMount() {
@@ -189,7 +210,7 @@ class ChatroomFriend extends Component {
                     <Moment format="MM/DD/YYYY" date={item.updatedAt} className="privatechatarea-messages-time" />
                     {this.state.hover === ("message" + index) ? <span className="privatechatarea-messages-menu" onClick={() => { this.openMessageMenu(item); }}><img src={editwhite} height={15} width={15} alt="edit message" /></span> : null}
                     {this.state.messageMenu && this.state.editMessage.id === item.id ?
-                      <div className="privatechatarea-messages-editmenu">
+                      <div className="privatechatarea-messages-editmenu" ref={this.ref}>
                         <span onClick={() => { this.setState({ editMessage: null, messageMenu: false }); }}>&#10005;</span>
                         <p onClick={() => { this.editUserMessage(); }}>Edit</p>
                         <p onClick={() => { this.deleteUserMessage(); }}>Delete</p>
