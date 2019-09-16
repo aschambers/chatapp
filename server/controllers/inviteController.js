@@ -86,6 +86,11 @@ module.exports = {
     const user = await UserModel.findOne({ where: { email: email }});
     if (!user) return res.status(422).send({'error': 'Failed to find user'});
 
+    const index = server.userBans.findIndex(x => x.userId === user.userId);
+    if (index > -1) {
+      return res.status(422).send({"error":"Error adding server to user servers list"});
+    }
+
     if (!user.serversList) user.serversList = [];
     let foundServerForUser = false;
 

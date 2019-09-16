@@ -847,7 +847,6 @@ const Dashboard = (props) => {
             <p className={activeUserSetting === "myaccount" ? "usersettings-sidebar-activeitem" : "usersettings-sidebar-myaccount"} onClick={() => { setActiveUserSetting("myaccount"); }}>My Account</p>
             <p className={activeUserSetting === "privacy" ? "usersettings-sidebar-activeitem" : "usersettings-sidebar-privacy"} onClick={() => { setActiveUserSetting("privacy"); }}>Privacy &amp; Safety</p>
             <p className={activeUserSetting === "connections" ? "usersettings-sidebar-activeitem" : "usersettings-sidebar-connections"} onClick={() => { setActiveUserSetting("connections"); }}>Connections</p>
-            <p className={activeUserSetting === "billing" ? "usersettings-sidebar-activeitem" : "usersettings-sidebar-billing"} onClick={() => { setActiveUserSetting("billing"); }}>Billing</p>
             <h1>App Settings</h1>
             <p className={activeUserSetting === "voice" ? "usersettings-sidebar-activeitem" : "usersettings-sidebar-voice"} onClick={() => { setActiveUserSetting("voice"); }}>Voice &amp; Video</p>
             <p className={activeUserSetting === "notifications" ? "usersettings-sidebar-activeitem" : "usersettings-sidebar-notifications"} onClick={() => { setActiveUserSetting("notifications"); }}>Notifications</p>

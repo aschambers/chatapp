@@ -50,6 +50,11 @@ const Server = sequelize.define('servers', {
     type: Sequelize.ARRAY(Sequelize.JSONB),
     defaultValue: [],
     allowNull: true
+  },
+  userBans: {
+    type: Sequelize.ARRAY(Sequelize.JSONB),
+    defaultValue: [],
+    allowNull: true
   }
 });
 

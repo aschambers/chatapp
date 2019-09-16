@@ -1,7 +1,6 @@
 const ServerModel = require('../models/Server');
 const UserModel = require('../models/User');
 const ChatroomModel = require('../models/Chatroom');
-const MessageModel = require('../models/Message');
 const keys = require('../config/keys');
 const cloudinary = require('cloudinary');
 
@@ -262,8 +261,16 @@ module.exports = {
 
     updateServer.userList.splice(index, 1);
 
+    // add user to server ban list
+    if (!updateServer.userBans) updateServer.userBans = [];
+
+    updateServer.userBans.push({
+      userId: userId
+    });
+
     const updateSuccess = await updateServer.update(
       { userList: updateServer.userList },
+      { userBans: updateServer.userBans },
       { where: { id: serverId }}
     );
 
