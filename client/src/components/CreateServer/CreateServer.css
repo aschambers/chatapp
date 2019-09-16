@@ -1,11 +1,16 @@
 .servermodal {
+  display: flex;
+  flex-direction: column;
   position: absolute;
   z-index: 20;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  background-color: white;
+  border-radius: 5px;
   width: 40rem;
   height: 25rem;
-  background-color: white;
-  transform: translate(50%, 25%);
-  border-radius: 5px;
   animation-name: fadeInOpacity;
   animation-iteration-count: 1;
   animation-timing-function: linear;

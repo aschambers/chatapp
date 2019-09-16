@@ -1,15 +1,20 @@
 .serverjoin {
+  display: flex;
+  flex-direction: column;
   position: absolute;
   z-index: 20;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  background-color: white;
+  border-radius: 5px;
   width: 40rem;
   height: 20rem;
-  background-color: white;
-  transform: translate(50%, 25%);
-  border-radius: 5px;
   animation-name: fadeInOpacity;
   animation-iteration-count: 1;
   animation-timing-function: linear;
-  animation-duration: 0.3s; }
+  animation-duration: 0.5s; }
   .serverjoin-title {
     color: #008f00;
     text-align: center;
