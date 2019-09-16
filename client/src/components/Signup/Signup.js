@@ -44,6 +44,9 @@ const Signup = (props) => {
     if(!email && !username && !password) {
       toast.dismiss();
       toast.error('All fields are required to signup.', { position: 'bottom-center' });
+    } else if (username.length > 14) {
+      toast.dismiss();
+      toast.error('Username does not meet the length requirements.', { position: 'bottom-center' });
     } else {
       props.userSignup(params);
     }
