@@ -88,6 +88,13 @@ class Chatroom extends Component {
         previousRoom: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`,
         room: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`
       });
+
+      this.socket.emit('GET_SERVER_LIST', {
+        socketId: this.socket.id,
+        serverId: this.props.serverId,
+        previousRoom: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`,
+        room: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`
+      });
     });
 
     this.socket.on('RECEIVE_CHATROOM_MESSAGES', (data) => {

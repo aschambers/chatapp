@@ -509,7 +509,6 @@ const Dashboard = (props) => {
       userId: serverUserBan.userId,
       serverId: serverId
     };
-    console.log(data);
     props.unbanUser(data);
   }
 

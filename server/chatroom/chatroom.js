@@ -149,6 +149,15 @@ module.exports = async(server) => {
       }
     });
 
+    socket.on('GET_SERVER_LIST', async(data) => {
+      let serverList = await axios.post(`${SERVER_URL}/api/v1/findUserList`, {
+        serverId: data.serverId
+      });
+      if (serverList) {
+        io.in(data.room).emit('RECEIVE_SERVER_LIST', serverList.data);
+      }
+    });
+
 
 
     // user actions

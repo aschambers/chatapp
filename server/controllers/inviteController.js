@@ -88,10 +88,8 @@ module.exports = {
 
     if (!server.userBans) server.userBans = [];
     const index = server.userBans.findIndex(x => x.userId === userId);
-    console.log(index);
-    console.log('---------');
+
     if (index > -1) {
-      console.log('found banned user');
       return res.status(422).send({"error":"Error adding server to user servers list"});
     }
 
@@ -134,7 +132,8 @@ module.exports = {
         userId: user.id,
         username: user.username,
         imageUrl: user.imageUrl,
-        type: 'user'
+        type: 'user',
+        active: true
       });
     }
 
