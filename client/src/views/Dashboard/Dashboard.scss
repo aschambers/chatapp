@@ -76,7 +76,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  min-width: 14.5rem;
+  min-width: 15.5rem;
   height: 100%;
   background-color: rgb(48, 48, 48);
   border-left: 1px solid black;
@@ -126,7 +126,7 @@
       min-height: 1rem;
     }
     & > div {
-      width: 11.5rem;
+      width: 15rem;
       min-height: 2rem;
       & > .active {
         cursor: pointer;
@@ -166,7 +166,7 @@
         color: #7F7F7F;
       }
       & > div {
-        width: 11.5rem;
+        width: 15rem;
         margin-top: 0.5rem;
         min-height: 3rem;
         & > .active {
@@ -321,7 +321,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  min-width: 12.5rem;
+  min-width: 16rem;
   height: 100%;
   background-color: rgb(48, 48, 48);
   border-left: 1px solid black;
