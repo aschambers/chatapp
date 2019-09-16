@@ -145,7 +145,7 @@ module.exports = async(server) => {
         userId: data.userId
       });
       if (userList) {
-        io.in(data.room).emit('RECEIVE_SERVER_LIST', userList);
+        io.in(data.room).emit('RECEIVE_SERVER_LIST', userList.data);
       }
     });
 

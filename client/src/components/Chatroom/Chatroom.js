@@ -112,6 +112,7 @@ class Chatroom extends Component {
       if (index < 0) {
         this.props.leaveServer();
       } else if (index > -1) {
+        this.props.refreshServerUsers();
         this.setState({ userModalOpen: false, sideUserModalOpen: false, rightClickedUser: {}, sideRightClickedUser: {}, serverUserList: data });
       }
     });
