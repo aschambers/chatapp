@@ -66,7 +66,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  min-width: 14.5rem;
+  min-width: 15.5rem;
   height: 100%;
   background-color: #303030;
   border-left: 1px solid black;
@@ -111,7 +111,7 @@
     .sidebarleft-mainchat > div:first-child {
       min-height: 1rem; }
     .sidebarleft-mainchat > div {
-      width: 11.5rem;
+      width: 15rem;
       min-height: 2rem; }
       .sidebarleft-mainchat > div > .active {
         cursor: pointer;
@@ -145,7 +145,7 @@
         top: 0.15rem;
         color: #7F7F7F; }
       .sidebarleft-mainchat-dropdown > div {
-        width: 11.5rem;
+        width: 15rem;
         margin-top: 0.5rem;
         min-height: 3rem; }
         .sidebarleft-mainchat-dropdown > div > .active {
@@ -272,7 +272,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  min-width: 12.5rem;
+  min-width: 16rem;
   height: 100%;
   background-color: #303030;
   border-left: 1px solid black;

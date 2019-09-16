@@ -634,6 +634,7 @@ const Dashboard = (props) => {
 
           {showChannelModal ?
             <ChannelModal
+              newChannel={newChannel}
               setNewChannel={(event) => { setNewChannel(event.target.value); }}
               setShowChannelModal={() => { setShowChannelModal(false); }}
               createNewChannel={() => { createNewChannel(); }}
@@ -642,6 +643,7 @@ const Dashboard = (props) => {
 
           {showCategoryModal ?
             <CategoryModal
+              newCategory={newCategory}
               setNewCategory={(event) => { setNewCategory(event.target.value); }}
               setShowCategoryModal={() => { setShowCategoryModal(false); }}
               createNewCategory={() => { createNewCategory(); }}
