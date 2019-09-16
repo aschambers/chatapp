@@ -19,6 +19,7 @@ import NotificationSettingsModal from '../../components/NotificationSettingsModa
 import PrivacyModal from '../../components/PrivacyModal/PrivacyModal';
 import RegionModal from '../../components/RegionModal/RegionModal';
 import UserManagement from '../../components/UserManagement/UserManagement';
+import UserBans from '../../components/UserBans/UserBans';
 import chatot from '../../assets/images/chatot.png';
 import friends from '../../assets/images/friends.png';
 import settings from '../../assets/images/settings.png';
@@ -80,10 +81,13 @@ const Dashboard = (props) => {
   const [friendsList, setFriendsList] = useState(null);
   const [currentFriend, setCurrentFriend] = useState(null);
   const [serverUser, setServerUser] = useState(null);
+  const [serverUserBan, setServerUserBan] = useState(null);
   const [serverUserRole, setServerUserRole] = useState("admin");
   const [showUserManagement, setShowUserManagement] = useState(false);
+  const [showUserManagementBan, setShowUserManagementBan] = useState(false);
   const [openServerItem, setOpenServerItem] = useState(null);
   const [didMount, setDidMount] = useState(false);
+  const [serverUserBans, setServerUserBans] = useState([]);
 
   const ref = useRef();
   useOnClickOutside(ref, () => setShowCategoryModal(false));
@@ -148,6 +152,12 @@ const Dashboard = (props) => {
           setIsAdmin(false);
         }
       }
+    }
+
+    if (props.serverUserBans) {
+      setShowUserManagementBan(false);
+      setServerUserBan(null);
+      setServerUserBans(props.serverUserBans);
     }
 
     if (props.chatroomError) {
@@ -222,6 +232,9 @@ const Dashboard = (props) => {
           props.findUserList({
             serverId: openServerItem.serverId
           });
+          props.findUserBans({
+            serverId: openServerItem.serverId
+          });
           props.categoryFindAll({
             serverId: openServerItem.serverId
           });
@@ -278,6 +291,15 @@ const Dashboard = (props) => {
   const toggleModal = (value) => {
     setModalOpen(true);
     setCurrentModal(value);
+  }
+
+  const refreshServerUsers = () => {
+    props.findUserList({
+      serverId: serverId
+    });
+    props.findUserBans({
+      serverId: serverId
+    });
   }
 
   const getUpdatedServerList = (closeModal) => {
@@ -415,6 +437,7 @@ const Dashboard = (props) => {
 
   const joinServer = (value) => {
     props.inviteVerification({
+      userId: id,
       code: value,
       email: email
     });
@@ -464,6 +487,11 @@ const Dashboard = (props) => {
     setServerUser(user);
   }
 
+  const setActiveServerUserBan = (user) => {
+    setShowUserManagementBan(true);
+    setServerUserBan(user);
+  }
+
   const setSaveServerUser = () => {
     const data = {
       active: true,
@@ -474,6 +502,15 @@ const Dashboard = (props) => {
       serverId: serverId
     }
     props.updateUserRole(data);
+  }
+
+  const setRemoveUserBan = () => {
+    const data = {
+      userId: serverUserBan.userId,
+      serverId: serverId
+    };
+    console.log(data);
+    props.unbanUser(data);
   }
 
   const leaveServer = () => {
@@ -677,6 +714,7 @@ const Dashboard = (props) => {
           serverId={serverId}
           username={username}
           serverUserList={serverUserList}
+          refreshServerUsers={refreshServerUsers}
           privateMessageUser={(user) => { privateMessageUser(user) }}
           leaveServer={() => { leaveServer(); }}
         />
@@ -713,7 +751,7 @@ const Dashboard = (props) => {
 
       {isServerSettingsOpen ?
         <div className="serversettings">
-          {isChangingRegion || showUserManagement ? <span className="contentBackground"></span> : null}
+          {isChangingRegion || showUserManagement || showUserManagementBan ? <span className="contentBackground"></span> : null}
           <div className="serversettings-sidebar">
             <h1>Server Settings</h1>
             <p className={activeServerSetting === "overview" ? "serversettings-sidebar-activeitem" : "serversettings-sidebar-overview"} onClick={() => { setActiveServerSetting("overview"); }}>Overview</p>
@@ -824,6 +862,51 @@ const Dashboard = (props) => {
               </div>
             : null}
 
+            {activeServerSetting === "bans" ?
+              <div className="serversettings-bans">
+                {showUserManagementBan ?
+                  <UserBans
+                    serverUserBan={serverUserBan}
+                    setShowUserManagementBan={() => { setShowUserManagementBan(false); setServerUserBan(null); }}
+                    setRemoveUserBan={setRemoveUserBan}
+                  />
+                : <div>
+                    <h1 className="serversettings-bans-title">Server Bans</h1>
+                    <p className="serversettings-bans-count">{serverUserBans.length} Bans</p>
+                    {serverUserBans && serverUserBans.length > 0 ? serverUserBans.map((item, index)  => {
+                      if (item.type === "owner") {
+                        return (
+                          <div key={index} className="serversettings-owner">
+                            <img className="serversettings-logo" src={item.imageUrl ? item.imageUrl : chatot} alt="chatter-icon" />
+                            <span>
+                              <p>{item.type}</p>
+                              <p>{item.username}</p>
+                            </span>
+                            <span className="serversettings-add">
+                              <img src={owner} alt="add-icon" className="serversettings-user-add-image" />
+                            </span>
+                          </div>
+                        )
+                      } else {
+                        return (
+                          <div key={index} className="serversettings-user" onClick={() => { setActiveServerUserBan(item); }}>
+                            <img className="serversettings-logo" src={item.imageUrl ? item.imageUrl : chatot} alt="chatter-icon" />
+                            <span>
+                              <p>{item.type}</p>
+                              <p>{item.username}</p>
+                            </span>
+                            <span className="serversettings-add">
+                              <img src={add} alt="add-icon" className="serversettings-user-add-image" />
+                            </span>
+                          </div>
+                        )
+                      }
+                    }) : null}
+                  </div>
+                }
+              </div>
+            : null}
+
             <div className="serversettings-escape" onClick={() => { setIsServerSettingsOpen(!isServerSettingsOpen); showServerSettings(false); setActiveServerSetting("overview"); }}>
               <span>&#215;</span>
               <p>ESC</p>
@@ -929,6 +1012,7 @@ const mapStateToProps = ({ usersReducer, serversReducer, categoriesReducer, chat
     retrieveUpdatedUserSuccess: usersReducer.retrieveUpdatedUserSuccess,
     serversList: serversReducer.serversList,
     serverUserList: serversReducer.serverUserList,
+    serverUserBans: serversReducer.serverUserBans,
     updateRoleSuccess: serversReducer.updateRoleSuccess,
     updateRoleError: serversReducer.updateRoleError,
     categoryList: categoriesReducer.categoryList,

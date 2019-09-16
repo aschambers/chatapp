@@ -70,7 +70,7 @@ module.exports = {
    * @returns {object} server object
    */
   inviteVerification: async(req, res) => {
-    const { code, email } = req.body;
+    const { userId, code, email } = req.body;
 
     const validInvite = await InviteModel.findOne({ where: { code: code } });
 
@@ -86,8 +86,12 @@ module.exports = {
     const user = await UserModel.findOne({ where: { email: email }});
     if (!user) return res.status(422).send({'error': 'Failed to find user'});
 
-    const index = server.userBans.findIndex(x => x.userId === user.userId);
+    if (!server.userBans) server.userBans = [];
+    const index = server.userBans.findIndex(x => x.userId === userId);
+    console.log(index);
+    console.log('---------');
     if (index > -1) {
+      console.log('found banned user');
       return res.status(422).send({"error":"Error adding server to user servers list"});
     }
 

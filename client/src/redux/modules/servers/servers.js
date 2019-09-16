@@ -8,6 +8,12 @@ import {
   FINDING_SERVER,
   FIND_SERVER_FAIL,
   FIND_SERVER_SUCCESS,
+  FINDING_SERVER_BANS,
+  FIND_SERVER_BANS_FAIL,
+  FIND_SERVER_BANS_SUCCESS,
+  UNBANNING_USER,
+  UNBAN_USER_FAIL,
+  UNBAN_USER_SUCCESS,
   DELETING_SERVER,
   DELETE_SERVER_FAIL,
   DELETE_SERVER_SUCCESS,
@@ -49,6 +55,30 @@ export default (state = initialState, action) => {
         ...state, isLoading: false, error: false, success: true, serverUserList: action.payload
       };
     case FIND_SERVER_FAIL:
+      return {
+        ...state, isLoading: false, error: true, success: false
+      };
+    case FINDING_SERVER_BANS:
+      return {
+        ...state, isLoading: true, error: false, success: false
+      };
+    case FIND_SERVER_BANS_SUCCESS:
+      return {
+        ...state, isLoading: false, error: false, success: true, serverUserBans: action.payload
+      };
+    case FIND_SERVER_BANS_FAIL:
+      return {
+        ...state, isLoading: false, error: true, success: false
+      };
+    case UNBANNING_USER:
+      return {
+        ...state, isLoading: true, error: false, success: false
+      };
+    case UNBAN_USER_SUCCESS:
+      return {
+        ...state, isLoading: false, error: false, success: true, serverUserBans: action.payload
+      };
+    case UNBAN_USER_FAIL:
       return {
         ...state, isLoading: false, error: true, success: false
       };
@@ -118,6 +148,34 @@ export const serverFind = params => async dispatch => {
     dispatch({ type: FIND_SERVER_FAIL });
   }
 };
+
+export const findUserBans = params => async dispatch => {
+  dispatch({ type: FINDING_SERVER_BANS });
+  try {
+    const response = await axios.post(`${ROOT_URL}/api/v1/findUserBans`, params);
+    if(response.data) {
+      dispatch({ type: FIND_SERVER_BANS_SUCCESS, payload: response.data });
+    } else {
+      dispatch({ type: FIND_SERVER_BANS_FAIL });
+    }
+  } catch(err) {
+    dispatch({ type: FIND_SERVER_BANS_FAIL });
+  }
+};
+
+export const unbanUser = params => async dispatch => {
+  dispatch({ type: UNBANNING_USER });
+  try {
+    const response = await axios.post(`${ROOT_URL}/api/v1/unbanUser`, params);
+    if(response.data) {
+      dispatch({ type: UNBAN_USER_SUCCESS, payload: response.data });
+    } else {
+      dispatch({ type: UNBAN_USER_FAIL });
+    }
+  } catch(err) {
+    dispatch({ type: UNBAN_USER_FAIL });
+  }
+}
 
 export const findUserList = params => async dispatch => {
   dispatch({ type: FINDING_SERVER });

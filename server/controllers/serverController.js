@@ -100,7 +100,7 @@ module.exports = {
     if (!user) return res.status(422).send({'error':'error deleting server'});
     res.status(200).send(user.serversList);
   },
-  // findUserList
+
   /**
    * @param {object} req
    * @param {object} res
@@ -112,6 +112,60 @@ module.exports = {
       res.status(200).send(server.userList);
     } else {
       res.status(422).send({'error':'Error finding server'});
+    }
+  },
+
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {array} list of banned users
+   */
+  findUserBans: async(req, res, next) => {
+    const server = await ServerModel.findByPk(req.body.serverId);
+    if (!server.userBans) server.userBans = [];
+    if (server && server.userBans) {
+      res.status(200).send(server.userBans);
+    } else {
+      res.status(422).send({'error':'Error finding server'});
+    }
+  },
+
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {array} list of banned users
+   */
+  unbanUser: async(req, res, next) => {
+    const { userId, serverId } = req.body;
+
+    const server = await ServerModel.findByPk(serverId);
+    if (!server.userBans) server.userBans = [];
+
+    const length = server.userBans.length;
+
+    const index = server.userBans.findIndex(x => x.userId === userId);
+    if (index > -1) {
+      server.userBans.splice(index, 1);
+    }
+
+    if (length === 1) {
+      server.userBans = null;
+    }
+
+    const updateServerSuccess = await server.update(
+      { userBans: server.userBans },
+      { where: { id: serverId }}
+    );
+    if (!updateServerSuccess) return res.status(422).json({"error":"error-saving-server-bans"});
+
+    if (server.userBans === null) {
+      server.userBans = [];
+    }
+
+    if (server && server.userBans) {
+      res.status(200).send(server.userBans);
+    } else {
+      res.status(422).send({'error':'Error finding server bans'});
     }
   },
 
@@ -265,12 +319,15 @@ module.exports = {
     if (!updateServer.userBans) updateServer.userBans = [];
 
     updateServer.userBans.push({
-      userId: userId
+      userId: userId,
+      username: updateUser.username,
+      imageUrl: updateUser.imageUrl,
+      type: updateUser.type
     });
 
     const updateSuccess = await updateServer.update(
-      { userList: updateServer.userList },
-      { userBans: updateServer.userBans },
+      { userList: updateServer.userList,
+        userBans: updateServer.userBans },
       { where: { id: serverId }}
     );
 
