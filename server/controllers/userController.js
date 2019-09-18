@@ -246,6 +246,43 @@ module.exports = {
         await cloudinary.uploader.upload("data:image/png;base64," + encoded, async(result, err) => {
           const newImage = result && result.url ? result.url.replace(/^http:\/\//i, 'https://') : null;
 
+          const updateServer = await ServerModel.findAll();
+
+          for (let i = 0; i < updateServer.length; i++) {
+            if (updateServer[i].userList && updateServer[i].userList.length) {
+              for (let j = 0; j < updateServer[i].userList.length; j++) {
+                if (+updateServer[i].userList[j].userId === +id) {
+                  newImage ? updateServer[i].userList[j].imageUrl = newImage : update[i].userList[j].imageUrl = update[i].userList[j].imageUrl;
+                  updateServer[i].userList[j].username = username;
+
+                  await updateServer[i].update(
+                    { userList: updateServer[i].userList },
+                    { where: { id: updateServer[i].id }}
+                  );
+                }
+              }
+            }
+          }
+
+          const messageUpdate = await MessageModel.findAll({ where: { userId: id }});
+
+          for (let m = 0; m < messageUpdate.length; m++) {
+            await messageUpdate[m].update(
+              { username: username },
+              { where: { id: messageUpdate[m].id }}
+            );
+          }
+
+          const friendUpdate = await FriendModel.findAll({ where: { username: user.username }});
+
+          for (let a = 0; a < friendUpdate.length; a++) {
+            newImage ? friendUpdate[a].imageUrl = newImage : friendUpdate[a].imageUrl = friendUpdate[a].imageUrl;
+            await friendUpdate[a].update(
+              { username: username, imageUrl: friendUpdate[a].imageUrl  },
+              { where: { username: originalUsername }}
+            );
+          }
+
           const updateAccount = newImage ? await user.update(
             { email: email, username: username, imageUrl: newImage },
             { where:  { id: user.id }}
