@@ -342,17 +342,22 @@ export const currentSocketUser = () => async dispatch => {
 };
 
 export const userUpdate = params => async (dispatch) => {
-  dispatch({ type: UPDATING_PROFILE });
+  dispatch({ type: RETRIEVE_USER_LOADING });
   try {
-    const response = await axios.put(`${ROOT_URL}/api/v1/userUpdate`, params);
+    const response = await axios({
+      method: 'put',
+      url: `${ROOT_URL}/api/v1/userUpdate`,
+      data: params,
+      config: { headers: { 'Content-Type': 'multipart/form-data' } }
+    });
     if (response.data) {
       localStorage.setItem('user', JSON.stringify(response.data));
-      dispatch({ type: UPDATE_PROFILE_SUCCESS, payload: response.data });
+      dispatch({ type: RETRIEVE_USER_SUCCESS, payload: response.data });
     } else {
-      dispatch({ type: UPDATE_PROFILE_FAIL });
+      dispatch({ type: RETRIEVE_USER_FAIL });
     }
   } catch (err) {
-    dispatch({ type: UPDATE_PROFILE_FAIL });
+    dispatch({ type: RETRIEVE_USER_FAIL });
   }
 };
 
