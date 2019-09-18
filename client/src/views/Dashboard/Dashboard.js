@@ -553,6 +553,9 @@ const Dashboard = (props) => {
       toast.dismiss();
       toast.error('Email address must be a valid!', { position: 'bottom-center' });
       return;
+    } else if ((editUsername && editUsername.length > 2) || (editUsername && editUsername.length > 14) || !editUsername) {
+      toast.dismiss();
+      toast.error('Username does not meet the length requirements!', { position: 'bottom-center' });
     } else if (emailRegex.test(String(editEmail).toLowerCase())) {
       setIsLoading(true);
       const formData = new FormData();
