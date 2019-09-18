@@ -548,15 +548,22 @@ const Dashboard = (props) => {
   }
 
   const saveAccountInfo = () => {
-    setIsLoading(true);
-    const formData = new FormData();
-    formData.append('id', id);
-    formData.append('serverId', serverId);
-    formData.append('imageUrl', editImageUrl);
-    formData.append('mainFile', mainFile)
-    formData.append('email', editEmail);
-    formData.append('username', editUsername);
-    props.userUpdate(formData);
+    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!emailRegex.test(String(editEmail).toLowerCase())) {
+      toast.dismiss();
+      toast.error('Email address must be a valid!', { position: 'bottom-center' });
+      return;
+    } else if (emailRegex.test(String(editEmail).toLowerCase())) {
+      setIsLoading(true);
+      const formData = new FormData();
+      formData.append('id', id);
+      formData.append('serverId', serverId);
+      formData.append('imageUrl', editImageUrl);
+      formData.append('mainFile', mainFile)
+      formData.append('email', editEmail);
+      formData.append('username', editUsername);
+      props.userUpdate(formData);
+    }
   }
 
   const showMainFile = (event) => {
