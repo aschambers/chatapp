@@ -1,5 +1,7 @@
 const UserModel = require('../models/User');
 const ServerModel = require('../models/Server');
+const MessageModel = require('../models/Message');
+const FriendModel = require('../models/Friend');
 const Sequelize = require('sequelize');
 const bcrypt = require('bcryptjs');
 const keys = require('../config/keys');
@@ -227,24 +229,86 @@ module.exports = {
    * @returns {object} user object
    */
   userUpdate: async(req, res, next) => {
-    const { id, username, email, password } = req.body;
+    const { id, username, email, imageUrl, serverId } = req.body;
+
+    const existingEmail = await UserModel.findAll({ where: { email: email }});
+
+    const existingUsername = await UserModel.findAll({ where: { username: username }});
+
+    if ((existingEmail && existingEmail.length > 1) || (existingUsername && existingUsername.lengh > 1)) return res.status(422).send('user-exists');
+
     const user = await UserModel.findByPk(id);
-    if(user) {
-      let options = ['username', 'email'];
-      if (password) {
-        user.password = password;
-        options.push('password');
-      }
-      user.username = username;
-      user.email = email;
-      let userUpdate = await user.save({ fields: options });
-      if(userUpdate) {
-        res.status(200).send(userUpdate);
+    const originalUsername = user.username;
+
+    if (imageUrl && req.files && req.files.mainFile) {
+      if (req.files.mainFile[0].mimetype === 'image/jpeg' || req.files.mainFile[0].mimetype === 'image/png' || req.files.mainFile[0].mimetype === 'image/gif') {
+        const encoded = req.files.mainFile[0].data.toString('base64');
+        await cloudinary.uploader.upload("data:image/png;base64," + encoded, async(result, err) => {
+          const newImage = result && result.url ? result.url.replace(/^http:\/\//i, 'https://') : null;
+
+          const updateAccount = newImage ? await user.update(
+            { email: email, username: username, imageUrl: newImage },
+            { where:  { id: user.id }}
+          ) : await user.update(
+            { email: email, username: username },
+            { where: { id: user.id }}
+          );
+
+          if (updateAccount) {
+            return res.status(200).send(updateAccount);
+          } else {
+            return res.status(422).send('user-update-error');
+          }
+        });
       } else {
-        res.status(422).send('user-update-error');
+        return res.status(422).send('user-update-error');
       }
     } else {
-      res.status(422).send({'error':'error finding updated user'});
+      const updateServer = await ServerModel.findAll();
+
+      for (let i = 0; i < updateServer.length; i++) {
+        if (updateServer[i].userList && updateServer[i].userList.length) {
+          for (let j = 0; j < updateServer[i].userList.length; j++) {
+            if (+updateServer[i].userList[j].userId === +id) {
+              updateServer[i].userList[j].username = username;
+
+              await updateServer[i].update(
+                { userList: updateServer[i].userList },
+                { where: { id: updateServer[i].id }}
+              );
+            }
+          }
+        }
+      }
+
+      const messageUpdate = await MessageModel.findAll({ where: { userId: id }});
+
+      for (let m = 0; m < messageUpdate.length; m++) {
+        await messageUpdate[m].update(
+          { username: username },
+          { where: { id: messageUpdate[m].id }}
+        );
+      }
+
+      const friendUpdate = await FriendModel.findAll({ where: { username: user.username }});
+
+      for (let a = 0; a < friendUpdate.length; a++) {
+        await friendUpdate[a].update(
+          { username: username },
+          { where: { username: originalUsername }}
+        );
+      }
+
+      const updateAccount = await user.update(
+        { email: email, username: username },
+        { where:  { id: user.id }}
+      );
+
+      if (updateAccount) {
+        return res.status(200).send(updateAccount);
+      } else {
+        return res.status(422).send('user-update-error');
+      }
     }
   },
 

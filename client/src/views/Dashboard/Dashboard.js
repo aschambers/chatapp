@@ -19,7 +19,9 @@ import NotificationSettingsModal from '../../components/NotificationSettingsModa
 import PrivacyModal from '../../components/PrivacyModal/PrivacyModal';
 import RegionModal from '../../components/RegionModal/RegionModal';
 import UserManagement from '../../components/UserManagement/UserManagement';
+import EditAccount from '../../components/EditAccount/EditAccount';
 import UserBans from '../../components/UserBans/UserBans';
+import Loading from '../../components/Loading/Loading';
 import chatot from '../../assets/images/chatot.png';
 import friends from '../../assets/images/friends.png';
 import settings from '../../assets/images/settings.png';
@@ -88,6 +90,12 @@ const Dashboard = (props) => {
   const [openServerItem, setOpenServerItem] = useState(null);
   const [didMount, setDidMount] = useState(false);
   const [serverUserBans, setServerUserBans] = useState([]);
+  const [editUsername, setEditUsername] = useState('');
+  const [editEmail, setEditEmail] = useState('');
+  const [editImageUrl, setEditImageUrl] = useState('');
+  const [accountModalOpen, setAccountModalOpen] = useState('');
+  const [mainFile, setMainFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const ref = useRef();
   useOnClickOutside(ref, () => setShowCategoryModal(false));
@@ -209,8 +217,16 @@ const Dashboard = (props) => {
       setUsername(username);
       setEmail(email);
       setImageUrl(imageUrl);
+      setEditUsername(username);
+      setEditEmail(email);
+      setEditImageUrl(imageUrl);
       setActive(active);
       setServersList(serversList);
+      setAccountModalOpen(false);
+      setIsLoading(false);
+      props.findFriends({
+        userId: id
+      });
     } else if(props.user && props.retrieveUpdatedUserSuccess) {
       props.resetValues();
       const { id, username, email, imageUrl, active, serversList } = props.user;
@@ -218,8 +234,16 @@ const Dashboard = (props) => {
       setUsername(username);
       setEmail(email);
       setImageUrl(imageUrl);
+      setEditUsername(username);
+      setEditEmail(email);
+      setEditImageUrl(imageUrl);
       setActive(active);
       setServersList(serversList);
+      setAccountModalOpen(false);
+      setIsLoading(false);
+      props.findFriends({
+        userId: id
+      });
       if (openServerItem && serversList && serversList.length > 0) {
         const index = serversList.findIndex(x => x.serverId === openServerItem.serverId);
         if (index > -1) {
@@ -271,6 +295,8 @@ const Dashboard = (props) => {
       setIsServerSettingsOpen(false);
       showServerSettings(false);
       setActiveServerSetting("overview");
+      setActiveUserSetting("myaccount");
+      setAccountModalOpen(false);
     }
   }
 
@@ -519,6 +545,38 @@ const Dashboard = (props) => {
     setServerName('');
     setServerId(null);
     toast.info('You have been removed from the server by an admin!', { position: 'bottom-center' });
+  }
+
+  const saveAccountInfo = () => {
+    setIsLoading(true);
+    const formData = new FormData();
+    formData.append('id', id);
+    formData.append('serverId', serverId);
+    formData.append('imageUrl', editImageUrl);
+    formData.append('mainFile', mainFile)
+    formData.append('email', editEmail);
+    formData.append('username', editUsername);
+    props.userUpdate(formData);
+  }
+
+  const showMainFile = (event) => {
+    event.preventDefault();
+    let reader = new FileReader();
+    let file = event.target.files[0];
+
+    reader.onloadend = () => {
+      setMainFile(file);
+      setEditImageUrl(reader.result);
+    }
+    reader.readAsDataURL(file);
+  }
+
+  if (isLoading) {
+    return (
+      <div className="loadingbackground">
+        <Loading />
+      </div>
+    );
   }
 
   return (
@@ -908,7 +966,7 @@ const Dashboard = (props) => {
               </div>
             : null}
 
-            <div className="serversettings-escape" onClick={() => { setIsServerSettingsOpen(!isServerSettingsOpen); showServerSettings(false); setActiveServerSetting("overview"); }}>
+            <div className="serversettings-escape" onClick={() => { setIsServerSettingsOpen(!isServerSettingsOpen); showServerSettings(false); setActiveServerSetting("overview"); setShowUserManagementBan(false); setShowUserManagement(false); }}>
               <span>&#215;</span>
               <p>ESC</p>
             </div>
@@ -926,6 +984,7 @@ const Dashboard = (props) => {
 
       {isSettingsOpen ?
         <div className="usersettings">
+          {accountModalOpen ? <span className="contentBackground"></span> : null}
           <div className="usersettings-sidebar">
             <h1>User Settings</h1>
             <p className={activeUserSetting === "myaccount" ? "usersettings-sidebar-activeitem" : "usersettings-sidebar-myaccount"} onClick={() => { setActiveUserSetting("myaccount"); }}>My Account</p>
@@ -941,38 +1000,53 @@ const Dashboard = (props) => {
 
           {activeUserSetting === "myaccount" ?
             <div className="usersettings-accountcontainer">
-              <div className="usersettings-myaccount">
-                <h1>My Account</h1>
-                <div className="usersettings-myaccount__container">
-                  <div className="usersettings-myaccount__container-image">
-                    <img src={imageUrl ? imageUrl : chatot} alt="username-icon" />
-                  </div>
-                  <div className="usersettings-myaccount__container-info">
-                    <div className="usersettings-myaccount__container-info-username">
-                      <span>Username</span><br/>
-                      <span>{username}</span>
+              {accountModalOpen ?
+                <EditAccount
+                  editUsername={editUsername}
+                  editEmail={editEmail}
+                  editImageUrl={editImageUrl}
+                  setEditUsername={(value) => { setEditUsername(value); }}
+                  setEditEmail={(value) => { setEditEmail(value); }}
+                  setEditImageUrl={(value) => { setEditImageUrl(value); }}
+                  saveAccountInfo={saveAccountInfo}
+                  setAccountModalOpen={() => { setAccountModalOpen(false); }}
+                  showMainFile={(event) => { showMainFile(event) }}
+                />
+              : <div>
+                  <div className="usersettings-myaccount">
+                    <h1>My Account</h1>
+                    <div className="usersettings-myaccount__container">
+                      <div className="usersettings-myaccount__container-image">
+                        <img src={imageUrl ? imageUrl : chatot} alt="username-icon" />
+                      </div>
+                      <div className="usersettings-myaccount__container-info">
+                        <div className="usersettings-myaccount__container-info-username">
+                          <span>Username</span><br/>
+                          <span>{username}</span>
+                        </div>
+                        <div className="usersettings-myaccount__container-info-email">
+                          <span>Email Address</span><br/>
+                          <span>{email}</span>
+                        </div>
+                      </div>
+                      <div className="usersettings-myaccount__container-edit" onClick={() => { setAccountModalOpen(true); }}>
+                        <span>Edit</span>
+                      </div>
                     </div>
-                    <div className="usersettings-myaccount__container-info-email">
-                      <span>Email Address</span><br/>
-                      <span>{email}</span>
-                    </div>
                   </div>
-                  <div className="usersettings-myaccount__container-edit">
-                    <span>Edit</span>
+                  <div className="usersettings-authentication">
+                    <h1>Two-Factor Authentication</h1>
+                    <p>Protect your account with an extra layer of security. Once configured you'll be required to enter your password and an authentication code from your mobile device to login.</p>
+                    <div className="usersettings-authentication-enable">
+                      <span>Enable</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="usersettings-authentication">
-                <h1>Two-Factor Authentication</h1>
-                <p>Protect your account with an extra layer of security. Once configured you'll be required to enter your password and an authentication code from your mobile device to login.</p>
-                <div className="usersettings-authentication-enable">
-                  <span>Enable</span>
-                </div>
-              </div>
+              }
             </div>
           : null}
 
-          <div className="usersettings-escape" onClick={() => { setSettingsOpen(!isSettingsOpen); }}>
+          <div className="usersettings-escape" onClick={() => { setActiveUserSetting("myaccount"); setSettingsOpen(false); }}>
             <span>&#215;</span>
             <p>ESC</p>
           </div>

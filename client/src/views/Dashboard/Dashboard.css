@@ -5,6 +5,12 @@
   flex-direction: row;
   width: 100%; }
 
+.loadingbackground {
+  background-color: #414141;
+  position: relative;
+  padding-top: 1vh;
+  height: 100vh; }
+
 .contentBackground {
   position: absolute;
   z-index: 1;
@@ -676,7 +682,8 @@
           width: 90%;
           height: 90%;
           margin-top: 5%;
-          margin-left: 5%; }
+          margin-left: 5%;
+          border-radius: 50%; }
       .usersettings-myaccount__container-info {
         display: flex;
         flex-direction: column;

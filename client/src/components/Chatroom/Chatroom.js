@@ -46,7 +46,8 @@ class Chatroom extends Component {
       editingMessage: null,
       newMessage: "",
       hover: "",
-      serverUserList: []
+      serverUserList: [],
+      isLoading: false
     }
   }
 
@@ -70,10 +71,7 @@ class Chatroom extends Component {
   }
 
   async componentDidMount() {
-    const serverIndex = this.props.serverUserList.findIndex(x => x.username === this.props.username);
-    if (serverIndex < 0) {
-      this.props.leaveServer();
-    }
+    this.setState({ isLoading: true });
     window.addEventListener('keydown', this.detectEscape);
     this.props.getUsers();
 
@@ -120,7 +118,7 @@ class Chatroom extends Component {
         this.props.leaveServer();
       } else if (index > -1) {
         this.props.refreshServerUsers();
-        this.setState({ userModalOpen: false, sideUserModalOpen: false, rightClickedUser: {}, sideRightClickedUser: {}, serverUserList: data });
+        this.setState({ userModalOpen: false, sideUserModalOpen: false, rightClickedUser: {}, sideRightClickedUser: {}, serverUserList: data, isLoading: false });
       }
     });
   }
@@ -262,207 +260,216 @@ class Chatroom extends Component {
   }
 
   render() {
-    return (
-      <div className="chatroom">
-        <div className="chatarea">
-          <div className="chatarea-topbar">
-            <img src={numbersign} alt="channel" height={16} width={16} /><span>{this.props.activeChatroom}</span>
+    if (this.state.isLoading) {
+      return (
+        <div className="chatroom">
+          <div className="chatarea">
           </div>
-          <div id="chatareamessages" className="chatarea-messages">
-            {this.state.messages && this.state.messages.length > 0 ? this.state.messages.map((item, index) => {
-              const moderate = (this.state.serverUserList.length > 0
-              && this.state.serverUserList.some(serverItem => serverItem['username'] !== this.state.username
-              && (serverItem['username'] === item.username && serverItem['type'] !== 'owner' && serverItem['type'] !== 'admin')));
-              return (
-                <div id={"message" + index} key={index} onMouseEnter={() => { this.setState({ hover: (this.state.editingMessage || this.state.messageMenu || (this.props.userId !== item.userId)) ? "" : ("message" + index) }) }} onMouseLeave={() => { this.setState({ hover: "" }); }}>
-                  <div className="chatarea-messages-container">
-                    <span className="chatarea-messages-user" onClick={this.handleClick} onContextMenu={(event) => { this.contextMenu(event, item); }}>{item.username}</span>
-                    <Moment format="MM/DD/YYYY" date={item.updatedAt} className="chatarea-messages-time" />
-                    {this.state.hover === ("message" + index) ? <span className="chatarea-messages-menu" onClick={() => { this.openMessageMenu(item); }}><img src={editwhite} height={15} width={15} alt="edit message" /></span> : null}
-                    {this.state.messageMenu && this.state.editMessage.id === item.id ?
-                      <div className="chatarea-messages-editmenu" ref={this.ref}>
-                        <span onClick={() => { this.setState({ editMessage: null, messageMenu: false }); }}>&#10005;</span>
-                        <p onClick={() => { this.editChatroomMessage(); }}>Edit</p>
-                        <p onClick={() => { this.deleteChatroomMessage(); }}>Delete</p>
-                      </div>
-                    : null}
-                    {this.state.userModalOpen && this.state.rightClickedUser.id === item.id ?
-                      <div ref={this.ref} className={moderate === true ?"chatarea-messages-usermodalmod" : "chatarea-messages-usermodal"}>
-                        <span onClick={() => { this.setState({ userModalOpen: false }); }}>&#10005;</span>
-                        <p onClick={() => { this.privateMessageUser(); }} className={moderate === true ? "chatarea-messages-usermodalmod-privatemessage" : "chatarea-messages-usermodal-privatemessage"}>Send Message</p>
+        </div>
+      );
+    } else {
+      return (
+        <div className="chatroom">
+          <div className="chatarea">
+            <div className="chatarea-topbar">
+              <img src={numbersign} alt="channel" height={16} width={16} /><span>{this.props.activeChatroom}</span>
+            </div>
+            <div id="chatareamessages" className="chatarea-messages">
+              {this.state.messages && this.state.messages.length > 0 ? this.state.messages.map((item, index) => {
+                const moderate = (this.state.serverUserList.length > 0
+                && this.state.serverUserList.some(serverItem => serverItem['username'] !== this.state.username
+                && (serverItem['username'] === item.username && serverItem['type'] !== 'owner' && serverItem['type'] !== 'admin')));
+                return (
+                  <div id={"message" + index} key={index} onMouseEnter={() => { this.setState({ hover: (this.state.editingMessage || this.state.messageMenu || (this.props.userId !== item.userId)) ? "" : ("message" + index) }) }} onMouseLeave={() => { this.setState({ hover: "" }); }}>
+                    <div className="chatarea-messages-container">
+                      <span className="chatarea-messages-user" onClick={this.handleClick} onContextMenu={(event) => { this.contextMenu(event, item); }}>{item.username}</span>
+                      <Moment format="MM/DD/YYYY" date={item.updatedAt} className="chatarea-messages-time" />
+                      {this.state.hover === ("message" + index) ? <span className="chatarea-messages-menu" onClick={() => { this.openMessageMenu(item); }}><img src={editwhite} height={15} width={15} alt="edit message" /></span> : null}
+                      {this.state.messageMenu && this.state.editMessage.id === item.id ?
+                        <div className="chatarea-messages-editmenu" ref={this.ref}>
+                          <span onClick={() => { this.setState({ editMessage: null, messageMenu: false }); }}>&#10005;</span>
+                          <p onClick={() => { this.editChatroomMessage(); }}>Edit</p>
+                          <p onClick={() => { this.deleteChatroomMessage(); }}>Delete</p>
+                        </div>
+                      : null}
+                      {this.state.userModalOpen && this.state.rightClickedUser.id === item.id ?
+                        <div ref={this.ref} className={moderate === true ?"chatarea-messages-usermodalmod" : "chatarea-messages-usermodal"}>
+                          <span onClick={() => { this.setState({ userModalOpen: false }); }}>&#10005;</span>
+                          <p onClick={() => { this.privateMessageUser(); }} className={moderate === true ? "chatarea-messages-usermodalmod-privatemessage" : "chatarea-messages-usermodal-privatemessage"}>Send Message</p>
 
-                        {moderate === true ? <p onClick={() => { this.kickUser(item); }} className="chatarea-messages-usermodalmod-kick">Kick {item.username}</p> : null}
+                          {moderate === true ? <p onClick={() => { this.kickUser(item); }} className="chatarea-messages-usermodalmod-kick">Kick {item.username}</p> : null}
 
-                        {moderate === true ? <p onClick={() => { this.banUser(item); }} className="chatarea-messages-usermodalmod-ban">Ban {item.username}</p> : null}
-                      </div>
-                    : null}
+                          {moderate === true ? <p onClick={() => { this.banUser(item); }} className="chatarea-messages-usermodalmod-ban">Ban {item.username}</p> : null}
+                        </div>
+                      : null}
+                    </div>
+                    {this.state.editingMessage !== null && this.state.editingMessage.id === item.id ? <span><input className="chatarea-messages-editmessage" onChange={(event) => { this.setState({ newMessage: event.target.value }) }} value={this.state.newMessage} onKeyDown={(event) => { event.keyCode === 13 && event.shiftKey === false ? this.sendEditedMessage(event) : this.sendMessage(null) }} /><p className="chatarea-messages-editmessage-note">escape to cancel • enter to save</p></span> : <p className="chatarea-messages-message">{item.message}</p>}
                   </div>
-                  {this.state.editingMessage !== null && this.state.editingMessage.id === item.id ? <span><input className="chatarea-messages-editmessage" onChange={(event) => { this.setState({ newMessage: event.target.value }) }} value={this.state.newMessage} onKeyDown={(event) => { event.keyCode === 13 && event.shiftKey === false ? this.sendEditedMessage(event) : this.sendMessage(null) }} /><p className="chatarea-messages-editmessage-note">escape to cancel • enter to save</p></span> : <p className="chatarea-messages-message">{item.message}</p>}
+                )
+              }) : null}
+            </div>
+            <div className="chatarea-container">
+              <input placeholder="Send a message!" type="text" onChange={(event) => { this.setState({ message: event.target.value }); }} value={this.state.message} onKeyDown={(event) => { event.keyCode === 13 && event.shiftKey === false ? this.sendMessage(event) : this.sendMessage(null) }}></input>
+            </div>
+          </div>
+          <div className="sidebarright">
+            <div className="sidebarright-container">
+              <input placeholder="Filter users in server"></input>
+            </div>
+            <div className="sidebarright-border" />
+            <div className="sidebarright-authority">
+              <span>Room Owners</span>
+            </div>
+            <div className="sidebarright-bordertwo" />
+            {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index)  => {
+              return (
+                <div key={index} className={user.type === 'owner' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.sideContextMenu(event, user); }}>
+                  {user.type === 'owner' ? <div className="username">
+                    <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
+                  </div> : null}
+                  {user.type === 'owner' && user.active ? <div className="userinfo-online"></div> : null}
+                  {user.type === 'owner' && !user.active ? <div className="userinfo-offline"></div> : null}
+                  {user.type === 'owner' ?
+                    <div>
+                      <span className="sidebarright-user">{user.username}</span>
+                      {this.state.sideUserModalOpen && user.type === 'owner' && this.state.sideRightClickedUser.username === user.username ?
+                        <div ref={this.ref} className="chatarea-messages-sideusermodal">
+                          <span onClick={() => { this.setState({ sideUserModalOpen: false }); }}>&#10005;</span>
+                          <p onClick={() => { this.sidePrivateMessageUser(); }} className="chatarea-messages-sideusermodal-privatemessage">Send Message</p>
+                        </div>
+                      : null}
+                    </div>
+                  : null}
+                </div>
+              );
+            }) : null}
+            {this.state.serverUserList.length > 0 && this.state.serverUserList.some(item => item['type'] === 'owner') ? <div className="sidebarright-bordertwo" /> : null}
+            <div className="sidebarright-authority">
+              <span>Administrators</span>
+            </div>
+            <div className="sidebarright-bordertwo" />
+            {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index)  => {
+              return (
+                <div key={index} className={user.type === 'admin' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.sideContextMenu(event, user); }}>
+                  {user.type === 'admin' ? <div className="username">
+                    <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
+                  </div> : null}
+                  {user.type === 'admin' && user.active ? <div className="userinfo-online"></div> : null}
+                  {user.type === 'admin' && !user.active ? <div className="userinfo-offline"></div> : null}
+                  {user.type === 'admin' ?
+                    <div>
+                      <span className="sidebarright-user">{user.username}</span>
+                      {this.state.sideUserModalOpen && user.type === 'admin' && this.state.sideRightClickedUser.username === user.username ?
+                        <div ref={this.ref} className="chatarea-messages-sideusermodal">
+                          <span onClick={() => { this.setState({ sideUserModalOpen: false }); }}>&#10005;</span>
+                          <p onClick={() => { this.sidePrivateMessageUser(); }} className="chatarea-messages-sideusermodal-privatemessage">Send Message</p>
+                        </div>
+                      : null}
+                    </div>
+                  : null}
+                </div>
+              );
+            }) : null}
+            {this.state.serverUserList.length > 0 && this.state.serverUserList.some(item => item['type'] === 'admin') ? <div className="sidebarright-bordertwo" /> : null}
+            <div className="sidebarright-authority">
+              <span>Moderators</span>
+            </div>
+            <div className="sidebarright-bordertwo" />
+            {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index)  => {
+              const moderate = (user.username !== this.state.username);
+              return (
+                <div key={index} className={user.type === 'moderator' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.sideContextMenu(event, user); }}>
+                  {user.type === 'moderator' ? <div className="username">
+                    <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
+                  </div> : null}
+                  {user.type === 'moderator' && user.active ? <div className="userinfo-online"></div> : null}
+                  {user.type === 'moderator' && !user.active ? <div className="userinfo-offline"></div> : null}
+                  {user.type === 'moderator' ?
+                    <div>
+                      <span className="sidebarright-user">{user.username}</span>
+                      {this.state.sideUserModalOpen && user.type === 'moderator' && this.state.sideRightClickedUser.username === user.username ?
+                        <div ref={this.ref} className={moderate === true ?"chatarea-messages-sideusermodalmod" : "chatarea-messages-sideusermodal"}>
+                          <span onClick={() => { this.setState({ sideUserModalOpen: false }); }}>&#10005;</span>
+                          <p onClick={() => { this.sidePrivateMessageUser(); }} className={moderate === true ? "chatarea-messages-sideusermodalmod-privatemessage" : "chatarea-messages-sideusermodal-privatemessage"}>Send Message</p>
+
+                          {moderate === true ? <p onClick={() => { this.kickUser(user); }} className="chatarea-messages-sideusermodalmod-kick">Kick {user.username}</p> : null}
+
+                          {moderate === true ? <p onClick={() => { this.banUser(user); }} className="chatarea-messages-sideusermodalmod-ban">Ban {user.username}</p> : null}
+                        </div>
+                      : null}
+                    </div>
+                  : null}
+                </div>
+              );
+            }) : null}
+            {this.state.serverUserList.length > 0 && this.state.serverUserList.some(item => item['type'] === 'moderator') ? <div className="sidebarright-bordertwo" /> : null}
+            <div className="sidebarright-authority">
+              <span>Voice</span>
+            </div>
+            <div className="sidebarright-bordertwo" />
+            {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index) => {
+              const moderate = (user.username !== this.state.username);
+              return (
+                <div key={index} className={user.type === 'voice' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.sideContextMenu(event, user); }}>
+                  {user.type === 'voice' ? <div className="username">
+                    <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
+                  </div> : null}
+                  {user.type === 'voice' && user.active ? <div className="userinfo-online"></div> : null}
+                  {user.type === 'voice' && !user.active ? <div className="userinfo-offline"></div> : null}
+                  {user.type === 'voice' ?
+                    <div>
+                      <span className="sidebarright-user">{user.username}</span>
+                      {this.state.sideUserModalOpen && user.type === 'voice' && this.state.sideRightClickedUser.username === user.username ?
+                        <div ref={this.ref} className={moderate === true ?"chatarea-messages-sideusermodalmod" : "chatarea-messages-sideusermodal"}>
+                          <span onClick={() => { this.setState({ sideUserModalOpen: false }); }}>&#10005;</span>
+                          <p onClick={() => { this.sidePrivateMessageUser(); }} className={moderate === true ? "chatarea-messages-sideusermodalmod-privatemessage" : "chatarea-messages-sideusermodal-privatemessage"}>Send Message</p>
+
+                          {moderate === true ? <p onClick={() => { this.kickUser(user); }} className="chatarea-messages-sideusermodalmod-kick">Kick {user.username}</p> : null}
+
+                          {moderate === true ? <p onClick={() => { this.banUser(user); }} className="chatarea-messages-sideusermodalmod-ban">Ban {user.username}</p> : null}
+                        </div>
+                      : null}
+                    </div>
+                  : null}
+                </div>
+              );
+            }) : null}
+            {this.state.serverUserList.length > 0 && this.state.serverUserList.some(item => item['type'] === 'voice') ? <div className="sidebarright-bordertwo" /> : null}
+            <div className="sidebarright-authority">
+              <span>Users</span>
+            </div>
+            <div className="sidebarright-bordertwo" />
+            {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index) => {
+              const moderate = (user.username !== this.state.username);
+              return (
+                <div key={index} className={user.type === 'user' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.sideContextMenu(event, user); }}>
+                  {user.type === 'user' ? <div className="username">
+                    <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
+                  </div> : null}
+                  {user.type === 'user' && user.active ? <div className="userinfo-online"></div> : null}
+                  {user.type === 'user' && !user.active ? <div className="userinfo-offline"></div> : null}
+                  {user.type === 'user' ?
+                    <div>
+                      <span className="sidebarright-user">{user.username}</span>
+                      {this.state.sideUserModalOpen && user.type === 'user' && this.state.sideRightClickedUser.username === user.username ?
+                        <div ref={this.ref} className={moderate === true ?"chatarea-messages-sideusermodalmod" : "chatarea-messages-sideusermodal"}>
+                          <span onClick={() => { this.setState({ sideUserModalOpen: false }); }}>&#10005;</span>
+                          <p onClick={() => { this.sidePrivateMessageUser(); }} className={moderate === true ? "chatarea-messages-sideusermodalmod-privatemessage" : "chatarea-messages-sideusermodal-privatemessage"}>Send Message</p>
+
+                          {moderate === true ? <p onClick={() => { this.kickUser(user); }} className="chatarea-messages-sideusermodalmod-kick">Kick {user.username}</p> : null}
+
+                          {moderate === true ? <p onClick={() => { this.banUser(user); }} className="chatarea-messages-sideusermodalmod-ban">Ban {user.username}</p> : null}
+                        </div>
+                      : null}
+                    </div>
+                  : null}
                 </div>
               )
             }) : null}
           </div>
-          <div className="chatarea-container">
-            <input placeholder="Send a message!" type="text" onChange={(event) => { this.setState({ message: event.target.value }); }} value={this.state.message} onKeyDown={(event) => { event.keyCode === 13 && event.shiftKey === false ? this.sendMessage(event) : this.sendMessage(null) }}></input>
-          </div>
         </div>
-        <div className="sidebarright">
-          <div className="sidebarright-container">
-            <input placeholder="Filter users in server"></input>
-          </div>
-          <div className="sidebarright-border" />
-          <div className="sidebarright-authority">
-            <span>Room Owners</span>
-          </div>
-          <div className="sidebarright-bordertwo" />
-          {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index)  => {
-            return (
-              <div key={index} className={user.type === 'owner' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.sideContextMenu(event, user); }}>
-                {user.type === 'owner' ? <div className="username">
-                  <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
-                </div> : null}
-                {user.type === 'owner' && user.active ? <div className="userinfo-online"></div> : null}
-                {user.type === 'owner' && !user.active ? <div className="userinfo-offline"></div> : null}
-                {user.type === 'owner' ?
-                  <div>
-                    <span className="sidebarright-user">{user.username}</span>
-                    {this.state.sideUserModalOpen && user.type === 'owner' && this.state.sideRightClickedUser.username === user.username ?
-                      <div ref={this.ref} className="chatarea-messages-sideusermodal">
-                        <span onClick={() => { this.setState({ sideUserModalOpen: false }); }}>&#10005;</span>
-                        <p onClick={() => { this.sidePrivateMessageUser(); }} className="chatarea-messages-sideusermodal-privatemessage">Send Message</p>
-                      </div>
-                    : null}
-                  </div>
-                : null}
-              </div>
-            );
-          }) : null}
-          {this.state.serverUserList.length > 0 && this.state.serverUserList.some(item => item['type'] === 'owner') ? <div className="sidebarright-bordertwo" /> : null}
-          <div className="sidebarright-authority">
-            <span>Administrators</span>
-          </div>
-          <div className="sidebarright-bordertwo" />
-          {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index)  => {
-            return (
-              <div key={index} className={user.type === 'admin' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.sideContextMenu(event, user); }}>
-                {user.type === 'admin' ? <div className="username">
-                  <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
-                </div> : null}
-                {user.type === 'admin' && user.active ? <div className="userinfo-online"></div> : null}
-                {user.type === 'admin' && !user.active ? <div className="userinfo-offline"></div> : null}
-                {user.type === 'admin' ?
-                  <div>
-                    <span className="sidebarright-user">{user.username}</span>
-                    {this.state.sideUserModalOpen && user.type === 'admin' && this.state.sideRightClickedUser.username === user.username ?
-                      <div ref={this.ref} className="chatarea-messages-sideusermodal">
-                        <span onClick={() => { this.setState({ sideUserModalOpen: false }); }}>&#10005;</span>
-                        <p onClick={() => { this.sidePrivateMessageUser(); }} className="chatarea-messages-sideusermodal-privatemessage">Send Message</p>
-                      </div>
-                    : null}
-                  </div>
-                : null}
-              </div>
-            );
-          }) : null}
-          {this.state.serverUserList.length > 0 && this.state.serverUserList.some(item => item['type'] === 'admin') ? <div className="sidebarright-bordertwo" /> : null}
-          <div className="sidebarright-authority">
-            <span>Moderators</span>
-          </div>
-          <div className="sidebarright-bordertwo" />
-          {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index)  => {
-            const moderate = (user.username !== this.state.username);
-            return (
-              <div key={index} className={user.type === 'moderator' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.sideContextMenu(event, user); }}>
-                {user.type === 'moderator' ? <div className="username">
-                  <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
-                </div> : null}
-                {user.type === 'moderator' && user.active ? <div className="userinfo-online"></div> : null}
-                {user.type === 'moderator' && !user.active ? <div className="userinfo-offline"></div> : null}
-                {user.type === 'moderator' ?
-                  <div>
-                    <span className="sidebarright-user">{user.username}</span>
-                    {this.state.sideUserModalOpen && user.type === 'moderator' && this.state.sideRightClickedUser.username === user.username ?
-                      <div ref={this.ref} className={moderate === true ?"chatarea-messages-sideusermodalmod" : "chatarea-messages-sideusermodal"}>
-                        <span onClick={() => { this.setState({ sideUserModalOpen: false }); }}>&#10005;</span>
-                        <p onClick={() => { this.sidePrivateMessageUser(); }} className={moderate === true ? "chatarea-messages-sideusermodalmod-privatemessage" : "chatarea-messages-sideusermodal-privatemessage"}>Send Message</p>
-
-                        {moderate === true ? <p onClick={() => { this.kickUser(user); }} className="chatarea-messages-sideusermodalmod-kick">Kick {user.username}</p> : null}
-
-                        {moderate === true ? <p onClick={() => { this.banUser(user); }} className="chatarea-messages-sideusermodalmod-ban">Ban {user.username}</p> : null}
-                      </div>
-                    : null}
-                  </div>
-                : null}
-              </div>
-            );
-          }) : null}
-          {this.state.serverUserList.length > 0 && this.state.serverUserList.some(item => item['type'] === 'moderator') ? <div className="sidebarright-bordertwo" /> : null}
-          <div className="sidebarright-authority">
-            <span>Voice</span>
-          </div>
-          <div className="sidebarright-bordertwo" />
-          {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index) => {
-            const moderate = (user.username !== this.state.username);
-            return (
-              <div key={index} className={user.type === 'voice' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.sideContextMenu(event, user); }}>
-                {user.type === 'voice' ? <div className="username">
-                  <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
-                </div> : null}
-                {user.type === 'voice' && user.active ? <div className="userinfo-online"></div> : null}
-                {user.type === 'voice' && !user.active ? <div className="userinfo-offline"></div> : null}
-                {user.type === 'voice' ?
-                  <div>
-                    <span className="sidebarright-user">{user.username}</span>
-                    {this.state.sideUserModalOpen && user.type === 'voice' && this.state.sideRightClickedUser.username === user.username ?
-                      <div ref={this.ref} className={moderate === true ?"chatarea-messages-sideusermodalmod" : "chatarea-messages-sideusermodal"}>
-                        <span onClick={() => { this.setState({ sideUserModalOpen: false }); }}>&#10005;</span>
-                        <p onClick={() => { this.sidePrivateMessageUser(); }} className={moderate === true ? "chatarea-messages-sideusermodalmod-privatemessage" : "chatarea-messages-sideusermodal-privatemessage"}>Send Message</p>
-
-                        {moderate === true ? <p onClick={() => { this.kickUser(user); }} className="chatarea-messages-sideusermodalmod-kick">Kick {user.username}</p> : null}
-
-                        {moderate === true ? <p onClick={() => { this.banUser(user); }} className="chatarea-messages-sideusermodalmod-ban">Ban {user.username}</p> : null}
-                      </div>
-                    : null}
-                  </div>
-                : null}
-              </div>
-            );
-          }) : null}
-          {this.state.serverUserList.length > 0 && this.state.serverUserList.some(item => item['type'] === 'voice') ? <div className="sidebarright-bordertwo" /> : null}
-          <div className="sidebarright-authority">
-            <span>Users</span>
-          </div>
-          <div className="sidebarright-bordertwo" />
-          {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index) => {
-            const moderate = (user.username !== this.state.username);
-            return (
-              <div key={index} className={user.type === 'user' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.sideContextMenu(event, user); }}>
-                {user.type === 'user' ? <div className="username">
-                  <img className="username-image" src={user.imageUrl ? user.imageUrl : chatot} alt="username-icon" />
-                </div> : null}
-                {user.type === 'user' && user.active ? <div className="userinfo-online"></div> : null}
-                {user.type === 'user' && !user.active ? <div className="userinfo-offline"></div> : null}
-                {user.type === 'user' ?
-                  <div>
-                    <span className="sidebarright-user">{user.username}</span>
-                    {this.state.sideUserModalOpen && user.type === 'user' && this.state.sideRightClickedUser.username === user.username ?
-                      <div ref={this.ref} className={moderate === true ?"chatarea-messages-sideusermodalmod" : "chatarea-messages-sideusermodal"}>
-                        <span onClick={() => { this.setState({ sideUserModalOpen: false }); }}>&#10005;</span>
-                        <p onClick={() => { this.sidePrivateMessageUser(); }} className={moderate === true ? "chatarea-messages-sideusermodalmod-privatemessage" : "chatarea-messages-sideusermodal-privatemessage"}>Send Message</p>
-
-                        {moderate === true ? <p onClick={() => { this.kickUser(user); }} className="chatarea-messages-sideusermodalmod-kick">Kick {user.username}</p> : null}
-
-                        {moderate === true ? <p onClick={() => { this.banUser(user); }} className="chatarea-messages-sideusermodalmod-ban">Ban {user.username}</p> : null}
-                      </div>
-                    : null}
-                  </div>
-                : null}
-              </div>
-            )
-          }) : null}
-        </div>
-      </div>
-    );
+      );
+    }
   }
 }
 
