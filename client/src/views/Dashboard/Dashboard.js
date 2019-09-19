@@ -96,6 +96,7 @@ const Dashboard = (props) => {
   const [accountModalOpen, setAccountModalOpen] = useState('');
   const [mainFile, setMainFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [channelType, setChannelType] = useState("text");
 
   const ref = useRef();
   useOnClickOutside(ref, () => setShowCategoryModal(false));
@@ -369,12 +370,14 @@ const Dashboard = (props) => {
   }
 
   const createNewChannel = () => {
-    props.chatroomCreate({
+    const channel = {
       name: newChannel,
       serverId: serverId,
       order: categories.length,
-      visible: true
-    });
+      visible: true,
+      type: channelType
+    };
+    props.chatroomCreate(channel);
   }
 
   const displayCategoryModal = () => {
@@ -581,6 +584,10 @@ const Dashboard = (props) => {
     reader.readAsDataURL(file);
   }
 
+  const setNewChannelType = (value) => {
+    setChannelType(value);
+  }
+
   if (isLoading) {
     return (
       <div className="loadingbackground">
@@ -703,7 +710,9 @@ const Dashboard = (props) => {
           {showChannelModal ?
             <ChannelModal
               newChannel={newChannel}
+              channelType={channelType}
               setNewChannel={(event) => { setNewChannel(event.target.value); }}
+              setChannelType={(value) => { setNewChannelType(value); }}
               setShowChannelModal={() => { setShowChannelModal(false); }}
               createNewChannel={() => { createNewChannel(); }}
             />
