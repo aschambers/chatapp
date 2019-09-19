@@ -419,8 +419,8 @@
     z-index: 2;
     top: 3.6rem;
     left: 5.5rem;
-    height: 12.5rem;
-    width: 11.6rem;
+    height: 13rem;
+    width: 15.1rem;
     background-color: rgb(63, 63, 63);
     border-radius: 5px;
     animation-name: fadeInOpacity;
@@ -430,8 +430,8 @@
     &-section {
       display: flex;
       flex-direction: row;
-      padding-left: 0.5rem;
-      padding-top: 0.25rem;
+      padding-left: 1rem;
+      padding-top: 0.3rem;
       padding-bottom: 0.25rem;
       outline: none;
       cursor: pointer;
@@ -443,7 +443,7 @@
       user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
       & > span {
         font-size: 0.9rem;
-        padding-left: 0.5rem;
+        padding-left: 1rem;
         padding-top: 0.35rem;
         color: rgb(211, 211, 211);
       }
@@ -862,51 +862,40 @@
       border-radius: 2px;
     }
   }
-  &-escape {
-    position: absolute;
-    top: 3rem;
-    right: 3rem;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    border: 1px solid white;
-    text-align: center;
-    // vertical-align: middle;
-    cursor: pointer;
-    background-color: blue;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    & > div {
-      height: 100%;
-      // width: 100%;
-      // display: block;
-      position: relative;
-      // padding-top: 0.25rem;
-      // top: 70%;
-      // transform: translateY(-50%);
-      // top:0;
-      // bottom:0;
-      // right:0;
-      // position: relative;
-      // left:0;
-      background-color: green;
-      // margin:auto;
-      top: 1.5rem;
-      // right: 3rem;
-      // margin-top: 0.3rem;
-      // position: relative;
-      // display: block;
-      font-size: 1.75rem;
-      color: #fff;
-    }
-    & > p {
-      color: white;
-      display: block;
-      margin-top: 3rem;
-    }
+  &-escape {
+    cursor: pointer;
+    position: absolute;
+    right: 2.25rem;
+    top: 2.25rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    opacity: 1;
+    border: 1px solid white;
+    border-radius: 50%;
+    padding-top: 0.5rem;
+    box-sizing: border-box;
+  }
+  &-escape:before, &-escape:after {
+    position: absolute;
+    left: 1rem;
+    content: ' ';
+    height: 1.25rem;
+    width: 2px;
+    background-color: white;
+  }
+  &-escape:before {
+    transform: rotate(45deg);
+  }
+  &-escape:after {
+    transform: rotate(-45deg);
+  }
+  &-escapetext {
+    cursor: pointer;
+    position: absolute;
+    top: 3.75rem;
+    right: 2.375rem;
+    color: white;
   }
 }
 
@@ -1278,27 +1267,38 @@
     }
   }
   &-escape {
-    position: absolute;
-    top: 3rem;
-    right: 3rem;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    border: 1px solid white;
-    text-align: center;
-    vertical-align: middle;
     cursor: pointer;
-    & > span {
-      top: 0;
-      margin-top: 0.1rem;
-      position: relative;
-      display: block;
-      font-size: 1.5rem;
-      color: #fff;
-    }
-    & > p {
-      color: white;
-    }
+    position: absolute;
+    right: 2.25rem;
+    top: 2.25rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    opacity: 1;
+    border: 1px solid white;
+    border-radius: 50%;
+    padding-top: 0.5rem;
+    box-sizing: border-box;
+  }
+  &-escape:before, &-escape:after {
+    position: absolute;
+    left: 1rem;
+    content: ' ';
+    height: 1.25rem;
+    width: 2px;
+    background-color: white;
+  }
+  &-escape:before {
+    transform: rotate(45deg);
+  }
+  &-escape:after {
+    transform: rotate(-45deg);
+  }
+  &-escapetext {
+    cursor: pointer;
+    position: absolute;
+    top: 3.75rem;
+    right: 2.375rem;
+    color: white;
   }
 }
 
