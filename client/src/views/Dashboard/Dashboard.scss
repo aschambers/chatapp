@@ -871,18 +871,41 @@
     border-radius: 50%;
     border: 1px solid white;
     text-align: center;
-    vertical-align: middle;
+    // vertical-align: middle;
     cursor: pointer;
-    & > span {
-      height: 80%;
-      width: 80%;
+    background-color: blue;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    & > div {
+      height: 100%;
+      // width: 100%;
+      // display: block;
       position: relative;
-      top: 0.25rem;
-      font-size:25px;
-      color: white;
+      // padding-top: 0.25rem;
+      // top: 70%;
+      // transform: translateY(-50%);
+      // top:0;
+      // bottom:0;
+      // right:0;
+      // position: relative;
+      // left:0;
+      background-color: green;
+      // margin:auto;
+      top: 1.5rem;
+      // right: 3rem;
+      // margin-top: 0.3rem;
+      // position: relative;
+      // display: block;
+      font-size: 1.75rem;
+      color: #fff;
     }
     & > p {
       color: white;
+      display: block;
+      margin-top: 3rem;
     }
   }
 }
@@ -1266,12 +1289,12 @@
     vertical-align: middle;
     cursor: pointer;
     & > span {
-      height: 80%;
-      width: 80%;
+      top: 0;
+      margin-top: 0.1rem;
       position: relative;
-      top: 0.25rem;
-      font-size:25px;
-      color: white;
+      display: block;
+      font-size: 1.5rem;
+      color: #fff;
     }
     & > p {
       color: white;
