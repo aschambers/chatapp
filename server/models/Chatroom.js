@@ -40,6 +40,10 @@ const Chatroom = sequelize.define('chatrooms', {
       references: 'categories',
       referencesKey: 'id'
     }
+  },
+  type: {
+    type: Sequelize.STRING,
+    allowNull: false
   }
 });
 
