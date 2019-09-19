@@ -548,7 +548,7 @@ const Dashboard = (props) => {
   }
 
   const saveAccountInfo = () => {
-    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const emailRegex = /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!emailRegex.test(String(editEmail).toLowerCase())) {
       toast.dismiss();
       toast.error('Email address must be a valid!', { position: 'bottom-center' });
@@ -1057,8 +1057,8 @@ const Dashboard = (props) => {
           : null}
 
           <div className="usersettings-escape" onClick={() => { setActiveUserSetting("myaccount"); setSettingsOpen(false); }}>
-            <span>&#215;</span>
-            <p>ESC</p>
+            <div>x</div>
+            {/* <p>ESC</p> */}
           </div>
         </div>
       : null}
