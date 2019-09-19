@@ -977,9 +977,8 @@ const Dashboard = (props) => {
             : null}
 
             <div className="serversettings-escape" onClick={() => { setIsServerSettingsOpen(!isServerSettingsOpen); showServerSettings(false); setActiveServerSetting("overview"); setShowUserManagementBan(false); setShowUserManagement(false); }}>
-              <span>&#215;</span>
-              <p>ESC</p>
             </div>
+            <p className="serversettings-escapetext" onClick={() => { setIsServerSettingsOpen(!isServerSettingsOpen); showServerSettings(false); setActiveServerSetting("overview"); setShowUserManagementBan(false); setShowUserManagement(false); }}>ESC</p>
           </div>
 
           {isChangingRegion ?
@@ -1057,9 +1056,8 @@ const Dashboard = (props) => {
           : null}
 
           <div className="usersettings-escape" onClick={() => { setActiveUserSetting("myaccount"); setSettingsOpen(false); }}>
-            <div>x</div>
-            {/* <p>ESC</p> */}
           </div>
+          <p className="usersettings-escapetext" onClick={() => { setActiveUserSetting("myaccount"); setSettingsOpen(false); }}>ESC</p>
         </div>
       : null}
 
