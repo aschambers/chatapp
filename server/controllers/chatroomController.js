@@ -10,7 +10,6 @@ module.exports = {
    */
   chatroomCreate: async(req, res) => {
     const { name, serverId } = req.body;
-    console.log(req.body);
     if (!name && !serverId) {
       return res.status(400).send({'error': 'Missing required fields'});
     }

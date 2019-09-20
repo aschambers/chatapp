@@ -8,6 +8,7 @@ import 'moment-timezone';
 import './Chatroom.css';
 import chatot from '../../assets/images/chatot.png';
 import numbersign from '../../assets/images/numbersign.png';
+import voice from '../../assets/images/voice.png';
 import editwhite from '../../assets/images/editwhite.png';
 
 class Chatroom extends Component {
@@ -263,7 +264,7 @@ class Chatroom extends Component {
       <div className="chatroom">
         <div className="chatarea">
           <div className="chatarea-topbar">
-            <img src={numbersign} alt="channel" height={16} width={16} /><span>{this.props.activeChatroom}</span>
+            <img src={this.props.activeChatroomType === "text" ? numbersign : voice} alt="channel" height={16} width={16} /><span>{this.props.activeChatroom}</span>
           </div>
           <div id="chatareamessages" className="chatarea-messages">
             {this.state.messages && this.state.messages.length > 0 ? this.state.messages.map((item, index) => {
