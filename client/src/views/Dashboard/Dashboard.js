@@ -37,6 +37,7 @@ import europe from '../../assets/images/europe.png';
 import russia from '../../assets/images/russia.png';
 import add from '../../assets/images/add.png';
 import owner from '../../assets/images/owner.png';
+import voice from '../../assets/images/voice.png';
 
 const Dashboard = (props) => {
   const [id, setId] = useState(null);
@@ -97,6 +98,7 @@ const Dashboard = (props) => {
   const [mainFile, setMainFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [channelType, setChannelType] = useState("text");
+  const [activeChatroomType, setActiveChatroomType] = useState("text");
 
   const ref = useRef();
   useOnClickOutside(ref, () => setShowCategoryModal(false));
@@ -462,6 +464,7 @@ const Dashboard = (props) => {
     }
     setActiveChatroom(item.name);
     setActiveChatroomId(item.id);
+    setActiveChatroomType(item.type);
   }
 
   const joinServer = (value) => {
@@ -748,7 +751,9 @@ const Dashboard = (props) => {
               {chatrooms && chatrooms.length > 0 ? chatrooms.filter(chatroom => chatroom.categoryId === null).map((item, index) => {
                 return (
                   <div className={activeChatroom === item.name ? "active" : ''} key={index} id={0 + "-" + item.name} draggable="true" onDragStart={(event) => { dragItem(item, event); }} onClick={() => { setCurrentActiveChatroom(item); }}>
-                    <img src={numbersign} alt="channel" height={16} width={16} /><span>{item.name}</span>
+                    {item.type === "text" ? <img src={numbersign} alt="channel" height={16} width={16} /> : null}
+                    {item.type === "voice" ? <img src={voice} alt="channel" height={18} width={16} /> : null}
+                    <span>{item.name}</span>
                   </div>
                 )
               }) : null}
@@ -788,6 +793,7 @@ const Dashboard = (props) => {
         <Chatroom
           activeChatroom={activeChatroom}
           activeChatroomId={activeChatroomId}
+          activeChatroomType={activeChatroomType}
           userId={id}
           serverId={serverId}
           username={username}
