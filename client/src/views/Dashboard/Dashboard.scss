@@ -686,21 +686,22 @@
 .userinfo {
   display: block;
   width: 100%;
+  .activateicons {
+    margin: auto;
+    margin-right: 1rem;
+    margin-top: 0.1rem;
+  }
   .microphone-image, .nomicrophone-image {
     width: 1.5rem;
     height: 1.5rem;
     cursor: pointer;
-    margin-left: 5rem;
-    margin-right: -2rem;
-    margin-top: 0.1rem;
+    margin-right: 0.25rem;
   }
-  & > .settings-image {
+  .settings-image {
     width: 1.5rem;
     height: 1.5rem;
     cursor: pointer;
-    margin: auto;
-    margin-right: 1rem;
-    margin-top: 0.1rem;
+    margin-right: 0.25rem;
   }
 }
 

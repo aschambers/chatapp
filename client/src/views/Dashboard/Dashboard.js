@@ -213,10 +213,14 @@ const Dashboard = (props) => {
 
   useEffect(() => {
     window.addEventListener('keydown', detectEscape);
-    checkActiveMedia();
     if(!props.user && !didMount) {
+      checkActiveMedia();
       setDidMount(true);
       props.currentUser();
+    } else if (props.retrieveUserError) {
+      setIsLoading(false);
+      toast.dismiss();
+      toast.error('Error saving updates to your account, please try again!', { position: 'bottom-center' });
     } else if (props.user && props.retrieveUserSuccess) {
       props.resetValues();
       const { id, username, email, imageUrl, active, serversList } = props.user;
@@ -694,8 +698,17 @@ const Dashboard = (props) => {
             </div>
             {active ? <div className="userinfo-online"></div> : null}
             <span style={{ color: 'white' }}>{username}</span>
-            {allowVoice ? <span onClick={() => { getMedia(); }}><img className="microphone-image" src={microphone} alt="microphone" /></span> : <span onClick={() => { getMedia(); }}><img className="nomicrophone-image" src={nomicrophone} alt="nomicrophone" /></span>}
-            <img className="settings-image" src={settings} alt="settings-icon" onClick={() => { setSettingsOpen(!isSettingsOpen); }} />
+            <div className="activateicons">
+              {allowVoice ?
+                <span onClick={() => { getMedia(); }}>
+                  <img className="microphone-image" src={microphone} alt="microphone" />
+                </span>
+              : <span onClick={() => { getMedia(); }}>
+                  <img className="nomicrophone-image" src={nomicrophone} alt="nomicrophone" />
+                </span>
+              }
+              <img className="settings-image" src={settings} alt="settings-icon" onClick={() => { setSettingsOpen(!isSettingsOpen); }} />
+            </div>
           </div>
         </div> :
         <div className="sidebarleftchat">
