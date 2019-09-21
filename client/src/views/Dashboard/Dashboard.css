@@ -3,7 +3,8 @@
   height: 100vh;
   display: flex;
   flex-direction: row;
-  width: 100%; }
+  width: 100%;
+  min-width: 31rem; }
 
 .loadingbackground {
   background-color: #414141;
