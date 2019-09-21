@@ -80,13 +80,15 @@ module.exports = {
       // Step 9: Create general chatroom in server
       req.body.name = "general";
       req.body.serverId = newServer.id;
+      req.body.type = "text";
 
       const result = await ChatroomModel.create(req.body);
       if (!result) return res.status(422).send({"error":"Unknown error creating chatroom"});
 
       res.status(200).send(serversUpdate.serversList);
     } catch(err) {
-      res.status(422).send('error-creating-server');
+      console.log(err);
+      res.status(422).send(err);
     }
   },
 
