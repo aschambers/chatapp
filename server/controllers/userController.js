@@ -231,11 +231,21 @@ module.exports = {
   userUpdate: async(req, res, next) => {
     const { id, username, email, imageUrl, serverId } = req.body;
 
-    const existingEmail = await UserModel.findOne({ where: { email: email }});
-    if (existingUsername) return res.status(422).send('email-exists');
+    const myEmail = await UserModel.findAll({ where: { id: id, email: email }});
+    if (myEmail && myEmail.length === 0) {
+      const anotherEmail = await UserModel.findAll({ where: { email: email }});
+      if (anotherEmail && anotherEmail.length > 0) {
+        return res.status(422).send('email-exists');
+      }
+    }
 
-    const existingUsername = await UserModel.findOne({ where: { username: username }});
-    if (existingUsername) return res.status(422).send('username-exists');
+    const myUsername = await UserModel.findAll({ where: { id: id, username: username }});
+    if (myUsername.length === 0) {
+      const anotherUsername = await UserModel.findAll({ where: { username: username }});
+      if (anotherUsername.length > 0) {
+        return res.status(422).send('username-exists');
+      }
+    }
 
     const user = await UserModel.findByPk(id);
     const originalUsername = user.username;
