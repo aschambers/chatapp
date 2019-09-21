@@ -38,6 +38,8 @@ import russia from '../../assets/images/russia.png';
 import add from '../../assets/images/add.png';
 import owner from '../../assets/images/owner.png';
 import voice from '../../assets/images/voice.png';
+import microphone from '../../assets/images/microphone.png';
+import nomicrophone from '../../assets/images/nomicrophone.png';
 
 const Dashboard = (props) => {
   const [id, setId] = useState(null);
@@ -99,6 +101,7 @@ const Dashboard = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [channelType, setChannelType] = useState("text");
   const [activeChatroomType, setActiveChatroomType] = useState("text");
+  const [allowVoice, setAllowVoice] = useState(false);
 
   const ref = useRef();
   useOnClickOutside(ref, () => setShowCategoryModal(false));
@@ -210,6 +213,7 @@ const Dashboard = (props) => {
 
   useEffect(() => {
     window.addEventListener('keydown', detectEscape);
+    checkActiveMedia();
     if(!props.user && !didMount) {
       setDidMount(true);
       props.currentUser();
@@ -599,6 +603,38 @@ const Dashboard = (props) => {
     );
   }
 
+  /**
+   * check if user has enabled microphone access
+   */
+  const checkActiveMedia = async() => {
+    const result = await navigator.permissions.query({ name: 'microphone' });
+
+    if (result.state === 'granted') {
+      setAllowVoice(true);
+    } else if (result.state === 'prompt') {
+      setAllowVoice(false);
+    }
+  }
+
+  /**
+   * request permission to access the microphone
+   */
+  const getMedia = async() => {
+    const constraints = { audio: true, video: false };
+    let stream = null;
+
+    try {
+      stream = await navigator.mediaDevices.getUserMedia(constraints);
+      if (stream.active === true) {
+        setAllowVoice(true);
+      } else {
+        setAllowVoice(false);
+      }
+    } catch (err) {
+      setAllowVoice(false);
+    }
+  }
+
   return (
     <div className="dashboard">
       <ToastMessage />
@@ -658,6 +694,7 @@ const Dashboard = (props) => {
             </div>
             {active ? <div className="userinfo-online"></div> : null}
             <span style={{ color: 'white' }}>{username}</span>
+            {allowVoice ? <span onClick={() => { getMedia(); }}><img className="microphone-image" src={microphone} alt="microphone" /></span> : <span onClick={() => { getMedia(); }}><img className="nomicrophone-image" src={nomicrophone} alt="nomicrophone" /></span>}
             <img className="settings-image" src={settings} alt="settings-icon" onClick={() => { setSettingsOpen(!isSettingsOpen); }} />
           </div>
         </div> :
