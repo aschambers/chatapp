@@ -102,6 +102,7 @@ const Dashboard = (props) => {
   const [channelType, setChannelType] = useState("text");
   const [activeChatroomType, setActiveChatroomType] = useState("text");
   const [allowVoice, setAllowVoice] = useState(false);
+  const [audioStream, setAudioStream] = useState(null);
 
   const ref = useRef();
   useOnClickOutside(ref, () => setShowCategoryModal(false));
@@ -615,7 +616,16 @@ const Dashboard = (props) => {
 
     if (result.state === 'granted') {
       setAllowVoice(true);
+
+      const constraints = { audio: true, video: false };
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+      if (stream) {
+        setAudioStream(stream);
+      }
     } else if (result.state === 'prompt') {
+      setAllowVoice(false);
+    } else if (result.state === 'denied') {
       setAllowVoice(false);
     }
   }
@@ -630,6 +640,7 @@ const Dashboard = (props) => {
     try {
       stream = await navigator.mediaDevices.getUserMedia(constraints);
       if (stream.active === true) {
+        setAudioStream(stream);
         setAllowVoice(true);
       } else {
         setAllowVoice(false);
@@ -849,6 +860,7 @@ const Dashboard = (props) => {
           username={username}
           serverUserList={serverUserList}
           refreshServerUsers={refreshServerUsers}
+          audioStream={audioStream}
           privateMessageUser={(user) => { privateMessageUser(user) }}
           leaveServer={() => { leaveServer(); }}
         />
