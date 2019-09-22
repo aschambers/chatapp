@@ -48,7 +48,8 @@ class Chatroom extends Component {
       newMessage: "",
       hover: "",
       serverUserList: [],
-      isLoading: false
+      isLoading: false,
+      chunks: []
     }
   }
 
@@ -153,11 +154,67 @@ class Chatroom extends Component {
       }
       this.setState({ users: userList });
     }
+
+    if (nextProps.activeChatroomType === "voice" && nextProps.audioStream) {
+      this.setState({ audioStream: nextProps.audioStream });
+      this.recordAudioInput(nextProps.audioStream);
+    }
+
+    if (nextProps.activeChatroomType !== "voice") {
+      this.setState({ audioStream: null });
+    }
+
+    this.socket.on('RECEIVE_VOICE', (arrayBuffer) => {
+      let blob = new Blob([arrayBuffer], { 'type' : 'audio/webm' });
+
+      let audio = document.createElement('audio');
+      audio.src = window.URL.createObjectURL(blob);
+      audio.style.display = "none";
+      audio.autoplay = false;
+      audio.play();
+      audio.onended = () => {
+        audio.remove();
+      };
+      document.body.appendChild(audio);
+    });
   }
 
   componentWillUnmount() {
     this.socket.emit('LEAVE_CHATROOMS', {
       room: this.state.room
+    });
+  }
+
+  recordAudioInput = async(stream) => {
+    let chunks = [];
+    const recorder = new MediaRecorder(stream, { type: 'audio/webm' });
+
+    recorder.start();
+
+    setInterval(() => {
+      if (this.state.audioStream !== null) {
+        recorder.stop();
+        recorder.start();
+      }
+    }, 2000);
+
+    recorder.addEventListener('dataavailable', event => {
+      if (typeof event.data === 'undefined') return;
+      if (event.data.size === 0) return;
+      chunks.push(event.data);
+    });
+
+    recorder.addEventListener('stop', () => {
+      const recording = new Blob(chunks, {
+        type: 'audio/webm'
+      });
+      this.socket.emit('SEND_VOICE', {
+        recording: recording,
+        socketId: this.state.socketId,
+        chatroomId: this.state.chatroomId,
+        room: `${ROOT_URL}/chatroom/${this.state.serverId}/${this.state.chatroomId}`
+      });
+      chunks = [];
     });
   }
 
@@ -262,6 +319,7 @@ class Chatroom extends Component {
   render() {
     return (
       <div className="chatroom">
+        <audio />
         <div className="chatarea">
           <div className="chatarea-topbar">
             <img src={this.props.activeChatroomType === "text" ? numbersign : voice} alt="channel" height={16} width={16} /><span>{this.props.activeChatroom}</span>
