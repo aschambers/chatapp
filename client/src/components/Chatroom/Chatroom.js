@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import * as actions from '../../redux';
 import { ROOT_URL } from '../../config/networkSettings';
 import io from "socket.io-client";
+import MicrophoneStream from 'microphone-stream';
+import lamejs from 'lamejs';
 import Moment from 'react-moment';
 import 'moment-timezone';
 import './Chatroom.css';
@@ -162,21 +164,8 @@ class Chatroom extends Component {
 
     if (nextProps.activeChatroomType !== "voice") {
       this.setState({ audioStream: null });
+      this.recordAudioInput(null);
     }
-
-    this.socket.on('RECEIVE_VOICE', (arrayBuffer) => {
-      let blob = new Blob([arrayBuffer], { 'type' : 'audio/webm' });
-
-      let audio = document.createElement('audio');
-      audio.src = window.URL.createObjectURL(blob);
-      audio.style.display = "none";
-      audio.autoplay = false;
-      audio.play();
-      audio.onended = () => {
-        audio.remove();
-      };
-      document.body.appendChild(audio);
-    });
   }
 
   componentWillUnmount() {
@@ -186,36 +175,17 @@ class Chatroom extends Component {
   }
 
   recordAudioInput = async(stream) => {
-    let chunks = [];
-    const recorder = new MediaRecorder(stream, { type: 'audio/webm' });
-
-    recorder.start();
-
-    setInterval(() => {
-      if (this.state.audioStream !== null) {
-        recorder.stop();
-        recorder.start();
-      }
-    }, 2000);
-
-    recorder.addEventListener('dataavailable', event => {
-      if (typeof event.data === 'undefined') return;
-      if (event.data.size === 0) return;
-      chunks.push(event.data);
-    });
-
-    recorder.addEventListener('stop', () => {
-      const recording = new Blob(chunks, {
-        type: 'audio/webm'
-      });
-      this.socket.emit('SEND_VOICE', {
-        recording: recording,
-        socketId: this.state.socketId,
-        chatroomId: this.state.chatroomId,
-        room: `${ROOT_URL}/chatroom/${this.state.serverId}/${this.state.chatroomId}`
-      });
-      chunks = [];
-    });
+    if (stream) {
+      let audio = document.getElementById("audio");
+      window.stream = stream; // make variable available to browser console
+      audio.srcObject = stream;
+      audio.autoplay = true;
+    } else {
+      let audio = document.getElementById("audio");
+      audio.srcObject = null;
+      audio.autoplay = false;
+      audio.stop = true;
+    }
   }
 
   sendMessage = (event) => {
@@ -319,7 +289,7 @@ class Chatroom extends Component {
   render() {
     return (
       <div className="chatroom">
-        <audio />
+        <audio id="audio" style={{ "display": "none" }} />
         <div className="chatarea">
           <div className="chatarea-topbar">
             <img src={this.props.activeChatroomType === "text" ? numbersign : voice} alt="channel" height={16} width={16} /><span>{this.props.activeChatroom}</span>
