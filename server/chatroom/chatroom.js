@@ -6,13 +6,6 @@ module.exports = async(server) => {
   const io = require('socket.io')(server);
 
   io.on('connection', (socket) => {
-    socket.on('SEND_VOICE', (data) => {
-      // all clients in room except the sender
-      socket.broadcast.to(data.room).emit('RECEIVE_VOICE', data.recording);
-      // all clients in room including sender
-      // io.in(data.room).emit('RECEIVE_VOICE', data.recording);
-    });
-
     socket.on('LEAVE_CHATROOMS', async(data) => {
       socket.leave(data.room);
       socket.disconnect(true);
