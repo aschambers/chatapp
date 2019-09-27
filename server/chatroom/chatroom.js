@@ -6,6 +6,10 @@ module.exports = async(server) => {
   const io = require('socket.io')(server);
 
   io.on('connection', (socket) => {
+    socket.on('SEND_CANDIDATE', async(data) => {
+      socket.emit('RECEIVE_CANDIDATE', data);
+    });
+
     socket.on('LEAVE_CHATROOMS', async(data) => {
       socket.leave(data.room);
       socket.disconnect(true);

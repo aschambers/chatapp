@@ -612,6 +612,11 @@ const Dashboard = (props) => {
    * check if user has enabled microphone access
    */
   const checkActiveMedia = async() => {
+    let isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+    if (!isChrome) {
+      setAllowVoice(true);
+      return;
+    }
     const result = await navigator.permissions.query({ name: 'microphone' });
 
     if (result.state === 'granted') {
