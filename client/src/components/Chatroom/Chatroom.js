@@ -52,7 +52,8 @@ class Chatroom extends Component {
       chunks: [],
       myConnection: null,
       remoteConnection: null,
-      voiceUsers: []
+      voiceUsers: [],
+      negotiating: false
     }
   }
 
@@ -126,10 +127,25 @@ class Chatroom extends Component {
       }
     });
 
-    this.socket.on('RECEIVE_CANDIDATE', (data) => {
-      console.log('data receive candidate socket: ' + data);
-      this.onReceiveCandidate(data.candidate);
+    // -- begin webrtc socket events -- //
+    this.socket.on('RECEIVE_ICE_CANDIDATE', async(candidate) => {
+      console.log(candidate);
+      await this.state.myConnection.addIceCandidate(new RTCIceCandidate(candidate)).catch(err => console.log(err));
     });
+
+    this.socket.on('RECEIVE_OFFER', async(data) => {
+      console.log(data.username + ' =?= ' + this.state.username);
+      if (data.username === this.state.username) return;
+
+      this.setCalleeRemoteDescription(data.desc);
+    });
+
+    this.socket.on('RECEIVE_ANSWER', async(data) => {
+      console.log(data.username + ' =?= ' + this.state.username);
+
+      this.setCallerRemoteDescription(data.desc);
+    });
+    // -- end webrtc socket events -- //
   }
 
   async componentWillReceiveProps(nextProps) {
@@ -163,61 +179,82 @@ class Chatroom extends Component {
       this.setState({ users: userList });
     }
 
+    // -- start webrtc audio setup -- //
     if (nextProps.activeChatroomType === "voice" && nextProps.audioStream) {
-      this.setState({ localStream: nextProps.localStream });
+      await this.setState({ localStream: nextProps.audioStream });
       this.recordAudioInput(nextProps.audioStream);
     }
 
     if (nextProps.activeChatroomType !== "voice") {
-      this.setState({ localStream: null });
+      await this.setState({ localStream: null });
       this.recordAudioInput(null);
     }
+    // -- end webrtc audio setup -- //
   }
 
-  componentWillUnmount() {
-    this.socket.emit('LEAVE_CHATROOMS', {
-      room: this.state.room
-    });
-  }
-
+  // -- start webrtc peer connection setup -- //
   recordAudioInput = async(stream) => {
     if (stream) {
       try {
-        const configuration = {
-          iceServers: [{
-            urls: 'stun:stun.l.google.com:19302' // Google's public STUN server
-          }]
-        };
+        console.log('------ my stream -------');
+        console.log(stream);
+        console.log('------ end my stream -------');
+
         const localAudio = document.getElementById('localAudio');
         localAudio.srcObject = stream;
         localAudio.autoplay = true;
-        this.state.myConnection = new RTCPeerConnection(configuration);
 
-        this.state.myConnection.createOffer((offer) => {
-          console.log('createOffer: ' + offer);
-          this.rtcSend({
-              type: "offer",
-              offer: offer
-          });
-          this.state.myConnection.setLocalDescription(offer);
-        }, (error) => {
-            console.log('createOffer error: ' + error);
+        const STUN = {
+          urls: 'stun:stun.l.google.com:19302'
+        };
+
+        const TURN = {
+          urls: 'turn:turn.bistri.com:80',
+          credential: 'homeo',
+          username: 'homeo'
+        };
+
+        const configuration = {
+          iceServers: [STUN, TURN]
+        };
+
+        await this.setState({ myConnection: new RTCPeerConnection(configuration) });
+
+        await stream.getTracks().forEach((track) => {
+          this.state.myConnection.addTrack(track, stream);
         });
 
         this.state.myConnection.onicecandidate = (event) => {
-          if (event.candidate) {
-            console.log('icecandidate event: ' + event);
-            this.rtcSend({
-              type: "candidate",
-              candidate: event.candidate
-            });
+          const candidateQueue = [];
+          if (this.state.myConnection.remoteDescription) {
+            if (event.candidate && event.candidate.sdpMid !== "0") {
+              this.socket.emit('SEND_ICE_CANDIDATE', {
+                candidate: event.candidate
+              });
+            }
+
+            if (candidateQueue && candidateQueue.length < 1) return;
+
+            for (let i = 0; i < candidateQueue.length; i++) {
+              this.socket.emit('SEND_ICE_CANDIDATE', {
+                candidate: event.candidate
+              });
+            }
+          } else if (!this.state.myConnection.remoteDescription && event.candidate && event.candidate.sdpMid !== "0") {
+            candidateQueue.push(event.candidate);
           }
+        }
+
+        this.state.myConnection.ontrack = (event) => {
+          const remoteAudio = document.getElementById('remoteAudio');
+          console.log(event.streams[0]);
+          // don't set srcObject again if it is already set.
+          if (remoteAudio.srcObject !== event.streams[0]) return;
+          remoteAudio.srcObject = event.streams[0];
+          remoteAudio.autoplay = true;
         };
-
-
-
       } catch (error) {
-        console.log(error);
+        console.log('error setting up RTCPeerConnection: ' + error);
       }
     } else {
       const localAudio = document.getElementById('localAudio');
@@ -229,56 +266,95 @@ class Chatroom extends Component {
     }
   }
 
-  rtcSend = (message) => {
-    if (this.state.username) {
-       message.name = this.state.username;
-    }
-    this.socket.emit('SEND_CANDIDATE', JSON.stringify(message));
-  };
-
-  onReceiveCandidate = (candidate) => {
-    console.log('received candidate: ' + candidate);
-    this.state.myConnection.addIceCandidate(new RTCIceCandidate(candidate));
+  startCall = () => {
+    this.createCallerOffer();
   }
 
-  onOffer = (offer, name) => {
-    console.log('on offer, an offer: ' + offer + ' a name: ' + name);
-    this.setState({ otherConnection: name });
-    this.state.myConnection.setRemoteDescription(new RTCSessionDescription(offer));
+  createCallerOffer = async() => {
+    console.log(`--- negotiating in ${this.state.myConnection.signalingState} ---`);
 
-    this.state.myConnection.createAnswer((answer) => {
-      this.state.myConnection.setLocalDescription(answer);
-      console.log('success answer: ' + answer);
-
-      this.rtcSend({
-        type: "answer",
-        answer: answer
+    try {
+      const desc = await this.state.myConnection.createOffer({
+        offerToReceiveAudio: 1,
+        offerToReceiveVideo: 0
       });
-    }, (error) => {
-      console.log('error creating answer: ' + error);
-    });
-  }
-
-  // when another user answers to our offer
-  onAnswer = (answer) => {
-    console.log('here is our answer: ' + answer);
-    this.state.myConnection.setRemoteDescription(new RTCSessionDescription(answer));
-  }
-
-  sendMessage = (event) => {
-    if (event) {
-      event.preventDefault();
-      const data = {
-        username: this.props.username,
-        message: this.state.message,
-        userId: this.props.userId,
-        chatroomId: this.state.chatroomId,
-        room: this.state.room
-      };
-      this.socket.emit('CHATROOM_MESSAGE', data);
-      this.setState({ message: "" });
+      this.setCallerLocalDescription(desc);
+    } catch (error) {
+      console.log('error creating caller offer: ' + error);
     }
   }
+
+  setCallerLocalDescription = async(desc) => {
+    try {
+      await this.state.myConnection.setLocalDescription(desc);
+      console.log('-- start myConnection after setLocalDescription --');
+      console.log(this.state.myConnection);
+      console.log('-- end myConnection after setLocalDescription --');
+      this.sendOfferFromCaller(desc);
+    } catch(error) {
+      console.log('error setting caller local description: ' + error);
+    }
+  }
+
+  sendOfferFromCaller = (desc) => {
+    console.log('-- sendOfferFromCaller --');
+    const data = {
+      desc: desc,
+      username: this.state.username
+    }
+
+    this.socket.emit('SEND_OFFER', data);
+  }
+
+  setCalleeRemoteDescription = async(desc) => {
+    console.log('-- setCalleeRemoteDescription --');
+    try {
+      await this.state.myConnection.setRemoteDescription(desc);
+      this.calleCreateAnswer();
+    } catch (error) {
+      console.log('error setting callee remote description: ' + error);
+    }
+  }
+
+  calleCreateAnswer = async() => {
+    console.log('-- calleeCreateAnswer --');
+    try {
+      const desc = await this.state.myConnection.createAnswer();
+      this.setCalleeLocalDescription(desc);
+    } catch (error) {
+      console.log('error creating callee answer: ' + error);
+    }
+  }
+
+  setCalleeLocalDescription = async(desc) => {
+    console.log('-- setCalleeLocalDescription --');
+    try {
+      await this.state.myConnection.setLocalDescription(desc);
+      this.sendCallerDescription(desc);
+    } catch (error) {
+      console.log('error setting callee local description: ' + error);
+    }
+  }
+
+  sendCallerDescription = (desc) => {
+    console.log('-- sendCallerDescription --');
+    const data = {
+      desc: desc,
+      username: this.state.username
+    }
+
+    this.socket.emit('SEND_ANSWER', data);
+  }
+
+  setCallerRemoteDescription = async(desc) => {
+    console.log('-- setCallerRemoteDescription --');
+    try {
+      await this.state.myConnection.setRemoteDescription(desc);
+    } catch (error) {
+      console.log('error setting caller remote description: ' + error);
+    }
+  }
+  // -- end webrtc peer connection setup -- //
 
   sideContextMenu = (event, item) => {
     event.preventDefault();
@@ -363,13 +439,34 @@ class Chatroom extends Component {
     this.socket.emit('BAN_SERVER_USER', data);
   }
 
+  sendMessage = (event) => {
+    if (event) {
+      event.preventDefault();
+      const data = {
+        username: this.props.username,
+        message: this.state.message,
+        userId: this.props.userId,
+        chatroomId: this.state.chatroomId,
+        room: this.state.room
+      };
+      this.socket.emit('CHATROOM_MESSAGE', data);
+      this.setState({ message: "" });
+    }
+  }
+
+  componentWillUnmount() {
+    this.socket.emit('LEAVE_CHATROOMS', {
+      room: this.state.room
+    });
+  }
+
   render() {
     return (
       <div className="chatroom">
         <audio id="localAudio" style={{ "display": "none" }} muted />
         <audio id="remoteAudio" style={{ "display": "none" }} />
         <div className="chatarea">
-          <div className="chatarea-topbar">
+          <div className="chatarea-topbar" onClick={() => { this.startCall(); }}>
             <img src={this.props.activeChatroomType === "text" ? numbersign : voice} alt="channel" height={16} width={16} /><span>{this.props.activeChatroom}</span>
           </div>
           <div id="chatareamessages" className="chatarea-messages">

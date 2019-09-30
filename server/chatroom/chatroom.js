@@ -6,8 +6,16 @@ module.exports = async(server) => {
   const io = require('socket.io')(server);
 
   io.on('connection', (socket) => {
-    socket.on('SEND_CANDIDATE', async(data) => {
-      socket.emit('RECEIVE_CANDIDATE', data);
+    socket.on('SEND_ICE_CANDIDATE', async(data) => {
+      socket.broadcast.emit('RECEIVE_ICE_CANDIDATE', data);
+    });
+
+    socket.on('SEND_OFFER', async(data) => {
+      io.emit('RECEIVE_OFFER', data);
+    });
+
+    socket.on('SEND_ANSWER', async(data) => {
+      socket.broadcast.emit('RECEIVE_ANSWER', data);
     });
 
     socket.on('LEAVE_CHATROOMS', async(data) => {
