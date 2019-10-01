@@ -225,9 +225,6 @@ class Chatroom extends Component {
         await this.setState({ myConnection: new RTCPeerConnection(configuration) });
 
         await stream.getTracks().forEach((track) => {
-          console.log(this.state.myConnection.getTracks());
-          console.log(track.kind);
-          console.log(this.state.myConnection);
           this.state.myConnection.addTrack(track, stream);
         });
 
