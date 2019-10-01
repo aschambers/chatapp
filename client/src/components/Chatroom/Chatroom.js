@@ -128,14 +128,15 @@ class Chatroom extends Component {
     });
 
     // -- begin webrtc socket events -- //
-    this.socket.on('RECEIVE_ICE_CANDIDATE', async(candidate) => {
-      console.log(candidate);
-      await this.state.myConnection.addIceCandidate(new RTCIceCandidate(candidate)).catch(err => console.log(err));
+    this.socket.on('RECEIVE_ICE_CANDIDATE', async(data) => {
+      console.log('-- start receive ice candidate --');
+      console.log(data.candidate);
+      console.log('-- end receive ice candidate --');
+      await this.state.myConnection.addIceCandidate(new RTCIceCandidate(data.candidate)).catch(err => console.log(err));
     });
 
     this.socket.on('RECEIVE_OFFER', async(data) => {
       console.log(data.username + ' =?= ' + this.state.username);
-      if (data.username === this.state.username) return;
 
       this.setCalleeRemoteDescription(data.desc);
     });
@@ -156,7 +157,7 @@ class Chatroom extends Component {
       this.setState({ serverUserList: nextProps.serverUserList });
     }
     if (nextProps.activeChatroomId !== this.state.chatroomId && this.state.chatroomId !== undefined) {
-      this.setState({
+      await this.setState({
         previousRoom: `${ROOT_URL}/chatroom/${nextProps.serverId}/${this.state.chatroomId}`,
         room: `${ROOT_URL}/chatroom/${nextProps.serverId}/${nextProps.activeChatroomId}`,
         serverId: nextProps.serverId,
@@ -200,9 +201,12 @@ class Chatroom extends Component {
         console.log(stream);
         console.log('------ end my stream -------');
 
-        const localAudio = document.getElementById('localAudio');
-        localAudio.srcObject = stream;
-        localAudio.autoplay = true;
+        const audioElements = document.getElementById('audioElements');
+        const remoteAudio = document.createElement('audio');
+        remoteAudio.style.display = "none";
+        remoteAudio.srcObject = stream;
+        remoteAudio.autoplay = true;
+        audioElements.appendChild(remoteAudio);
 
         const STUN = {
           urls: 'stun:stun.l.google.com:19302'
@@ -221,6 +225,9 @@ class Chatroom extends Component {
         await this.setState({ myConnection: new RTCPeerConnection(configuration) });
 
         await stream.getTracks().forEach((track) => {
+          console.log(this.state.myConnection.getTracks());
+          console.log(track.kind);
+          console.log(this.state.myConnection);
           this.state.myConnection.addTrack(track, stream);
         });
 
@@ -229,7 +236,8 @@ class Chatroom extends Component {
           if (this.state.myConnection.remoteDescription) {
             if (event.candidate && event.candidate.sdpMid !== "0") {
               this.socket.emit('SEND_ICE_CANDIDATE', {
-                candidate: event.candidate
+                candidate: event.candidate,
+                room: this.state.room
               });
             }
 
@@ -237,7 +245,8 @@ class Chatroom extends Component {
 
             for (let i = 0; i < candidateQueue.length; i++) {
               this.socket.emit('SEND_ICE_CANDIDATE', {
-                candidate: event.candidate
+                candidate: event.candidate,
+                room: this.state.room
               });
             }
           } else if (!this.state.myConnection.remoteDescription && event.candidate && event.candidate.sdpMid !== "0") {
@@ -246,23 +255,21 @@ class Chatroom extends Component {
         }
 
         this.state.myConnection.ontrack = (event) => {
-          const remoteAudio = document.getElementById('remoteAudio');
           console.log(event.streams[0]);
-          // don't set srcObject again if it is already set.
-          if (remoteAudio.srcObject !== event.streams[0]) return;
+          if (!event.streams[0]) return;
+          const audioElements = document.getElementById('audioElements');
+          const remoteAudio = document.createElement('audio');
+          remoteAudio.style.display = "none";
           remoteAudio.srcObject = event.streams[0];
           remoteAudio.autoplay = true;
+          audioElements.appendChild(remoteAudio);
         };
       } catch (error) {
         console.log('error setting up RTCPeerConnection: ' + error);
       }
     } else {
-      const localAudio = document.getElementById('localAudio');
-      localAudio.srcObject = null;
-      localAudio.autoplay = false;
-      const remoteAudio = document.getElementById('remoteAudio');
-      remoteAudio.srcObject = null;
-      remoteAudio.autoplay = false;
+      const audioElements = document.getElementById('audioElements');
+      audioElements.innerHTML = '';
     }
   }
 
@@ -300,7 +307,8 @@ class Chatroom extends Component {
     console.log('-- sendOfferFromCaller --');
     const data = {
       desc: desc,
-      username: this.state.username
+      username: this.state.username,
+      room: this.state.room
     }
 
     this.socket.emit('SEND_OFFER', data);
@@ -340,7 +348,8 @@ class Chatroom extends Component {
     console.log('-- sendCallerDescription --');
     const data = {
       desc: desc,
-      username: this.state.username
+      username: this.state.username,
+      room: this.state.room
     }
 
     this.socket.emit('SEND_ANSWER', data);
@@ -463,8 +472,7 @@ class Chatroom extends Component {
   render() {
     return (
       <div className="chatroom">
-        <audio id="localAudio" style={{ "display": "none" }} muted />
-        <audio id="remoteAudio" style={{ "display": "none" }} />
+        <div id="audioElements"></div>
         <div className="chatarea">
           <div className="chatarea-topbar" onClick={() => { this.startCall(); }}>
             <img src={this.props.activeChatroomType === "text" ? numbersign : voice} alt="channel" height={16} width={16} /><span>{this.props.activeChatroom}</span>
