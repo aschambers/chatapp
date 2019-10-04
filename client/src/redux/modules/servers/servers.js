@@ -52,7 +52,7 @@ export default (state = initialState, action) => {
       };
     case FIND_SERVER_SUCCESS:
       return {
-        ...state, isLoading: false, error: false, success: true, serverUserList: action.payload
+        ...state, isLoading: false, findServerError: false, findServerSuccess: true, serverUserList: action.payload
       };
     case FIND_SERVER_FAIL:
       return {
@@ -64,7 +64,7 @@ export default (state = initialState, action) => {
       };
     case FIND_SERVER_BANS_SUCCESS:
       return {
-        ...state, isLoading: false, error: false, success: true, serverUserBans: action.payload
+        ...state, isLoading: false, findBansError: false, findBansSuccess: true, serverUserBans: action.payload
       };
     case FIND_SERVER_BANS_FAIL:
       return {
@@ -76,7 +76,7 @@ export default (state = initialState, action) => {
       };
     case UNBAN_USER_SUCCESS:
       return {
-        ...state, isLoading: false, error: false, success: true, serverUserBans: action.payload
+        ...state, isLoading: false, unbanUserError: false, unbanUserSuccess: true, serverUserBans: action.payload
       };
     case UNBAN_USER_FAIL:
       return {
@@ -96,7 +96,7 @@ export default (state = initialState, action) => {
       };
     case RESET_SERVER_VALUES:
       return {
-        ...state, isLoading: false, error: false, success: false
+        ...state, isLoading: false, error: false, success: false, findServerError: false, findServerSuccess: false, unbanUserError: false, unbanUserSuccess: false, findBansError: false, findBansSuccess: false
       };
     case UPDATING_USER_ROLE:
       return {
@@ -132,20 +132,6 @@ export const serverCreate = params => async dispatch => {
     }
   } catch(err) {
     dispatch({ type: CREATE_SERVER_FAIL });
-  }
-};
-
-export const serverFind = params => async dispatch => {
-  dispatch({ type: FINDING_SERVER });
-  try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/serverFind`, params);
-    if(response.data) {
-      dispatch({ type: FIND_SERVER_SUCCESS, payload: response.data });
-    } else {
-      dispatch({ type: FIND_SERVER_FAIL });
-    }
-  } catch(err) {
-    dispatch({ type: FIND_SERVER_FAIL });
   }
 };
 

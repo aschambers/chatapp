@@ -7,7 +7,8 @@ import {
   CREATE_CATEGORY_SUCCESS,
   FINDING_CATEGORY,
   FIND_CATEGORY_FAIL,
-  FIND_CATEGORY_SUCCESS
+  FIND_CATEGORY_SUCCESS,
+  RESET_CATEGORY_VALUES
 } from '../../types';
 
 // Initial States
@@ -27,7 +28,7 @@ export default (state = initialState, action) => {
       };
     case CREATE_CATEGORY_SUCCESS:
       return {
-        ...state, isLoading: false, error: false, success: true, categoryList: action.payload
+        ...state, isLoading: false, findCategoryError: false, findCategorySuccess: true, categoryList: action.payload
       };
     case CREATE_CATEGORY_FAIL:
       return {
@@ -39,12 +40,17 @@ export default (state = initialState, action) => {
       };
     case FIND_CATEGORY_SUCCESS:
       return {
-        ...state, isLoading: false, error: false, success: true, categoryList: action.payload
+        ...state, isLoading: false, findCategoryError: false, findCategorySuccess: true, categoryList: action.payload
       };
     case FIND_CATEGORY_FAIL:
       return {
         ...state, isLoading: false, error: true, success: false
       };
+    case RESET_CATEGORY_VALUES:
+      return {
+        ...state, isLoading: false, error: false, success: false,
+        findCategoryError: false, findCategorySuccess: false
+      }
     default:
       return state;
   }
@@ -77,4 +83,10 @@ export const categoryFindAll = params => async dispatch => {
   } catch(err) {
     dispatch({ type: FIND_CATEGORY_FAIL });
   }
+};
+
+export function resetCategoryValues() {
+  return function(dispatch) {
+    dispatch({ type: RESET_CATEGORY_VALUES });
+  };
 };

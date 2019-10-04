@@ -91,7 +91,7 @@ const Dashboard = (props) => {
   const [showUserManagement, setShowUserManagement] = useState(false);
   const [showUserManagementBan, setShowUserManagementBan] = useState(false);
   const [openServerItem, setOpenServerItem] = useState(null);
-  const [didMount, setDidMount] = useState(false);
+  const [didFindUser, setDidFindUser] = useState(false);
   const [serverUserBans, setServerUserBans] = useState([]);
   const [editUsername, setEditUsername] = useState('');
   const [editEmail, setEditEmail] = useState('');
@@ -103,12 +103,14 @@ const Dashboard = (props) => {
   const [activeChatroomType, setActiveChatroomType] = useState("text");
   const [allowVoice, setAllowVoice] = useState(false);
   const [audioStream, setAudioStream] = useState(null);
+  const [didFindFriends, setDidFindFriends] = useState(null);
 
   const ref = useRef();
   useOnClickOutside(ref, () => setShowCategoryModal(false));
 
   useEffect(() => {
-    if (friendsList === null && id !== null) {
+    if (friendsList === null && id !== null && !props.findingFriends && !didFindFriends) {
+      setDidFindFriends(true);
       props.findFriends({
         userId: id
       });
@@ -128,11 +130,15 @@ const Dashboard = (props) => {
       setFriendsList(props.friendsList);
       props.resetFriendValues();
     }
+  }, [props, id, friendsList, didFindFriends]);
 
-    if (props.findInvitesSuccess || props.findInvitesError) {
-      if (props.findInvitesSuccess) {
-        setServerInvites(props.inviteServersList);
-      }
+  useEffect(() => {
+    if (props.findInvitesSuccess) {
+      setServerInvites(props.inviteServersList);
+      props.resetInviteValues();
+      setActiveServerSetting("invites");
+    }
+    if (props.findInvitesError) {
       props.resetInviteValues();
       setActiveServerSetting("invites");
     }
@@ -157,7 +163,8 @@ const Dashboard = (props) => {
       setServerUser(null);
     }
 
-    if (props.serverUserList) {
+    if (props.serverUserList && props.findServerSuccess) {
+      props.resetServerValues();
       setServerUserList(props.serverUserList);
       const index = props.serverUserList.findIndex(x => x.username === username);
       if (index > -1) {
@@ -169,7 +176,8 @@ const Dashboard = (props) => {
       }
     }
 
-    if (props.serverUserBans) {
+    if (props.serverUserBans && (props.findBansSuccess || props.unbanUserSuccess)) {
+      props.resetServerValues();
       setShowUserManagementBan(false);
       setServerUserBan(null);
       setServerUserBans(props.serverUserBans);
@@ -206,17 +214,18 @@ const Dashboard = (props) => {
       setNewChannel('');
       props.resetChatroomValues();
     }
-    if (props.categoryList) {
+    if (props.categoryList && props.findCategorySuccess) {
+      props.resetCategoryValues();
       setCategories(props.categoryList);
       setShowCategoryModal(false);
     }
-  }, [props, id, username, friendsList]);
+  }, [props, id, username]);
 
   useEffect(() => {
     window.addEventListener('keydown', detectEscape);
-    if(!props.user && !didMount) {
+    if(!props.user && !didFindUser) {
       checkActiveMedia();
-      setDidMount(true);
+      setDidFindUser(true);
       props.currentUser();
     } else if (props.retrieveUserError) {
       setIsLoading(false);
@@ -299,7 +308,7 @@ const Dashboard = (props) => {
         toast.info('You have been removed from this server an admin!', { position: 'bottom-center' });
       }
     }
-  }, [props, openServerItem, didMount]);
+  }, [props, openServerItem, didFindUser]);
 
   const detectEscape = (event) => {
     if (event.keyCode === 27) {
@@ -1176,11 +1185,15 @@ const mapStateToProps = ({ usersReducer, serversReducer, categoriesReducer, chat
     retrieveUpdatedUserError: usersReducer.retrieveUpdatedUserError,
     retrieveUpdatedUserSuccess: usersReducer.retrieveUpdatedUserSuccess,
     serversList: serversReducer.serversList,
+    findServerSuccess: serversReducer.findServerSuccess,
     serverUserList: serversReducer.serverUserList,
     serverUserBans: serversReducer.serverUserBans,
     updateRoleSuccess: serversReducer.updateRoleSuccess,
     updateRoleError: serversReducer.updateRoleError,
+    unbanUserSuccess: serversReducer.unbanUserSuccess,
+    findBansSuccess: serversReducer.findBansSuccess,
     categoryList: categoriesReducer.categoryList,
+    findCategorySuccess: categoriesReducer.findCategorySuccess,
     chatroomList: chatroomsReducer.chatroomList,
     chatroomSuccess: chatroomsReducer.success,
     chatroomError: chatroomsReducer.error,

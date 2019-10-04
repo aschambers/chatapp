@@ -69,6 +69,7 @@ export const CREATING_CATEGORY = 'creating_category';
 export const FIND_CATEGORY_SUCCESS = 'find_category_success';
 export const FIND_CATEGORY_FAIL = 'find_category_fail';
 export const FINDING_CATEGORY = 'finding_category';
+export const RESET_CATEGORY_VALUES = 'reset_category_values';
 // chatrooms
 export const CREATE_CHATROOM_SUCCESS = 'create_chatroom_success';
 export const CREATE_CHATROOM_FAIL = 'create_chatroom_fail';
