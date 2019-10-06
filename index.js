@@ -4,6 +4,7 @@ const busboyBodyParser = require('busboy-body-parser');
 // express setup
 const app = express();
 const auth = require('./server/middleware/auth');
+app.use(auth);
 app.use(busboyBodyParser({ limit: '50mb', multi: true }));
 app.use(express.json());
 // cors
@@ -15,7 +16,6 @@ app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
-app.use(auth);
 // routes
 require('./server/routes/userRoutes')(app);
 require('./server/routes/messageRoutes')(app);
