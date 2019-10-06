@@ -5,6 +5,7 @@ module.exports = async(req, res, next) => {
   try {
     if (!req.headers.authorization) return next();
 
+    console.log(req.method);
     console.log(req.ip.split(":").pop());
     console.log(req.headers['user-agent']);
 
