@@ -78,7 +78,6 @@ class Chatroom extends Component {
 
   async componentDidMount() {
     window.addEventListener('keydown', this.detectEscape);
-    this.props.getUsers();
 
     this.socket = io(ROOT_URL);
 

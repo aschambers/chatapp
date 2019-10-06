@@ -367,10 +367,10 @@ export const userUpdate = params => async (dispatch) => {
   }
 };
 
-export const getUsers = params => async dispatch => {
+export const getUsers = () => async dispatch => {
   dispatch({ type: GETTING_USERS });
   try {
-    const response = await axios.get(`${ROOT_URL}/api/v1/getUsers`, params, config);
+    const response = await axios.get(`${ROOT_URL}/api/v1/getUsers`, config);
     if (response.data) {
       dispatch({ type: GETTING_USERS_SUCCESS, payload: response.data });
     } else {
