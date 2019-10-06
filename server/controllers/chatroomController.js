@@ -9,6 +9,8 @@ module.exports = {
    * @returns {object} chatroom object
    */
   chatroomCreate: async(req, res) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { name, serverId } = req.body;
 
     if (!name && !serverId) {
@@ -31,6 +33,8 @@ module.exports = {
    * @returns {array} list of chatrooms
    */
   getChatrooms: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { serverId } = req.body;
 
     const result = await ChatroomModel.findAll({ where: { serverId: serverId } });
@@ -43,6 +47,8 @@ module.exports = {
    * @returns {object} chatroom object
    */
   chatroomDelete: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const deleteChatroom = await ChatroomModel.destroy({where: { id: req.body.chatroomId }});
 
     if (!deleteChatroom) return res.status(422).send({'error':'error deleting chatroom'});
@@ -56,6 +62,8 @@ module.exports = {
    * @returns {array} chatroom list
    */
   chatroomUpdate: async(req, res) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { chatroomId, categoryId } = req.body;
 
     if (!chatroomId) {

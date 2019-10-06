@@ -17,6 +17,8 @@ module.exports = {
    * @returns {object} server object
    */
   serverCreate: async(req, res) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { name, userId, public, region } = req.body;
 
     if (!name || !userId || !public || !region) {
@@ -94,6 +96,8 @@ module.exports = {
    * @returns {array} list of servers
    */
   serverFind: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const user = await UserModel.findByPk(req.body.id);
 
     if (!user) return res.status(422).send({'error':'Error deleting server'});
@@ -107,6 +111,8 @@ module.exports = {
    * @returns {array} list of servers
    */
   findUserList: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const server = await ServerModel.findByPk(req.body.serverId);
 
     if (!server && !server.userList) return res.status(422).send({'error':'Error finding server'});
@@ -120,6 +126,8 @@ module.exports = {
    * @returns {array} list of banned users
    */
   findUserBans: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const server = await ServerModel.findByPk(req.body.serverId);
 
     if (!server.userBans) server.userBans = [];
@@ -134,6 +142,8 @@ module.exports = {
    * @returns {array} list of banned users
    */
   unbanUser: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { userId, serverId } = req.body;
 
     const server = await ServerModel.findByPk(serverId);
@@ -169,6 +179,8 @@ module.exports = {
    * @returns {object} server object
    */
   serverDelete: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { userId, serverId } = req.body;
 
     if (!userId || !serverId) return res.status(400).send({'error':'Missing required fields'});
@@ -200,6 +212,8 @@ module.exports = {
    * @returns {array} server list
    */
   updateUserRole: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { active, imageUrl, type, userId, username, serverId } = req.body;
 
     if (!active || !type || !userId || !username || !serverId) {
@@ -235,6 +249,8 @@ module.exports = {
    * @returns {array} server list
    */
   kickServerUser: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { serverId, type, userId } = req.body;
 
     if (!serverId || !type || !userId) {
@@ -281,6 +297,8 @@ module.exports = {
    * @returns {array} server list
    */
   banServerUser: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { serverId, type, userId } = req.body;
 
     if (!serverId || !type || !userId) {

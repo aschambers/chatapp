@@ -26,6 +26,8 @@ module.exports = {
    * @returns {object} user object
    */
   userSignup: async(req, res) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { username, password, email } = req.body;
 
     if (!username && !password && !email) {
@@ -65,6 +67,8 @@ module.exports = {
    * @returns {object} user object
    */
   userVerification: async(req, res) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { email, token } = req.body;
 
     const validUser = await UserModel.findOne({ where: {
@@ -97,6 +101,8 @@ module.exports = {
    * @returns {object} user object
    */
   userLogin: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { email, password } = req.body;
 
     const loginUser = await UserModel.findOne({ where: { email: email } });
@@ -143,6 +149,8 @@ module.exports = {
    * @returns {object} user object
    */
   userLogout: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const logoutUser = await UserModel.findByPk(req.body.id);
     if (!logoutUser) return res.status(422).send({'error':'User not found'});
 
@@ -182,6 +190,8 @@ module.exports = {
    * @returns {array} list of users
    */
   getUsers: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const result = await UserModel.findAll();
     res.status(200).send(result);
   },
@@ -192,6 +202,8 @@ module.exports = {
    * @returns {object} user object
    */
   getSingleUser: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const userId = req.body.userId;
 
     const result = await UserModel.findByPk(userId);
@@ -206,6 +218,8 @@ module.exports = {
    * @returns {object} user object
    */
   userUpdate: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { id, username, email, imageUrl, serverId } = req.body;
 
     const myEmail = await UserModel.findAll({ where: { id: id, email: email }});
@@ -337,6 +351,8 @@ module.exports = {
    * @returns {array} list of users
    */
   deleteUser: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const deleteUser = await UserModel.destroy({where: { id: req.body.userId }});
     if (!deleteUser) return res.status(422).send({'error':'Error deleting user'});
 
@@ -350,6 +366,8 @@ module.exports = {
    * @returns {object} user object
    */
   uploadProfileImage: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { id } = req.body;
 
     const user = await UserModel.findByPk(id);
@@ -379,6 +397,8 @@ module.exports = {
    * @returns {object} user object
    */
   sendEmail: async(req, res) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { email } = req.body;
 
     if (!email) return res.status(400).send({'error':'Missing required fields'});
@@ -415,6 +435,8 @@ module.exports = {
    * @returns {string} success
    */
   forgotPassword: async(req, res) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { email } = req.body;
 
     const token = crypto.randomBytes(20).toString('hex');
@@ -450,6 +472,8 @@ module.exports = {
    * @returns {string} success
    */
   resetPassword: async(req, res) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { token, password } = req.body;
 
     if (!token || !password) {

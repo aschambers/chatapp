@@ -9,6 +9,8 @@ module.exports = {
    * @returns {array} message list
    */
   messageChatroomCreate: async(req, res) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { username, message, userId, chatroomId } = req.body;
 
     if (!username && !message && !userId && !chatroomId) {
@@ -30,6 +32,8 @@ module.exports = {
    * @returns {array} list of messages
    */
   messageChatroomDelete: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { chatroomId, messageId } = req.body;
 
     const deleteMessage = await MessageModel.destroy({where: { id: messageId }});
@@ -48,6 +52,8 @@ module.exports = {
    * @returns {array} list of messages
    */
   messageChatroomEdit: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { chatroomId, messageId, message } = req.body;
 
     const findMessage = await MessageModel.findByPk(messageId);
@@ -71,6 +77,8 @@ module.exports = {
    * @returns {array} list of messages
    */
   getChatroomMessages: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { chatroomId } = req.body;
 
     const result = await MessageModel.findAll({ where: { chatroomId: chatroomId }, order: [['createdAt', 'DESC']] });
@@ -85,6 +93,8 @@ module.exports = {
    * @returns {array} list of messages
    */
   getPrivateMessages: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { userId, friendId } = req.body;
 
     const result = await MessageModel.findAll({ where: {
@@ -104,6 +114,8 @@ module.exports = {
    * @returns {array} list of messages
    */
   getPersonalMessages: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { userId } = req.body;
 
     const result = await MessageModel.findAll({ where: {
@@ -123,6 +135,8 @@ module.exports = {
    * @returns {array} message list
    */
   messagePrivateCreate: async(req, res) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { username, message, userId, friendId } = req.body;
     if (!username && !message && !userId && !friendId) {
       return res.status(400).send({'error':'Missing required fields'});
@@ -148,6 +162,8 @@ module.exports = {
    * @returns {array} list of messages
    */
   messagePrivateDelete: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { userId, friendId, messageId } = req.body;
 
     const deleteMessage = await MessageModel.destroy({ where: { id: messageId }});
@@ -170,6 +186,8 @@ module.exports = {
    * @returns {array} list of messages
    */
   messagePrivateEdit: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { userId, friendId, messageId, message } = req.body;
 
     const findMessage = await MessageModel.findByPk(messageId);
@@ -198,6 +216,8 @@ module.exports = {
    * @returns {array} message list
    */
   messagePersonalCreate: async(req, res) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { username, message, userId, friendId } = req.body;
     if (!username && !message && !userId && !friendId) {
       return res.status(400).send({'error':'Missing required fields'});
@@ -223,6 +243,8 @@ module.exports = {
    * @returns {array} list of messages
    */
   messagePersonalDelete: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { userId, messageId } = req.body;
 
     const deleteMessage = await MessageModel.destroy({where: { id: messageId }});
@@ -245,6 +267,8 @@ module.exports = {
    * @returns {array} list of messages
    */
   messagePersonalEdit: async(req, res, next) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { userId, messageId, message } = req.body;
 
     const findMessage = await MessageModel.findByPk(messageId);

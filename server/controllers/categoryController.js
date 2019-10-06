@@ -9,6 +9,8 @@ module.exports = {
    * @returns {array} category list
    */
   categoryCreate: async(req, res) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { name, serverId, order, visible } = req.body;
 
     if (!name && !serverId && !order && !visible) {
@@ -31,6 +33,8 @@ module.exports = {
    * @returns {array} category list
    */
   categoryFindAll: async(req, res) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { serverId } = req.body;
 
     if (!serverId) {

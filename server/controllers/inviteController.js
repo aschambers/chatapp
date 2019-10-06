@@ -14,6 +14,8 @@ module.exports = {
    * @returns {string} success message
    */
   inviteCreate: async(req, res) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { expires, serverId } = req.body;
 
     req.body.token = crypto.randomBytes(12).toString('hex');
@@ -35,6 +37,8 @@ module.exports = {
    * @returns {string} success message
    */
   inviteEmailCreate: async(req, res) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { expires, serverId, email } = req.body;
 
     req.body.token = crypto.randomBytes(12).toString('hex');
@@ -68,6 +72,8 @@ module.exports = {
    * @returns {object} server object
    */
   inviteVerification: async(req, res) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { userId, code, email } = req.body;
 
     const validInvite = await InviteModel.findOne({ where: { code: code } });
@@ -150,6 +156,8 @@ module.exports = {
    * @returns {array} invites
    */
   findInvites: async(req, res) => {
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+
     const { serverId } = req.body;
 
     const invitesList = await InviteModel.findAll({ where: { serverId: serverId } });
