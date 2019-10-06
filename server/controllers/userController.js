@@ -190,7 +190,7 @@ module.exports = {
    * @returns {array} list of users
    */
   getUsers: async(req, res, next) => {
-    // if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
 
     const result = await UserModel.findAll();
     res.status(200).send(result);

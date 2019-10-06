@@ -29,7 +29,7 @@ module.exports = {
       const result = await FriendModel.create(req.body);
       if (!result) return res.status(422).json({'error':'Unable to create friend'});
     } else if (friendFinder) {
-      const result = await FriendModel.update(
+      const result = await friendFinder.update(
         { activeFriend: req.body.activeFriend }, { where: { id: userId } }
       );
       if (!result) return res.status(422).json({'error':'Unable to add friend back'});
