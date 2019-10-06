@@ -6,6 +6,7 @@ module.exports = async(req, res, next) => {
     if (!req.headers.authorization) return next();
 
     console.log(req.ip.split(":").pop());
+    console.log(req.headers.authorization['user-agent']);
 
     const type = req.headers.authorization.split(" ")[0];
     const token = req.headers.authorization.split(" ")[1];
