@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { ROOT_URL } from '../../../config/networkSettings';
+import { config } from '../../../config/token';
 
 import {
   CREATING_INVITE,
@@ -90,7 +91,7 @@ export default (state = initialState, action) => {
 export const inviteCreate = params => async dispatch => {
   dispatch({ type: CREATING_INVITE });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/inviteCreate`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/inviteCreate`, params, config);
     if (response.data) {
       dispatch({ type: CREATE_INVITE_SUCCESS, payload: response.data });
     } else {
@@ -104,7 +105,7 @@ export const inviteCreate = params => async dispatch => {
 export const inviteEmailCreate = params => async dispatch => {
   dispatch({ type: CREATING_EMAIL_INVITE });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/inviteEmailCreate`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/inviteEmailCreate`, params, config);
     if (response.data) {
       dispatch({ type: CREATE_INVITE_EMAIL_SUCCESS });
     } else {
@@ -118,7 +119,7 @@ export const inviteEmailCreate = params => async dispatch => {
 export const inviteVerification = params => async dispatch => {
   dispatch({ type: VERIFYING_SERVER_INVITE });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/inviteVerification`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/inviteVerification`, params, config);
     if (response.data) {
       dispatch({ type: VERIFY_SERVER_INVITE_SUCCESS, payload: response.data });
     } else {
@@ -132,7 +133,7 @@ export const inviteVerification = params => async dispatch => {
 export const findInvites = params => async dispatch => {
   dispatch({ type: FINDING_INVITES });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/findInvites`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/findInvites`, params, config);
     if (response.data) {
       dispatch({ type: FIND_INVITE_SUCCESS, payload: response.data });
     } else {

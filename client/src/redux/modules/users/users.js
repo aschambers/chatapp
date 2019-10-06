@@ -2,6 +2,7 @@ import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import secret from '../../../config/secret';
 import { ROOT_URL } from '../../../config/networkSettings';
+import { config, authToken } from '../../../config/token';
 
 import {
   SIGNING_UP_USER,
@@ -229,7 +230,7 @@ export default (state = initialState, action) => {
 export const userSignup = params => async dispatch => {
   dispatch({ type: SIGNING_UP_USER });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/userSignup`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/userSignup`, params, config);
     if (response.data) {
       dispatch({ type: SIGNUP_USER_SUCCESS });
     } else {
@@ -243,7 +244,7 @@ export const userSignup = params => async dispatch => {
 export const userVerification = params => async dispatch => {
   dispatch({ type: VERIFYING_USER });
   try {
-    const response = await axios.put(`${ROOT_URL}/api/v1/userVerification`, params);
+    const response = await axios.put(`${ROOT_URL}/api/v1/userVerification`, params, config);
     if (response.data.success === "Account has already been verified") {
       dispatch({ type: ALREADY_VERIFIED });
     } else if (response.data.success === "Success verifying account") {
@@ -259,7 +260,7 @@ export const userVerification = params => async dispatch => {
 export const userLogin = params => async dispatch => {
   dispatch({ type: LOGGING_IN_USER });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/userLogin`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/userLogin`, params, config);
     if (response.data) {
       jwt.verify(response.data, secret, function(err, decoded) {
         if (!err) {
@@ -284,7 +285,7 @@ export const userLogin = params => async dispatch => {
 export const userLogout = params => async dispatch => {
   dispatch({ type: LOGGING_OUT_USER });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/userLogout`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/userLogout`, params, config);
     if (response.data) {
       localStorage.removeItem('user');
       dispatch({ type: LOGOUT_USER_SUCCESS });
@@ -301,7 +302,7 @@ export const userLogout = params => async dispatch => {
 export const getUpdatedUser = params => async dispatch => {
   dispatch({ type: RETRIEVE_UPDATED_USER_LOADING });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/getSingleUser`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/getSingleUser`, params, config);
     if (response.data) {
       localStorage.setItem('user', JSON.stringify(response.data));
       dispatch({ type: RETRIEVE_UPDATED_USER_SUCCESS, payload: response.data });
@@ -348,7 +349,12 @@ export const userUpdate = params => async (dispatch) => {
       method: 'put',
       url: `${ROOT_URL}/api/v1/userUpdate`,
       data: params,
-      config: { headers: { 'Content-Type': 'multipart/form-data' } }
+      config: {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': authToken
+        }
+      }
     });
     if (response.data) {
       localStorage.setItem('user', JSON.stringify(response.data));
@@ -364,7 +370,7 @@ export const userUpdate = params => async (dispatch) => {
 export const getUsers = params => async dispatch => {
   dispatch({ type: GETTING_USERS });
   try {
-    const response = await axios.get(`${ROOT_URL}/api/v1/getUsers`, params);
+    const response = await axios.get(`${ROOT_URL}/api/v1/getUsers`, params, config);
     if (response.data) {
       dispatch({ type: GETTING_USERS_SUCCESS, payload: response.data });
     } else {
@@ -382,7 +388,12 @@ export const uploadProfileImage = params => async dispatch => {
       method: 'put',
       url: `${ROOT_URL}/api/v1/uploadProfileImage`,
       data: params,
-      config: { headers: {'Content-Type': 'multipart/form-data'}}
+      config: {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': authToken
+        }
+      }
     });
     if (response.data) {
       localStorage.setItem('user', JSON.stringify(response.data));
@@ -398,7 +409,7 @@ export const uploadProfileImage = params => async dispatch => {
 export const sendEmail = params => async dispatch => {
   dispatch({ type: SENDING_EMAIL });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/sendEmail`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/sendEmail`, params, config);
     if (response.data) {
       dispatch({ type: SEND_EMAIL_SUCCESS, payload: response.data });
     } else {
@@ -412,7 +423,7 @@ export const sendEmail = params => async dispatch => {
 export const forgotPassword = params => async dispatch => {
   try {
     dispatch({ type: CHECKING_FORGOT_PASSWORD });
-    const response = await axios.post(`${ROOT_URL}/api/v1/forgotPassword`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/forgotPassword`, params, config);
     if (response.data) {
       dispatch({ type: FORGOT_PASSWORD_SUCCESS, payload: 'forgot-password-fail' });
     } else {
@@ -426,7 +437,7 @@ export const forgotPassword = params => async dispatch => {
 export const resetPassword = params => async dispatch => {
   try {
     dispatch({ type: CHECKING_RESET_PASSWORD });
-    const response = await axios.post(`${ROOT_URL}/api/v1/resetPassword`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/resetPassword`, params, config);
     if (response.data) {
       dispatch({ type: RESET_PASSWORD_SUCCESS, payload: 'forgot-password-fail' });
     } else {

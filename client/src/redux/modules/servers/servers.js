@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { ROOT_URL } from '../../../config/networkSettings';
+import { config, authToken } from '../../../config/token';
 
 import {
   CREATING_SERVER,
@@ -123,7 +124,12 @@ export const serverCreate = params => async dispatch => {
       method: 'post',
       url: `${ROOT_URL}/api/v1/serverCreate`,
       data: params,
-      config: { headers: {'Content-Type': 'multipart/form-data'}}
+      config: {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': authToken
+        }
+      }
     });
     if (response.data) {
       dispatch({ type: CREATE_SERVER_SUCCESS, payload: response.data });
@@ -138,7 +144,7 @@ export const serverCreate = params => async dispatch => {
 export const findUserBans = params => async dispatch => {
   dispatch({ type: FINDING_SERVER_BANS });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/findUserBans`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/findUserBans`, params, config);
     if (response.data) {
       dispatch({ type: FIND_SERVER_BANS_SUCCESS, payload: response.data });
     } else {
@@ -152,7 +158,7 @@ export const findUserBans = params => async dispatch => {
 export const unbanUser = params => async dispatch => {
   dispatch({ type: UNBANNING_USER });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/unbanUser`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/unbanUser`, params, config);
     if (response.data) {
       dispatch({ type: UNBAN_USER_SUCCESS, payload: response.data });
     } else {
@@ -166,7 +172,7 @@ export const unbanUser = params => async dispatch => {
 export const findUserList = params => async dispatch => {
   dispatch({ type: FINDING_SERVER });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/findUserList`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/findUserList`, params, config);
     if (response.data) {
       dispatch({ type: FIND_SERVER_SUCCESS, payload: response.data });
     } else {
@@ -180,7 +186,7 @@ export const findUserList = params => async dispatch => {
 export const serverDelete = params => async dispatch => {
   dispatch({ type: DELETING_SERVER });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/serverDelete`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/serverDelete`, params, config);
     if (response.data) {
       dispatch({ type: DELETE_SERVER_SUCCESS });
     } else {
@@ -194,7 +200,7 @@ export const serverDelete = params => async dispatch => {
 export const updateUserRole = params => async dispatch => {
   dispatch({ type: UPDATING_USER_ROLE });
   try {
-    const response = await axios.put(`${ROOT_URL}/api/v1/updateUserRole`, params);
+    const response = await axios.put(`${ROOT_URL}/api/v1/updateUserRole`, params, config);
     if (response.data) {
       dispatch({ type: UPDATE_USER_ROLE_SUCCESS, payload: response.data });
     } else {

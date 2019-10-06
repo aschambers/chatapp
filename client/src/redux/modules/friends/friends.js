@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { ROOT_URL } from '../../../config/networkSettings';
+import { config } from '../../../config/token';
 
 import {
   CREATING_FRIEND,
@@ -74,7 +75,7 @@ export default (state = initialState, action) => {
 export const friendCreate = params => async dispatch => {
   dispatch({ type: CREATING_FRIEND });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/friendCreate`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/friendCreate`, params, config);
     if (response.data) {
       dispatch({ type: CREATE_FRIEND_SUCCESS, payload: response.data });
     } else {
@@ -88,7 +89,7 @@ export const friendCreate = params => async dispatch => {
 export const friendDelete = params => async dispatch => {
   dispatch({ type: DELETING_FRIEND });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/friendDelete`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/friendDelete`, params, config);
     if (response.data) {
       dispatch({ type: DELETE_FRIEND_SUCCESS, payload: response.data });
     } else {
@@ -102,7 +103,7 @@ export const friendDelete = params => async dispatch => {
 export const findFriends = params => async dispatch => {
   dispatch({ type: FINDING_FRIENDS });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/findFriends`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/findFriends`, params, config);
     if (response.data) {
       dispatch({ type: FIND_FRIENDS_SUCCESS, payload: response.data });
     } else {
