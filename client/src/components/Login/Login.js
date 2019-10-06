@@ -72,7 +72,7 @@ const Login = (props) => {
       email: email,
       password: password
     }
-    if(!email && !password) {
+    if (!email && !password) {
       toast.error('Email and password are required.', { position: 'bottom-center' });
     } else {
       props.userLogin(params);

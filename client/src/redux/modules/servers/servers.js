@@ -40,7 +40,7 @@ export default (state = initialState, action) => {
       };
     case CREATE_SERVER_SUCCESS:
       return {
-        ...state, isLoading: false, createServerError: false, createServerSuccess: true, serversList: action.payload
+        ...state, isLoading: false, createServerError: false, createServerSuccess: true
       };
     case CREATE_SERVER_FAIL:
       return {
@@ -88,7 +88,7 @@ export default (state = initialState, action) => {
       };
     case DELETE_SERVER_SUCCESS:
       return {
-        ...state, isLoading: false, error: false, success: true, user: action.payload
+        ...state, isLoading: false, deleteServerError: false, deleteServerSuccess: true
       };
     case DELETE_SERVER_FAIL:
       return {
@@ -96,7 +96,7 @@ export default (state = initialState, action) => {
       };
     case RESET_SERVER_VALUES:
       return {
-        ...state, isLoading: false, error: false, success: false, findServerError: false, findServerSuccess: false, unbanUserError: false, unbanUserSuccess: false, findBansError: false, findBansSuccess: false
+        ...state, isLoading: false, error: false, success: false, findServerError: false, findServerSuccess: false, unbanUserError: false, unbanUserSuccess: false, findBansError: false, findBansSuccess: false, createServerError: false, createServerSuccess: false, deleteServerError: false, deleteServerSuccess: false
       };
     case UPDATING_USER_ROLE:
       return {
@@ -125,7 +125,7 @@ export const serverCreate = params => async dispatch => {
       data: params,
       config: { headers: {'Content-Type': 'multipart/form-data'}}
     });
-    if(response.data) {
+    if (response.data) {
       dispatch({ type: CREATE_SERVER_SUCCESS, payload: response.data });
     } else {
       dispatch({ type: CREATE_SERVER_FAIL });
@@ -139,7 +139,7 @@ export const findUserBans = params => async dispatch => {
   dispatch({ type: FINDING_SERVER_BANS });
   try {
     const response = await axios.post(`${ROOT_URL}/api/v1/findUserBans`, params);
-    if(response.data) {
+    if (response.data) {
       dispatch({ type: FIND_SERVER_BANS_SUCCESS, payload: response.data });
     } else {
       dispatch({ type: FIND_SERVER_BANS_FAIL });
@@ -153,7 +153,7 @@ export const unbanUser = params => async dispatch => {
   dispatch({ type: UNBANNING_USER });
   try {
     const response = await axios.post(`${ROOT_URL}/api/v1/unbanUser`, params);
-    if(response.data) {
+    if (response.data) {
       dispatch({ type: UNBAN_USER_SUCCESS, payload: response.data });
     } else {
       dispatch({ type: UNBAN_USER_FAIL });
@@ -167,7 +167,7 @@ export const findUserList = params => async dispatch => {
   dispatch({ type: FINDING_SERVER });
   try {
     const response = await axios.post(`${ROOT_URL}/api/v1/findUserList`, params);
-    if(response.data) {
+    if (response.data) {
       dispatch({ type: FIND_SERVER_SUCCESS, payload: response.data });
     } else {
       dispatch({ type: FIND_SERVER_FAIL });
@@ -194,7 +194,7 @@ export const serverDelete = params => async dispatch => {
 export const updateUserRole = params => async dispatch => {
   dispatch({ type: UPDATING_USER_ROLE });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/updateUserRole`, params);
+    const response = await axios.put(`${ROOT_URL}/api/v1/updateUserRole`, params);
     if (response.data) {
       dispatch({ type: UPDATE_USER_ROLE_SUCCESS, payload: response.data });
     } else {

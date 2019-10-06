@@ -93,7 +93,7 @@ const User = sequelize.define('users', {
   hooks: {
     beforeSave: (user, options) => {
       {
-        if(options.fields.includes('password')) {
+        if (options.fields.includes('password')) {
           user.password = bcrypt.hashSync(user.password, 10);
         }
       }

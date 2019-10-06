@@ -33,16 +33,16 @@ class AuthNavigation extends Component {
   }
 
   async componentWillReceiveProps(nextProps) {
-    if(nextProps.user) {
+    if (nextProps.user) {
       const { username, type } = nextProps.user;
 
       this.setState({ username: username, user: nextProps.user });
-      if(type === 'admin') {
+      if (type === 'admin') {
         this.setState({ visible: true });
       }
     }
 
-    if(nextProps.logout) {
+    if (nextProps.logout) {
       await this.socket.emit('GET_USERS');
       await this.props.resetUserValues();
       this.props.history.push('/');

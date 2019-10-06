@@ -61,7 +61,7 @@ export const categoryCreate = params => async dispatch => {
   dispatch({ type: CREATING_CATEGORY });
   try {
     const response = await axios.post(`${ROOT_URL}/api/v1/categoryCreate`, params);
-    if(response.data) {
+    if (response.data) {
       dispatch({ type: CREATE_CATEGORY_SUCCESS, payload: response.data });
     } else {
       dispatch({ type: CREATE_CATEGORY_FAIL });
@@ -75,7 +75,7 @@ export const categoryFindAll = params => async dispatch => {
   dispatch({ type: FINDING_CATEGORY });
   try {
     const response = await axios.post(`${ROOT_URL}/api/v1/categoryFindAll`, params);
-    if(response.data) {
+    if (response.data) {
       dispatch({ type: FIND_CATEGORY_SUCCESS, payload: response.data });
     } else {
       dispatch({ type: FIND_CATEGORY_FAIL });

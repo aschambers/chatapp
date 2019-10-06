@@ -14,7 +14,7 @@ const Signup = (props) => {
   const [password, setPassword] = useState('');
 
   useEffect(() => {
-    if(props.success) {
+    if (props.success) {
       toast.dismiss();
       toast.success('You signed up successfully, please check for an email to verify your account!', {
         position: toast.POSITION.BOTTOM_CENTER,
@@ -22,14 +22,14 @@ const Signup = (props) => {
       setTimeout(() => {
         setShowSuccess(true);
       }, 3000);
-    } else if(props.error) {
+    } else if (props.error) {
       toast.dismiss();
       toast.error('Email address or username is already in use', { position: 'bottom-center' });
     }
     props.resetUserValues();
   }, [props, props.success, props.error]);
 
-  if(showSuccess) {
+  if (showSuccess) {
     return <Redirect push to="/Login" />;
   }
 
@@ -47,7 +47,7 @@ const Signup = (props) => {
       toast.error('Email address must be a valid!', { position: 'bottom-center' });
       return;
     }
-    if(!email && !username && !password) {
+    if (!email && !username && !password) {
       toast.dismiss();
       toast.error('All fields are required to signup.', { position: 'bottom-center' });
     } else if (username.length > 14) {

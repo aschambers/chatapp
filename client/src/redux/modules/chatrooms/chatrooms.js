@@ -90,7 +90,7 @@ export const chatroomCreate = params => async dispatch => {
   dispatch({ type: CREATING_CHATROOM });
   try {
     const response = await axios.post(`${ROOT_URL}/api/v1/chatroomCreate`, params);
-    if(response.data) {
+    if (response.data) {
       dispatch({ type: CREATE_CHATROOM_SUCCESS, payload: response.data });
     } else {
       dispatch({ type: CREATE_CHATROOM_FAIL });
@@ -132,7 +132,7 @@ export const chatroomUpdate = params => async dispatch => {
   dispatch({ type: UPDATING_CHATROOM });
   try {
     const response = await axios.put(`${ROOT_URL}/api/v1/chatroomUpdate`, params);
-    if(response.data) {
+    if (response.data) {
       dispatch({ type: UPDATE_CHATROOM_SUCCESS });
     } else {
       dispatch({ type: UPDATE_CHATROOM_FAIL });

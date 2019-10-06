@@ -7,14 +7,14 @@ import './Home.css';
 const Home = (props) => {
   const route = props.location.pathname;
 
-  if(route === "/Signup") {
+  if (route === "/Signup") {
     return (
       <div className="homepage">
         <Navigation />
         <Signup />
       </div>
     );
-  } else if(route === "/" || route === "/Login") {
+  } else if (route === "/" || route === "/Login") {
     return (
       <div className="homepage">
         <Navigation />
