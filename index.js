@@ -8,14 +8,14 @@ app.use(auth);
 app.use(busboyBodyParser({ limit: '50mb', multi: true }));
 app.use(express.json());
 // cors
-const cors = require('cors');
-app.use(cors({ credentials: true, origin: true }));
-app.options('*', cors());
-app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
+// const cors = require('cors');
+// app.use(cors({ credentials: true, origin: true }));
+// app.options('*', cors());
+// app.use(function(req, res, next) {
+//   res.header('Access-Control-Allow-Credentials', 'true');
+//   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+//   next();
+// });
 // routes
 require('./server/routes/userRoutes')(app);
 require('./server/routes/messageRoutes')(app);
