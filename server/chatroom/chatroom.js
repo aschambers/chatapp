@@ -1,6 +1,11 @@
 const axios = require('axios');
 const keys = require('../config/keys');
 const SERVER_URL = keys.server_url;
+const jwt = require('jsonwebtoken');
+const token = jwt.sign({ website: 'chattersanctum' }, keys.secret);
+const config = {
+  headers: { 'Authorization': 'bearer ' + token }
+}
 
 module.exports = async(server) => {
   const io = require('socket.io')(server);
@@ -26,7 +31,7 @@ module.exports = async(server) => {
     socket.on('GET_CHATROOM_MESSAGES', async(data) => {
       socket.leave(data.previousRoom);
       socket.join(data.room);
-      let messages = await axios.post(`${SERVER_URL}/api/v1/getChatroomMessages`, data) || [];
+      let messages = await axios.post(`${SERVER_URL}/api/v1/getChatroomMessages`, data, config) || [];
       io.to(data.socketId).emit('RECEIVE_CHATROOM_MESSAGES', messages.data);
     });
 
@@ -36,7 +41,7 @@ module.exports = async(server) => {
         message: data.message,
         userId: data.userId,
         chatroomId: data.chatroomId
-      });
+      }, config);
       if (messages) {
         io.in(data.room).emit('RECEIVE_CHATROOM_MESSAGES', messages.data);
       }
@@ -46,7 +51,7 @@ module.exports = async(server) => {
       let messages = await axios.post(`${SERVER_URL}/api/v1/messageChatroomDelete`, {
         chatroomId: data.chatroomId,
         messageId: data.messageId
-      });
+      }, config);
       if (messages) {
         io.in(data.room).emit('RECEIVE_CHATROOM_MESSAGES', messages.data);
       }
@@ -57,7 +62,7 @@ module.exports = async(server) => {
         chatroomId: data.chatroomId,
         messageId: data.messageId,
         message: data.message
-      });
+      }, config);
       if (messages) {
         io.in(data.room).emit('RECEIVE_CHATROOM_MESSAGES', messages.data);
       }
@@ -66,14 +71,14 @@ module.exports = async(server) => {
     socket.on('GET_PERSONAL_MESSAGES', async(data) => {
       socket.leave(data.previousRoom);
       socket.join(data.room);
-      let messages = await axios.post(`${SERVER_URL}/api/v1/getPersonalMessages`, data) || [];
+      let messages = await axios.post(`${SERVER_URL}/api/v1/getPersonalMessages`, data, config) || [];
       io.to(data.socketId).emit('RECEIVE_PERSONAL_MESSAGES', messages.data);
     });
 
     socket.on('GET_PRIVATE_MESSAGES', async(data) => {
       socket.leave(data.previousRoom);
       socket.join(data.room);
-      let messages = await axios.post(`${SERVER_URL}/api/v1/getPrivateMessages`, data) || [];
+      let messages = await axios.post(`${SERVER_URL}/api/v1/getPrivateMessages`, data, config) || [];
       io.to(data.socketId).emit('RECEIVE_PRIVATE_MESSAGES', messages.data);
     });
 
@@ -83,7 +88,7 @@ module.exports = async(server) => {
         message: data.message,
         userId: data.userId,
         friendId: data.friendId
-      });
+      }, config);
       if (messages) {
         io.in(data.room).emit('RECEIVE_PERSONAL_MESSAGES', messages.data);
       }
@@ -95,7 +100,7 @@ module.exports = async(server) => {
         message: data.message,
         userId: data.userId,
         friendId: data.friendId
-      });
+      }, config);
       if (messages) {
         io.in(data.room).emit('RECEIVE_PRIVATE_MESSAGES', messages.data);
       }
@@ -107,14 +112,14 @@ module.exports = async(server) => {
           userId: data.userId,
           friendId: data.friendId,
           messageId: data.messageId
-        });
+        }, config);
         io.to(data.socketId).emit('RECEIVE_PERSONAL_MESSAGES', messages.data);
       } else if (data.userId !== data.friendId) {
         const messages = await axios.post(`${SERVER_URL}/api/v1/messagePrivateDelete`, {
           userId: data.userId,
           friendId: data.friendId,
           messageId: data.messageId
-        });
+        }, config);
         io.to(data.socketId).emit('RECEIVE_PRIVATE_MESSAGES', messages.data);
       }
     });
@@ -126,7 +131,7 @@ module.exports = async(server) => {
           friendId: data.friendId,
           messageId: data.messageId,
           message: data.message
-        });
+        }, config);
         io.in(data.room).emit('RECEIVE_PERSONAL_MESSAGES', messages.data);
       } else if (data.userId !== data.friendId) {
         let messages = await axios.put(`${SERVER_URL}/api/v1/messagePrivateEdit`, {
@@ -134,7 +139,7 @@ module.exports = async(server) => {
           friendId: data.friendId,
           messageId: data.messageId,
           message: data.message
-        });
+        }, config);
         io.in(data.room).emit('RECEIVE_PRIVATE_MESSAGES', messages.data);
       }
     });
@@ -144,7 +149,7 @@ module.exports = async(server) => {
         serverId: data.serverId,
         type: data.type,
         userId: data.userId
-      });
+      }, config);
       if (userList) {
         io.in(data.room).emit('RECEIVE_SERVER_LIST', userList.data);
       }
@@ -155,7 +160,7 @@ module.exports = async(server) => {
         serverId: data.serverId,
         type: data.type,
         userId: data.userId
-      });
+      }, config);
       if (userList) {
         io.in(data.room).emit('RECEIVE_SERVER_LIST', userList.data);
       }

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { ROOT_URL } from '../../../config/networkSettings';
+import { config } from '../../../config/token';
 
 import {
   CREATING_CHATROOM,
@@ -89,7 +90,7 @@ export default (state = initialState, action) => {
 export const chatroomCreate = params => async dispatch => {
   dispatch({ type: CREATING_CHATROOM });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/chatroomCreate`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/chatroomCreate`, params, config);
     if (response.data) {
       dispatch({ type: CREATE_CHATROOM_SUCCESS, payload: response.data });
     } else {
@@ -103,7 +104,7 @@ export const chatroomCreate = params => async dispatch => {
 export const getChatrooms = params => async dispatch => {
   dispatch({ type: GETTING_CHATROOMS });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/getChatrooms`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/getChatrooms`, params, config);
     if (response.data) {
       dispatch({ type: GET_CHATROOMS_SUCCESS, payload: response.data });
     } else {
@@ -117,7 +118,7 @@ export const getChatrooms = params => async dispatch => {
 export const deleteChatroom = params => async dispatch => {
   dispatch({ type: DELETING_CHATROOM });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/deleteChatroom`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/deleteChatroom`, params, config);
     if (response.data) {
       dispatch({ type: DELETE_CHATROOM_SUCCESS });
     } else {
@@ -131,7 +132,7 @@ export const deleteChatroom = params => async dispatch => {
 export const chatroomUpdate = params => async dispatch => {
   dispatch({ type: UPDATING_CHATROOM });
   try {
-    const response = await axios.put(`${ROOT_URL}/api/v1/chatroomUpdate`, params);
+    const response = await axios.put(`${ROOT_URL}/api/v1/chatroomUpdate`, params, config);
     if (response.data) {
       dispatch({ type: UPDATE_CHATROOM_SUCCESS });
     } else {

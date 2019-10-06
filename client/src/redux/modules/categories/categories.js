@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { ROOT_URL } from '../../../config/networkSettings';
+import { config } from '../../../config/token';
 
 import {
   CREATING_CATEGORY,
@@ -60,7 +61,7 @@ export default (state = initialState, action) => {
 export const categoryCreate = params => async dispatch => {
   dispatch({ type: CREATING_CATEGORY });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/categoryCreate`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/categoryCreate`, params, config);
     if (response.data) {
       dispatch({ type: CREATE_CATEGORY_SUCCESS, payload: response.data });
     } else {
@@ -74,7 +75,7 @@ export const categoryCreate = params => async dispatch => {
 export const categoryFindAll = params => async dispatch => {
   dispatch({ type: FINDING_CATEGORY });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/categoryFindAll`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/categoryFindAll`, params, config);
     if (response.data) {
       dispatch({ type: FIND_CATEGORY_SUCCESS, payload: response.data });
     } else {
