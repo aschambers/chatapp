@@ -15,6 +15,7 @@ module.exports = {
    */
   inviteCreate: async(req, res) => {
     const { expires, serverId } = req.body;
+
     req.body.token = crypto.randomBytes(12).toString('hex');
     req.body.code = 'invite-' + crypto.randomBytes(12).toString('hex');
 
@@ -25,8 +26,7 @@ module.exports = {
     const result = await InviteModel.create(req.body);
     if (!result) return res.status(422).json({"error":"Unable to create invite"});
 
-    const inviteCode = `${result.code}`
-    return res.status(200).send(inviteCode);
+    res.status(200).send(`${result.code}`);
   },
 
   /**
@@ -36,6 +36,7 @@ module.exports = {
    */
   inviteEmailCreate: async(req, res) => {
     const { expires, serverId, email } = req.body;
+
     req.body.token = crypto.randomBytes(12).toString('hex');
     req.body.code = 'invite-' + crypto.randomBytes(12).toString('hex');
 
@@ -56,12 +57,9 @@ module.exports = {
       html: 'Please use this invite code to join the server ' + server.name + '.\n\n' + `${result.code}`
     };
     const sentEmail = await sgMail.send(msg);
+    if (!sentEmail) return res.status(422).send({"error":"Unknown error creating user"});
 
-    if (sentEmail) {
-      return res.status(200).send({"success":"Invite created successfully"});
-    } else {
-      return res.status(422).send({"error":"Unknown error creating user"});
-    }
+    res.status(200).send({"success":"Invite created successfully"});
   },
 
   /**
@@ -73,9 +71,7 @@ module.exports = {
     const { userId, code, email } = req.body;
 
     const validInvite = await InviteModel.findOne({ where: { code: code } });
-
     if (!validInvite) return res.status(422).send({"error":"Error verifying invite"});
-
     if (moment(validInvite.updatedAt).valueOf() > moment().add(validInvite.expires, 'hours').valueOf()) {
       return res.status(422).send({"error":"Error verifying invite date"});
     }
@@ -99,6 +95,7 @@ module.exports = {
     for (let i = 0; i < user.serversList.length; i++) {
       if (user.serversList[i].serverId === server.id) {
         foundServerForUser = true;
+        break;
       }
     }
 
@@ -156,10 +153,7 @@ module.exports = {
     const { serverId } = req.body;
 
     const invitesList = await InviteModel.findAll({ where: { serverId: serverId } });
-
-    if (!invitesList) return res.status(422).json({"error":"Unable to find invites"});
-
-    return res.status(200).send(invitesList);
+    res.status(200).send(invitesList);
   }
 
 }

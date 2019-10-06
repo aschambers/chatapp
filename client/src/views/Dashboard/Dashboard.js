@@ -109,28 +109,74 @@ const Dashboard = (props) => {
   useOnClickOutside(ref, () => setShowCategoryModal(false));
 
   useEffect(() => {
-    if (friendsList === null && id !== null && !props.findingFriends && !didFindFriends) {
+    if (props.createServerError) {
+      toast.dismiss();
+      toast.error('Error creating server!', { position: 'bottom-center' });
+      props.resetServerValues();
+    }
+  }, [props]);
+
+  useEffect(() => {
+    if (props.createServerSuccess) {
+      props.resetServerValues();
+      toast.success('Success creating server!', { position: 'bottom-center' });
+      props.getUpdatedUser({ userId: id });
+    }
+  }, [props, id]);
+
+  useEffect(() => {
+    if (props.deleteServerError) {
+      toast.dismiss();
+      toast.error('Error deleting server!', { position: 'bottom-center' });
+      props.resetServerValues();
+    }
+  }, [props]);
+
+  useEffect(() => {
+    if (props.deleteServerSuccess) {
+      props.resetServerValues();
+      toast.success('Success deleting server!', { position: 'bottom-center' });
+      props.getUpdatedUser({ userId: id });
+      setServer('');
+      setServerId(null);
+      setSettingsOpen(false);
+      setIsServerSettingsOpen(false);
+      showServerSettings(false);
+      setActiveServerSetting("overview");
+      setActiveUserSetting("myaccount");
+      setAccountModalOpen(false);
+    }
+  }, [props, id]);
+
+  useEffect(() => {
+    if (id !== null && friendsList === null && !didFindFriends) {
       setDidFindFriends(true);
       props.findFriends({
         userId: id
       });
     }
+  }, [props, id, friendsList, didFindFriends]);
 
+  useEffect(() => {
     if (props.friendsList && props.findFriendsSuccess) {
       setFriendsList(props.friendsList);
       props.resetFriendValues();
     }
+  }, [props]);
 
+  useEffect(() => {
     if (props.friendsList && props.createFriendSuccess) {
       setFriendsList(props.friendsList);
       props.resetFriendValues();
     }
+  }, [props]);
 
+  useEffect(() => {
     if (props.friendsList && props.deleteFriendSuccess) {
       setFriendsList(props.friendsList);
       props.resetFriendValues();
     }
-  }, [props, id, friendsList, didFindFriends]);
+  }, [props]);
 
   useEffect(() => {
     if (props.findInvitesSuccess) {
@@ -138,11 +184,16 @@ const Dashboard = (props) => {
       props.resetInviteValues();
       setActiveServerSetting("invites");
     }
+  }, [props]);
+
+  useEffect(() => {
     if (props.findInvitesError) {
       props.resetInviteValues();
       setActiveServerSetting("invites");
     }
+  }, [props]);
 
+  useEffect(() => {
     if (props.verifySuccess) {
       setModalOpen(false);
       toast.dismiss();
@@ -150,19 +201,25 @@ const Dashboard = (props) => {
       props.resetInviteValues();
       props.getUpdatedUser({ userId: id });
     }
+  }, [props, id]);
 
+  useEffect(() => {
     if (props.verifyError) {
       toast.dismiss();
       toast.error('Error joining server!', { position: 'bottom-center' });
       props.resetInviteValues();
     }
+  }, [props]);
 
+  useEffect(() => {
     if (props.updateRoleSuccess) {
       setShowUserManagement(false);
       setServerUserRole("admin");
       setServerUser(null);
     }
+  }, [props]);
 
+  useEffect(() => {
     if (props.serverUserList && props.findServerSuccess) {
       props.resetServerValues();
       setServerUserList(props.serverUserList);
@@ -175,35 +232,50 @@ const Dashboard = (props) => {
         }
       }
     }
+  }, [props, username]);
 
+  useEffect(() => {
     if (props.serverUserBans && (props.findBansSuccess || props.unbanUserSuccess)) {
       props.resetServerValues();
       setShowUserManagementBan(false);
       setServerUserBan(null);
       setServerUserBans(props.serverUserBans);
     }
+  }, [props]);
 
+  useEffect(() => {
     if (props.chatroomError) {
       toast.dismiss();
       toast.error('Error, Error creating chatroom!', { position: 'bottom-center' });
       props.resetChatroomValues();
     }
+  }, [props]);
 
+  useEffect(() => {
     if (props.inviteCode) {
       setInviteModal(true);
       setIsServerSettingsOpen(false);
       setInviteCode(props.inviteCode);
     }
+  }, [props]);
+
+  useEffect(() => {
     if (props.inviteEmailSuccess) {
       setInviteModal(false);
       setIsServerSettingsOpen(false);
       toast.dismiss();
       toast.success('Success, Invite was sent successfully!', { position: 'bottom-center' });
     }
+  }, [props]);
+
+  useEffect(() => {
     if (props.inviteEmailError) {
       toast.dismiss();
       toast.error('Error, Invite could not be sent!', { position: 'bottom-center' });
     }
+  }, [props]);
+
+  useEffect(() => {
     if (props.chatroomList && props.chatroomSuccess) {
       setChatrooms(props.chatroomList);
       if (props.chatroomList.length > 0) {
@@ -214,24 +286,35 @@ const Dashboard = (props) => {
       setNewChannel('');
       props.resetChatroomValues();
     }
+  }, [props]);
+
+  useEffect(() => {
     if (props.categoryList && props.findCategorySuccess) {
       props.resetCategoryValues();
       setCategories(props.categoryList);
       setShowCategoryModal(false);
     }
-  }, [props, id, username]);
+  }, [props]);
 
   useEffect(() => {
     window.addEventListener('keydown', detectEscape);
-    if(!props.user && !didFindUser) {
+    if (!props.user && !didFindUser) {
       checkActiveMedia();
       setDidFindUser(true);
       props.currentUser();
-    } else if (props.retrieveUserError) {
+    }
+  }, [props, didFindUser]);
+
+  useEffect(() => {
+    if (props.retrieveUserError) {
       setIsLoading(false);
       toast.dismiss();
       toast.error('Error saving updates to your account, please try again!', { position: 'bottom-center' });
-    } else if (props.user && props.retrieveUserSuccess) {
+    }
+  }, [props]);
+
+  useEffect(() => {
+    if (props.user && props.retrieveUserSuccess) {
       props.resetValues();
       const { id, username, email, imageUrl, active, serversList } = props.user;
       setId(id);
@@ -248,7 +331,11 @@ const Dashboard = (props) => {
       props.findFriends({
         userId: id
       });
-    } else if(props.user && props.retrieveUpdatedUserSuccess) {
+    }
+  }, [props]);
+
+  useEffect(() => {
+    if (props.user && props.retrieveUpdatedUserSuccess) {
       props.resetValues();
       const { id, username, email, imageUrl, active, serversList } = props.user;
       setId(id);
@@ -308,7 +395,7 @@ const Dashboard = (props) => {
         toast.info('You have been removed from this server an admin!', { position: 'bottom-center' });
       }
     }
-  }, [props, openServerItem, didFindUser]);
+  }, [props, openServerItem]);
 
   const detectEscape = (event) => {
     if (event.keyCode === 27) {
@@ -321,7 +408,7 @@ const Dashboard = (props) => {
     }
   }
 
-  if(props.logout) {
+  if (props.logout) {
     return <Redirect push to="/" />;
   }
 
@@ -329,10 +416,11 @@ const Dashboard = (props) => {
     props.userLogout({ id: id });
   }
 
-  const deleteServer = () => {
-    // props.deleteServer({
-    //   serverId: serverId
-    // });
+  const serverDelete = () => {
+    props.serverDelete({
+      userId: id,
+      serverId: serverId
+    });
   }
 
   const toggleModal = (value) => {
@@ -352,9 +440,6 @@ const Dashboard = (props) => {
   const getUpdatedServerList = (closeModal) => {
     if (closeModal) {
       setModalOpen(false);
-      toast.dismiss();
-      toast.success('Success, the server was created!', { position: 'bottom-center' });
-      props.getUpdatedUser({ userId: id });
     } else {
       toast.dismiss();
       toast.error('There was an error creating the server!', { position: 'bottom-center' });
@@ -922,7 +1007,7 @@ const Dashboard = (props) => {
             <p className={activeServerSetting === "members" ? "serversettings-sidebar-activeitem" : "serversettings-sidebar-members"} onClick={() => { setActiveServerSetting("members"); }}>Members</p>
             <p className={activeServerSetting === "invites" ? "serversettings-sidebar-activeitem" : "serversettings-sidebar-invites"} onClick={() => { getInvites(); }}>Invites</p>
             <p className={activeServerSetting === "bans" ? "serversettings-sidebar-activeitem" : "serversettings-sidebar-bans"} onClick={() => { setActiveServerSetting("bans"); }}>Bans</p>
-            <p onClick={deleteServer}>Delete Server</p>
+            <p onClick={serverDelete} style={{ cursor: 'pointer' }}>Delete Server</p>
           </div>
           <div className="serversettings-servercontainer">
             {activeServerSetting === "overview" ?
@@ -1184,10 +1269,13 @@ const mapStateToProps = ({ usersReducer, serversReducer, categoriesReducer, chat
     retrieveUserSuccess: usersReducer.retrieveUserSuccess,
     retrieveUpdatedUserError: usersReducer.retrieveUpdatedUserError,
     retrieveUpdatedUserSuccess: usersReducer.retrieveUpdatedUserSuccess,
-    serversList: serversReducer.serversList,
+    createServerError: serversReducer.createServerError,
+    createServerSuccess: serversReducer.createServerSuccess,
     findServerSuccess: serversReducer.findServerSuccess,
     serverUserList: serversReducer.serverUserList,
     serverUserBans: serversReducer.serverUserBans,
+    deleteServerError: serversReducer.deleteServerError,
+    deleteServerSuccess: serversReducer.deleteServerSuccess,
     updateRoleSuccess: serversReducer.updateRoleSuccess,
     updateRoleError: serversReducer.updateRoleError,
     unbanUserSuccess: serversReducer.unbanUserSuccess,

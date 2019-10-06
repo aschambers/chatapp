@@ -37,7 +37,7 @@ const Category = sequelize.define('categories', {
   }
 });
 
-Category.hasMany(Chatroom);
+Category.hasMany(Chatroom, { onDelete: 'cascade' });
 Chatroom.belongsTo(Category);
 
 module.exports = Category;

@@ -47,7 +47,7 @@ const Chatroom = sequelize.define('chatrooms', {
   }
 });
 
-Chatroom.hasMany(Message);
+Chatroom.hasMany(Message, { onDelete: 'cascade' });
 Message.belongsTo(Chatroom);
 
 module.exports = Chatroom;

@@ -91,7 +91,7 @@ export const inviteCreate = params => async dispatch => {
   dispatch({ type: CREATING_INVITE });
   try {
     const response = await axios.post(`${ROOT_URL}/api/v1/inviteCreate`, params);
-    if(response.data) {
+    if (response.data) {
       dispatch({ type: CREATE_INVITE_SUCCESS, payload: response.data });
     } else {
       dispatch({ type: CREATE_INVITE_FAIL });
@@ -105,7 +105,7 @@ export const inviteEmailCreate = params => async dispatch => {
   dispatch({ type: CREATING_EMAIL_INVITE });
   try {
     const response = await axios.post(`${ROOT_URL}/api/v1/inviteEmailCreate`, params);
-    if(response.data) {
+    if (response.data) {
       dispatch({ type: CREATE_INVITE_EMAIL_SUCCESS });
     } else {
       dispatch({ type: CREATE_INVITE_EMAIL_FAIL });
@@ -119,7 +119,7 @@ export const inviteVerification = params => async dispatch => {
   dispatch({ type: VERIFYING_SERVER_INVITE });
   try {
     const response = await axios.post(`${ROOT_URL}/api/v1/inviteVerification`, params);
-    if(response.data) {
+    if (response.data) {
       dispatch({ type: VERIFY_SERVER_INVITE_SUCCESS, payload: response.data });
     } else {
       dispatch({ type: VERIFY_SERVER_INVITE_FAIL });
@@ -133,7 +133,7 @@ export const findInvites = params => async dispatch => {
   dispatch({ type: FINDING_INVITES });
   try {
     const response = await axios.post(`${ROOT_URL}/api/v1/findInvites`, params);
-    if(response.data) {
+    if (response.data) {
       dispatch({ type: FIND_INVITE_SUCCESS, payload: response.data });
     } else {
       dispatch({ type: FIND_INVITE_FAIL });

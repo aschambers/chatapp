@@ -53,7 +53,7 @@ module.exports = async(server) => {
     });
 
     socket.on('EDIT_CHATROOM_MESSAGE', async(data) => {
-      let messages = await axios.post(`${SERVER_URL}/api/v1/messageChatroomEdit`, {
+      let messages = await axios.put(`${SERVER_URL}/api/v1/messageChatroomEdit`, {
         chatroomId: data.chatroomId,
         messageId: data.messageId,
         message: data.message
@@ -121,7 +121,7 @@ module.exports = async(server) => {
 
     socket.on('EDIT_USER_MESSAGE', async(data) => {
       if (data.userId === data.friendId) {
-        let messages = await axios.post(`${SERVER_URL}/api/v1/messagePersonalEdit`, {
+        let messages = await axios.put(`${SERVER_URL}/api/v1/messagePersonalEdit`, {
           userId: data.userId,
           friendId: data.friendId,
           messageId: data.messageId,
@@ -129,7 +129,7 @@ module.exports = async(server) => {
         });
         io.in(data.room).emit('RECEIVE_PERSONAL_MESSAGES', messages.data);
       } else if (data.userId !== data.friendId) {
-        let messages = await axios.post(`${SERVER_URL}/api/v1/messagePrivateEdit`, {
+        let messages = await axios.put(`${SERVER_URL}/api/v1/messagePrivateEdit`, {
           userId: data.userId,
           friendId: data.friendId,
           messageId: data.messageId,
@@ -166,23 +166,23 @@ module.exports = async(server) => {
     // user actions
     socket.on('SEND_USER', function(data) {
       let users = [];
-      if(users.length > 0) {
+      if (users.length > 0) {
         const result = users.filter((item) => {
           return (item.username === data.username);
         });
-        if(result.length === 0) {
+        if (result.length === 0) {
           users.push(data);
           io.emit('RECEIVE_USERS', users);
-        } else if(result.length !== 0) {
+        } else if (result.length !== 0) {
           for(let i = 0; i < users.length; i++) {
-            if(users[i].username === data.username) {
+            if (users[i].username === data.username) {
               users[i].active = true;
               break;
             }
           }
           io.emit('RECEIVE_USERS', users);
         }
-      } else if(users.length < 1) {
+      } else if (users.length < 1) {
         users.push(data);
         io.emit('RECEIVE_USERS', users);
       }
@@ -191,7 +191,7 @@ module.exports = async(server) => {
     socket.on('LOGOUT_USER', function(data) {
       let users = [];
       for(let i = 0; i < users.length; i++) {
-        if(users[i].username === data.username) {
+        if (users[i].username === data.username) {
           users[i].active = false;
           io.emit('RECEIVE_LOGOUT', users);
           break;

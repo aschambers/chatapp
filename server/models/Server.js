@@ -58,9 +58,9 @@ const Server = sequelize.define('servers', {
   }
 });
 
-Server.hasMany(Category);
-Server.hasMany(Chatroom);
-Server.hasMany(Invite);
+Server.hasMany(Category, { onDelete: 'cascade' });
+Server.hasMany(Chatroom, { onDelete: 'cascade' });
+Server.hasMany(Invite, { onDelete: 'cascade' });
 Category.belongsTo(Server);
 Chatroom.belongsTo(Server);
 Invite.belongsTo(Server);

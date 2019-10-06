@@ -11,12 +11,12 @@ module.exports = {
    */
   friendCreate: async(req, res) => {
     const { username, friendUsername, userId, friendId } = req.body;
-    req.body.groupId = crypto.randomBytes(32).toString('hex');
 
     if (!username || !friendUsername || !userId || !friendId) {
-      return res.status(400).send({'error': 'Missing required fields'});
+      return res.status(400).send({'error':'Missing required fields'});
     }
 
+    req.body.groupId = crypto.randomBytes(32).toString('hex');
     req.body.activeFriend = true;
 
     const friendFinder = await FriendModel.findOne({ where: {
@@ -25,41 +25,40 @@ module.exports = {
 
     if (!friendFinder) {
       const result = await FriendModel.create(req.body);
-      if (!result) return res.status(422).json({"error":"Unable to create friend"});
+      if (!result) return res.status(422).json({'error':'Unable to create friend'});
     } else if (friendFinder) {
       const result = await FriendModel.update(
         { activeFriend: req.body.activeFriend }, { where: { id: userId } }
       );
-      if (!result) return res.status(422).json({"error":"Unable to add friend back"});
+      if (!result) return res.status(422).json({'error':'Unable to add friend back'});
     }
 
     const userFinder = await FriendModel.findOne({ where: {
       [Op.and]: [{ userId: friendId }, { friendId: userId }]
-    }});
+    } });
 
     const user = req.body.friendId;
     const friend = req.body.userId;
+
+    req.body.userId = user;
+    req.body.friendId = friend;
+    req.body.username = req.body.friendUsername;
+
     if (!userFinder) {
-      req.body.userId = user;
-      req.body.friendId = friend;
-      req.body.username = req.body.friendUsername;
       const result = await FriendModel.create(req.body);
-      if (!result) return res.status(422).json({"error":"Unable to create friend"});
+      if (!result) return res.status(422).json({'error':'Unable to create friend'});
     } else if (userFinder) {
-      req.body.userId = user;
-      req.body.friendId = friend;
-      req.body.username = req.body.friendUsername;
       const result = await FriendModel.update(
         { activeFriend: req.body.activeFriend }, { where: { id: userId } }
       );
-      if (!result) return res.status(422).json({"error":"Unable to add friend back"});
+      if (!result) return res.status(422).json({'error':'Unable to add friend back'});
     }
 
     req.body.userId = friend;
     req.body.friendId = user;
 
-    const friendsList = await FriendModel.findAll({ where: { userId: userId }});
-    return res.status(200).send(friendsList);
+    const friendsList = await FriendModel.findAll({ where: { userId: userId } });
+    res.status(200).send(friendsList);
   },
 
   /**
@@ -71,16 +70,20 @@ module.exports = {
     const { userId, friendId } = req.body;
 
     if (!userId || !friendId) {
-      return res.status(400).send({'error': 'Missing required fields'});
+      return res.status(400).send({'error':'Missing required fields'});
     }
 
-    req.body.activeFriend = false;
+    const currentFriend = await FriendModel.findOne({ where: { [Op.and]: [{ userId: userId }, { friendId: friendId }] }});
+    if (!currentFriend) return res.status(422).json({'error':'Unable to update current friend'});
 
-    const result = await FriendModel.save(req.body);
-    if (!result) return res.status(422).json({"error":"Unable to update friend"});
+    const updateFriend = await currentFriend.update(
+      { activeFriend: false },
+      { where: { [Op.and]: [{ userId: userId }, { friendId: friendId }] }}
+    );
+    if (!updateFriend) return res.status(422).json({'error':'Unable to update friends list'});
 
     const friendsList = await FriendModel.findAll({ where: { userId: userId }});
-    return res.status(200).send(friendsList);
+    res.status(200).send(friendsList);
   },
 
   /**
@@ -91,12 +94,10 @@ module.exports = {
   findFriends: async(req, res) => {
     const { userId } = req.body;
 
-    if (!userId) {
-      return res.status(400).send({'error': 'Missing required fields'});
-    }
+    if (!userId) return res.status(400).send({'error':'Missing required fields'});
 
     const friendsList = await FriendModel.findAll({ where: { userId: userId }});
-    return res.status(200).send(friendsList);
+    res.status(200).send(friendsList);
   }
 
 }

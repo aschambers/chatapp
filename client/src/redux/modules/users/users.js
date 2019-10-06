@@ -230,7 +230,7 @@ export const userSignup = params => async dispatch => {
   dispatch({ type: SIGNING_UP_USER });
   try {
     const response = await axios.post(`${ROOT_URL}/api/v1/userSignup`, params);
-    if(response.data) {
+    if (response.data) {
       dispatch({ type: SIGNUP_USER_SUCCESS });
     } else {
       dispatch({ type: SIGNUP_USER_FAIL });
@@ -244,7 +244,7 @@ export const userVerification = params => async dispatch => {
   dispatch({ type: VERIFYING_USER });
   try {
     const response = await axios.put(`${ROOT_URL}/api/v1/userVerification`, params);
-    if(response.data.success === "Account has already been verified") {
+    if (response.data.success === "Account has already been verified") {
       dispatch({ type: ALREADY_VERIFIED });
     } else if (response.data.success === "Success verifying account") {
       dispatch({ type: VERIFY_USER_SUCCESS });
@@ -302,7 +302,7 @@ export const getUpdatedUser = params => async dispatch => {
   dispatch({ type: RETRIEVE_UPDATED_USER_LOADING });
   try {
     const response = await axios.post(`${ROOT_URL}/api/v1/getSingleUser`, params);
-    if(response.data) {
+    if (response.data) {
       localStorage.setItem('user', JSON.stringify(response.data));
       dispatch({ type: RETRIEVE_UPDATED_USER_SUCCESS, payload: response.data });
     } else {
@@ -317,7 +317,7 @@ export const currentUser = () => async dispatch => {
   dispatch({ type: RETRIEVE_USER_LOADING });
   try {
     let user = await JSON.parse(localStorage.getItem('user'));
-    if(user) {
+    if (user) {
       dispatch({ type: RETRIEVE_USER_SUCCESS, payload: user });
     } else {
       dispatch({ type: RETRIEVE_USER_FAIL });
@@ -331,7 +331,7 @@ export const currentSocketUser = () => async dispatch => {
   dispatch({ type: RETRIEVE_SOCKET_USER_LOADING });
   try {
     let user = await JSON.parse(localStorage.getItem('user'));
-    if(user) {
+    if (user) {
       dispatch({ type: RETRIEVE_SOCKET_USER_SUCCESS, payload: user });
     } else {
       dispatch({ type: RETRIEVE_SOCKET_USER_FAIL });

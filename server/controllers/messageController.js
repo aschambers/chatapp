@@ -6,40 +6,22 @@ module.exports = {
   /**
    * @param {object} req
    * @param {object} res
-   * @returns {object} message object
-   */
-  messageCreate: async(req, res) => {
-    const { username, message, type } = req.body;
-    if (!username && !message && !type) {
-      return res.status(400).send({'error': 'Missing required fields'});
-    }
-    const result = await MessageModel.create(req.body);
-    if(result) {
-      return res.status(200).send(result);
-    } else {
-      return res.status(422).send({"error":"Unknown error creating message"});
-    }
-  },
-
-  /**
-   * @param {object} req
-   * @param {object} res
    * @returns {array} message list
    */
   messageChatroomCreate: async(req, res) => {
     const { username, message, userId, chatroomId } = req.body;
+
     if (!username && !message && !userId && !chatroomId) {
-      return res.status(400).send({'error': 'Missing required fields'});
+      return res.status(400).send({'error':'Missing required fields'});
     }
+
     const result = await MessageModel.create(req.body);
-    if (!result) return res.status(422).send({"error":"Unknown error creating message"});
+    if (!result) return res.status(422).send({'error':'Unknown error creating message'});
 
     const messages = await MessageModel.findAll({ where: { chatroomId: chatroomId }, order: [['createdAt', 'DESC']] });
-    if (messages) {
-      res.status(200).send(messages);
-    } else {
-      return res.status(422).send({"error":"Unknown error creating message"});
-    }
+    if (!messages) return res.status(422).send({'error':'Unknown error creating message'});
+
+    res.status(200).send(messages);
   },
 
   /**
@@ -49,13 +31,15 @@ module.exports = {
    */
   messageChatroomDelete: async(req, res, next) => {
     const { chatroomId, messageId } = req.body;
+
     const deleteMessage = await MessageModel.destroy({where: { id: messageId }});
-    if(deleteMessage) {
-      const result = await MessageModel.findAll({ where: { chatroomId: chatroomId }, order: [['createdAt', 'DESC']] });
-      res.status(200).send(result);
-    } else {
-      res.status(422).send({'error':'error deleting message'});
-    }
+    if (!deleteMessage) return res.status(422).send({'error':'Error deleting message'});
+
+    const result = await MessageModel.findAll({ where: { chatroomId: chatroomId }, order: [['createdAt', 'DESC']] });
+
+    if (!result) return res.status(422).send({'error':'Error finding messages'});
+
+    res.status(200).send(result);
   },
 
   /**
@@ -65,40 +49,20 @@ module.exports = {
    */
   messageChatroomEdit: async(req, res, next) => {
     const { chatroomId, messageId, message } = req.body;
+
     const findMessage = await MessageModel.findByPk(messageId);
-    if (!findMessage) return res.status(422).send({'error':'error finding message'});
+    if (!findMessage) return res.status(422).send({'error':'Error finding message'});
 
     const editMessage = await findMessage.update(
       { message: message },
       { where: { id: messageId }}
     );
-
-    if (!editMessage) return res.status(422).send({'error':'error editing message'});
+    if (!editMessage) return res.status(422).send({'error':'Error editing message'});
 
     const result = await MessageModel.findAll({ where: { chatroomId: chatroomId }, order: [['createdAt', 'DESC']] });
-    if (!result) return res.status(422).send({'error':'error retrieving messages'});
-    res.status(200).send(result);
-  },
+    if (!result) return res.status(422).send({'error':'Error retrieving messages'});
 
-  /**
-   * @param {object} req
-   * @param {object} res
-   * @returns {object} message object
-   */
-  messageUpdate: async(req, res, next) => {
-    const { id, message } = req.body;
-    const findMessage = await MessageModel.findByPk(id);
-    if(findMessage) {
-      findMessage.message = message;
-      let messageUpdate = await findMessage.save();
-      if(messageUpdate) {
-        res.status(200).send(messageUpdate);
-      } else {
-        res.status(422).send('message-update-error');
-      }
-    } else {
-      res.status(422).send({'error':'error finding updated message'});
-    }
+    res.status(200).send(result);
   },
 
   /**
@@ -108,12 +72,11 @@ module.exports = {
    */
   getChatroomMessages: async(req, res, next) => {
     const { chatroomId } = req.body;
+
     const result = await MessageModel.findAll({ where: { chatroomId: chatroomId }, order: [['createdAt', 'DESC']] });
-    if(result) {
-      res.status(200).send(result);
-    } else {
-      res.status(422).send({'error':'error fetching all messages'});
-    };
+    if (!result) return res.status(422).send({'error':'Error fetching all messages'});
+
+    res.status(200).send(result);
   },
 
   /**
@@ -123,17 +86,16 @@ module.exports = {
    */
   getPrivateMessages: async(req, res, next) => {
     const { userId, friendId } = req.body;
+
     const result = await MessageModel.findAll({ where: {
       [Op.or]: [
         { [Op.and]: [{ userId: userId }, { friendId: friendId }, { chatroomId: null }] },
         { [Op.and]: [{ userId: friendId }, { friendId: userId }, { chatroomId: null }] }
       ]
     }, order: [['createdAt', 'DESC']] });
-    if(result) {
-      res.status(200).send(result);
-    } else {
-      res.status(422).send({'error':'error fetching all messages'});
-    };
+    if (!result) return res.status(422).send({'error':'Error fetching all messages'});
+
+    res.status(200).send(result);
   },
 
   /**
@@ -142,18 +104,17 @@ module.exports = {
    * @returns {array} list of messages
    */
   getPersonalMessages: async(req, res, next) => {
-    const { userId, friendId } = req.body;
+    const { userId } = req.body;
+
     const result = await MessageModel.findAll({ where: {
       [Op.and]: [
         { chatroomId: null },
         { [Op.and]: [{ userId: userId }, { friendId: userId }] }
       ]
     }, order: [['createdAt', 'DESC']] });
-    if(result) {
-      res.status(200).send(result);
-    } else {
-      res.status(422).send({'error':'error fetching all messages'});
-    };
+    if (!result) return res.status(422).send({'error':'Error fetching all messages'});
+
+    res.status(200).send(result);
   },
 
   /**
@@ -164,10 +125,11 @@ module.exports = {
   messagePrivateCreate: async(req, res) => {
     const { username, message, userId, friendId } = req.body;
     if (!username && !message && !userId && !friendId) {
-      return res.status(400).send({'error': 'Missing required fields'});
+      return res.status(400).send({'error':'Missing required fields'});
     }
+
     const result = await MessageModel.create(req.body);
-    if (!result) return res.status(422).send({"error":"Unknown error creating message"});
+    if (!result) return res.status(422).send({'error':'Unknown error creating message'});
 
     const messages = await MessageModel.findAll({ where: {
       [Op.or]: [
@@ -175,11 +137,9 @@ module.exports = {
         { [Op.and]: [{ userId: friendId }, { friendId: userId }, { chatroomId: null }] }
       ]
     }, order: [['createdAt', 'DESC']] });
-    if (messages) {
-      res.status(200).send(messages);
-    } else {
-      return res.status(422).send({"error":"Unknown error creating message"});
-    }
+    if (!messages) return res.status(422).send({'error':'Unknown error creating message'});
+
+    res.status(200).send(messages);
   },
 
   /**
@@ -191,7 +151,7 @@ module.exports = {
     const { userId, friendId, messageId } = req.body;
 
     const deleteMessage = await MessageModel.destroy({ where: { id: messageId }});
-    if (!deleteMessage) return res.status(422).send({"error":"Unknown error deleting message"});
+    if (!deleteMessage) return res.status(422).send({'error':'Unknown error deleting message'});
 
     const messages = await MessageModel.findAll({ where: {
       [Op.or]: [
@@ -199,11 +159,9 @@ module.exports = {
         { [Op.and]: [{ userId: friendId }, { friendId: userId }, { chatroomId: null }] }
       ]
     }, order: [['createdAt', 'DESC']] });
-    if (messages) {
-      res.status(200).send(messages);
-    } else {
-      return res.status(422).send({"error":"Unknown error creating message"});
-    }
+    if (!messages) return res.status(422).send({'error':'Unknown error creating message'});
+
+    res.status(200).send(messages);
   },
 
   /**
@@ -215,14 +173,13 @@ module.exports = {
     const { userId, friendId, messageId, message } = req.body;
 
     const findMessage = await MessageModel.findByPk(messageId);
-    if (!findMessage) return res.status(422).send({"error":"Unknown error editing message"});
+    if (!findMessage) return res.status(422).send({'error':'Unknown error editing message'});
 
     const editMessage = await findMessage.update(
       { message: message },
       { where: { id: messageId }}
     );
-
-    if (!editMessage) return res.status(422).send({'error':'error editing message'});
+    if (!editMessage) return res.status(422).send({'error':'Error editing message'});
 
     const messages = await MessageModel.findAll({ where: {
       [Op.or]: [
@@ -230,11 +187,9 @@ module.exports = {
         { [Op.and]: [{ userId: friendId }, { friendId: userId }, { chatroomId: null }] }
       ]
     }, order: [['createdAt', 'DESC']] });
-    if (messages) {
-      res.status(200).send(messages);
-    } else {
-      return res.status(422).send({"error":"Unknown error creating message"});
-    }
+    if (!messages) return res.status(422).send({'error':'Unknown error creating message'});
+
+    res.status(200).send(messages);
   },
 
   /**
@@ -245,10 +200,11 @@ module.exports = {
   messagePersonalCreate: async(req, res) => {
     const { username, message, userId, friendId } = req.body;
     if (!username && !message && !userId && !friendId) {
-      return res.status(400).send({'error': 'Missing required fields'});
+      return res.status(400).send({'error':'Missing required fields'});
     }
+
     const result = await MessageModel.create(req.body);
-    if (!result) return res.status(422).send({"error":"Unknown error creating message"});
+    if (!result) return res.status(422).send({'error':'Unknown error creating message'});
 
     const messages = await MessageModel.findAll({ where: {
       [Op.and]: [
@@ -256,11 +212,9 @@ module.exports = {
         { [Op.and]: [{ userId: userId }, { friendId: userId }] }
       ]
     }, order: [['createdAt', 'DESC']] });
-    if (messages) {
-      res.status(200).send(messages);
-    } else {
-      return res.status(422).send({"error":"Unknown error creating message"});
-    }
+    if (!messages) return res.status(422).send({'error':'Unknown error creating message'});
+
+    res.status(200).send(messages);
   },
 
   /**
@@ -272,7 +226,7 @@ module.exports = {
     const { userId, messageId } = req.body;
 
     const deleteMessage = await MessageModel.destroy({where: { id: messageId }});
-    if (!deleteMessage) return res.status(422).send({"error":"Unknown error deleting message"});
+    if (!deleteMessage) return res.status(422).send({'error':'Unknown error deleting message'});
 
     const messages = await MessageModel.findAll({ where: {
       [Op.and]: [
@@ -280,11 +234,9 @@ module.exports = {
         { [Op.and]: [{ userId: userId }, { friendId: userId }] }
       ]
     }, order: [['createdAt', 'DESC']] });
-    if (messages) {
-      res.status(200).send(messages);
-    } else {
-      res.status(422).send({'error':'error deleting message'});
-    }
+    if (!messages) return res.status(422).send({'error':'Error deleting message'});
+
+    res.status(200).send(messages);
   },
 
   /**
@@ -296,14 +248,13 @@ module.exports = {
     const { userId, messageId, message } = req.body;
 
     const findMessage = await MessageModel.findByPk(messageId);
-    if (!findMessage) return res.status(422).send({"error":"Unknown error editing message"});
+    if (!findMessage) return res.status(422).send({'error':'Unknown error editing message'});
 
     const editMessage = await findMessage.update(
       { message: message },
       { where: { id: messageId }}
     );
-
-    if (!editMessage) return res.status(422).send({'error':'error editing message'});
+    if (!editMessage) return res.status(422).send({'error':'Error editing message'});
 
     const messages = await MessageModel.findAll({ where: {
       [Op.and]: [
@@ -311,11 +262,9 @@ module.exports = {
         { [Op.and]: [{ userId: userId }, { friendId: userId }] }
       ]
     }, order: [['createdAt', 'DESC']] });
-    if (messages) {
-      res.status(200).send(messages);
-    } else {
-      res.status(422).send({'error':'error editing message'});
-    }
+    if (!messages) return res.status(422).send({'error':'Error editing message'});
+
+    res.status(200).send(messages);
   }
 
 }
