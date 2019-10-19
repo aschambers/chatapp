@@ -111,8 +111,6 @@ module.exports = {
    * @returns {array} list of servers
    */
   findUserList: async(req, res, next) => {
-    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
-
     const server = await ServerModel.findByPk(req.body.serverId);
 
     if (!server && !server.userList) return res.status(422).send({'error':'Error finding server'});
@@ -126,8 +124,6 @@ module.exports = {
    * @returns {array} list of banned users
    */
   findUserBans: async(req, res, next) => {
-    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
-
     const server = await ServerModel.findByPk(req.body.serverId);
 
     if (!server.userBans) server.userBans = [];
@@ -179,8 +175,6 @@ module.exports = {
    * @returns {object} server object
    */
   serverDelete: async(req, res, next) => {
-    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
-
     const { userId, serverId } = req.body;
 
     if (!userId || !serverId) return res.status(400).send({'error':'Missing required fields'});

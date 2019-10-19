@@ -133,7 +133,7 @@ export const inviteVerification = params => async dispatch => {
 export const findInvites = params => async dispatch => {
   dispatch({ type: FINDING_INVITES });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/findInvites`, params, config);
+    const response = await axios.get(`${ROOT_URL}/api/v1/findInvites`, { params: params }, config);
     if (response.data) {
       dispatch({ type: FIND_INVITE_SUCCESS, payload: response.data });
     } else {

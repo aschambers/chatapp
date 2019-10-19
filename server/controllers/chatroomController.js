@@ -33,9 +33,7 @@ module.exports = {
    * @returns {array} list of chatrooms
    */
   getChatrooms: async(req, res, next) => {
-    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
-
-    const { serverId } = req.body;
+    const { serverId } = req.query;
 
     const result = await ChatroomModel.findAll({ where: { serverId: serverId } });
     res.status(200).send(result);
