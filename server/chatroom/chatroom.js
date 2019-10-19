@@ -31,7 +31,7 @@ module.exports = async(server) => {
     socket.on('GET_CHATROOM_MESSAGES', async(data) => {
       socket.leave(data.previousRoom);
       socket.join(data.room);
-      let messages = await axios.post(`${SERVER_URL}/api/v1/getChatroomMessages`, data, config) || [];
+      let messages = await axios.get(`${SERVER_URL}/api/v1/getChatroomMessages`, { data: data }, config) || [];
       io.to(data.socketId).emit('RECEIVE_CHATROOM_MESSAGES', messages.data);
     });
 
@@ -48,10 +48,10 @@ module.exports = async(server) => {
     });
 
     socket.on('DELETE_CHATROOM_MESSAGE', async(data) => {
-      let messages = await axios.post(`${SERVER_URL}/api/v1/messageChatroomDelete`, {
+      let messages = await axios.delete(`${SERVER_URL}/api/v1/messageChatroomDelete`, { data: {
         chatroomId: data.chatroomId,
         messageId: data.messageId
-      }, config);
+      } }, config);
       if (messages) {
         io.in(data.room).emit('RECEIVE_CHATROOM_MESSAGES', messages.data);
       }
@@ -71,14 +71,14 @@ module.exports = async(server) => {
     socket.on('GET_PERSONAL_MESSAGES', async(data) => {
       socket.leave(data.previousRoom);
       socket.join(data.room);
-      let messages = await axios.post(`${SERVER_URL}/api/v1/getPersonalMessages`, data, config) || [];
+      let messages = await axios.get(`${SERVER_URL}/api/v1/getPersonalMessages`, { data: data }, config) || [];
       io.to(data.socketId).emit('RECEIVE_PERSONAL_MESSAGES', messages.data);
     });
 
     socket.on('GET_PRIVATE_MESSAGES', async(data) => {
       socket.leave(data.previousRoom);
       socket.join(data.room);
-      let messages = await axios.post(`${SERVER_URL}/api/v1/getPrivateMessages`, data, config) || [];
+      let messages = await axios.get(`${SERVER_URL}/api/v1/getPrivateMessages`, { data: data }, config) || [];
       io.to(data.socketId).emit('RECEIVE_PRIVATE_MESSAGES', messages.data);
     });
 
@@ -108,18 +108,18 @@ module.exports = async(server) => {
 
     socket.on('DELETE_USER_MESSAGE', async(data) => {
       if (data.userId === data.friendId) {
-        const messages = await axios.post(`${SERVER_URL}/api/v1/messagePersonalDelete`, {
+        const messages = await axios.delete(`${SERVER_URL}/api/v1/messagePersonalDelete`, { data: {
           userId: data.userId,
           friendId: data.friendId,
           messageId: data.messageId
-        }, config);
+        } }, config);
         io.to(data.socketId).emit('RECEIVE_PERSONAL_MESSAGES', messages.data);
       } else if (data.userId !== data.friendId) {
-        const messages = await axios.post(`${SERVER_URL}/api/v1/messagePrivateDelete`, {
+        const messages = await axios.delete(`${SERVER_URL}/api/v1/messagePrivateDelete`, { data: {
           userId: data.userId,
           friendId: data.friendId,
           messageId: data.messageId
-        }, config);
+        } }, config);
         io.to(data.socketId).emit('RECEIVE_PRIVATE_MESSAGES', messages.data);
       }
     });
