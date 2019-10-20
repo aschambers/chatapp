@@ -69,8 +69,6 @@ module.exports = {
    * @returns {array} friend list
    */
   friendDelete: async(req, res) => {
-    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
-
     const { userId, friendId } = req.body;
 
     if (!userId || !friendId) {
@@ -96,9 +94,7 @@ module.exports = {
    * @returns {array} friend list
    */
   findFriends: async(req, res) => {
-    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
-
-    const { userId } = req.body;
+    const { userId } = req.query;
 
     if (!userId) return res.status(400).send({'error':'Missing required fields'});
 
