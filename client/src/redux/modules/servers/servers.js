@@ -144,7 +144,7 @@ export const serverCreate = params => async dispatch => {
 export const findUserBans = params => async dispatch => {
   dispatch({ type: FINDING_SERVER_BANS });
   try {
-    const response = await axios.get(`${ROOT_URL}/api/v1/findUserBans`, { params: params }, config);
+    const response = await axios.get(`${ROOT_URL}/api/v1/findUserBans`, { params: params });
     if (response.data) {
       dispatch({ type: FIND_SERVER_BANS_SUCCESS, payload: response.data });
     } else {
@@ -172,7 +172,7 @@ export const unbanUser = params => async dispatch => {
 export const findUserList = params => async dispatch => {
   dispatch({ type: FINDING_SERVER });
   try {
-    const response = await axios.get(`${ROOT_URL}/api/v1/findUserList`, { params: params }, config);
+    const response = await axios.get(`${ROOT_URL}/api/v1/findUserList`, { params: params });
     if (response.data) {
       dispatch({ type: FIND_SERVER_SUCCESS, payload: response.data });
     } else {
@@ -186,7 +186,7 @@ export const findUserList = params => async dispatch => {
 export const serverDelete = params => async dispatch => {
   dispatch({ type: DELETING_SERVER });
   try {
-    const response = await axios.delete(`${ROOT_URL}/api/v1/serverDelete`, { data: params }, config);
+    const response = await axios.delete(`${ROOT_URL}/api/v1/serverDelete`, { data: params });
     if (response.data) {
       dispatch({ type: DELETE_SERVER_SUCCESS });
     } else {
