@@ -346,17 +346,14 @@ export const currentSocketUser = () => async dispatch => {
 export const userUpdate = params => async (dispatch) => {
   dispatch({ type: RETRIEVE_USER_LOADING });
   try {
-    const response = await axios({
-      method: 'put',
-      url: `${ROOT_URL}/api/v1/userUpdate`,
-      data: params,
-      config: {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': authToken
-        }
+    const headers = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Accept': 'application/json',
+        'Authorization': authToken
       }
-    });
+    }
+    const response = await axios.put(`${ROOT_URL}/api/v1/userUpdate`, params, headers);
     if (response.data) {
       localStorage.setItem('user', JSON.stringify(response.data));
       dispatch({ type: RETRIEVE_USER_SUCCESS, payload: response.data });
@@ -385,17 +382,14 @@ export const getUsers = () => async dispatch => {
 export const uploadProfileImage = params => async dispatch => {
   dispatch({ type: UPLOADING_PROFILE_IMAGE });
   try {
-    const response = await axios({
-      method: 'put',
-      url: `${ROOT_URL}/api/v1/uploadProfileImage`,
-      data: params,
-      config: {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': authToken
-        }
+    const headers = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Accept': 'application/json',
+        'Authorization': authToken
       }
-    });
+    }
+    const response = await axios.put(`${ROOT_URL}/api/v1/uploadProfileImage`, params, headers);
     if (response.data) {
       localStorage.setItem('user', JSON.stringify(response.data));
       dispatch({ type: UPLOAD_PROFILE_IMAGE_SUCCESS, payload: response.data });
