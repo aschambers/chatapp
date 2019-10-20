@@ -96,9 +96,7 @@ module.exports = {
    * @returns {array} list of servers
    */
   serverFind: async(req, res, next) => {
-    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
-
-    const user = await UserModel.findByPk(req.body.id);
+    const user = await UserModel.findByPk(req.query.id);
 
     if (!user) return res.status(422).send({'error':'Error deleting server'});
 
