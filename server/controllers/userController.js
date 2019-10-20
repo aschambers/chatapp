@@ -202,7 +202,7 @@ module.exports = {
    * @returns {object} user object
    */
   getSingleUser: async(req, res, next) => {
-    const userId = req.body.userId;
+    const { userId } = req.query;
 
     const result = await UserModel.findByPk(userId);
     if (!result) return res.status(422).send({'error':'Error fetching that user'});
