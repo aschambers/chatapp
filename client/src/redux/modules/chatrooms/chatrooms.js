@@ -104,7 +104,7 @@ export const chatroomCreate = params => async dispatch => {
 export const getChatrooms = params => async dispatch => {
   dispatch({ type: GETTING_CHATROOMS });
   try {
-    const response = await axios.get(`${ROOT_URL}/api/v1/getChatrooms`, { params: params }, config);
+    const response = await axios.get(`${ROOT_URL}/api/v1/getChatrooms`, { params: params });
     if (response.data) {
       dispatch({ type: GET_CHATROOMS_SUCCESS, payload: response.data });
     } else {
