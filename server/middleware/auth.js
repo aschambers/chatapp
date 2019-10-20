@@ -23,7 +23,6 @@ module.exports = async(req, res, next) => {
     //successfully authenticated user
     next();
   } catch (error) {
-    console.log('auth error: ' + error);
     return res.status(401).json({
       message: 'Auth failed'
     });

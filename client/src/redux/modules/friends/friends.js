@@ -89,7 +89,7 @@ export const friendCreate = params => async dispatch => {
 export const friendDelete = params => async dispatch => {
   dispatch({ type: DELETING_FRIEND });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/friendDelete`, params, config);
+    const response = await axios.delete(`${ROOT_URL}/api/v1/friendDelete`, { data: params }, config);
     if (response.data) {
       dispatch({ type: DELETE_FRIEND_SUCCESS, payload: response.data });
     } else {
@@ -103,7 +103,7 @@ export const friendDelete = params => async dispatch => {
 export const findFriends = params => async dispatch => {
   dispatch({ type: FINDING_FRIENDS });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/findFriends`, params, config);
+    const response = await axios.get(`${ROOT_URL}/api/v1/findFriends`, { params: params }, config);
     if (response.data) {
       dispatch({ type: FIND_FRIENDS_SUCCESS, payload: response.data });
     } else {

@@ -202,8 +202,6 @@ module.exports = {
    * @returns {object} user object
    */
   getSingleUser: async(req, res, next) => {
-    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
-
     const userId = req.query.userId;
 
     const result = await UserModel.findByPk(userId);

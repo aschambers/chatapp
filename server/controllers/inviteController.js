@@ -156,9 +156,7 @@ module.exports = {
    * @returns {array} invites
    */
   findInvites: async(req, res) => {
-    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
-
-    const { serverId } = req.body;
+    const { serverId } = req.query;
 
     const invitesList = await InviteModel.findAll({ where: { serverId: serverId } });
     res.status(200).send(invitesList);
