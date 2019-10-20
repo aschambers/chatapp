@@ -75,7 +75,7 @@ module.exports = {
    * @returns {array} list of messages
    */
   getChatroomMessages: async(req, res, next) => {
-    const { chatroomId } = req.body;
+    const { chatroomId } = req.query;
 
     const result = await MessageModel.findAll({ where: { chatroomId: chatroomId }, order: [['createdAt', 'DESC']] });
     if (!result) return res.status(422).send({'error':'Error fetching all messages'});
@@ -89,7 +89,7 @@ module.exports = {
    * @returns {array} list of messages
    */
   getPrivateMessages: async(req, res, next) => {
-    const { userId, friendId } = req.body;
+    const { userId, friendId } = req.query;
 
     const result = await MessageModel.findAll({ where: {
       [Op.or]: [
@@ -108,7 +108,7 @@ module.exports = {
    * @returns {array} list of messages
    */
   getPersonalMessages: async(req, res, next) => {
-    const { userId } = req.body;
+    const { userId } = req.query;
 
     const result = await MessageModel.findAll({ where: {
       [Op.and]: [
