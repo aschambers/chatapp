@@ -111,7 +111,7 @@ module.exports = {
    * @returns {array} list of servers
    */
   findUserList: async(req, res, next) => {
-    const server = await ServerModel.findByPk(req.body.serverId);
+    const server = await ServerModel.findByPk(req.query.serverId);
 
     if (!server && !server.userList) return res.status(422).send({'error':'Error finding server'});
 
@@ -124,7 +124,7 @@ module.exports = {
    * @returns {array} list of banned users
    */
   findUserBans: async(req, res, next) => {
-    const server = await ServerModel.findByPk(req.body.serverId);
+    const server = await ServerModel.findByPk(req.query.serverId);
 
     if (!server.userBans) server.userBans = [];
     if (!server && !server.userBans) return res.status(422).send({'error':'Error finding server'});
