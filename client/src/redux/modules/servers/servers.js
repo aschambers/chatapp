@@ -120,17 +120,14 @@ export default (state = initialState, action) => {
 export const serverCreate = params => async dispatch => {
   dispatch({ type: CREATING_SERVER });
   try {
-    const response = await axios({
-      method: 'post',
-      url: `${ROOT_URL}/api/v1/serverCreate`,
-      data: params,
-      config: {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': authToken
-        }
+    const headers = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Accept': 'application/json',
+        'Authorization': authToken
       }
-    });
+    }
+    const response = await axios.post(`${ROOT_URL}/api/v1/serverCreate`, params, headers);
     if (response.data) {
       dispatch({ type: CREATE_SERVER_SUCCESS, payload: response.data });
     } else {
