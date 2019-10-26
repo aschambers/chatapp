@@ -274,12 +274,11 @@ export const userLogin = params => async dispatch => {
       dispatch({ type: LOGIN_USER_FAIL });
     }
   } catch (err) {
-    console.log(err);
-    // if (err.response.data.error === "Account not verified") {
-    //   dispatch({ type: NOT_VERIFIED });
-    // } else {
-    //   dispatch({ type: LOGIN_USER_FAIL });
-    // }
+    if (err.response.data.error === "Account not verified") {
+      dispatch({ type: NOT_VERIFIED });
+    } else {
+      dispatch({ type: LOGIN_USER_FAIL });
+    }
   }
 };
 
