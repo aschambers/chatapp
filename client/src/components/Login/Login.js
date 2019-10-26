@@ -38,10 +38,6 @@ const Login = (props) => {
       setNotVerified(true);
     }
 
-    if (props.error) {
-      toast.dismiss();
-      toast.error('Please check your email and password, and try again!', { position: 'bottom-center' });
-    }
     props.resetUserValues();
   }, [props, notVerified]);
 
