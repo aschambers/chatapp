@@ -36,7 +36,9 @@ const CreateServer = (props) => {
     formData.append('userId', props.id);
     formData.append('public', false);
     formData.append('region', props.region);
-    formData.append('imageUrl', serverFile);
+    if (serverFile) {
+      formData.append('imageUrl', serverFile);
+    }
     props.serverCreate(formData);
   }
 

@@ -20,6 +20,7 @@ module.exports = {
     if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
 
     const { name, userId, public, region } = req.body;
+    req.body.active = true;
 
     if (!name || !userId || !public || !region) {
       return res.status(400).send({'error':'Missing required fields'});
@@ -30,11 +31,13 @@ module.exports = {
     if (existingServer) return res.status(400).send({'error':'Server exists'});
 
     // Step 2: Upload image to cloudinary and set imageUrl to uploaded image.
-    if (req.files && req.files.imageUrl[0] && req.files.imageUrl[0].mimetype === 'image/jpeg' || req.files.imageUrl[0].mimetype === 'image/png' || req.files.imageUrl[0].mimetype === 'image/gif') {
-      const encoded = req.files.imageUrl[0].data.toString('base64');
-      const result = await cloudinary.uploader.upload('data:image/png;base64,' + encoded);
-      if (!result) return res.status(422).send({'error':'Failed to upload image URL'});
-      req.body.imageUrl = result.url.replace(/^http:\/\//i, 'https://');
+    if (req.files.imageUrl) {
+      if (req.files.imageUrl[0] && req.files.imageUrl[0].mimetype === 'image/jpeg' || req.files.imageUrl[0].mimetype === 'image/png' || req.files.imageUrl[0].mimetype === 'image/gif') {
+        const encoded = req.files.imageUrl[0].data.toString('base64');
+        const result = await cloudinary.uploader.upload('data:image/png;base64,' + encoded);
+        if (!result) return res.status(422).send({'error':'Failed to upload image URL'});
+        req.body.imageUrl = result.url.replace(/^http:\/\//i, 'https://');
+      }
     }
 
     // Step 3: Create the server with required fields.
@@ -51,7 +54,8 @@ module.exports = {
       serverId: newServer.id,
       name: name,
       imageUrl: req.body.imageUrl,
-      region: req.body.region
+      region: req.body.region,
+      active: true
     });
 
     // Step 6: Update list of servers by userId
@@ -340,6 +344,44 @@ module.exports = {
     if (!updateSuccess) return res.status(422).send({'error':'Error fetching all server users'});
 
     res.status(200).send(updateServer.userList);
+  },
+
+  /**
+   * @param {object} req
+   * @param {object} res
+   * @returns {array} list of servers
+   */
+  serverToggle: async(req, res, next) => {
+    const { userId, serverId } = req.body;
+
+    const updateServer = await ServerModel.findByPk(serverId);
+
+    if (!updateServer) return res.status(422).send({'error':'Error finding server to update'});
+
+    const updateSuccess = await updateServer.update(
+      { active: !updateServer.active },
+      { where: { id: serverId }}
+    );
+
+    if (!updateSuccess) return res.status(422).send({'error':'Error updating server'});
+
+    const updateUser = await UserModel.findByPk(userId);
+
+    if (!updateUser) return res.status(422).send({'error':'Error finding user by id'});
+
+    const serverIndex = updateUser.serversList.findIndex(x => x.serverId === serverId);
+    if (serverIndex < 0) return res.status(422).json({'error':'Error finding server user by server id'});
+
+    updateUser.serversList[serverIndex].active = !updateUser.serversList[serverIndex].active;
+    
+    const newServerList = await updateUser.update(
+      { serversList: updateUser.serversList },
+      { where: { id: userId }}
+    );
+
+    if (!newServerList) return res.status(422).json({'error':'Error updating user server list'});
+
+    res.status(200).send(updateUser.serversList);
   }
 
 }

@@ -111,7 +111,8 @@ module.exports = {
       serverId: server.id,
       name: server.name,
       imageUrl: server.imageUrl,
-      region: server.region
+      region: server.region,
+      active: true
     });
 
     const updateServerList = await user.update(

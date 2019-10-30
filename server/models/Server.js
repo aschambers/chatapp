@@ -55,6 +55,10 @@ const Server = sequelize.define('servers', {
     type: Sequelize.ARRAY(Sequelize.JSONB),
     defaultValue: [],
     allowNull: true
+  },
+  active: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false
   }
 });
 
