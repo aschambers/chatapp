@@ -352,18 +352,7 @@ module.exports = {
    * @returns {array} list of servers
    */
   serverToggle: async(req, res, next) => {
-    const { userId, serverId } = req.body;
-
-    const updateServer = await ServerModel.findByPk(serverId);
-
-    if (!updateServer) return res.status(422).send({'error':'Error finding server to update'});
-
-    const updateSuccess = await updateServer.update(
-      { active: !updateServer.active },
-      { where: { id: serverId }}
-    );
-
-    if (!updateSuccess) return res.status(422).send({'error':'Error updating server'});
+    const { userId, serverId, active } = req.body;
 
     const updateUser = await UserModel.findByPk(userId);
 
@@ -372,7 +361,7 @@ module.exports = {
     const serverIndex = updateUser.serversList.findIndex(x => x.serverId === serverId);
     if (serverIndex < 0) return res.status(422).json({'error':'Error finding server user by server id'});
 
-    updateUser.serversList[serverIndex].active = !updateUser.serversList[serverIndex].active;
+    updateUser.serversList[serverIndex].active = active;
     
     const newServerList = await updateUser.update(
       { serversList: updateUser.serversList },

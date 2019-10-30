@@ -12,6 +12,7 @@ import Chatroom from '../../components/Chatroom/Chatroom';
 import ChatroomFriend from '../../components/ChatroomFriend/ChatroomFriend';
 import CreateServer from '../../components/CreateServer/CreateServer';
 import JoinServer from '../../components/JoinServer/JoinServer';
+import ServerEditModal from '../../components/ServerEditModal/ServerEditModal';
 import CategoryModal from '../../components/CategoryModal/CategoryModal';
 import ChannelModal from '../../components/ChannelModal/ChannelModal';
 import InviteModal from '../../components/InviteModal/InviteModal';
@@ -104,6 +105,8 @@ const Dashboard = (props) => {
   const [allowVoice, setAllowVoice] = useState(false);
   const [audioStream, setAudioStream] = useState(null);
   const [didFindFriends, setDidFindFriends] = useState(null);
+  const [serverEdit, setServerEdit] = useState(null);
+  const [serverEditModalOpen, setServerEditModalOpen] = useState(false);
 
   const ref = useRef();
   useOnClickOutside(ref, () => setShowCategoryModal(false));
@@ -396,6 +399,27 @@ const Dashboard = (props) => {
       }
     }
   }, [props, openServerItem]);
+
+  useEffect(() => {
+    if (props.toggleServerError) {
+      toast.dismiss();
+      toast.error('Error changing server status!', { position: 'bottom-center' });
+      setServerEditModalOpen(false);
+      setServerEdit(null);
+      props.resetServerValues();
+    }
+  }, [props]);
+
+  useEffect(() => {
+    if (props.toggleServerSuccess) {
+      toast.dismiss();
+      toast.success('Success changing server status!', { position: 'bottom-center' });
+      setServerEditModalOpen(false);
+      setServerEdit(null);
+      props.resetServerValues();
+      props.getUpdatedUser({ userId: id });
+    }
+  }, [props, id]);
 
   const detectEscape = (event) => {
     if (event.keyCode === 27) {
@@ -694,6 +718,19 @@ const Dashboard = (props) => {
     setChannelType(value);
   }
 
+  const toggleServerModal = (item) => {
+    setServerEdit(item);
+    setServerEditModalOpen(true);
+  }
+
+  const toggleServerStatus = (value) => {
+    props.serverToggle({
+      userId: id,
+      serverId: serverEdit.serverId,
+      active: value
+    });
+  }
+
   if (isLoading) {
     return (
       <div className="loadingbackground">
@@ -762,14 +799,18 @@ const Dashboard = (props) => {
         </div>
         <div className="sidebar-border" />
         {serversList && serversList.length > 0 ? serversList.map((item, index)  => {
-          return (
-            <div key={index} className="sidebar-container" onPointerOver={() => { setHover(item.name) }} onPointerOut={() => { setHover('') }}>
-              {hover === item.name && server !== item.name && server !== "Home" ? <span className="sidebar-hover"></span> : null}
-              {server === item.name ? <span className="sidebar-select"></span> : null}
-              <img className="sidebar-logo" src={item.imageUrl ? item.imageUrl : chatot} alt="chatter-icon" onClick={() => { setServerProperties(item); }} />
-              {hover === item.name ? <span className="tooltip"><span>{item.name}</span></span> : null}
-            </div>
-          )
+          if (item.active) {
+            return (
+              <div key={index} className="sidebar-container" onPointerOver={() => { setHover(item.name) }} onPointerOut={() => { setHover('') }}>
+                {hover === item.name && server !== item.name && server !== "Home" ? <span className="sidebar-hover"></span> : null}
+                {server === item.name ? <span className="sidebar-select"></span> : null}
+                <img className="sidebar-logo" src={item.imageUrl ? item.imageUrl : chatot} alt="chatter-icon" onClick={() => { setServerProperties(item); }} />
+                {hover === item.name ? <span className="tooltip"><span>{item.name}</span></span> : null}
+              </div>
+            )
+          } else {
+            return null;
+          }
         }) : null}
       </div>
       {server === '' ?
@@ -1169,10 +1210,11 @@ const Dashboard = (props) => {
 
       {isSettingsOpen ?
         <div className="usersettings">
-          {accountModalOpen ? <span className="contentBackground"></span> : null}
+          {accountModalOpen || serverEditModalOpen ? <span className="contentBackground"></span> : null}
           <div className="usersettings-sidebar">
             <h1>User Settings</h1>
             <p className={activeUserSetting === "myaccount" ? "usersettings-sidebar-activeitem" : "usersettings-sidebar-myaccount"} onClick={() => { setActiveUserSetting("myaccount"); }}>My Account</p>
+            <p className={activeUserSetting === "myservers" ? "usersettings-sidebar-activeitem" : "usersettings-sidebar-myaccount"} onClick={() => { setActiveUserSetting("myservers"); }}>My Servers</p>
             <p className={activeUserSetting === "privacy" ? "usersettings-sidebar-activeitem" : "usersettings-sidebar-privacy"} onClick={() => { setActiveUserSetting("privacy"); }}>Privacy &amp; Safety</p>
             <p className={activeUserSetting === "connections" ? "usersettings-sidebar-activeitem" : "usersettings-sidebar-connections"} onClick={() => { setActiveUserSetting("connections"); }}>Connections</p>
             <h1>App Settings</h1>
@@ -1231,6 +1273,29 @@ const Dashboard = (props) => {
             </div>
           : null}
 
+          {activeUserSetting === "myservers" ?
+            <div className="userserveredit-accountcontainer">
+              <div className="userserveredit-myaccount">
+                <h1>My Servers</h1>
+                <p className="userserveredit-members-count">{serversList && serversList.length ? serversList.length : '0'} Servers</p>
+                {serversList && serversList.length > 0 ? serversList.map((item, index)  => {
+                  return (
+                    <div key={index} className="userserveredit-user" onClick={() => { toggleServerModal(item); }}>
+                      <img className="userserveredit-logo" src={item.imageUrl ? item.imageUrl : chatot} alt="chatter-icon" />
+                      <span>
+                        <p>{item.name}</p>
+                        <p style={{ color: item.active ? 'white' : 'red' }}>{item.active ? 'Active' : 'Inactive'}</p>
+                      </span>
+                      <span className="userserveredit-add">
+                        <img src={add} alt="add-icon" className="userserveredit-user-add-image" />
+                      </span>
+                    </div>
+                  )
+                }) : null}
+              </div>
+            </div>
+          : null}
+
           <div className="usersettings-escape" onClick={() => { setActiveUserSetting("myaccount"); setSettingsOpen(false); }}>
           </div>
           <p className="usersettings-escapetext" onClick={() => { setActiveUserSetting("myaccount"); setSettingsOpen(false); }}>ESC</p>
@@ -1251,6 +1316,14 @@ const Dashboard = (props) => {
         <JoinServer
           joinServer={(value) => { joinServer(value); }}
           setModalOpen={() => { setModalOpen(!isModalOpen) }}
+        />
+      : null}
+
+      {serverEditModalOpen ?
+        <ServerEditModal
+          serverActive={serverEdit.active}
+          toggleServer={(value) => { toggleServerStatus(value); }}
+          setModalOpen={() => { setServerEditModalOpen(false); }}
         />
       : null}
     </div>
@@ -1280,6 +1353,8 @@ const mapStateToProps = ({ usersReducer, serversReducer, categoriesReducer, chat
     updateRoleError: serversReducer.updateRoleError,
     unbanUserSuccess: serversReducer.unbanUserSuccess,
     findBansSuccess: serversReducer.findBansSuccess,
+    toggleServerError: serversReducer.toggleServerError,
+    toggleServerSuccess: serversReducer.toggleServerSuccess,
     categoryList: categoriesReducer.categoryList,
     findCategorySuccess: categoriesReducer.findCategorySuccess,
     chatroomList: chatroomsReducer.chatroomList,
