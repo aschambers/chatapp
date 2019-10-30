@@ -1,0 +1,55 @@
+.servereditmodal {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  z-index: 20;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  background-color: rgb(255, 255, 255);
+  border-radius: 5px;
+  width: 40rem;
+  height: 13.5rem;
+  animation-name: fadeInOpacity;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-duration: 0.5s;
+  &-title {
+    color: #008f00;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1.4rem;
+    margin-top: 2rem;
+  }
+  &-actions {
+    height: 5rem;
+    width: 100%;
+    background-color: rgb(233, 233, 233);
+    position: relative;
+    bottom: 0;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    margin-top: 4rem;
+    & > p {
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding-top: 0.75rem;
+      padding-left: 2rem;
+    }
+    & > button {
+      cursor: pointer;
+      background-color: #008f00;
+      color: rgb(247, 246, 246);
+      height: 2.25rem;
+      box-sizing: border-box;
+      padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 3px;
+      margin-left: 25rem;
+      margin-top: 1.5rem;
+    }
+  }
+}

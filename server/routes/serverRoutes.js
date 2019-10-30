@@ -9,5 +9,6 @@ module.exports = function(app) {
   app.post('/api/v1/kickServerUser', serverController.kickServerUser);
   app.post('/api/v1/banServerUser', serverController.banServerUser);
   app.put('/api/v1/updateUserRole', serverController.updateUserRole);
+  app.put('/api/v1/serverToggle', serverController.serverToggle);
   app.delete('/api/v1/serverDelete', serverController.serverDelete);
 };

@@ -21,6 +21,9 @@ import {
   UPDATING_USER_ROLE,
   UPDATE_USER_ROLE_FAIL,
   UPDATE_USER_ROLE_SUCCESS,
+  TOGGLING_SERVER,
+  TOGGLE_SERVER_FAIL,
+  TOGGLE_SERVER_SUCCESS,
   RESET_SERVER_VALUES
 } from '../../types';
 
@@ -95,10 +98,6 @@ export default (state = initialState, action) => {
       return {
         ...state, isLoading: false, error: true, success: false
       };
-    case RESET_SERVER_VALUES:
-      return {
-        ...state, isLoading: false, error: false, success: false, findServerError: false, findServerSuccess: false, unbanUserError: false, unbanUserSuccess: false, findBansError: false, findBansSuccess: false, createServerError: false, createServerSuccess: false, deleteServerError: false, deleteServerSuccess: false
-      };
     case UPDATING_USER_ROLE:
       return {
         ...state, isLoading: true, updateRoleError: false, updateRoleSuccess: false
@@ -110,6 +109,22 @@ export default (state = initialState, action) => {
     case UPDATE_USER_ROLE_FAIL:
       return {
         ...state, isLoading: false, updateRoleError: true, updateRoleSuccess: false
+      };
+    case TOGGLING_SERVER:
+      return {
+        ...state, isLoading: true, toggleServerError: false, toggleServerSuccess:  false
+      };
+    case TOGGLE_SERVER_SUCCESS:
+      return {
+        ...state, isLoading: false, toggleServerError: false, toggleServerSuccess:  true
+      };
+    case TOGGLE_SERVER_FAIL:
+      return {
+        ...state, isLoading: false, toggleServerError: true, toggleServerSuccess:  false
+      };
+    case RESET_SERVER_VALUES:
+      return {
+        ...state, isLoading: false, error: false, success: false, findServerError: false, findServerSuccess: false, unbanUserError: false, unbanUserSuccess: false, findBansError: false, findBansSuccess: false, createServerError: false, createServerSuccess: false, deleteServerError: false, deleteServerSuccess: false, toggleServerError: false, toggleServerSuccess: false
       };
     default:
       return state;
@@ -205,6 +220,20 @@ export const updateUserRole = params => async dispatch => {
     }
   } catch (err) {
     dispatch({ type: UPDATE_USER_ROLE_FAIL });
+  }
+};
+
+export const serverToggle = params => async dispatch => {
+  dispatch({ type: TOGGLING_SERVER });
+  try {
+    const response = await axios.put(`${ROOT_URL}/api/v1/serverToggle`, params, config);
+    if (response.data) {
+      dispatch({ type: TOGGLE_SERVER_SUCCESS, payload: response.data });
+    } else {
+      dispatch({ type: TOGGLE_SERVER_FAIL });
+    }
+  } catch(err) {
+    dispatch({ type: TOGGLE_SERVER_FAIL });
   }
 };
 

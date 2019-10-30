@@ -61,6 +61,9 @@ export const DELETING_SERVER = 'deleting_server';
 export const UPDATE_USER_ROLE_SUCCESS = 'update_user_role_success';
 export const UPDATE_USER_ROLE_FAIL = 'update_user_role_fail';
 export const UPDATING_USER_ROLE = 'updating_user_role';
+export const TOGGLE_SERVER_SUCCESS = 'toggle_server_success';
+export const TOGGLE_SERVER_FAIL = 'toggle_server_fail';
+export const TOGGLING_SERVER = 'toggling_server';
 export const RESET_SERVER_VALUES = 'reset_server_values';
 // categories
 export const CREATE_CATEGORY_SUCCESS = 'create_category_success';
