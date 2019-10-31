@@ -7,6 +7,8 @@ import Moment from 'react-moment';
 import 'moment-timezone';
 import './ChatroomFriend.css';
 import editwhite from '../../assets/images/editwhite.png';
+import emoji from '../../assets/images/emoji.png';
+import EmojiPicker from 'emoji-picker-react';
 
 class ChatroomFriend extends Component {
   constructor(props) {
@@ -28,7 +30,8 @@ class ChatroomFriend extends Component {
       messageMenu: false,
       editingMessage: null,
       newMessage: "",
-      hover: ""
+      hover: "",
+      showEmojiPicker: false
     }
   }
 
@@ -197,6 +200,17 @@ class ChatroomFriend extends Component {
     this.socket.emit('EDIT_USER_MESSAGE', data);
   }
 
+  showEmojiPicker = () => {
+    let { showEmojiPicker } = this.state;
+    this.setState({ showEmojiPicker: !showEmojiPicker });
+  }
+
+  handleEmojiClick = (code) => {
+    this.setState({
+      message: this.state.message + String.fromCodePoint("0x" + code)
+    });
+  }
+
   render() {
     return (
       <div className="chatroom">
@@ -222,8 +236,18 @@ class ChatroomFriend extends Component {
               )
             }) : null}
           </div>
+          {this.state.showEmojiPicker ?
+            <div className="friendemojipickerchatroom">
+              <EmojiPicker
+                style={{ width: "-webkit-fill-available" }}
+                emojiResolution={32}
+                onEmojiClick={this.handleEmojiClick}
+              />
+            </div>
+          : null}
           <div className="privatechatarea-container">
             <input placeholder="Send a message!" type="text" onChange={(event) => { this.setState({ message: event.target.value }); }} value={this.state.message} onKeyDown={(event) => { event.keyCode === 13 && event.shiftKey === false ? this.sendMessage(event) : this.sendMessage(null) }}></input>
+            <img src={emoji} className="friendemojiselectchatroom" onClick={() => { this.showEmojiPicker(); }} alt="emoji-picker-icon" />
           </div>
         </div>
       </div>

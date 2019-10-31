@@ -340,3 +340,20 @@
     border-radius: 50%;
     margin-left: 0.1rem;
     margin-top: 0.1rem; }
+
+.emojiselectchatroom {
+  width: 1.5rem;
+  height: 1.5rem;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin-right: 14rem;
+  margin-bottom: 1.5rem;
+  cursor: pointer; }
+
+.emojipickerchatroom {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-bottom: 4.3rem;
+  margin-right: 13.3rem; }
