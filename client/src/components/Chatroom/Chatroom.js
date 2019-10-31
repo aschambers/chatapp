@@ -10,6 +10,8 @@ import chatot from '../../assets/images/chatot.png';
 import numbersign from '../../assets/images/numbersign.png';
 import voice from '../../assets/images/voice.png';
 import editwhite from '../../assets/images/editwhite.png';
+import emoji from '../../assets/images/emoji.png';
+import EmojiPicker from 'emoji-picker-react';
 
 class Chatroom extends Component {
   constructor(props) {
@@ -53,7 +55,8 @@ class Chatroom extends Component {
       myConnection: null,
       remoteConnection: null,
       voiceUsers: [],
-      negotiating: false
+      negotiating: false,
+      showEmojiPicker: false
     }
   }
 
@@ -452,6 +455,17 @@ class Chatroom extends Component {
     }
   }
 
+  showEmojiPicker = () => {
+    let { showEmojiPicker } = this.state;
+    this.setState({ showEmojiPicker: !showEmojiPicker });
+  }
+
+  handleEmojiClick = (code) => {
+    this.setState({
+      message: this.state.message + String.fromCodePoint("0x" + code)
+    });
+  }
+
   componentWillUnmount() {
     this.socket.emit('LEAVE_CHATROOMS', {
       room: this.state.room
@@ -500,8 +514,18 @@ class Chatroom extends Component {
               )
             }) : null}
           </div>
+          {this.state.showEmojiPicker ?
+            <div className="emojipickerchatroom">
+              <EmojiPicker
+                style={{ width: "-webkit-fill-available" }}
+                emojiResolution={32}
+                onEmojiClick={this.handleEmojiClick}
+              />
+            </div>
+          : null}
           <div className="chatarea-container">
             <input placeholder="Send a message!" type="text" onChange={(event) => { this.setState({ message: event.target.value }); }} value={this.state.message} onKeyDown={(event) => { event.keyCode === 13 && event.shiftKey === false ? this.sendMessage(event) : this.sendMessage(null) }}></input>
+            <img src={emoji} className="emojiselectchatroom" onClick={() => { this.showEmojiPicker(); }} alt="emoji-picker-icon" />
           </div>
         </div>
         <div className="sidebarright">
