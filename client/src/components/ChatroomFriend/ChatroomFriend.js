@@ -14,7 +14,7 @@ class ChatroomFriend extends Component {
   constructor(props) {
     super(props);
     this.ref = React.createRef();
-    this.useOnClickOutside(this.ref, () => this.setState({ messageMenu: false }));
+    this.useOnClickOutside(this.ref, () => this.setState({ messageMenu: false, showEmojiPicker: false }));
 
     this.state = {
       message: "",
@@ -211,6 +211,12 @@ class ChatroomFriend extends Component {
     });
   }
 
+  hideEmojiPicker = () => {
+    if (this.state.showEmojiPicker) {
+      this.setState({ showEmojiPicker: false });
+    }
+  }
+
   render() {
     return (
       <div className="chatroom">
@@ -237,11 +243,11 @@ class ChatroomFriend extends Component {
             }) : null}
           </div>
           {this.state.showEmojiPicker ?
-            <div className="friendemojipickerchatroom">
+            <div className="friendemojipickerchatroom" ref={this.ref}>
               <EmojiPicker
-                style={{ width: "-webkit-fill-available" }}
+                style={{ width: "-webkit-fill-available", zIndex: 10 }}
                 emojiResolution={32}
-                onEmojiClick={this.handleEmojiClick}
+                onEmojiClick={(event) => { this.handleEmojiClick(event); }}
               />
             </div>
           : null}

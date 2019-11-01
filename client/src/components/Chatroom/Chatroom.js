@@ -17,7 +17,7 @@ class Chatroom extends Component {
   constructor(props) {
     super(props);
     this.ref = React.createRef();
-    this.useOnClickOutside(this.ref, () => this.setState({ messageMenu: false, userModalOpen: false, sideUserModalOpen: false }));
+    this.useOnClickOutside(this.ref, () => this.setState({ messageMenu: false, userModalOpen: false, sideUserModalOpen: false, showEmojiPicker: false }));
 
     this.state = {
       id: "",
@@ -266,6 +266,7 @@ class Chatroom extends Component {
   }
 
   startCall = () => {
+    if (!this.state.myConnection) return;
     this.createCallerOffer();
   }
 
@@ -441,7 +442,7 @@ class Chatroom extends Component {
   }
 
   sendMessage = (event) => {
-    if (event) {
+    if (event && this.state.message !== "") {
       event.preventDefault();
       const data = {
         username: this.props.username,
@@ -515,7 +516,7 @@ class Chatroom extends Component {
             }) : null}
           </div>
           {this.state.showEmojiPicker ?
-            <div className="emojipickerchatroom">
+            <div className="emojipickerchatroom" ref={this.ref}>
               <EmojiPicker
                 style={{ width: "-webkit-fill-available" }}
                 emojiResolution={32}
@@ -528,7 +529,7 @@ class Chatroom extends Component {
             <img src={emoji} className="emojiselectchatroom" onClick={() => { this.showEmojiPicker(); }} alt="emoji-picker-icon" />
           </div>
         </div>
-        <div className="sidebarright">
+        <div className="sidebarright" onClick={() => { this.hideEmojiPicker() }}>
           <div className="sidebarright-container">
             <input placeholder="Filter users in server"></input>
           </div>
