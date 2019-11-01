@@ -467,6 +467,18 @@ class Chatroom extends Component {
     });
   }
 
+  handleMessageChange = (event) => {
+    if (event.target.value.length < 500) {
+      this.setState({ message: event.target.value });
+    }
+  }
+
+  handleNewMessageChange = (event) => {
+    if (event.target.value.length < 500) {
+      this.setState({ newMessage: event.target.value });
+    }
+  }
+
   componentWillUnmount() {
     this.socket.emit('LEAVE_CHATROOMS', {
       room: this.state.room
@@ -510,7 +522,7 @@ class Chatroom extends Component {
                       </div>
                     : null}
                   </div>
-                  {this.state.editingMessage !== null && this.state.editingMessage.id === item.id ? <span><input className="chatarea-messages-editmessage" onChange={(event) => { this.setState({ newMessage: event.target.value }) }} value={this.state.newMessage} onKeyDown={(event) => { event.keyCode === 13 && event.shiftKey === false ? this.sendEditedMessage(event) : this.sendMessage(null) }} /><p className="chatarea-messages-editmessage-note">escape to cancel • enter to save</p></span> : <p className="chatarea-messages-message">{item.message}</p>}
+                  {this.state.editingMessage !== null && this.state.editingMessage.id === item.id ? <span><input className="chatarea-messages-editmessage" onChange={(event) => { this.handleNewMessageChange(event); }} value={this.state.newMessage} onKeyDown={(event) => { event.keyCode === 13 && event.shiftKey === false ? this.sendEditedMessage(event) : this.sendMessage(null) }} /><p className="chatarea-messages-editmessage-note">escape to cancel • enter to save</p></span> : <p className="chatarea-messages-message">{item.message}</p>}
                 </div>
               )
             }) : null}
@@ -525,7 +537,7 @@ class Chatroom extends Component {
             </div>
           : null}
           <div className="chatarea-container">
-            <input placeholder="Send a message!" type="text" onChange={(event) => { this.setState({ message: event.target.value }); }} value={this.state.message} onKeyDown={(event) => { event.keyCode === 13 && event.shiftKey === false ? this.sendMessage(event) : this.sendMessage(null) }}></input>
+            <input placeholder="Send a message!" type="text" onChange={(event) => { this.handleMessageChange(event); }} value={this.state.message} onKeyDown={(event) => { event.keyCode === 13 && event.shiftKey === false ? this.sendMessage(event) : this.sendMessage(null) }}></input>
             <img src={emoji} className="emojiselectchatroom" onClick={() => { this.showEmojiPicker(); }} alt="emoji-picker-icon" />
           </div>
         </div>
