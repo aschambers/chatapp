@@ -1,11 +1,11 @@
 const express = require('express');
-// const helmet = require('helmet');
+const helmet = require('helmet');
 const path = require('path');
 const busboyBodyParser = require('busboy-body-parser');
 // express setup
 const app = express();
 const auth = require('./server/middleware/auth');
-// app.use(helmet());
+app.use(helmet());
 app.use(auth);
 app.use(busboyBodyParser({ limit: '50mb', multi: true }));
 app.use(express.json());

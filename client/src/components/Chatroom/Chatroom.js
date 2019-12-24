@@ -123,20 +123,20 @@ class Chatroom extends Component {
     });
 
     // -- begin webrtc socket events -- //
-    this.socket.on('RECEIVE_ICE_CANDIDATE', async(data) => {
+    this.socket.on('RECEIVE_ICE_CANDIDATE', async (data) => {
       console.log('-- start receive ice candidate --');
       console.log(data.candidate);
       console.log('-- end receive ice candidate --');
       await this.state.myConnection.addIceCandidate(new RTCIceCandidate(data.candidate)).catch(err => console.log(err));
     });
 
-    this.socket.on('RECEIVE_OFFER', async(data) => {
+    this.socket.on('RECEIVE_OFFER', async (data) => {
       console.log(data.username + ' =?= ' + this.state.username);
 
       this.setCalleeRemoteDescription(data.desc);
     });
 
-    this.socket.on('RECEIVE_ANSWER', async(data) => {
+    this.socket.on('RECEIVE_ANSWER', async (data) => {
       console.log(data.username + ' =?= ' + this.state.username);
 
       this.setCallerRemoteDescription(data.desc);
@@ -169,7 +169,7 @@ class Chatroom extends Component {
 
     if (nextProps.users && nextProps.users.length) {
       const userList = [];
-      for(let i = 0; i < nextProps.users.length; i++) {
+      for (let i = 0; i < nextProps.users.length; i++) {
         userList.push(nextProps.users[i]);
       }
       this.setState({ users: userList });
@@ -189,7 +189,7 @@ class Chatroom extends Component {
   }
 
   // -- start webrtc peer connection setup -- //
-  recordAudioInput = async(stream) => {
+  recordAudioInput = async (stream) => {
     if (stream) {
       try {
         console.log('------ my stream -------');
@@ -270,7 +270,7 @@ class Chatroom extends Component {
     this.createCallerOffer();
   }
 
-  createCallerOffer = async() => {
+  createCallerOffer = async () => {
     console.log(`--- negotiating in ${this.state.myConnection.signalingState} ---`);
 
     try {
@@ -284,14 +284,14 @@ class Chatroom extends Component {
     }
   }
 
-  setCallerLocalDescription = async(desc) => {
+  setCallerLocalDescription = async (desc) => {
     try {
       await this.state.myConnection.setLocalDescription(desc);
       console.log('-- start myConnection after setLocalDescription --');
       console.log(this.state.myConnection);
       console.log('-- end myConnection after setLocalDescription --');
       this.sendOfferFromCaller(desc);
-    } catch(error) {
+    } catch (error) {
       console.log('error setting caller local description: ' + error);
     }
   }
@@ -307,7 +307,7 @@ class Chatroom extends Component {
     this.socket.emit('SEND_OFFER', data);
   }
 
-  setCalleeRemoteDescription = async(desc) => {
+  setCalleeRemoteDescription = async (desc) => {
     console.log('-- setCalleeRemoteDescription --');
     try {
       await this.state.myConnection.setRemoteDescription(desc);
@@ -317,7 +317,7 @@ class Chatroom extends Component {
     }
   }
 
-  calleCreateAnswer = async() => {
+  calleCreateAnswer = async () => {
     console.log('-- calleeCreateAnswer --');
     try {
       const desc = await this.state.myConnection.createAnswer();
@@ -327,7 +327,7 @@ class Chatroom extends Component {
     }
   }
 
-  setCalleeLocalDescription = async(desc) => {
+  setCalleeLocalDescription = async (desc) => {
     console.log('-- setCalleeLocalDescription --');
     try {
       await this.state.myConnection.setLocalDescription(desc);
@@ -348,7 +348,7 @@ class Chatroom extends Component {
     this.socket.emit('SEND_ANSWER', data);
   }
 
-  setCallerRemoteDescription = async(desc) => {
+  setCallerRemoteDescription = async (desc) => {
     console.log('-- setCallerRemoteDescription --');
     try {
       await this.state.myConnection.setRemoteDescription(desc);
@@ -496,8 +496,8 @@ class Chatroom extends Component {
           <div id="chatareamessages" className="chatarea-messages">
             {this.state.messages && this.state.messages.length > 0 ? this.state.messages.map((item, index) => {
               const moderate = (this.state.serverUserList.length > 0
-              && this.state.serverUserList.some(serverItem => serverItem['username'] !== this.state.username
-              && (serverItem['username'] === item.username && serverItem['type'] !== 'owner' && serverItem['type'] !== 'admin')));
+                && this.state.serverUserList.some(serverItem => serverItem['username'] !== this.state.username
+                  && (serverItem['username'] === item.username && serverItem['type'] !== 'owner' && serverItem['type'] !== 'admin')));
               return (
                 <div id={"message" + index} key={index} onMouseEnter={() => { this.setState({ hover: (this.state.editingMessage || this.state.messageMenu || (this.props.userId !== item.userId)) ? "" : ("message" + index) }) }} onMouseLeave={() => { this.setState({ hover: "" }); }}>
                   <div className="chatarea-messages-container">
@@ -510,9 +510,9 @@ class Chatroom extends Component {
                         <p onClick={() => { this.editChatroomMessage(); }}>Edit</p>
                         <p onClick={() => { this.deleteChatroomMessage(); }}>Delete</p>
                       </div>
-                    : null}
+                      : null}
                     {this.state.userModalOpen && this.state.rightClickedUser.id === item.id ?
-                      <div ref={this.ref} className={moderate === true ?"chatarea-messages-usermodalmod" : "chatarea-messages-usermodal"}>
+                      <div ref={this.ref} className={moderate === true ? "chatarea-messages-usermodalmod" : "chatarea-messages-usermodal"}>
                         <span onClick={() => { this.setState({ userModalOpen: false }); }}>&#10005;</span>
                         <p onClick={() => { this.privateMessageUser(); }} className={moderate === true ? "chatarea-messages-usermodalmod-privatemessage" : "chatarea-messages-usermodal-privatemessage"}>Send Message</p>
 
@@ -520,7 +520,7 @@ class Chatroom extends Component {
 
                         {moderate === true ? <p onClick={() => { this.banUser(item); }} className="chatarea-messages-usermodalmod-ban">Ban {item.username}</p> : null}
                       </div>
-                    : null}
+                      : null}
                   </div>
                   {this.state.editingMessage !== null && this.state.editingMessage.id === item.id ? <span><input className="chatarea-messages-editmessage" onChange={(event) => { this.handleNewMessageChange(event); }} value={this.state.newMessage} onKeyDown={(event) => { event.keyCode === 13 && event.shiftKey === false ? this.sendEditedMessage(event) : this.sendMessage(null) }} /><p className="chatarea-messages-editmessage-note">escape to cancel • enter to save</p></span> : <p className="chatarea-messages-message">{item.message}</p>}
                 </div>
@@ -535,7 +535,7 @@ class Chatroom extends Component {
                 onEmojiClick={this.handleEmojiClick}
               />
             </div>
-          : null}
+            : null}
           <div className="chatarea-container">
             <input placeholder="Send a message!" type="text" onChange={(event) => { this.handleMessageChange(event); }} value={this.state.message} onKeyDown={(event) => { event.keyCode === 13 && event.shiftKey === false ? this.sendMessage(event) : this.sendMessage(null) }}></input>
             <img src={emoji} className="emojiselectchatroom" onClick={() => { this.showEmojiPicker(); }} alt="emoji-picker-icon" />
@@ -550,7 +550,7 @@ class Chatroom extends Component {
             <span>Room Owners</span>
           </div>
           <div className="sidebarright-bordertwo" />
-          {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index)  => {
+          {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index) => {
             return (
               <div key={index} className={user.type === 'owner' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.sideContextMenu(event, user); }}>
                 {user.type === 'owner' ? <div className="username">
@@ -566,9 +566,9 @@ class Chatroom extends Component {
                         <span onClick={() => { this.setState({ sideUserModalOpen: false }); }}>&#10005;</span>
                         <p onClick={() => { this.sidePrivateMessageUser(); }} className="chatarea-messages-sideusermodal-privatemessage">Send Message</p>
                       </div>
-                    : null}
+                      : null}
                   </div>
-                : null}
+                  : null}
               </div>
             );
           }) : null}
@@ -577,7 +577,7 @@ class Chatroom extends Component {
             <span>Administrators</span>
           </div>
           <div className="sidebarright-bordertwo" />
-          {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index)  => {
+          {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index) => {
             return (
               <div key={index} className={user.type === 'admin' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.sideContextMenu(event, user); }}>
                 {user.type === 'admin' ? <div className="username">
@@ -593,9 +593,9 @@ class Chatroom extends Component {
                         <span onClick={() => { this.setState({ sideUserModalOpen: false }); }}>&#10005;</span>
                         <p onClick={() => { this.sidePrivateMessageUser(); }} className="chatarea-messages-sideusermodal-privatemessage">Send Message</p>
                       </div>
-                    : null}
+                      : null}
                   </div>
-                : null}
+                  : null}
               </div>
             );
           }) : null}
@@ -604,7 +604,7 @@ class Chatroom extends Component {
             <span>Moderators</span>
           </div>
           <div className="sidebarright-bordertwo" />
-          {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index)  => {
+          {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index) => {
             const moderate = (user.username !== this.state.username);
             return (
               <div key={index} className={user.type === 'moderator' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.sideContextMenu(event, user); }}>
@@ -617,7 +617,7 @@ class Chatroom extends Component {
                   <div>
                     <span className="sidebarright-user">{user.username}</span>
                     {this.state.sideUserModalOpen && user.type === 'moderator' && this.state.sideRightClickedUser.username === user.username ?
-                      <div ref={this.ref} className={moderate === true ?"chatarea-messages-sideusermodalmod" : "chatarea-messages-sideusermodal"}>
+                      <div ref={this.ref} className={moderate === true ? "chatarea-messages-sideusermodalmod" : "chatarea-messages-sideusermodal"}>
                         <span onClick={() => { this.setState({ sideUserModalOpen: false }); }}>&#10005;</span>
                         <p onClick={() => { this.sidePrivateMessageUser(); }} className={moderate === true ? "chatarea-messages-sideusermodalmod-privatemessage" : "chatarea-messages-sideusermodal-privatemessage"}>Send Message</p>
 
@@ -625,9 +625,9 @@ class Chatroom extends Component {
 
                         {moderate === true ? <p onClick={() => { this.banUser(user); }} className="chatarea-messages-sideusermodalmod-ban">Ban {user.username}</p> : null}
                       </div>
-                    : null}
+                      : null}
                   </div>
-                : null}
+                  : null}
               </div>
             );
           }) : null}
@@ -649,7 +649,7 @@ class Chatroom extends Component {
                   <div>
                     <span className="sidebarright-user">{user.username}</span>
                     {this.state.sideUserModalOpen && user.type === 'voice' && this.state.sideRightClickedUser.username === user.username ?
-                      <div ref={this.ref} className={moderate === true ?"chatarea-messages-sideusermodalmod" : "chatarea-messages-sideusermodal"}>
+                      <div ref={this.ref} className={moderate === true ? "chatarea-messages-sideusermodalmod" : "chatarea-messages-sideusermodal"}>
                         <span onClick={() => { this.setState({ sideUserModalOpen: false }); }}>&#10005;</span>
                         <p onClick={() => { this.sidePrivateMessageUser(); }} className={moderate === true ? "chatarea-messages-sideusermodalmod-privatemessage" : "chatarea-messages-sideusermodal-privatemessage"}>Send Message</p>
 
@@ -657,9 +657,9 @@ class Chatroom extends Component {
 
                         {moderate === true ? <p onClick={() => { this.banUser(user); }} className="chatarea-messages-sideusermodalmod-ban">Ban {user.username}</p> : null}
                       </div>
-                    : null}
+                      : null}
                   </div>
-                : null}
+                  : null}
               </div>
             );
           }) : null}
@@ -681,7 +681,7 @@ class Chatroom extends Component {
                   <div>
                     <span className="sidebarright-user">{user.username}</span>
                     {this.state.sideUserModalOpen && user.type === 'user' && this.state.sideRightClickedUser.username === user.username ?
-                      <div ref={this.ref} className={moderate === true ?"chatarea-messages-sideusermodalmod" : "chatarea-messages-sideusermodal"}>
+                      <div ref={this.ref} className={moderate === true ? "chatarea-messages-sideusermodalmod" : "chatarea-messages-sideusermodal"}>
                         <span onClick={() => { this.setState({ sideUserModalOpen: false }); }}>&#10005;</span>
                         <p onClick={() => { this.sidePrivateMessageUser(); }} className={moderate === true ? "chatarea-messages-sideusermodalmod-privatemessage" : "chatarea-messages-sideusermodal-privatemessage"}>Send Message</p>
 
@@ -689,9 +689,9 @@ class Chatroom extends Component {
 
                         {moderate === true ? <p onClick={() => { this.banUser(user); }} className="chatarea-messages-sideusermodalmod-ban">Ban {user.username}</p> : null}
                       </div>
-                    : null}
+                      : null}
                   </div>
-                : null}
+                  : null}
               </div>
             )
           }) : null}
