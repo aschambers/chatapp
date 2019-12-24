@@ -279,9 +279,9 @@ const Dashboard = (props) => {
   }, [props]);
 
   useEffect(() => {
-    if (props.chatroomList && props.chatroomSuccess) {
+    if (props.chatroomList && props.chatroomList.length > 0 && props.chatroomSuccess) {
       setChatrooms(props.chatroomList);
-      if (props.chatroomList.length > 0) {
+      if (props.chatroomList.length > 0 && !activeChatroom) {
         setActiveChatroom(props.chatroomList[0].name);
         setActiveChatroomId(props.chatroomList[0].id);
       }
@@ -289,7 +289,7 @@ const Dashboard = (props) => {
       setNewChannel('');
       props.resetChatroomValues();
     }
-  }, [props]);
+  }, [props, activeChatroom]);
 
   useEffect(() => {
     if (props.categoryList && props.findCategorySuccess) {
@@ -554,10 +554,13 @@ const Dashboard = (props) => {
       for (let i = 0; i < newChatrooms.length; i++) {
         if (newChatrooms[i].categoryId === currentDragItem.categoryId && newChatrooms[i].name === currentDragItem.name) {
           newChatrooms[i] = {
-            categoryId: +event.target.id.split('-')[0] === 0 ? null : +event.target.id.split('-')[0],
             id: currentDragItem.id,
             name: currentDragItem.name,
-            serverId: currentDragItem.serverId
+            createdAt: currentDragItem.createdAt,
+            updatedAt: currentDragItem.updatedAt,
+            categoryId: +event.target.id.split('-')[0] === 0 ? null : +event.target.id.split('-')[0],
+            serverId: currentDragItem.serverId,
+            type: currentDragItem.type
           }
           props.chatroomUpdate({
             chatroomId: currentDragItem.id,
@@ -742,7 +745,7 @@ const Dashboard = (props) => {
   /**
    * check if user has enabled microphone access
    */
-  const checkActiveMedia = async() => {
+  const checkActiveMedia = async () => {
     let isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
     if (!isChrome) {
       setAllowVoice(true);
@@ -769,7 +772,7 @@ const Dashboard = (props) => {
   /**
    * request permission to access the microphone
    */
-  const getMedia = async() => {
+  const getMedia = async () => {
     const constraints = { audio: true, video: false };
     let stream = null;
 
@@ -798,7 +801,7 @@ const Dashboard = (props) => {
           {hover === "Home" ? <span className="tooltip"><span>Home</span></span> : null}
         </div>
         <div className="sidebar-border" />
-        {serversList && serversList.length > 0 ? serversList.map((item, index)  => {
+        {serversList && serversList.length > 0 ? serversList.map((item, index) => {
           if (item.active) {
             return (
               <div key={index} className="sidebar-container" onPointerOver={() => { setHover(item.name) }} onPointerOut={() => { setHover('') }}>
@@ -854,7 +857,7 @@ const Dashboard = (props) => {
                 <span onClick={() => { getMedia(); }}>
                   <img className="microphone-image" src={microphone} alt="microphone" />
                 </span>
-              : <span onClick={() => { getMedia(); }}>
+                : <span onClick={() => { getMedia(); }}>
                   <img className="nomicrophone-image" src={nomicrophone} alt="nomicrophone" />
                 </span>
               }
@@ -895,7 +898,7 @@ const Dashboard = (props) => {
                   <span>Privacy Settings</span>
                 </div>
               </div>
-            : null}
+              : null}
           </div>
 
           {inviteModal ?
@@ -909,7 +912,7 @@ const Dashboard = (props) => {
               createNewInstantInvite={() => { createInstantInvite(); }}
               setCurrentInviteEmail={(value) => { setInviteEmail(value); }}
             />
-          : null}
+            : null}
 
           {showChannelModal ?
             <ChannelModal
@@ -920,7 +923,7 @@ const Dashboard = (props) => {
               setShowChannelModal={() => { setShowChannelModal(false); }}
               createNewChannel={() => { createNewChannel(); }}
             />
-          : null}
+            : null}
 
           {showCategoryModal ?
             <CategoryModal
@@ -929,7 +932,7 @@ const Dashboard = (props) => {
               setShowCategoryModal={() => { setShowCategoryModal(false); }}
               createNewCategory={() => { createNewCategory(); }}
             />
-          : null}
+            : null}
 
           {showPrivacyModal ?
             <PrivacyModal
@@ -938,14 +941,14 @@ const Dashboard = (props) => {
               setAllowDirectMessages={() => { setAllowDirectMessages(true); }}
               setShowPrivacyModal={() => { setShowPrivacyModal(false); }}
             />
-          : null}
+            : null}
 
           {showNotificationSettingsModal ?
             <NotificationSettingsModal
               server={server}
               setShowNotificationSettingsModal={() => { setShowNotificationSettingsModal(false); }}
             />
-          : null}
+            : null}
 
           <div className="sidebarleft-mainchat" style={{ marginTop: chatrooms && chatrooms.length ? '0.5rem' : '0rem' }}>
             <div onDrop={(event) => { dropItem(event); }} onDragOver={(event) => { draggingOverItem(event); }} id={0 + "-" + server}>
@@ -972,15 +975,17 @@ const Dashboard = (props) => {
                     {group.visible ? <i className="arrow down"></i> : <i className="arrow right"></i>}
                     <span>{group.name}</span>
                     {group.visible ?
-                    <div onDrop={(event) => { dropItem(event); }} onDragOver={(event) => { draggingOverItem(event); }} id={group.id + "-" + group.name}>
-                      {chatrooms && chatrooms.length > 0 ? chatrooms.filter(chatroom => chatroom.categoryId === group.id).map((item, index) => {
-                        return (
-                          <div className={activeChatroom === item.name ? "active" : "inactive"} id={item.categoryId + "-" + item.name} key={index} draggable="true" onDragStart={(event) => { dragItem(item, event); }} onClick={(event) => { setCurrentActiveChatroom(item, event); }}>
-                            <img src={numbersign} alt="channel" height={16} width={16} /><span>{item.name}</span>
-                          </div>
-                        );
-                      }) : null}
-                    </div> : null}
+                      <div onDrop={(event) => { dropItem(event); }} onDragOver={(event) => { draggingOverItem(event); }} id={group.id + "-" + group.name}>
+                        {chatrooms && chatrooms.length > 0 ? chatrooms.filter(chatroom => chatroom.categoryId === group.id).map((item, index) => {
+                          return (
+                            <div className={activeChatroom === item.name ? "active" : "inactive"} id={item.categoryId + "-" + item.name} key={index} draggable="true" onDragStart={(event) => { dragItem(item, event); }} onClick={(event) => { setCurrentActiveChatroom(item, event); }}>
+                              {item.type === "text" ? <img src={numbersign} alt="channel" height={16} width={16} /> : null}
+                              {item.type === "voice" ? <img src={voice} alt="channel" height={18} width={16} /> : null}
+                              <span>{item.name}</span>
+                            </div>
+                          );
+                        }) : null}
+                      </div> : null}
                   </span>
                 </div>
               );
@@ -1004,7 +1009,7 @@ const Dashboard = (props) => {
           privateMessageUser={(user) => { privateMessageUser(user) }}
           leaveServer={() => { leaveServer(); }}
         />
-      : null}
+        : null}
 
       {server === '' && currentFriend !== null ?
         <ChatroomFriend
@@ -1014,7 +1019,7 @@ const Dashboard = (props) => {
           friendId={currentFriend.friendId}
           friendUsername={currentFriend.username}
         />
-      : null}
+        : null}
 
       {server === '' && currentFriend === null ?
         <div className="mainarea">
@@ -1033,7 +1038,7 @@ const Dashboard = (props) => {
             </div>
           </div>
         </div>
-      : null}
+        : null}
 
       {isServerSettingsOpen ?
         <div className="serversettings">
@@ -1060,11 +1065,11 @@ const Dashboard = (props) => {
                   </div>
                   <div className="serversettings-myserver__container-info">
                     <div className="serversettings-myserver__container-info-server">
-                      <span>Server Name</span><br/>
+                      <span>Server Name</span><br />
                       <input onChange={(event) => setServerName(event.target.value)} value={serverName} />
                     </div>
                     <div className="serversettings-myserver__container-info-region">
-                      <span>Server Region</span><br/>
+                      <span>Server Region</span><br />
                       <div className="servermodalregion-select">
                         {serverRegion === "US West" || serverRegion === "US Central" || serverRegion === "US East" ? <img src={usregion} height={35} width={55} alt="server-region" /> : null}
                         {serverRegion === "Central Europe" || serverRegion === "Western Europe" ? <img src={europe} height={35} width={55} alt="server-region" /> : null}
@@ -1076,7 +1081,7 @@ const Dashboard = (props) => {
                   </div>
                 </div>
               </div>
-            : null}
+              : null}
 
             {activeServerSetting === "members" ?
               <div className="serversettings-members">
@@ -1088,10 +1093,10 @@ const Dashboard = (props) => {
                     setServerUserRole={(role) => { setServerUserRole(role); }}
                     setSaveServerUser={setSaveServerUser}
                   />
-                : <div>
+                  : <div>
                     <h1 className="serversettings-members-title">Server Members</h1>
                     <p className="serversettings-members-count">{serverUserList.length} Members</p>
-                    {serverUserList && serverUserList.length > 0 ? serverUserList.map((item, index)  => {
+                    {serverUserList && serverUserList.length > 0 ? serverUserList.map((item, index) => {
                       if (item.type === "owner") {
                         return (
                           <div key={index} className="serversettings-owner">
@@ -1123,13 +1128,13 @@ const Dashboard = (props) => {
                   </div>
                 }
               </div>
-            : null}
+              : null}
 
             {activeServerSetting === "invites" ?
               <div className="serversettings-invites">
                 <h1>Server Invites</h1>
                 <p className="serversettings-invites-count">{serverInvites.length === 1 ? '1 Invite' : `${serverInvites.length} Invites`} </p>
-                {serverInvites && serverInvites.length > 0 ? serverInvites.map((item, index)  => {
+                {serverInvites && serverInvites.length > 0 ? serverInvites.map((item, index) => {
                   return (
                     <div key={index} className="serversettings-invite">
                       <span>
@@ -1146,7 +1151,7 @@ const Dashboard = (props) => {
                   )
                 }) : null}
               </div>
-            : null}
+              : null}
 
             {activeServerSetting === "bans" ?
               <div className="serversettings-bans">
@@ -1156,10 +1161,10 @@ const Dashboard = (props) => {
                     setShowUserManagementBan={() => { setShowUserManagementBan(false); setServerUserBan(null); }}
                     setRemoveUserBan={setRemoveUserBan}
                   />
-                : <div>
+                  : <div>
                     <h1 className="serversettings-bans-title">Server Bans</h1>
                     <p className="serversettings-bans-count">{serverUserBans.length} Bans</p>
-                    {serverUserBans && serverUserBans.length > 0 ? serverUserBans.map((item, index)  => {
+                    {serverUserBans && serverUserBans.length > 0 ? serverUserBans.map((item, index) => {
                       if (item.type === "owner") {
                         return (
                           <div key={index} className="serversettings-owner">
@@ -1191,7 +1196,7 @@ const Dashboard = (props) => {
                   </div>
                 }
               </div>
-            : null}
+              : null}
 
             <div className="serversettings-escape" onClick={() => { setIsServerSettingsOpen(!isServerSettingsOpen); showServerSettings(false); setActiveServerSetting("overview"); setShowUserManagementBan(false); setShowUserManagement(false); }}>
             </div>
@@ -1203,10 +1208,10 @@ const Dashboard = (props) => {
               setIsChangingRegion={() => { setIsChangingRegion(false); }}
               setServerRegion={(region) => { setServerRegion(region); setIsChangingRegion(false); }}
             />
-          : null}
+            : null}
 
         </div>
-      : null}
+        : null}
 
       {isSettingsOpen ?
         <div className="usersettings">
@@ -1239,7 +1244,7 @@ const Dashboard = (props) => {
                   setAccountModalOpen={() => { setAccountModalOpen(false); }}
                   showMainFile={(event) => { showMainFile(event) }}
                 />
-              : <div>
+                : <div>
                   <div className="usersettings-myaccount">
                     <h1>My Account</h1>
                     <div className="usersettings-myaccount__container">
@@ -1248,11 +1253,11 @@ const Dashboard = (props) => {
                       </div>
                       <div className="usersettings-myaccount__container-info">
                         <div className="usersettings-myaccount__container-info-username">
-                          <span>Username</span><br/>
+                          <span>Username</span><br />
                           <span>{username}</span>
                         </div>
                         <div className="usersettings-myaccount__container-info-email">
-                          <span>Email Address</span><br/>
+                          <span>Email Address</span><br />
                           <span>{email}</span>
                         </div>
                       </div>
@@ -1271,14 +1276,14 @@ const Dashboard = (props) => {
                 </div>
               }
             </div>
-          : null}
+            : null}
 
           {activeUserSetting === "myservers" ?
             <div className="userserveredit-accountcontainer">
               <div className="userserveredit-myaccount">
                 <h1>My Servers</h1>
                 <p className="userserveredit-members-count">{serversList && serversList.length ? serversList.length : '0'} Servers</p>
-                {serversList && serversList.length > 0 ? serversList.map((item, index)  => {
+                {serversList && serversList.length > 0 ? serversList.map((item, index) => {
                   return (
                     <div key={index} className="userserveredit-user" onClick={() => { toggleServerModal(item); }}>
                       <img className="userserveredit-logo" src={item.imageUrl ? item.imageUrl : chatot} alt="chatter-icon" />
@@ -1294,13 +1299,13 @@ const Dashboard = (props) => {
                 }) : null}
               </div>
             </div>
-          : null}
+            : null}
 
           <div className="usersettings-escape" onClick={() => { setActiveUserSetting("myaccount"); setSettingsOpen(false); }}>
           </div>
           <p className="usersettings-escapetext" onClick={() => { setActiveUserSetting("myaccount"); setSettingsOpen(false); }}>ESC</p>
         </div>
-      : null}
+        : null}
 
       {isModalOpen && currentModal === "create" ?
         <CreateServer
@@ -1310,14 +1315,14 @@ const Dashboard = (props) => {
           setModalOpen={() => { setModalOpen(!isModalOpen) }}
           getUpdatedServerList={(closeModal) => { getUpdatedServerList(closeModal) }}
         />
-      : null}
+        : null}
 
       {isModalOpen && currentModal === "join" ?
         <JoinServer
           joinServer={(value) => { joinServer(value); }}
           setModalOpen={() => { setModalOpen(!isModalOpen) }}
         />
-      : null}
+        : null}
 
       {serverEditModalOpen ?
         <ServerEditModal
@@ -1325,7 +1330,7 @@ const Dashboard = (props) => {
           toggleServer={(value) => { toggleServerStatus(value); }}
           setModalOpen={() => { setServerEditModalOpen(false); }}
         />
-      : null}
+        : null}
     </div>
   );
 }
