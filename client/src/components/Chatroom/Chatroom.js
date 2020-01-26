@@ -10,6 +10,7 @@ import chatot from '../../assets/images/chatot.png';
 import numbersign from '../../assets/images/numbersign.png';
 import voice from '../../assets/images/voice.png';
 import editwhite from '../../assets/images/editwhite.png';
+import paperclip from '../../assets/images/paperclip.png';
 import emoji from '../../assets/images/emoji.png';
 import EmojiPicker from 'emoji-picker-react';
 
@@ -537,6 +538,7 @@ class Chatroom extends Component {
             </div>
             : null}
           <div className="chatarea-container">
+            <img src={paperclip} alt="paperclip-icon" className="attach" />
             <input placeholder="Send a message!" type="text" onChange={(event) => { this.handleMessageChange(event); }} value={this.state.message} onKeyDown={(event) => { event.keyCode === 13 && event.shiftKey === false ? this.sendMessage(event) : this.sendMessage(null) }}></input>
             <img src={emoji} className="emojiselectchatroom" onClick={() => { this.showEmojiPicker(); }} alt="emoji-picker-icon" />
           </div>
