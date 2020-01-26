@@ -5,6 +5,15 @@
   flex-direction: row;
   width: 100%; }
 
+.attach {
+  margin-top: 1.9rem;
+  position: relative;
+  z-index: 2;
+  padding-left: 1.25rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  cursor: pointer; }
+
 .chatarea {
   display: flex;
   flex-direction: column;
@@ -32,13 +41,14 @@
       display: flex;
       flex: 0.96;
       height: 2.5rem;
-      padding-left: 0.5rem;
+      padding-left: 2rem;
       font-size: 0.8rem;
       color: white;
       background-color: #3c3c3c;
       text-decoration: none;
       outline: none;
-      border: 1px solid black; }
+      border: 1px solid black;
+      margin-left: -1.6rem; }
   .chatarea-messages {
     height: 100%;
     margin-bottom: auto;
