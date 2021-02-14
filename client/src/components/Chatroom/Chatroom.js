@@ -20,6 +20,10 @@ class Chatroom extends Component {
     this.ref = React.createRef();
     this.useOnClickOutside(this.ref, () => this.setState({ messageMenu: false, userModalOpen: false, sideUserModalOpen: false, showEmojiPicker: false }));
 
+    // file upload
+    this.mainSubmit = React.createRef();
+    this.mainFile = React.createRef();
+
     this.state = {
       id: "",
       username: "",
@@ -486,6 +490,34 @@ class Chatroom extends Component {
     });
   }
 
+  clickMainFile = () => {
+    console.log('clicked');
+    console.log(this.mainFile);
+    this.mainFile.current.click();
+  }
+
+  showMainFile = (event) => {
+    console.log('attachment open');
+    event.preventDefault();
+    let reader = new FileReader();
+    let file = event.target.files[0];
+
+    // console.log(file);
+    reader.onloadend = () => {
+      // let text = reader.result;
+      // var lines = text.split(/[\r\n]+/g);
+      // for (let i = 0; i < lines.length; i++) {
+      //   console.log(lines[i]);
+      // }
+      this.setState({ currentFile: reader.result }, () => {
+        console.log(this.state.currentFile);
+      });
+      // setEditImageUrl(reader.result);
+    }
+
+    reader.readAsText(file);
+  }
+
   render() {
     return (
       <div className="chatroom">
@@ -495,6 +527,11 @@ class Chatroom extends Component {
             <img src={this.props.activeChatroomType === "text" ? numbersign : voice} alt="channel" height={16} width={16} /><span>{this.props.activeChatroom}</span>
           </div>
           <div id="chatareamessages" className="chatarea-messages">
+            {this.state.currentFile ?
+              <div className="display-fileupload">
+                {this.state.currentFile}
+              </div>
+              : null}
             {this.state.messages && this.state.messages.length > 0 ? this.state.messages.map((item, index) => {
               const moderate = (this.state.serverUserList.length > 0
                 && this.state.serverUserList.some(serverItem => serverItem['username'] !== this.state.username
@@ -538,7 +575,8 @@ class Chatroom extends Component {
             </div>
             : null}
           <div className="chatarea-container">
-            <img src={paperclip} alt="paperclip-icon" className="attach" />
+            <input id="file" type="file" style={{ display: 'none' }} ref={this.mainFile} onChange={(event) => { this.showMainFile(event); }} accept=".txt" />
+            <img src={paperclip} alt="paperclip-icon" className="attach" ref={this.mainSubmit} onClick={this.clickMainFile} />
             <input placeholder="Send a message!" type="text" onChange={(event) => { this.handleMessageChange(event); }} value={this.state.message} onKeyDown={(event) => { event.keyCode === 13 && event.shiftKey === false ? this.sendMessage(event) : this.sendMessage(null) }}></input>
             <img src={emoji} className="emojiselectchatroom" onClick={() => { this.showEmojiPicker(); }} alt="emoji-picker-icon" />
           </div>

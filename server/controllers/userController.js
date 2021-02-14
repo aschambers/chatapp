@@ -101,7 +101,7 @@ module.exports = {
    * @returns {object} user object
    */
   userLogin: async(req, res, next) => {
-    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+    // if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
 
     const { email, password } = req.body;
 

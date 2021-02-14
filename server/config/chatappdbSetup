@@ -1,0 +1,101 @@
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username text NOT NULL,
+    password text NOT NULL,
+    email text NOT NULL,
+    active boolean NOT NULL,
+    os text,
+    type text NOT NULL,
+    "imageUrl" text,
+    "resetPasswordToken" text,
+    "pushNotificationToken" text,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    "privateMessages" jsonb[],
+    "personalMessages" jsonb[],
+    "chatroomsList" jsonb[],
+    "serversList" jsonb[],
+    "isVerified" boolean,
+    token text
+);
+
+CREATE TABLE servers (
+    id SERIAL PRIMARY KEY,
+    name text NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    public boolean NOT NULL,
+    region text NOT NULL,
+    "imageUrl" text,
+    "userId" integer NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    "userList" jsonb[],
+    "userBans" jsonb[],
+    active boolean
+);
+
+
+CREATE TABLE categories (
+    id SERIAL PRIMARY KEY,
+    name text NOT NULL,
+    "serverId" integer REFERENCES servers(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    "order" integer NOT NULL,
+    visible boolean NOT NULL
+);
+
+CREATE TABLE chatrooms (
+    id SERIAL PRIMARY KEY,
+    name text NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    "categoryId" integer REFERENCES categories(id) ON DELETE CASCADE,
+    "serverId" integer NOT NULL REFERENCES servers(id) ON DELETE CASCADE,
+    type text
+);
+
+CREATE TABLE friends (
+    id SERIAL PRIMARY KEY,
+    username text NOT NULL,
+    "imageUrl" text,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    "userId" integer NOT NULL REFERENCES users(id),
+    "friendId" integer NOT NULL REFERENCES users(id),
+    "activeFriend" boolean NOT NULL,
+    "groupId" text NOT NULL
+);
+
+CREATE TABLE invites (
+    id SERIAL PRIMARY KEY,
+    token text NOT NULL,
+    expires integer NOT NULL,
+    code text NOT NULL,
+    email text,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    "serverId" integer NOT NULL REFERENCES servers(id) ON DELETE CASCADE
+);
+
+CREATE TABLE messages (
+    id SERIAL PRIMARY KEY,
+    username text NOT NULL,
+    message text NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    "userId" integer REFERENCES users(id),
+    "chatroomId" integer REFERENCES chatrooms(id) ON DELETE CASCADE,
+    type text,
+    "friendId" integer REFERENCES friends(id)
+);
+
+
+
+
+
+
+
+
+
+
+
