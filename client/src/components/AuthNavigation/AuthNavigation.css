@@ -6,20 +6,24 @@
   color: #FFF;
   font-family: Antonio-Regular;
   border-bottom: 1px solid #FFF;
-  min-width: 110rem; }
-  .navbarDashboard-link {
-    display: flex;
-    flex: 1;
-    font-size: 3rem;
-    margin-left: 3rem;
-    cursor: auto; }
-  .navbarDashboard-home {
-    cursor: pointer; }
-  .navbarDashboard-authlink {
-    font-size: 3rem;
-    margin-top: 1.8rem;
-    margin-right: 3rem;
-    cursor: pointer; }
+  min-width: 110rem;
+}
+.navbarDashboard-link {
+  display: flex;
+  flex: 1;
+  font-size: 3rem;
+  margin-left: 3rem;
+  cursor: auto;
+}
+.navbarDashboard-home {
+  cursor: pointer;
+}
+.navbarDashboard-authlink {
+  font-size: 3rem;
+  margin-top: 1.8rem;
+  margin-right: 3rem;
+  cursor: pointer;
+}
 
 .navSideMenu {
   margin-top: 0rem;
@@ -27,7 +31,8 @@
   width: 22rem;
   background-color: #3a3a3a;
   z-index: 5;
-  position: absolute; }
+  position: absolute;
+}
 
 .main-navlink {
   background-color: #0066cc;
@@ -35,29 +40,39 @@
   width: 22rem;
   border-bottom: 1px solid #FFF;
   padding-top: 1.3rem;
-  padding-left: 0rem; }
+  padding-left: 0rem;
+}
 
 .menu-links {
   border-right: 1px solid #FFF;
-  height: 97rem; }
+  height: 97rem;
+}
 
 .slider-enter {
-  transform: translate(-100%); }
+  transform: translate(-100%);
+}
 
 .slider-enter.slider-enter-active {
   transform: translate(0%);
-  transition: transform 300ms ease-in-out; }
+  transition: transform 300ms ease-in-out;
+}
 
 .slider-leave {
-  transform: translate(0%); }
+  transform: translate(0%);
+}
 
 .slider-leave.slider-leave-active {
   transform: translate(-100%);
-  transition: transform 300ms ease-in-out; }
+  transition: transform 300ms ease-in-out;
+}
 
 .slider-appear {
-  opacity: 0.01; }
+  opacity: 0.01;
+}
 
 .slider-appear.slider-appear-active {
   opacity: 1;
-  transition: opacity .5s ease-in-out; }
+  transition: opacity 0.5s ease-in-out;
+}
+
+/*# sourceMappingURL=AuthNavigation.css.map */

@@ -4,49 +4,55 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 10;
-  background-color: #282828;
+  background-color: rgb(40, 40, 40);
   border-radius: 5px;
   width: 32rem;
-  height: 18rem; }
-  .invitemodal-container > div .title {
-    text-align: center;
-    font-size: 1.2rem;
-    margin-top: 2rem;
-    color: white; }
-  .invitemodal-container-title {
-    text-align: center;
-    font-size: 1.4rem;
-    margin-top: 0.8rem;
-    color: white; }
-  .invitemodal-container-cancel {
-    cursor: pointer;
-    outline: none;
-    border: 1px solid #353535;
-    background-color: #353535;
-    color: white;
-    font-size: 1rem;
-    box-sizing: border-box;
-    padding: 0.5rem 1rem 0.5rem 1rem;
-    margin-top: 2.5rem;
-    margin-left: 19.5rem;
-    margin-right: 1rem; }
-  .invitemodal-container-create {
-    cursor: pointer;
-    outline: none;
-    border: none;
-    background-color: #7272cb;
-    color: white;
-    font-size: 1rem;
-    box-sizing: border-box;
-    padding: 0.5rem 1rem 0.5rem 1rem;
-    border-radius: 3px; }
+  height: 18rem;
+}
+.invitemodal-container > div .title {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 2rem;
+  color: white;
+}
+.invitemodal-container-title {
+  text-align: center;
+  font-size: 1.4rem;
+  margin-top: 0.8rem;
+  color: white;
+}
+.invitemodal-container-cancel {
+  cursor: pointer;
+  outline: none;
+  border: 1px solid rgb(53, 53, 53);
+  background-color: rgb(53, 53, 53);
+  color: white;
+  font-size: 1rem;
+  box-sizing: border-box;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  margin-top: 2.5rem;
+  margin-left: 19.5rem;
+  margin-right: 1rem;
+}
+.invitemodal-container-create {
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background-color: rgb(114, 114, 203);
+  color: white;
+  font-size: 1rem;
+  box-sizing: border-box;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  border-radius: 3px;
+}
 
 .invite-settings {
   width: 1.5rem;
   height: 1.5rem;
   cursor: pointer;
   margin-top: 1.5rem;
-  margin-left: 29rem; }
+  margin-left: 29rem;
+}
 
 .personal-invite {
   width: 64%;
@@ -54,75 +60,85 @@
   flex-direction: row;
   margin: 0 auto;
   margin-top: 3rem;
-  margin-bottom: 2rem; }
-  .personal-invite > span {
-    color: white;
-    margin-right: 1rem;
-    margin-top: 0.2rem; }
-  .personal-invite > input {
-    font-size: 1rem;
-    padding-left: 0.2rem;
-    height: 1.2rem;
-    width: 12rem; }
+  margin-bottom: 2rem;
+}
+.personal-invite > span {
+  color: white;
+  margin-right: 1rem;
+  margin-top: 0.2rem;
+}
+.personal-invite > input {
+  font-size: 1rem;
+  padding-left: 0.2rem;
+  height: 1.2rem;
+  width: 12rem;
+}
 
 .instant-invite {
   height: 4rem;
   width: 16rem;
   color: white;
   margin-left: 8rem;
-  margin-top: 1rem; }
+  margin-top: 1rem;
+}
 
 .changeinvite {
   margin-bottom: 2rem;
-  margin-top: 2.5rem; }
-  .changeinvite > span {
-    margin-left: 3rem;
-    color: white;
-    position: absolute;
-    margin-top: 0.5rem; }
+  margin-top: 2.5rem;
+}
+.changeinvite > span {
+  margin-left: 3rem;
+  color: white;
+  position: absolute;
+  margin-top: 0.5rem;
+}
 
 .switchexpires {
   margin-top: 2.5rem;
-  height: 2rem; }
-  .switchexpires > span {
-    margin-left: 3rem;
-    color: white;
-    position: absolute;
-    margin-top: 0.5rem; }
-  .switchexpires > select {
-    margin-left: 22.2rem;
-    position: absolute;
-    margin-top: 0rem;
-    z-index: 5;
-    background: url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat right white;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    outline: none;
-    border: none;
-    border-radius: 0;
-    width: 8rem;
-    cursor: pointer;
-    -webkit-border-radius: 0px;
-    -moz-border-radius: 0px;
-    border-radius: 0px;
-    background-position-x: 95%;
-    height: 2rem;
-    padding-left: 1rem;
-    font-family: Antonio-Regular;
-    font-size: 1.2rem; }
+  height: 2rem;
+}
+.switchexpires > span {
+  margin-left: 3rem;
+  color: white;
+  position: absolute;
+  margin-top: 0.5rem;
+}
+.switchexpires > select {
+  margin-left: 22.2rem;
+  position: absolute;
+  margin-top: 0rem;
+  z-index: 5;
+  background: url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat right white;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+  border: none;
+  border-radius: 0;
+  width: 8rem;
+  cursor: pointer;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+  background-position-x: 95%;
+  height: 2rem;
+  padding-left: 1rem;
+  font-family: Antonio-Regular;
+  font-size: 1.2rem;
+}
 
 .invite-changesettings-save {
   cursor: pointer;
   outline: none;
   border: none;
-  background-color: #7272cb;
+  background-color: rgb(114, 114, 203);
   color: white;
   font-size: 1rem;
   box-sizing: border-box;
   padding: 0.5rem 1rem 0.5rem 1rem;
   margin-top: 2rem;
-  margin-left: 26rem; }
+  margin-left: 26rem;
+}
 
 .invite-link {
   color: white;
@@ -130,7 +146,8 @@
   margin-left: 1rem;
   display: flex;
   justify-content: center;
-  cursor: copy; }
+  cursor: copy;
+}
 
 /* The switch - the box around the slider */
 .switch {
@@ -138,13 +155,15 @@
   display: inline-block;
   width: 60px;
   height: 34px;
-  left: 26.5rem; }
+  left: 26.5rem;
+}
 
 /* Hide default HTML checkbox */
 .switch input {
   opacity: 0;
   width: 0;
-  height: 0; }
+  height: 0;
+}
 
 /* The slider */
 .slider {
@@ -155,8 +174,9 @@
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s; }
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
 
 .slider:before {
   position: absolute;
@@ -166,23 +186,31 @@
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s; }
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
 
 input:checked + .slider {
-  background-color: #0066cc; }
+  background-color: #0066cc;
+}
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #0066cc; }
+  box-shadow: 0 0 1px #0066cc;
+}
 
 input:checked + .slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
-  transform: translateX(26px); }
+  transform: translateX(26px);
+}
 
 /* Rounded sliders */
 .slider.round {
-  border-radius: 34px; }
+  border-radius: 34px;
+}
 
 .slider.round:before {
-  border-radius: 50%; }
+  border-radius: 50%;
+}
+
+/*# sourceMappingURL=InviteModal.css.map */

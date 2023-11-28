@@ -1,17 +1,19 @@
 .dashboard {
-  background-color: #414141;
+  background-color: rgb(65, 65, 65);
   height: 100vh;
   height: calc(var(--vh, 1vh) * 100);
   display: flex;
   flex-direction: row;
   width: 100%;
-  min-width: 31rem; }
+  min-width: 31rem;
+}
 
 .loadingbackground {
-  background-color: #414141;
+  background-color: rgb(65, 65, 65);
   position: relative;
   padding-top: 1vh;
-  height: 100vh; }
+  height: 100vh;
+}
 
 .contentBackground {
   position: absolute;
@@ -21,54 +23,62 @@
   bottom: 0;
   left: 0;
   opacity: 0.9;
-  background-color: #2e2e2e;
-  min-width: 68.4rem; }
+  background-color: rgb(46, 46, 46);
+  min-width: 68.4rem;
+}
 
 .sidebar {
   display: flex;
   flex-direction: column;
   min-width: 5rem;
   height: 100%;
-  background-color: #373737;
-  overflow: auto; }
-  .sidebar-container {
-    display: flex;
-    flex-direction: row;
-    height: 60px;
-    margin-top: 10px;
-    margin-bottom: 10px; }
-  .sidebar-select {
-    padding-left: 0.25rem;
-    background-color: #008000;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    height: 4rem; }
-  .sidebar-hover {
-    padding-left: 0.25rem;
-    height: 1.5rem;
-    margin-top: 1.5rem;
-    background-color: #cdcdcd;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px; }
-  .sidebar-hoverblend {
-    padding-left: 0.25rem;
-    height: 1.5rem;
-    margin-top: 1.5rem;
-    background-color: #373737;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px; }
-  .sidebar-logo {
-    margin-top: 6px;
-    width: 4rem;
-    height: 4rem;
-    margin-left: 8px;
-    height: 50px;
-    cursor: pointer; }
-  .sidebar-border {
-    border-top: 1px solid #4d4d4d;
-    width: 40%;
-    margin-left: 30%;
-    margin-top: 0.3rem; }
+  background-color: rgb(55, 55, 55);
+  overflow: auto;
+}
+.sidebar-container {
+  display: flex;
+  flex-direction: row;
+  height: 60px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.sidebar-select {
+  padding-left: 0.25rem;
+  background-color: #008000;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  height: 4rem;
+}
+.sidebar-hover {
+  padding-left: 0.25rem;
+  height: 1.5rem;
+  margin-top: 1.5rem;
+  background-color: #cdcdcd;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.sidebar-hoverblend {
+  padding-left: 0.25rem;
+  height: 1.5rem;
+  margin-top: 1.5rem;
+  background-color: rgb(55, 55, 55);
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.sidebar-logo {
+  margin-top: 6px;
+  width: 4rem;
+  height: 4rem;
+  margin-left: 8px;
+  height: 50px;
+  cursor: pointer;
+}
+.sidebar-border {
+  border-top: 1px solid rgb(77, 77, 77);
+  width: 40%;
+  margin-left: 30%;
+  margin-top: 0.3rem;
+}
 
 .sidebarleft {
   display: flex;
@@ -76,205 +86,244 @@
   justify-content: flex-start;
   min-width: 15.5rem;
   height: 100%;
-  background-color: #303030;
+  background-color: rgb(48, 48, 48);
   border-left: 1px solid black;
-  border-right: 1px solid black; }
-  .sidebarleft-container {
-    display: flex;
-    flex-direction: row;
-    height: 2rem;
-    padding-top: 0.5rem;
-    width: 100%; }
-    .sidebarleft-container > input {
-      background-color: #3c3c3c;
-      text-decoration: none;
-      outline: none;
-      border: 1px solid black;
-      height: 1.5rem;
-      color: white;
-      padding-left: 3%;
-      margin-left: 7%;
-      width: 80%;
-      border-radius: 3px; }
-    .sidebarleft-container-dropdown {
-      cursor: pointer;
-      position: relative;
-      right: 1.5rem;
-      margin-top: 0.2rem;
-      width: 0%; }
-    .sidebarleft-container-header {
-      background-color: #3c3c3c;
-      color: white;
-      width: 100%;
-      height: 1.95rem;
-      margin-top: -0.75rem;
-      display: flex;
-      padding-left: 0.75rem;
-      padding-top: 1rem;
-      border-bottom: 2px solid #212121; }
-  .sidebarleft-mainchat {
-    height: 0rem;
-    width: 100%;
-    padding-left: 0.5rem; }
-    .sidebarleft-mainchat > div:first-child {
-      min-height: 1rem; }
-    .sidebarleft-mainchat > div {
-      width: 15rem;
-      min-height: 2rem; }
-      .sidebarleft-mainchat > div > .active {
-        cursor: pointer;
-        background-color: #4b4b4b;
-        padding: 0.3rem;
-        border-radius: 2px;
-        margin-bottom: 0.2rem; }
-      .sidebarleft-mainchat > div > .inactive {
-        cursor: pointer;
-        margin-bottom: 0.2rem; }
-      .sidebarleft-mainchat > div > div {
-        cursor: pointer;
-        padding: 0.3rem;
-        border-radius: 2px;
-        margin-bottom: 0.2rem; }
-        .sidebarleft-mainchat > div > div > span {
-          margin-left: 0.2rem;
-          color: #e8e8e8;
-          position: absolute;
-          margin-top: -0.05rem; }
-    .sidebarleft-mainchat-dropdown {
-      cursor: pointer;
-      position: absolute;
-      margin-top: 0.5rem;
-      margin-bottom: 0.5rem; }
-      .sidebarleft-mainchat-dropdown > span {
-        text-transform: uppercase;
-        font-size: 0.8rem;
-        padding-left: 0.5rem;
-        position: relative;
-        top: 0.15rem;
-        color: #7F7F7F; }
-      .sidebarleft-mainchat-dropdown > div {
-        width: 15rem;
-        margin-top: 0.5rem;
-        min-height: 3rem; }
-        .sidebarleft-mainchat-dropdown > div > .active {
-          cursor: pointer;
-          background-color: #4b4b4b;
-          padding: 0.3rem;
-          border-radius: 2px;
-          margin-bottom: 0.2rem; }
-        .sidebarleft-mainchat-dropdown > div > div {
-          cursor: pointer;
-          padding: 0.3rem;
-          border-radius: 2px;
-          margin-bottom: 0.2rem; }
-          .sidebarleft-mainchat-dropdown > div > div > span {
-            margin-left: 0.2rem;
-            color: #e8e8e8;
-            position: absolute;
-            margin-top: -0.05rem; }
-    .sidebarleft-mainchat-outsidechannel {
-      margin-top: 1rem;
-      cursor: pointer; }
-      .sidebarleft-mainchat-outsidechannel > p {
-        margin-left: 0.5rem; }
-      .sidebarleft-mainchat-outsidechannel > p > span {
-        color: #7F7F7F;
-        text-transform: lowercase;
-        padding-left: 0.5rem;
-        position: relative;
-        top: -0.3rem;
-        font-size: 1rem; }
-    .sidebarleft-mainchat-channel {
-      margin-top: 1rem;
-      cursor: pointer; }
-      .sidebarleft-mainchat-channel > p {
-        margin-left: 1rem; }
-      .sidebarleft-mainchat-channel > p > span {
-        color: #7F7F7F;
-        text-transform: lowercase;
-        padding-left: 0.5rem;
-        position: relative;
-        top: -0.3rem;
-        font-size: 1rem; }
-    .sidebarleft-mainchat-general {
-      padding-left: 1rem;
-      cursor: pointer; }
-      .sidebarleft-mainchat-general > span {
-        text-transform: lowercase;
-        padding-left: 0.5rem;
-        position: relative;
-        top: -0.2rem; }
-  .sidebarleft-border {
-    border-top: 1px solid #4d4d4d;
-    width: 100%; }
-  .sidebarleft-bordertwo {
-    margin-top: 0.4rem;
-    border-top: 1px solid #4d4d4d;
-    width: 100%; }
-  .sidebarleft-friendscontainer {
-    display: flex;
-    flex-direction: row;
-    height: 30px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 10%; }
-  .sidebarleft-logo {
-    width: 30px; }
-  .sidebarleft-friends {
-    color: #A1A1A1;
-    font-size: 1rem;
-    font-family: Arial, Helvetica, sans-serif;
-    margin-top: 7px;
-    margin-left: 10px; }
-  .sidebarleft-directmessages {
-    color: #A1A1A1;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    margin-top: 0.5rem;
-    margin-left: 1rem; }
-  .sidebarleft-currentfriend:first-child {
-    margin-top: 0.75rem; }
-  .sidebarleft-currentfriend {
-    display: flex;
-    flex-direction: row;
-    background-color: #4a4a4a;
-    margin-top: 0.5rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    margin-left: 5%;
-    width: 90%;
-    border-radius: 3px;
-    position: relative;
-    cursor: pointer; }
-    .sidebarleft-currentfriend-image {
-      height: 2rem;
-      width: 2rem;
-      border-radius: 50%;
-      background-color: white;
-      margin-left: 0.5rem;
-      margin-right: 0.4rem; }
-    .sidebarleft-currentfriend-username {
-      margin-top: 0.5rem;
-      color: white; }
-    .sidebarleft-currentfriend-remove {
-      cursor: pointer;
-      position: absolute;
-      margin-left: 91%;
-      margin-top: 0.5rem; }
-    .sidebarleft-currentfriend-active {
-      display: flex;
-      flex-direction: row;
-      background-color: #008000;
-      margin-top: 0.5rem;
-      padding-top: 0.5rem;
-      padding-bottom: 0.5rem;
-      margin-left: 5%;
-      width: 90%;
-      border-radius: 3px;
-      position: relative;
-      cursor: pointer; }
-    .sidebarleft-currentfriend-active:first-child {
-      margin-top: 0.75rem; }
+  border-right: 1px solid black;
+}
+.sidebarleft-container {
+  display: flex;
+  flex-direction: row;
+  height: 2rem;
+  padding-top: 0.5rem;
+  width: 100%;
+}
+.sidebarleft-container > input {
+  background-color: rgb(60, 60, 60);
+  text-decoration: none;
+  outline: none;
+  border: 1px solid black;
+  height: 1.5rem;
+  color: white;
+  padding-left: 3%;
+  margin-left: 7%;
+  width: 80%;
+  border-radius: 3px;
+}
+.sidebarleft-container-dropdown {
+  cursor: pointer;
+  position: relative;
+  right: 1.5rem;
+  margin-top: 0.2rem;
+  width: 0%;
+}
+.sidebarleft-container-header {
+  background-color: rgb(60, 60, 60);
+  color: white;
+  width: 100%;
+  height: 1.95rem;
+  margin-top: -0.75rem;
+  display: flex;
+  padding-left: 0.75rem;
+  padding-top: 1rem;
+  border-bottom: 2px solid rgb(33, 33, 33);
+}
+.sidebarleft-mainchat {
+  height: 0rem;
+  width: 100%;
+  padding-left: 0.5rem;
+}
+.sidebarleft-mainchat > div:first-child {
+  min-height: 1rem;
+}
+.sidebarleft-mainchat > div {
+  width: 15rem;
+  min-height: 2rem;
+}
+.sidebarleft-mainchat > div > .active {
+  cursor: pointer;
+  background-color: rgb(75, 75, 75);
+  padding: 0.3rem;
+  border-radius: 2px;
+  margin-bottom: 0.2rem;
+}
+.sidebarleft-mainchat > div > .inactive {
+  cursor: pointer;
+  margin-bottom: 0.2rem;
+}
+.sidebarleft-mainchat > div > div {
+  cursor: pointer;
+  padding: 0.3rem;
+  border-radius: 2px;
+  margin-bottom: 0.2rem;
+}
+.sidebarleft-mainchat > div > div > span {
+  margin-left: 0.2rem;
+  color: rgb(232, 232, 232);
+  position: absolute;
+  margin-top: -0.05rem;
+}
+.sidebarleft-mainchat-dropdown {
+  cursor: pointer;
+  position: absolute;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.sidebarleft-mainchat-dropdown > span {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  padding-left: 0.5rem;
+  position: relative;
+  top: 0.15rem;
+  color: #7F7F7F;
+}
+.sidebarleft-mainchat-dropdown > div {
+  width: 15rem;
+  margin-top: 0.5rem;
+  min-height: 3rem;
+}
+.sidebarleft-mainchat-dropdown > div > .active {
+  cursor: pointer;
+  background-color: rgb(75, 75, 75);
+  padding: 0.3rem;
+  border-radius: 2px;
+  margin-bottom: 0.2rem;
+}
+.sidebarleft-mainchat-dropdown > div > div {
+  cursor: pointer;
+  padding: 0.3rem;
+  border-radius: 2px;
+  margin-bottom: 0.2rem;
+}
+.sidebarleft-mainchat-dropdown > div > div > span {
+  margin-left: 0.2rem;
+  color: rgb(232, 232, 232);
+  position: absolute;
+  margin-top: -0.05rem;
+}
+.sidebarleft-mainchat-outsidechannel {
+  margin-top: 1rem;
+  cursor: pointer;
+}
+.sidebarleft-mainchat-outsidechannel > p {
+  margin-left: 0.5rem;
+}
+.sidebarleft-mainchat-outsidechannel > p > span {
+  color: #7F7F7F;
+  text-transform: lowercase;
+  padding-left: 0.5rem;
+  position: relative;
+  top: -0.3rem;
+  font-size: 1rem;
+}
+.sidebarleft-mainchat-channel {
+  margin-top: 1rem;
+  cursor: pointer;
+}
+.sidebarleft-mainchat-channel > p {
+  margin-left: 1rem;
+}
+.sidebarleft-mainchat-channel > p > span {
+  color: #7F7F7F;
+  text-transform: lowercase;
+  padding-left: 0.5rem;
+  position: relative;
+  top: -0.3rem;
+  font-size: 1rem;
+}
+.sidebarleft-mainchat-general {
+  padding-left: 1rem;
+  cursor: pointer;
+}
+.sidebarleft-mainchat-general > span {
+  text-transform: lowercase;
+  padding-left: 0.5rem;
+  position: relative;
+  top: -0.2rem;
+}
+.sidebarleft-border {
+  border-top: 1px solid rgb(77, 77, 77);
+  width: 100%;
+}
+.sidebarleft-bordertwo {
+  margin-top: 0.4rem;
+  border-top: 1px solid rgb(77, 77, 77);
+  width: 100%;
+}
+.sidebarleft-friendscontainer {
+  display: flex;
+  flex-direction: row;
+  height: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10%;
+}
+.sidebarleft-logo {
+  width: 30px;
+}
+.sidebarleft-friends {
+  color: #A1A1A1;
+  font-size: 1rem;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-top: 7px;
+  margin-left: 10px;
+}
+.sidebarleft-directmessages {
+  color: #A1A1A1;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  margin-left: 1rem;
+}
+.sidebarleft-currentfriend:first-child {
+  margin-top: 0.75rem;
+}
+.sidebarleft-currentfriend {
+  display: flex;
+  flex-direction: row;
+  background-color: rgb(74, 74, 74);
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-left: 5%;
+  width: 90%;
+  border-radius: 3px;
+  position: relative;
+  cursor: pointer;
+}
+.sidebarleft-currentfriend-image {
+  height: 2rem;
+  width: 2rem;
+  border-radius: 50%;
+  background-color: white;
+  margin-left: 0.5rem;
+  margin-right: 0.4rem;
+}
+.sidebarleft-currentfriend-username {
+  margin-top: 0.5rem;
+  color: white;
+}
+.sidebarleft-currentfriend-remove {
+  cursor: pointer;
+  position: absolute;
+  margin-left: 91%;
+  margin-top: 0.5rem;
+}
+.sidebarleft-currentfriend-active {
+  display: flex;
+  flex-direction: row;
+  background-color: #008000;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-left: 5%;
+  width: 90%;
+  border-radius: 3px;
+  position: relative;
+  cursor: pointer;
+}
+.sidebarleft-currentfriend-active:first-child {
+  margin-top: 0.75rem;
+}
 
 .sidebarleftchat {
   display: flex;
@@ -282,45 +331,50 @@
   justify-content: flex-start;
   min-width: 16rem;
   height: 100%;
-  background-color: #303030;
+  background-color: rgb(48, 48, 48);
   border-left: 1px solid black;
-  border-right: 1px solid black; }
-  .sidebarleftchat-container {
-    display: flex;
-    flex-direction: row;
-    height: 2rem;
-    padding-top: 0.5rem;
-    width: 100%; }
-    .sidebarleftchat-container > input {
-      background-color: #3c3c3c;
-      text-decoration: none;
-      outline: none;
-      border: 1px solid black;
-      height: 1.5rem;
-      color: white;
-      padding-left: 3%;
-      margin-left: 7%;
-      width: 80%;
-      border-radius: 3px; }
-    .sidebarleftchat-container-dropdown {
-      cursor: pointer;
-      position: relative;
-      right: 1.5rem;
-      margin-top: 0.2rem;
-      width: 0%; }
-    .sidebarleftchat-container-header {
-      background-color: #3c3c3c;
-      color: white;
-      width: 100%;
-      height: 1.95rem;
-      margin-top: -0.75rem;
-      display: flex;
-      padding-left: 0.75rem;
-      padding-top: 1rem;
-      border-bottom: 2px solid #212121; }
+  border-right: 1px solid black;
+}
+.sidebarleftchat-container {
+  display: flex;
+  flex-direction: row;
+  height: 2rem;
+  padding-top: 0.5rem;
+  width: 100%;
+}
+.sidebarleftchat-container > input {
+  background-color: rgb(60, 60, 60);
+  text-decoration: none;
+  outline: none;
+  border: 1px solid black;
+  height: 1.5rem;
+  color: white;
+  padding-left: 3%;
+  margin-left: 7%;
+  width: 80%;
+  border-radius: 3px;
+}
+.sidebarleftchat-container-dropdown {
+  cursor: pointer;
+  position: relative;
+  right: 1.5rem;
+  margin-top: 0.2rem;
+  width: 0%;
+}
+.sidebarleftchat-container-header {
+  background-color: rgb(60, 60, 60);
+  color: white;
+  width: 100%;
+  height: 1.95rem;
+  margin-top: -0.75rem;
+  display: flex;
+  padding-left: 0.75rem;
+  padding-top: 1rem;
+  border-bottom: 2px solid rgb(33, 33, 33);
+}
 
 .cancel {
-  color: #5c5c5c;
+  color: rgb(92, 92, 92);
   display: block;
   font-size: 1.2rem;
   animation-name: fadeInOpacity;
@@ -333,27 +387,32 @@
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  user-select: none; }
+  user-select: none;
+}
 
 .channelarrow {
-  border: solid #5c5c5c;
+  border: solid rgb(92, 92, 92);
   border-width: 0 2px 2px 0;
   display: inline-block;
-  padding: 5px; }
+  padding: 5px;
+}
 
 .arrow {
-  border: solid #5c5c5c;
+  border: solid rgb(92, 92, 92);
   border-width: 0 2px 2px 0;
   display: inline-block;
-  padding: 3px; }
+  padding: 3px;
+}
 
 .down {
   transform: rotate(45deg);
-  -webkit-transform: rotate(45deg); }
+  -webkit-transform: rotate(45deg);
+}
 
 .right {
   transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg); }
+  -webkit-transform: rotate(-45deg);
+}
 
 .serversettings-modal {
   position: absolute;
@@ -362,249 +421,271 @@
   left: 5.5rem;
   height: 13rem;
   width: 15.1rem;
-  background-color: #3f3f3f;
+  background-color: rgb(63, 63, 63);
   border-radius: 5px;
   animation-name: fadeInOpacity;
   animation-iteration-count: 1;
   animation-timing-function: linear;
-  animation-duration: 0.3s; }
-  .serversettings-modal-section {
-    display: flex;
-    flex-direction: row;
-    padding-left: 1rem;
-    padding-top: 0.3rem;
-    padding-bottom: 0.25rem;
-    outline: none;
-    cursor: pointer;
-    -webkit-touch-callout: none;
-    /* iOS Safari */
-    -webkit-user-select: none;
-    /* Safari */
-    -khtml-user-select: none;
-    /* Konqueror HTML */
-    -moz-user-select: none;
-    /* Firefox */
-    -ms-user-select: none;
-    /* Internet Explorer/Edge */
-    user-select: none;
-    /* Non-prefixed version, currently supported by Chrome and Opera */ }
-    .serversettings-modal-section > span {
-      font-size: 0.9rem;
-      padding-left: 1rem;
-      padding-top: 0.35rem;
-      color: lightgray; }
-
+  animation-duration: 0.3s;
+}
+.serversettings-modal-section {
+  display: flex;
+  flex-direction: row;
+  padding-left: 1rem;
+  padding-top: 0.3rem;
+  padding-bottom: 0.25rem;
+  outline: none;
+  cursor: pointer;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+}
+.serversettings-modal-section > span {
+  font-size: 0.9rem;
+  padding-left: 1rem;
+  padding-top: 0.35rem;
+  color: rgb(211, 211, 211);
+}
 .serversettings-members-count {
-  color: lightgray; }
-
+  color: rgb(211, 211, 211);
+}
 .serversettings-invites-count {
-  color: lightgray; }
-
+  color: rgb(211, 211, 211);
+}
 .serversettings-owner {
   width: 21rem;
-  background-color: #4f4f4f;
+  background-color: rgb(79, 79, 79);
   display: flex;
   flex-direction: row;
   margin-top: 0.4rem;
   cursor: pointer;
   border-radius: 0.5rem;
   height: 5.5rem;
-  position: relative; }
-  .serversettings-owner > span > p {
-    color: white; }
-  .serversettings-owner-add-image {
-    display: inline-block;
-    position: absolute;
-    right: 1.5rem;
-    top: 2rem;
-    height: 1.3rem;
-    border: 1px solid black;
-    border-radius: 50%;
-    padding: 0.2rem; }
-
+  position: relative;
+}
+.serversettings-owner > span > p {
+  color: white;
+}
+.serversettings-owner-add-image {
+  display: inline-block;
+  position: absolute;
+  right: 1.5rem;
+  top: 2rem;
+  height: 1.3rem;
+  border: 1px solid black;
+  border-radius: 50%;
+  padding: 0.2rem;
+}
 .serversettings-user {
   width: 21rem;
-  background-color: #4f4f4f;
+  background-color: rgb(79, 79, 79);
   display: flex;
   flex-direction: row;
   margin-top: 0.4rem;
   cursor: pointer;
   border-radius: 0.5rem;
   height: 5.5rem;
-  position: relative; }
-  .serversettings-user > span > p {
-    color: white; }
-  .serversettings-user-add-image {
-    display: inline-block;
-    position: absolute;
-    right: 1.5rem;
-    top: 2rem;
-    height: 1.3rem;
-    border: 1px solid black;
-    border-radius: 50%;
-    padding: 0.2rem; }
-
+  position: relative;
+}
+.serversettings-user > span > p {
+  color: white;
+}
+.serversettings-user-add-image {
+  display: inline-block;
+  position: absolute;
+  right: 1.5rem;
+  top: 2rem;
+  height: 1.3rem;
+  border: 1px solid black;
+  border-radius: 50%;
+  padding: 0.2rem;
+}
 .serversettings-user:hover {
-  border: 2px solid #008000; }
-
+  border: 2px solid #008000;
+}
 .serversettings-invite {
   width: 25rem;
-  background-color: #4f4f4f;
+  background-color: rgb(79, 79, 79);
   display: flex;
   flex-direction: row;
   margin-top: 0.4rem;
   cursor: pointer;
   border-radius: 0.5rem;
   height: 7.5rem;
-  position: relative; }
-  .serversettings-invite > span > p {
-    white-space: nowrap;
-    color: white;
-    margin-left: 1rem; }
-  .serversettings-invite-add-image {
-    height: 1.3rem;
-    position: absolute;
-    right: 1.5rem;
-    top: 3rem;
-    border: 1px solid black;
-    border-radius: 50%;
-    padding: 0.2rem; }
-
+  position: relative;
+}
+.serversettings-invite > span > p {
+  white-space: nowrap;
+  color: white;
+  margin-left: 1rem;
+}
+.serversettings-invite-add-image {
+  height: 1.3rem;
+  position: absolute;
+  right: 1.5rem;
+  top: 3rem;
+  border: 1px solid black;
+  border-radius: 50%;
+  padding: 0.2rem;
+}
 .serversettings-invite:hover {
-  border: 2px solid #008000; }
-
+  border: 2px solid #008000;
+}
 .serversettings-logo {
-  background-color: #e8e8e8;
+  background-color: rgb(232, 232, 232);
   border-radius: 50%;
   margin-left: 0.8rem;
   height: 4rem;
   margin-top: 0.75rem;
-  margin-right: 1.5rem; }
+  margin-right: 1.5rem;
+}
 
 .arrowleft {
   width: 0;
   height: 0;
   border-top: 7px solid transparent;
   border-bottom: 7px solid transparent;
-  border-right: 7px solid #262626;
+  border-right: 7px solid rgb(38, 38, 38);
   position: relative;
   left: -7px;
-  top: 10px; }
+  top: 10px;
+}
 
 .tooltip {
   position: absolute;
   left: 5rem;
   margin-top: 0.8rem;
   z-index: 900;
-  background-color: #1c1c1c;
+  background-color: rgb(28, 28, 28);
   color: white;
   padding: 1px 0.5rem 1px 1rem;
   height: 2.1rem;
   min-width: 5rem;
   border-radius: 5px;
   font-size: 1rem;
-  cursor: help; }
-  .tooltip > span {
-    position: relative;
-    top: 0.5rem; }
+  cursor: help;
+}
+.tooltip > span {
+  position: relative;
+  top: 0.5rem;
+}
 
 .tooltip::before {
-  content: "\A";
+  content: "\a";
   border-style: solid;
   border-width: 7px 7px 7px 0;
-  border-color: transparent #1c1c1c transparent transparent;
+  border-color: transparent rgb(28, 28, 28) transparent transparent;
   position: absolute;
   left: -7px;
-  top: 12px; }
+  top: 12px;
+}
 
 .mainarea {
   background-color: #36393f;
   display: flex;
   flex-direction: column;
-  flex: 1; }
-  .mainarea-topnav {
-    height: 2.5rem;
-    width: 100%;
-    border-bottom: 1px solid #4d4d4d; }
-  .mainarea-container {
-    display: flex;
-    flex: 1;
-    justify-content: center; }
-    .mainarea-container-addserver {
-      width: 20rem;
-      height: 25rem;
-      background-color: #72767d;
-      margin-top: 5rem;
-      border-radius: 5px;
-      border: 1px solid black;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-left: 3rem; }
-      .mainarea-container-addserver > h1 {
-        font-family: Arial, Helvetica, sans-serif;
-        color: #3a529d;
-        margin-top: 2rem; }
-      .mainarea-container-addserver > p {
-        width: 65%;
-        color: #cecece;
-        text-align: center;
-        margin-top: 0rem; }
-      .mainarea-container-addserver > button {
-        padding: 0.75rem 1.5rem 0.75rem 1.5rem;
-        outline: none;
-        border: none;
-        color: #ebebeb;
-        font-size: 0.8rem;
-        background-color: #3957b0;
-        cursor: pointer; }
-    .mainarea-container-joinserver {
-      width: 20rem;
-      height: 25rem;
-      background-color: #72767d;
-      margin-left: 5rem;
-      margin-top: 5rem;
-      border-radius: 5px;
-      border: 1px solid black;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-right: 3rem; }
-      .mainarea-container-joinserver > h1 {
-        font-family: Arial, Helvetica, sans-serif;
-        color: #006000;
-        margin-top: 2rem; }
-      .mainarea-container-joinserver > p {
-        width: 65%;
-        color: #cecece;
-        text-align: center;
-        margin-top: 0rem; }
-      .mainarea-container-joinserver > button {
-        padding: 0.75rem 1.5rem 0.75rem 1.5rem;
-        outline: none;
-        border: none;
-        color: #ebebeb;
-        font-size: 0.8rem;
-        background-color: #006000;
-        cursor: pointer; }
+  flex: 1;
+}
+.mainarea-topnav {
+  height: 2.5rem;
+  width: 100%;
+  border-bottom: 1px solid rgb(77, 77, 77);
+}
+.mainarea-container {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+}
+.mainarea-container-addserver {
+  width: 20rem;
+  height: 25rem;
+  background-color: #72767d;
+  margin-top: 5rem;
+  border-radius: 5px;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 3rem;
+}
+.mainarea-container-addserver > h1 {
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(58, 82, 157);
+  margin-top: 2rem;
+}
+.mainarea-container-addserver > p {
+  width: 65%;
+  color: rgb(206, 206, 206);
+  text-align: center;
+  margin-top: 0rem;
+}
+.mainarea-container-addserver > button {
+  padding: 0.75rem 1.5rem 0.75rem 1.5rem;
+  outline: none;
+  border: none;
+  color: rgb(235, 235, 235);
+  font-size: 0.8rem;
+  background-color: rgb(57, 87, 176);
+  cursor: pointer;
+}
+.mainarea-container-joinserver {
+  width: 20rem;
+  height: 25rem;
+  background-color: #72767d;
+  margin-left: 5rem;
+  margin-top: 5rem;
+  border-radius: 5px;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 3rem;
+}
+.mainarea-container-joinserver > h1 {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #006000;
+  margin-top: 2rem;
+}
+.mainarea-container-joinserver > p {
+  width: 65%;
+  color: rgb(206, 206, 206);
+  text-align: center;
+  margin-top: 0rem;
+}
+.mainarea-container-joinserver > button {
+  padding: 0.75rem 1.5rem 0.75rem 1.5rem;
+  outline: none;
+  border: none;
+  color: rgb(235, 235, 235);
+  font-size: 0.8rem;
+  background-color: #006000;
+  cursor: pointer;
+}
 
 .userinfo {
   display: block;
-  width: 100%; }
-  .userinfo .activateicons {
-    margin: auto;
-    margin-right: 1rem;
-    margin-top: 0.1rem; }
-  .userinfo .microphone-image, .userinfo .nomicrophone-image {
-    width: 1.5rem;
-    height: 1.5rem;
-    cursor: pointer;
-    margin-right: 0.25rem; }
-  .userinfo .settings-image {
-    width: 1.5rem;
-    height: 1.5rem;
-    cursor: pointer;
-    margin-right: 0.25rem; }
+  width: 100%;
+}
+.userinfo .activateicons {
+  margin: auto;
+  margin-right: 1rem;
+  margin-top: 0.1rem;
+}
+.userinfo .microphone-image, .userinfo .nomicrophone-image {
+  width: 1.5rem;
+  height: 1.5rem;
+  cursor: pointer;
+  margin-right: 0.25rem;
+}
+.userinfo .settings-image {
+  width: 1.5rem;
+  height: 1.5rem;
+  cursor: pointer;
+  margin-right: 0.25rem;
+}
 
 .usersettings {
   width: 100%;
@@ -623,163 +704,193 @@
   animation-duration: 0.3s;
   display: flex;
   flex-direction: row;
-  overflow: auto; }
-  .usersettings-sidebar {
-    background-color: #2f3136;
-    display: flex;
-    flex-direction: column;
-    padding-left: 15%;
-    padding-right: 5%;
-    height: 80rem; }
-    .usersettings-sidebar > h1:first-child {
-      margin-top: 3rem;
-      margin-bottom: 1rem; }
-    .usersettings-sidebar > h1 {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      color: #4f545c;
-      width: 8rem;
-      margin-bottom: 1rem; }
-    .usersettings-sidebar > p {
-      font-size: 0.9rem;
-      color: #d5d5d5;
-      cursor: pointer; }
-    .usersettings-sidebar-myaccount, .usersettings-sidebar-privacy, .usersettings-sidebar-connections, .usersettings-sidebar-billing, .usersettings-sidebar-voice, .usersettings-sidebar-notifications, .usersettings-sidebar-appearance, .usersettings-sidebar-language {
-      font-size: 0.9rem;
-      color: #d5d5d5;
-      padding: 0.5rem;
-      margin-top: -0.5rem;
-      cursor: pointer; }
-    .usersettings-sidebar-activeitem {
-      font-size: 0.9rem;
-      color: #d5d5d5;
-      background-color: #414141;
-      padding: 0.5rem;
-      margin-top: -0.5rem;
-      border-radius: 3px;
-      cursor: pointer; }
-    .usersettings-sidebar > p:last-child {
-      font-size: 0.9rem;
-      color: #ee0000;
-      padding: 0.5rem;
-      margin-top: -0.5rem;
-      cursor: pointer; }
-  .usersettings-myaccount {
-    padding-left: 2rem;
-    display: flex;
-    flex-direction: column;
-    background-color: #36393f;
-    min-width: 50rem; }
-    .usersettings-myaccount > h1 {
-      color: #e4e4e4;
-      text-transform: uppercase;
-      font-size: 1rem;
-      margin-top: 3rem; }
-    .usersettings-myaccount__container {
-      width: 40rem;
-      height: 10rem;
-      background-color: #292929;
-      border-radius: 5px;
-      display: flex;
-      flex-direction: row; }
-      .usersettings-myaccount__container-image {
-        width: 6rem;
-        height: 6rem;
-        background-color: white;
-        border-radius: 50%;
-        margin-left: 1.5rem;
-        margin-top: 2rem; }
-        .usersettings-myaccount__container-image > img {
-          width: 90%;
-          height: 90%;
-          margin-top: 5%;
-          margin-left: 5%;
-          border-radius: 50%; }
-      .usersettings-myaccount__container-info {
-        display: flex;
-        flex-direction: column;
-        margin-left: 2rem; }
-        .usersettings-myaccount__container-info-username {
-          margin-top: 2rem; }
-          .usersettings-myaccount__container-info-username > span:first-child {
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            color: #606060; }
-          .usersettings-myaccount__container-info-username > span:last-child {
-            color: #e4e4e4;
-            font-size: 1rem; }
-        .usersettings-myaccount__container-info-email {
-          margin-top: 1rem; }
-          .usersettings-myaccount__container-info-email > span:first-child {
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            color: #606060; }
-          .usersettings-myaccount__container-info-email > span:last-child {
-            color: #e4e4e4;
-            font-size: 1rem; }
-      .usersettings-myaccount__container-edit {
-        cursor: pointer;
-        padding: 0.5rem 1rem 0.5rem 1rem;
-        background-color: green;
-        color: #e3e2e2;
-        height: 1.25rem;
-        border-radius: 2px;
-        position: relative;
-        top: 1.5rem;
-        left: 12rem; }
-  .usersettings-authentication {
-    padding-left: 2rem;
-    display: flex;
-    flex-direction: column;
-    background-color: #36393f;
-    min-width: 50rem;
-    height: 61.5vh; }
-    .usersettings-authentication > h1 {
-      color: #e4e4e4;
-      text-transform: uppercase;
-      font-size: 1rem;
-      margin-top: 3rem; }
-    .usersettings-authentication > p {
-      color: #e4e4e4;
-      font-size: 1rem;
-      width: 40rem; }
-    .usersettings-authentication-enable {
-      cursor: pointer;
-      box-sizing: border-box;
-      padding: 0.5rem 1rem 0.5rem 1rem;
-      background-color: green;
-      color: #e3e2e2;
-      width: 5rem;
-      border-radius: 2px; }
-  .usersettings-escape {
-    cursor: pointer;
-    position: absolute;
-    right: 2.25rem;
-    top: 2.25rem;
-    width: 2.25rem;
-    height: 2.25rem;
-    opacity: 1;
-    border: 1px solid white;
-    border-radius: 50%;
-    padding-top: 0.5rem;
-    box-sizing: border-box; }
-  .usersettings-escape:before, .usersettings-escape:after {
-    position: absolute;
-    left: 1rem;
-    content: ' ';
-    height: 1.25rem;
-    width: 2px;
-    background-color: white; }
-  .usersettings-escape:before {
-    transform: rotate(45deg); }
-  .usersettings-escape:after {
-    transform: rotate(-45deg); }
-  .usersettings-escapetext {
-    cursor: pointer;
-    position: absolute;
-    top: 3.75rem;
-    right: 2.375rem;
-    color: white; }
+  overflow: auto;
+}
+.usersettings-sidebar {
+  background-color: #2f3136;
+  display: flex;
+  flex-direction: column;
+  padding-left: 15%;
+  padding-right: 5%;
+  height: 80rem;
+}
+.usersettings-sidebar > h1:first-child {
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+.usersettings-sidebar > h1 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #4f545c;
+  width: 8rem;
+  margin-bottom: 1rem;
+}
+.usersettings-sidebar > p {
+  font-size: 0.9rem;
+  color: rgb(213, 213, 213);
+  cursor: pointer;
+}
+.usersettings-sidebar-myaccount, .usersettings-sidebar-privacy, .usersettings-sidebar-connections, .usersettings-sidebar-billing, .usersettings-sidebar-voice, .usersettings-sidebar-notifications, .usersettings-sidebar-appearance, .usersettings-sidebar-language {
+  font-size: 0.9rem;
+  color: rgb(213, 213, 213);
+  padding: 0.5rem;
+  margin-top: -0.5rem;
+  cursor: pointer;
+}
+.usersettings-sidebar-activeitem {
+  font-size: 0.9rem;
+  color: rgb(213, 213, 213);
+  background-color: rgb(65, 65, 65);
+  padding: 0.5rem;
+  margin-top: -0.5rem;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.usersettings-sidebar > p:last-child {
+  font-size: 0.9rem;
+  color: rgb(238, 0, 0);
+  padding: 0.5rem;
+  margin-top: -0.5rem;
+  cursor: pointer;
+}
+.usersettings-myaccount {
+  padding-left: 2rem;
+  display: flex;
+  flex-direction: column;
+  background-color: #36393f;
+  min-width: 50rem;
+}
+.usersettings-myaccount > h1 {
+  color: rgb(228, 228, 228);
+  text-transform: uppercase;
+  font-size: 1rem;
+  margin-top: 3rem;
+}
+.usersettings-myaccount__container {
+  width: 40rem;
+  height: 10rem;
+  background-color: #292929;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+}
+.usersettings-myaccount__container-image {
+  width: 6rem;
+  height: 6rem;
+  background-color: white;
+  border-radius: 50%;
+  margin-left: 1.5rem;
+  margin-top: 2rem;
+}
+.usersettings-myaccount__container-image > img {
+  width: 90%;
+  height: 90%;
+  margin-top: 5%;
+  margin-left: 5%;
+  border-radius: 50%;
+}
+.usersettings-myaccount__container-info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2rem;
+}
+.usersettings-myaccount__container-info-username {
+  margin-top: 2rem;
+}
+.usersettings-myaccount__container-info-username > span:first-child {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: #606060;
+}
+.usersettings-myaccount__container-info-username > span:last-child {
+  color: rgb(228, 228, 228);
+  font-size: 1rem;
+}
+.usersettings-myaccount__container-info-email {
+  margin-top: 1rem;
+}
+.usersettings-myaccount__container-info-email > span:first-child {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: #606060;
+}
+.usersettings-myaccount__container-info-email > span:last-child {
+  color: rgb(228, 228, 228);
+  font-size: 1rem;
+}
+.usersettings-myaccount__container-edit {
+  cursor: pointer;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  background-color: green;
+  color: rgb(227, 226, 226);
+  height: 1.25rem;
+  border-radius: 2px;
+  position: relative;
+  top: 1.5rem;
+  left: 12rem;
+}
+.usersettings-authentication {
+  padding-left: 2rem;
+  display: flex;
+  flex-direction: column;
+  background-color: #36393f;
+  min-width: 50rem;
+  height: 61.5vh;
+}
+.usersettings-authentication > h1 {
+  color: rgb(228, 228, 228);
+  text-transform: uppercase;
+  font-size: 1rem;
+  margin-top: 3rem;
+}
+.usersettings-authentication > p {
+  color: rgb(228, 228, 228);
+  font-size: 1rem;
+  width: 40rem;
+}
+.usersettings-authentication-enable {
+  cursor: pointer;
+  box-sizing: border-box;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  background-color: green;
+  color: rgb(227, 226, 226);
+  width: 5rem;
+  border-radius: 2px;
+}
+.usersettings-escape {
+  cursor: pointer;
+  position: absolute;
+  right: 2.25rem;
+  top: 2.25rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  opacity: 1;
+  border: 1px solid white;
+  border-radius: 50%;
+  padding-top: 0.5rem;
+  box-sizing: border-box;
+}
+.usersettings-escape:before, .usersettings-escape:after {
+  position: absolute;
+  left: 1rem;
+  content: " ";
+  height: 1.25rem;
+  width: 2px;
+  background-color: white;
+}
+.usersettings-escape:before {
+  transform: rotate(45deg);
+}
+.usersettings-escape:after {
+  transform: rotate(-45deg);
+}
+.usersettings-escapetext {
+  cursor: pointer;
+  position: absolute;
+  top: 3.75rem;
+  right: 2.375rem;
+  color: white;
+}
 
 .userserveredit {
   width: 100%;
@@ -797,205 +908,242 @@
   animation-timing-function: linear;
   animation-duration: 0.3s;
   display: flex;
-  flex-direction: row; }
-  .userserveredit-sidebar {
-    height: 100vh;
-    background-color: #2f3136;
-    display: flex;
-    flex-direction: column;
-    padding-left: 15%;
-    padding-right: 5%; }
-    .userserveredit-sidebar > h1:first-child {
-      margin-top: 3rem;
-      margin-bottom: 1rem; }
-    .userserveredit-sidebar > h1 {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      color: #4f545c;
-      width: 8rem;
-      margin-bottom: 1rem; }
-    .userserveredit-sidebar > p {
-      font-size: 0.9rem;
-      color: #d5d5d5;
-      cursor: pointer; }
-    .userserveredit-sidebar-myaccount, .userserveredit-sidebar-privacy, .userserveredit-sidebar-connections, .userserveredit-sidebar-billing, .userserveredit-sidebar-voice, .userserveredit-sidebar-notifications, .userserveredit-sidebar-appearance, .userserveredit-sidebar-language {
-      font-size: 0.9rem;
-      color: #d5d5d5;
-      padding: 0.5rem;
-      margin-top: -0.5rem;
-      cursor: pointer; }
-    .userserveredit-sidebar-activeitem {
-      font-size: 0.9rem;
-      color: #d5d5d5;
-      background-color: #414141;
-      padding: 0.5rem;
-      margin-top: -0.5rem;
-      border-radius: 3px;
-      cursor: pointer; }
-    .userserveredit-sidebar > p:last-child {
-      font-size: 0.9rem;
-      color: #ee0000;
-      padding: 0.5rem;
-      margin-top: -0.5rem;
-      cursor: pointer; }
-  .userserveredit-myaccount {
-    padding-left: 2rem;
-    display: flex;
-    flex-direction: column;
-    background-color: #36393f;
-    min-width: 50rem; }
-    .userserveredit-myaccount > h1 {
-      color: #e4e4e4;
-      text-transform: uppercase;
-      font-size: 1rem;
-      margin-top: 3rem; }
-    .userserveredit-myaccount__container {
-      width: 40rem;
-      height: 10rem;
-      background-color: #292929;
-      border-radius: 5px;
-      display: flex;
-      flex-direction: row; }
-      .userserveredit-myaccount__container-image {
-        width: 6rem;
-        height: 6rem;
-        background-color: white;
-        border-radius: 50%;
-        margin-left: 1.5rem;
-        margin-top: 2rem; }
-        .userserveredit-myaccount__container-image > img {
-          width: 90%;
-          height: 90%;
-          margin-top: 5%;
-          margin-left: 5%;
-          border-radius: 50%; }
-      .userserveredit-myaccount__container-info {
-        display: flex;
-        flex-direction: column;
-        margin-left: 2rem; }
-        .userserveredit-myaccount__container-info-username {
-          margin-top: 2rem; }
-          .userserveredit-myaccount__container-info-username > span:first-child {
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            color: #606060; }
-          .userserveredit-myaccount__container-info-username > span:last-child {
-            color: #e4e4e4;
-            font-size: 1rem; }
-        .userserveredit-myaccount__container-info-email {
-          margin-top: 1rem; }
-          .userserveredit-myaccount__container-info-email > span:first-child {
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            color: #606060; }
-          .userserveredit-myaccount__container-info-email > span:last-child {
-            color: #e4e4e4;
-            font-size: 1rem; }
-      .userserveredit-myaccount__container-edit {
-        cursor: pointer;
-        padding: 0.5rem 1rem 0.5rem 1rem;
-        background-color: green;
-        color: #e3e2e2;
-        height: 1.25rem;
-        border-radius: 2px;
-        position: relative;
-        top: 1.5rem;
-        left: 12rem; }
-  .userserveredit-authentication {
-    padding-left: 2rem;
-    display: flex;
-    flex-direction: column;
-    background-color: #36393f;
-    min-width: 50rem;
-    height: 61.5vh; }
-    .userserveredit-authentication > h1 {
-      color: #e4e4e4;
-      text-transform: uppercase;
-      font-size: 1rem;
-      margin-top: 3rem; }
-    .userserveredit-authentication > p {
-      color: #e4e4e4;
-      font-size: 1rem;
-      width: 40rem; }
-    .userserveredit-authentication-enable {
-      cursor: pointer;
-      box-sizing: border-box;
-      padding: 0.5rem 1rem 0.5rem 1rem;
-      background-color: green;
-      color: #e3e2e2;
-      width: 5rem;
-      border-radius: 2px; }
-  .userserveredit-escape {
-    cursor: pointer;
-    position: absolute;
-    right: 2.25rem;
-    top: 2.25rem;
-    width: 2.25rem;
-    height: 2.25rem;
-    opacity: 1;
-    border: 1px solid white;
-    border-radius: 50%;
-    padding-top: 0.5rem;
-    box-sizing: border-box; }
-  .userserveredit-escape:before, .userserveredit-escape:after {
-    position: absolute;
-    left: 1rem;
-    content: ' ';
-    height: 1.25rem;
-    width: 2px;
-    background-color: white; }
-  .userserveredit-escape:before {
-    transform: rotate(45deg); }
-  .userserveredit-escape:after {
-    transform: rotate(-45deg); }
-  .userserveredit-escapetext {
-    cursor: pointer;
-    position: absolute;
-    top: 3.75rem;
-    right: 2.375rem;
-    color: white; }
-  .userserveredit-members-count {
-    color: lightgray; }
-  .userserveredit-user {
-    width: 21rem;
-    background-color: #4f4f4f;
-    display: flex;
-    flex-direction: row;
-    margin-top: 0.4rem;
-    cursor: pointer;
-    border-radius: 0.5rem;
-    height: 5.5rem;
-    position: relative; }
-    .userserveredit-user > span > p {
-      color: white; }
-    .userserveredit-user-add-image {
-      display: inline-block;
-      position: absolute;
-      right: 1.5rem;
-      top: 2rem;
-      height: 1.3rem;
-      border: 1px solid black;
-      border-radius: 50%;
-      padding: 0.2rem; }
-  .userserveredit-user:hover {
-    border: 2px solid #008000; }
-  .userserveredit-logo {
-    background-color: #e8e8e8;
-    border-radius: 50%;
-    margin-left: 0.8rem;
-    height: 4rem;
-    width: 4rem;
-    margin-top: 0.75rem;
-    margin-right: 1.5rem; }
-  .userserveredit-add-image {
-    display: inline-block;
-    position: absolute;
-    right: 1.5rem;
-    top: 2rem;
-    height: 1.3rem;
-    border: 1px solid black;
-    border-radius: 50%;
-    padding: 0.2rem; }
+  flex-direction: row;
+}
+.userserveredit-sidebar {
+  height: 100vh;
+  background-color: #2f3136;
+  display: flex;
+  flex-direction: column;
+  padding-left: 15%;
+  padding-right: 5%;
+}
+.userserveredit-sidebar > h1:first-child {
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+.userserveredit-sidebar > h1 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #4f545c;
+  width: 8rem;
+  margin-bottom: 1rem;
+}
+.userserveredit-sidebar > p {
+  font-size: 0.9rem;
+  color: rgb(213, 213, 213);
+  cursor: pointer;
+}
+.userserveredit-sidebar-myaccount, .userserveredit-sidebar-privacy, .userserveredit-sidebar-connections, .userserveredit-sidebar-billing, .userserveredit-sidebar-voice, .userserveredit-sidebar-notifications, .userserveredit-sidebar-appearance, .userserveredit-sidebar-language {
+  font-size: 0.9rem;
+  color: rgb(213, 213, 213);
+  padding: 0.5rem;
+  margin-top: -0.5rem;
+  cursor: pointer;
+}
+.userserveredit-sidebar-activeitem {
+  font-size: 0.9rem;
+  color: rgb(213, 213, 213);
+  background-color: rgb(65, 65, 65);
+  padding: 0.5rem;
+  margin-top: -0.5rem;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.userserveredit-sidebar > p:last-child {
+  font-size: 0.9rem;
+  color: rgb(238, 0, 0);
+  padding: 0.5rem;
+  margin-top: -0.5rem;
+  cursor: pointer;
+}
+.userserveredit-myaccount {
+  padding-left: 2rem;
+  display: flex;
+  flex-direction: column;
+  background-color: #36393f;
+  min-width: 50rem;
+}
+.userserveredit-myaccount > h1 {
+  color: rgb(228, 228, 228);
+  text-transform: uppercase;
+  font-size: 1rem;
+  margin-top: 3rem;
+}
+.userserveredit-myaccount__container {
+  width: 40rem;
+  height: 10rem;
+  background-color: #292929;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+}
+.userserveredit-myaccount__container-image {
+  width: 6rem;
+  height: 6rem;
+  background-color: white;
+  border-radius: 50%;
+  margin-left: 1.5rem;
+  margin-top: 2rem;
+}
+.userserveredit-myaccount__container-image > img {
+  width: 90%;
+  height: 90%;
+  margin-top: 5%;
+  margin-left: 5%;
+  border-radius: 50%;
+}
+.userserveredit-myaccount__container-info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2rem;
+}
+.userserveredit-myaccount__container-info-username {
+  margin-top: 2rem;
+}
+.userserveredit-myaccount__container-info-username > span:first-child {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: #606060;
+}
+.userserveredit-myaccount__container-info-username > span:last-child {
+  color: rgb(228, 228, 228);
+  font-size: 1rem;
+}
+.userserveredit-myaccount__container-info-email {
+  margin-top: 1rem;
+}
+.userserveredit-myaccount__container-info-email > span:first-child {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: #606060;
+}
+.userserveredit-myaccount__container-info-email > span:last-child {
+  color: rgb(228, 228, 228);
+  font-size: 1rem;
+}
+.userserveredit-myaccount__container-edit {
+  cursor: pointer;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  background-color: green;
+  color: rgb(227, 226, 226);
+  height: 1.25rem;
+  border-radius: 2px;
+  position: relative;
+  top: 1.5rem;
+  left: 12rem;
+}
+.userserveredit-authentication {
+  padding-left: 2rem;
+  display: flex;
+  flex-direction: column;
+  background-color: #36393f;
+  min-width: 50rem;
+  height: 61.5vh;
+}
+.userserveredit-authentication > h1 {
+  color: rgb(228, 228, 228);
+  text-transform: uppercase;
+  font-size: 1rem;
+  margin-top: 3rem;
+}
+.userserveredit-authentication > p {
+  color: rgb(228, 228, 228);
+  font-size: 1rem;
+  width: 40rem;
+}
+.userserveredit-authentication-enable {
+  cursor: pointer;
+  box-sizing: border-box;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  background-color: green;
+  color: rgb(227, 226, 226);
+  width: 5rem;
+  border-radius: 2px;
+}
+.userserveredit-escape {
+  cursor: pointer;
+  position: absolute;
+  right: 2.25rem;
+  top: 2.25rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  opacity: 1;
+  border: 1px solid white;
+  border-radius: 50%;
+  padding-top: 0.5rem;
+  box-sizing: border-box;
+}
+.userserveredit-escape:before, .userserveredit-escape:after {
+  position: absolute;
+  left: 1rem;
+  content: " ";
+  height: 1.25rem;
+  width: 2px;
+  background-color: white;
+}
+.userserveredit-escape:before {
+  transform: rotate(45deg);
+}
+.userserveredit-escape:after {
+  transform: rotate(-45deg);
+}
+.userserveredit-escapetext {
+  cursor: pointer;
+  position: absolute;
+  top: 3.75rem;
+  right: 2.375rem;
+  color: white;
+}
+.userserveredit-members-count {
+  color: rgb(211, 211, 211);
+}
+.userserveredit-user {
+  width: 21rem;
+  background-color: rgb(79, 79, 79);
+  display: flex;
+  flex-direction: row;
+  margin-top: 0.4rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  height: 5.5rem;
+  position: relative;
+}
+.userserveredit-user > span > p {
+  color: white;
+}
+.userserveredit-user-add-image {
+  display: inline-block;
+  position: absolute;
+  right: 1.5rem;
+  top: 2rem;
+  height: 1.3rem;
+  border: 1px solid black;
+  border-radius: 50%;
+  padding: 0.2rem;
+}
+.userserveredit-user:hover {
+  border: 2px solid #008000;
+}
+.userserveredit-logo {
+  background-color: rgb(232, 232, 232);
+  border-radius: 50%;
+  margin-left: 0.8rem;
+  height: 4rem;
+  width: 4rem;
+  margin-top: 0.75rem;
+  margin-right: 1.5rem;
+}
+.userserveredit-add-image {
+  display: inline-block;
+  position: absolute;
+  right: 1.5rem;
+  top: 2rem;
+  height: 1.3rem;
+  border: 1px solid black;
+  border-radius: 50%;
+  padding: 0.2rem;
+}
 
 .serversettings {
   width: 100%;
@@ -1013,451 +1161,533 @@
   animation-timing-function: linear;
   animation-duration: 0.3s;
   display: flex;
-  flex-direction: row; }
-  .serversettings-sidebar {
-    height: 100vh;
-    background-color: #2f3136;
-    display: flex;
-    flex-direction: column;
-    padding-left: 8rem;
-    padding-right: 1rem; }
-    .serversettings-sidebar > h1:first-child {
-      margin-top: 3rem;
-      margin-bottom: 1rem; }
-    .serversettings-sidebar > h1 {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      color: #4f545c;
-      width: 9rem;
-      margin-bottom: 1rem; }
-    .serversettings-sidebar-overview, .serversettings-sidebar-moderation, .serversettings-sidebar-activitylog, .serversettings-sidebar-roles, .serversettings-sidebar-members, .serversettings-sidebar-invites, .serversettings-sidebar-bans {
-      font-size: 0.9rem;
-      color: #d5d5d5;
-      padding: 0.5rem;
-      margin-top: -0.5rem;
-      cursor: pointer; }
-    .serversettings-sidebar-activeitem {
-      font-size: 0.9rem;
-      color: #d5d5d5;
-      background-color: #414141;
-      padding: 0.5rem;
-      margin-top: -0.5rem;
-      border-radius: 3px;
-      cursor: pointer; }
-    .serversettings-sidebar > p:last-child {
-      font-size: 0.9rem;
-      color: #ee0000;
-      padding: 0.5rem; }
-  .serversettings-myserver {
-    padding-left: 2rem;
-    display: flex;
-    flex-direction: column;
-    background-color: #36393f;
-    min-width: 50rem; }
-    .serversettings-myserver > h1 {
-      color: #e4e4e4;
-      text-transform: uppercase;
-      font-size: 1rem;
-      margin-top: 3rem; }
-    .serversettings-myserver__container {
-      width: 40rem;
-      height: 12rem;
-      background-color: #292929;
-      border-radius: 5px;
-      display: flex;
-      flex-direction: row; }
-      .serversettings-myserver__container-image {
-        width: 6rem;
-        height: 6rem;
-        background-color: white;
-        border-radius: 50%;
-        margin-left: 1.5rem;
-        margin-top: 2rem; }
-        .serversettings-myserver__container-image > img {
-          width: 90%;
-          height: 90%;
-          margin-top: 5%;
-          margin-left: 5%; }
-      .serversettings-myserver__container-info {
-        display: flex;
-        flex-direction: column;
-        margin-left: 2rem; }
-        .serversettings-myserver__container-info-server {
-          margin-top: 2rem; }
-          .serversettings-myserver__container-info-server > span {
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            color: #606060; }
-          .serversettings-myserver__container-info-server > input {
-            margin-top: 0.2rem;
-            padding-left: 0.3rem;
-            outline: none;
-            border: none;
-            font-size: 1rem;
-            height: 1.5rem;
-            width: 18rem; }
-        .serversettings-myserver__container-info-region {
-          margin-top: 1rem; }
-          .serversettings-myserver__container-info-region > span:first-child {
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            color: #606060; }
-          .serversettings-myserver__container-info-region > span:last-child {
-            color: #e4e4e4;
-            font-size: 1rem; }
-      .serversettings-myserver__container-edit {
-        cursor: pointer;
-        padding: 0.5rem 1rem 0.5rem 1rem;
-        background-color: green;
-        color: #e3e2e2;
-        height: 1.25rem;
-        border-radius: 2px;
-        position: relative;
-        top: 1.5rem;
-        left: 12rem; }
-  .serversettings-members {
-    padding-left: 2rem;
-    display: flex;
-    flex-direction: column;
-    background-color: #36393f;
-    width: 40rem; }
-    .serversettings-members-title {
-      color: #e4e4e4;
-      text-transform: uppercase;
-      font-size: 1rem;
-      margin-top: 3rem; }
-    .serversettings-members__container {
-      width: 40rem;
-      height: 12rem;
-      background-color: #292929;
-      border-radius: 5px;
-      display: flex;
-      flex-direction: row; }
-      .serversettings-members__container-image {
-        width: 6rem;
-        height: 6rem;
-        background-color: white;
-        border-radius: 50%;
-        margin-left: 1.5rem;
-        margin-top: 2rem; }
-        .serversettings-members__container-image > img {
-          width: 90%;
-          height: 90%;
-          margin-top: 5%;
-          margin-left: 5%; }
-      .serversettings-members__container-info {
-        display: flex;
-        flex-direction: column;
-        margin-left: 2rem; }
-        .serversettings-members__container-info-server {
-          margin-top: 2rem; }
-          .serversettings-members__container-info-server > span {
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            color: #606060; }
-          .serversettings-members__container-info-server > input {
-            margin-top: 0.2rem;
-            padding-left: 0.2rem;
-            outline: none;
-            font-size: 1rem;
-            width: 18rem; }
-        .serversettings-members__container-info-region {
-          margin-top: 1rem; }
-          .serversettings-members__container-info-region > span:first-child {
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            color: #606060; }
-          .serversettings-members__container-info-region > span:last-child {
-            color: #e4e4e4;
-            font-size: 1rem; }
-      .serversettings-members__container-edit {
-        cursor: pointer;
-        padding: 0.5rem 1rem 0.5rem 1rem;
-        background-color: green;
-        color: #e3e2e2;
-        height: 1.25rem;
-        border-radius: 2px;
-        position: relative;
-        top: 1.5rem;
-        left: 12rem; }
-  .serversettings-invites {
-    padding-left: 2rem;
-    display: flex;
-    flex-direction: column;
-    background-color: #36393f;
-    width: 40rem; }
-    .serversettings-invites > h1 {
-      color: #e4e4e4;
-      text-transform: uppercase;
-      font-size: 1rem;
-      margin-top: 3rem; }
-    .serversettings-invites__container {
-      width: 40rem;
-      height: 12rem;
-      background-color: #292929;
-      border-radius: 5px;
-      display: flex;
-      flex-direction: row; }
-      .serversettings-invites__container-info {
-        display: flex;
-        flex-direction: column;
-        margin-left: 2rem; }
-        .serversettings-invites__container-info-server {
-          margin-top: 2rem; }
-          .serversettings-invites__container-info-server > span {
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            color: #606060; }
-          .serversettings-invites__container-info-server > input {
-            margin-top: 0.2rem;
-            padding-left: 0.2rem;
-            outline: none;
-            font-size: 1rem;
-            width: 18rem; }
-  .serversettings-bans {
-    padding-left: 2rem;
-    display: flex;
-    flex-direction: column;
-    background-color: #36393f;
-    width: 40rem; }
-    .serversettings-bans-title {
-      color: #e4e4e4;
-      text-transform: uppercase;
-      font-size: 1rem;
-      margin-top: 3rem; }
-    .serversettings-bans__container {
-      width: 40rem;
-      height: 12rem;
-      background-color: #292929;
-      border-radius: 5px;
-      display: flex;
-      flex-direction: row; }
-      .serversettings-bans__container-image {
-        width: 6rem;
-        height: 6rem;
-        background-color: white;
-        border-radius: 50%;
-        margin-left: 1.5rem;
-        margin-top: 2rem; }
-        .serversettings-bans__container-image > img {
-          width: 90%;
-          height: 90%;
-          margin-top: 5%;
-          margin-left: 5%; }
-      .serversettings-bans__container-info {
-        display: flex;
-        flex-direction: column;
-        margin-left: 2rem; }
-        .serversettings-bans__container-info-server {
-          margin-top: 2rem; }
-          .serversettings-bans__container-info-server > span {
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            color: #606060; }
-          .serversettings-bans__container-info-server > input {
-            margin-top: 0.2rem;
-            padding-left: 0.2rem;
-            outline: none;
-            font-size: 1rem;
-            width: 18rem; }
-        .serversettings-bans__container-info-region {
-          margin-top: 1rem; }
-          .serversettings-bans__container-info-region > span:first-child {
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            color: #606060; }
-          .serversettings-bans__container-info-region > span:last-child {
-            color: #e4e4e4;
-            font-size: 1rem; }
-      .serversettings-bans__container-edit {
-        cursor: pointer;
-        padding: 0.5rem 1rem 0.5rem 1rem;
-        background-color: green;
-        color: #e3e2e2;
-        height: 1.25rem;
-        border-radius: 2px;
-        position: relative;
-        top: 1.5rem;
-        left: 12rem; }
-  .serversettings-authentication {
-    padding-left: 2rem;
-    display: flex;
-    flex-direction: column;
-    background-color: #36393f;
-    min-width: 50rem;
-    height: 61.5vh; }
-    .serversettings-authentication > h1 {
-      color: #e4e4e4;
-      text-transform: uppercase;
-      font-size: 1rem;
-      margin-top: 3rem; }
-    .serversettings-authentication > p {
-      color: #e4e4e4;
-      font-size: 1rem;
-      width: 40rem; }
-    .serversettings-authentication-enable {
-      cursor: pointer;
-      box-sizing: border-box;
-      padding: 0.5rem 1rem 0.5rem 1rem;
-      background-color: green;
-      color: #e3e2e2;
-      width: 5rem;
-      border-radius: 2px; }
-  .serversettings-escape {
-    cursor: pointer;
-    position: absolute;
-    right: 2.25rem;
-    top: 2.25rem;
-    width: 2.25rem;
-    height: 2.25rem;
-    opacity: 1;
-    border: 1px solid white;
-    border-radius: 50%;
-    padding-top: 0.5rem;
-    box-sizing: border-box; }
-  .serversettings-escape:before, .serversettings-escape:after {
-    position: absolute;
-    left: 1rem;
-    content: ' ';
-    height: 1.25rem;
-    width: 2px;
-    background-color: white; }
-  .serversettings-escape:before {
-    transform: rotate(45deg); }
-  .serversettings-escape:after {
-    transform: rotate(-45deg); }
-  .serversettings-escapetext {
-    cursor: pointer;
-    position: absolute;
-    top: 3.75rem;
-    right: 2.375rem;
-    color: white; }
+  flex-direction: row;
+}
+.serversettings-sidebar {
+  height: 100vh;
+  background-color: #2f3136;
+  display: flex;
+  flex-direction: column;
+  padding-left: 8rem;
+  padding-right: 1rem;
+}
+.serversettings-sidebar > h1:first-child {
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+.serversettings-sidebar > h1 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #4f545c;
+  width: 9rem;
+  margin-bottom: 1rem;
+}
+.serversettings-sidebar-overview, .serversettings-sidebar-moderation, .serversettings-sidebar-activitylog, .serversettings-sidebar-roles, .serversettings-sidebar-members, .serversettings-sidebar-invites, .serversettings-sidebar-bans {
+  font-size: 0.9rem;
+  color: rgb(213, 213, 213);
+  padding: 0.5rem;
+  margin-top: -0.5rem;
+  cursor: pointer;
+}
+.serversettings-sidebar-activeitem {
+  font-size: 0.9rem;
+  color: rgb(213, 213, 213);
+  background-color: rgb(65, 65, 65);
+  padding: 0.5rem;
+  margin-top: -0.5rem;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.serversettings-sidebar > p:last-child {
+  font-size: 0.9rem;
+  color: rgb(238, 0, 0);
+  padding: 0.5rem;
+}
+.serversettings-myserver {
+  padding-left: 2rem;
+  display: flex;
+  flex-direction: column;
+  background-color: #36393f;
+  min-width: 50rem;
+}
+.serversettings-myserver > h1 {
+  color: rgb(228, 228, 228);
+  text-transform: uppercase;
+  font-size: 1rem;
+  margin-top: 3rem;
+}
+.serversettings-myserver__container {
+  width: 40rem;
+  height: 12rem;
+  background-color: #292929;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+}
+.serversettings-myserver__container-image {
+  width: 6rem;
+  height: 6rem;
+  background-color: white;
+  border-radius: 50%;
+  margin-left: 1.5rem;
+  margin-top: 2rem;
+}
+.serversettings-myserver__container-image > img {
+  width: 90%;
+  height: 90%;
+  margin-top: 5%;
+  margin-left: 5%;
+}
+.serversettings-myserver__container-info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2rem;
+}
+.serversettings-myserver__container-info-server {
+  margin-top: 2rem;
+}
+.serversettings-myserver__container-info-server > span {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: #606060;
+}
+.serversettings-myserver__container-info-server > input {
+  margin-top: 0.2rem;
+  padding-left: 0.3rem;
+  outline: none;
+  border: none;
+  font-size: 1rem;
+  height: 1.5rem;
+  width: 18rem;
+}
+.serversettings-myserver__container-info-region {
+  margin-top: 1rem;
+}
+.serversettings-myserver__container-info-region > span:first-child {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: #606060;
+}
+.serversettings-myserver__container-info-region > span:last-child {
+  color: rgb(228, 228, 228);
+  font-size: 1rem;
+}
+.serversettings-myserver__container-edit {
+  cursor: pointer;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  background-color: green;
+  color: rgb(227, 226, 226);
+  height: 1.25rem;
+  border-radius: 2px;
+  position: relative;
+  top: 1.5rem;
+  left: 12rem;
+}
+.serversettings-members {
+  padding-left: 2rem;
+  display: flex;
+  flex-direction: column;
+  background-color: #36393f;
+  width: 40rem;
+}
+.serversettings-members-title {
+  color: rgb(228, 228, 228);
+  text-transform: uppercase;
+  font-size: 1rem;
+  margin-top: 3rem;
+}
+.serversettings-members__container {
+  width: 40rem;
+  height: 12rem;
+  background-color: #292929;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+}
+.serversettings-members__container-image {
+  width: 6rem;
+  height: 6rem;
+  background-color: white;
+  border-radius: 50%;
+  margin-left: 1.5rem;
+  margin-top: 2rem;
+}
+.serversettings-members__container-image > img {
+  width: 90%;
+  height: 90%;
+  margin-top: 5%;
+  margin-left: 5%;
+}
+.serversettings-members__container-info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2rem;
+}
+.serversettings-members__container-info-server {
+  margin-top: 2rem;
+}
+.serversettings-members__container-info-server > span {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: #606060;
+}
+.serversettings-members__container-info-server > input {
+  margin-top: 0.2rem;
+  padding-left: 0.2rem;
+  outline: none;
+  font-size: 1rem;
+  width: 18rem;
+}
+.serversettings-members__container-info-region {
+  margin-top: 1rem;
+}
+.serversettings-members__container-info-region > span:first-child {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: #606060;
+}
+.serversettings-members__container-info-region > span:last-child {
+  color: rgb(228, 228, 228);
+  font-size: 1rem;
+}
+.serversettings-members__container-edit {
+  cursor: pointer;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  background-color: green;
+  color: rgb(227, 226, 226);
+  height: 1.25rem;
+  border-radius: 2px;
+  position: relative;
+  top: 1.5rem;
+  left: 12rem;
+}
+.serversettings-invites {
+  padding-left: 2rem;
+  display: flex;
+  flex-direction: column;
+  background-color: #36393f;
+  width: 40rem;
+}
+.serversettings-invites > h1 {
+  color: rgb(228, 228, 228);
+  text-transform: uppercase;
+  font-size: 1rem;
+  margin-top: 3rem;
+}
+.serversettings-invites__container {
+  width: 40rem;
+  height: 12rem;
+  background-color: #292929;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+}
+.serversettings-invites__container-info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2rem;
+}
+.serversettings-invites__container-info-server {
+  margin-top: 2rem;
+}
+.serversettings-invites__container-info-server > span {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: #606060;
+}
+.serversettings-invites__container-info-server > input {
+  margin-top: 0.2rem;
+  padding-left: 0.2rem;
+  outline: none;
+  font-size: 1rem;
+  width: 18rem;
+}
+.serversettings-bans {
+  padding-left: 2rem;
+  display: flex;
+  flex-direction: column;
+  background-color: #36393f;
+  width: 40rem;
+}
+.serversettings-bans-title {
+  color: rgb(228, 228, 228);
+  text-transform: uppercase;
+  font-size: 1rem;
+  margin-top: 3rem;
+}
+.serversettings-bans__container {
+  width: 40rem;
+  height: 12rem;
+  background-color: #292929;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+}
+.serversettings-bans__container-image {
+  width: 6rem;
+  height: 6rem;
+  background-color: white;
+  border-radius: 50%;
+  margin-left: 1.5rem;
+  margin-top: 2rem;
+}
+.serversettings-bans__container-image > img {
+  width: 90%;
+  height: 90%;
+  margin-top: 5%;
+  margin-left: 5%;
+}
+.serversettings-bans__container-info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2rem;
+}
+.serversettings-bans__container-info-server {
+  margin-top: 2rem;
+}
+.serversettings-bans__container-info-server > span {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: #606060;
+}
+.serversettings-bans__container-info-server > input {
+  margin-top: 0.2rem;
+  padding-left: 0.2rem;
+  outline: none;
+  font-size: 1rem;
+  width: 18rem;
+}
+.serversettings-bans__container-info-region {
+  margin-top: 1rem;
+}
+.serversettings-bans__container-info-region > span:first-child {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: #606060;
+}
+.serversettings-bans__container-info-region > span:last-child {
+  color: rgb(228, 228, 228);
+  font-size: 1rem;
+}
+.serversettings-bans__container-edit {
+  cursor: pointer;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  background-color: green;
+  color: rgb(227, 226, 226);
+  height: 1.25rem;
+  border-radius: 2px;
+  position: relative;
+  top: 1.5rem;
+  left: 12rem;
+}
+.serversettings-authentication {
+  padding-left: 2rem;
+  display: flex;
+  flex-direction: column;
+  background-color: #36393f;
+  min-width: 50rem;
+  height: 61.5vh;
+}
+.serversettings-authentication > h1 {
+  color: rgb(228, 228, 228);
+  text-transform: uppercase;
+  font-size: 1rem;
+  margin-top: 3rem;
+}
+.serversettings-authentication > p {
+  color: rgb(228, 228, 228);
+  font-size: 1rem;
+  width: 40rem;
+}
+.serversettings-authentication-enable {
+  cursor: pointer;
+  box-sizing: border-box;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  background-color: green;
+  color: rgb(227, 226, 226);
+  width: 5rem;
+  border-radius: 2px;
+}
+.serversettings-escape {
+  cursor: pointer;
+  position: absolute;
+  right: 2.25rem;
+  top: 2.25rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  opacity: 1;
+  border: 1px solid white;
+  border-radius: 50%;
+  padding-top: 0.5rem;
+  box-sizing: border-box;
+}
+.serversettings-escape:before, .serversettings-escape:after {
+  position: absolute;
+  left: 1rem;
+  content: " ";
+  height: 1.25rem;
+  width: 2px;
+  background-color: white;
+}
+.serversettings-escape:before {
+  transform: rotate(45deg);
+}
+.serversettings-escape:after {
+  transform: rotate(-45deg);
+}
+.serversettings-escapetext {
+  cursor: pointer;
+  position: absolute;
+  top: 3.75rem;
+  right: 2.375rem;
+  color: white;
+}
 
 .serverjoin {
   position: absolute;
   z-index: 20;
   width: 40rem;
   height: 20rem;
-  background-color: white;
+  background-color: rgb(255, 255, 255);
   transform: translate(50%, 25%);
   border-radius: 5px;
   animation-name: fadeInOpacity;
   animation-iteration-count: 1;
   animation-timing-function: linear;
-  animation-duration: 0.3s; }
-  .serverjoin-title {
-    color: #008f00;
-    text-align: center;
-    text-transform: uppercase;
-    font-size: 1.4rem;
-    margin-top: 2rem; }
-  .serverjoin-info {
-    font-size: 1.2rem;
-    color: #616161;
-    width: 80%;
-    margin-left: 10%;
-    text-align: center; }
-  .serverjoin > input {
-    border: none;
-    outline: none;
-    width: 90%;
-    border-bottom: 1px solid #2b56d7;
-    padding-bottom: 0.5rem;
-    padding-left: 0.5rem;
-    font-size: 1.2rem;
-    background-color: #f2f2f2;
-    margin-left: 5%;
-    margin-top: 2rem; }
-  .serverjoin-actions {
-    height: 5rem;
-    width: 100%;
-    background-color: #e9e9e9;
-    position: relative;
-    bottom: 0;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    display: flex;
-    flex-direction: row;
-    margin-top: 4rem; }
-    .serverjoin-actions > p {
-      cursor: pointer;
-      font-size: 1.2rem;
-      padding-top: 0.75rem;
-      padding-left: 2rem; }
-    .serverjoin-actions > button {
-      cursor: pointer;
-      background-color: #008f00;
-      color: #f7f6f6;
-      height: 2.25rem;
-      box-sizing: border-box;
-      padding: 0.5rem 1.5rem 1.5rem 1.5rem;
-      font-size: 1rem;
-      border-radius: 3px;
-      margin-left: 25rem;
-      margin-top: 1.5rem; }
+  animation-duration: 0.3s;
+}
+.serverjoin-title {
+  color: #008f00;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1.4rem;
+  margin-top: 2rem;
+}
+.serverjoin-info {
+  font-size: 1.2rem;
+  color: rgb(97, 97, 97);
+  width: 80%;
+  margin-left: 10%;
+  text-align: center;
+}
+.serverjoin > input {
+  border: none;
+  outline: none;
+  width: 90%;
+  border-bottom: 1px solid rgb(43, 86, 215);
+  padding-bottom: 0.5rem;
+  padding-left: 0.5rem;
+  font-size: 1.2rem;
+  background-color: rgb(242, 242, 242);
+  margin-left: 5%;
+  margin-top: 2rem;
+}
+.serverjoin-actions {
+  height: 5rem;
+  width: 100%;
+  background-color: rgb(233, 233, 233);
+  position: relative;
+  bottom: 0;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  margin-top: 4rem;
+}
+.serverjoin-actions > p {
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding-top: 0.75rem;
+  padding-left: 2rem;
+}
+.serverjoin-actions > button {
+  cursor: pointer;
+  background-color: #008f00;
+  color: rgb(247, 246, 246);
+  height: 2.25rem;
+  box-sizing: border-box;
+  padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 3px;
+  margin-left: 25rem;
+  margin-top: 1.5rem;
+}
 
 .servermodalregion {
   position: absolute;
   z-index: 20;
   width: 40rem;
   height: 25rem;
-  background-color: white;
+  background-color: rgb(255, 255, 255);
   transform: translate(50%, 25%);
   border-radius: 5px;
   animation-name: fadeInOpacity;
   animation-iteration-count: 1;
   animation-timing-function: linear;
-  animation-duration: 0.5s; }
-  .servermodalregion-select {
-    margin-top: 0.5rem;
-    background-color: white;
-    width: 18.6rem;
-    border: 1px solid #a4a4a4;
-    border-radius: 8px;
-    padding: 0.4rem 0rem 0.2rem 0.4rem;
-    box-sizing: border-box; }
-    .servermodalregion-select > img {
-      border-radius: 8px; }
-    .servermodalregion-select-current {
-      color: #a4a4a4;
-      font-size: 1.2rem;
-      margin-left: 0.5rem;
-      position: absolute;
-      padding-top: 0.8rem;
-      margin-top: -0.4rem;
-      padding-right: 3rem;
-      height: 2.3rem; }
-    .servermodalregion-select-change {
-      color: #2b56d7;
-      font-size: 1rem;
-      margin-left: 10rem;
-      position: absolute;
-      margin-top: -0.4rem;
-      height: 1.5rem;
-      padding: 1rem 0.6rem 0.5rem 0.5rem;
-      border-left: 1px solid #a4a4a4;
-      border-top-right-radius: 8px;
-      border-bottom-right-radius: 8px; }
-    .servermodalregion-select-change:hover {
-      color: #2b56d7;
-      position: absolute;
-      cursor: pointer;
-      margin-top: -0.45rem;
-      height: 1.45rem;
-      padding: 0.95rem 0.5rem 0.5rem 0.5rem;
-      border-top-right-radius: 8px;
-      border-bottom-right-radius: 8px;
-      border: 2px solid #2b56d7;
-      background-color: #f7f7f7; }
+  animation-duration: 0.5s;
+}
+.servermodalregion-select {
+  margin-top: 0.5rem;
+  background-color: white;
+  width: 18.6rem;
+  border: 1px solid rgb(164, 164, 164);
+  border-radius: 8px;
+  padding: 0.4rem 0rem 0.2rem 0.4rem;
+  box-sizing: border-box;
+}
+.servermodalregion-select > img {
+  border-radius: 8px;
+}
+.servermodalregion-select-current {
+  color: rgb(164, 164, 164);
+  font-size: 1.2rem;
+  margin-left: 0.5rem;
+  position: absolute;
+  padding-top: 0.8rem;
+  margin-top: -0.4rem;
+  padding-right: 3rem;
+  height: 2.3rem;
+}
+.servermodalregion-select-change {
+  color: rgb(43, 86, 215);
+  font-size: 1rem;
+  margin-left: 10rem;
+  position: absolute;
+  margin-top: -0.4rem;
+  height: 1.5rem;
+  padding: 1rem 0.6rem 0.5rem 0.5rem;
+  border-left: 1px solid rgb(164, 164, 164);
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+.servermodalregion-select-change:hover {
+  color: rgb(43, 86, 215);
+  position: absolute;
+  cursor: pointer;
+  margin-top: -0.45rem;
+  height: 1.45rem;
+  padding: 0.95rem 0.5rem 0.5rem 0.5rem;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border: 2px solid rgb(43, 86, 215);
+  background-color: rgb(247, 247, 247);
+}
 
 @keyframes fadeInOpacity {
   0% {
-    opacity: 0; }
+    opacity: 0;
+  }
   100% {
-    opacity: 1; } }
-
+    opacity: 1;
+  }
+}
 @media (max-width: 1200px) {
   .usersettings-myaccount > h1 {
-    margin-top: 8rem; }
+    margin-top: 8rem;
+  }
   .usersettings-authentication {
-    height: 48.9vh; } }
+    height: 48.9vh;
+  }
+}
+
+/*# sourceMappingURL=Dashboard.css.map */

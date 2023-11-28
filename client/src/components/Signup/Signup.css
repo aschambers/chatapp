@@ -4,44 +4,51 @@
   height: 25rem;
   width: 30rem;
   margin: 0 auto;
-  margin-top: 1rem; }
-  .authcontainersignup > span {
-    font-family: Arial, Helvetica, sans-serif;
-    color: white;
-    font-size: 1.6rem;
-    display: block;
-    margin-top: 2rem;
-    text-align: center; }
-  .authcontainersignup__section {
-    display: flex;
-    flex-direction: column;
-    padding: 1rem 3rem 0rem 3rem; }
-    .authcontainersignup__section > span {
-      display: flex;
-      justify-self: flex-start;
-      color: white;
-      margin-bottom: 0.1rem;
-      font-size: 1rem;
-      font-family: Arial, Helvetica, sans-serif; }
-    .authcontainersignup__section > input {
-      margin-bottom: 1rem;
-      background-color: rgba(62, 59, 59, 0.666);
-      border: 1px solid white;
-      height: 2rem;
-      padding-left: 0.5rem;
-      color: white;
-      font-size: 1.2rem;
-      outline: none; }
-    .authcontainersignup__section > button {
-      background-color: #3D59AB;
-      border: none;
-      height: 2.4rem;
-      color: white;
-      font-size: 1.2rem;
-      outline: none;
-      cursor: pointer; }
-    .authcontainersignup__section > a {
-      text-decoration: none; }
+  margin-top: 1rem;
+}
+.authcontainersignup > span {
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+  font-size: 1.6rem;
+  display: block;
+  margin-top: 2rem;
+  text-align: center;
+}
+.authcontainersignup__section {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 3rem 0rem 3rem;
+}
+.authcontainersignup__section > span {
+  display: flex;
+  justify-self: flex-start;
+  color: white;
+  margin-bottom: 0.1rem;
+  font-size: 1rem;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.authcontainersignup__section > input {
+  margin-bottom: 1rem;
+  background-color: rgba(62, 59, 59, 0.666);
+  border: 1px solid white;
+  height: 2rem;
+  padding-left: 0.5rem;
+  color: white;
+  font-size: 1.2rem;
+  outline: none;
+}
+.authcontainersignup__section > button {
+  background-color: #3D59AB;
+  border: none;
+  height: 2.4rem;
+  color: white;
+  font-size: 1.2rem;
+  outline: none;
+  cursor: pointer;
+}
+.authcontainersignup__section > a {
+  text-decoration: none;
+}
 
 .login {
   display: flex;
@@ -50,4 +57,7 @@
   color: white;
   margin-bottom: 0.1rem;
   font-size: 1rem;
-  font-family: Arial, Helvetica, sans-serif; }
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/*# sourceMappingURL=Signup.css.map */

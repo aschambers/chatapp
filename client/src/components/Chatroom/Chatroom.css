@@ -6,14 +6,16 @@
   padding-right: 3rem;
   padding-bottom: 3rem;
   overflow: scroll;
-  color: white; }
+  color: white;
+}
 
 .chatroom {
   background-color: #36393f;
   height: 100vh;
   display: flex;
   flex-direction: row;
-  width: 100%; }
+  width: 100%;
+}
 
 .attach {
   margin-top: 1.9rem;
@@ -22,236 +24,275 @@
   padding-left: 1.25rem;
   width: 1.2rem;
   height: 1.2rem;
-  cursor: pointer; }
+  cursor: pointer;
+}
 
 .chatarea {
   display: flex;
   flex-direction: column;
-  flex: 1; }
-  .chatarea-topbar {
-    box-sizing: border-box;
-    width: 100%;
-    border-bottom: 2px solid #212121;
-    min-height: 1.9rem;
-    padding-left: 0.5rem;
-    margin-top: 0.9rem; }
-    .chatarea-topbar > span {
-      color: #f2f2f2;
-      padding-left: 0.2rem;
-      position: absolute;
-      margin-top: -0.1rem; }
-  .chatarea-container {
-    display: flex;
-    justify-content: center;
-    height: 5.5rem; }
-    .chatarea-container > input {
-      margin-top: auto;
-      position: relative;
-      bottom: 0.8rem;
-      display: flex;
-      flex: 0.96;
-      height: 2.5rem;
-      padding-left: 2rem;
-      font-size: 0.8rem;
-      color: white;
-      background-color: #3c3c3c;
-      text-decoration: none;
-      outline: none;
-      border: 1px solid black;
-      margin-left: -1.6rem; }
+  flex: 1;
+}
+.chatarea-topbar {
+  box-sizing: border-box;
+  width: 100%;
+  border-bottom: 2px solid #212121;
+  min-height: 1.9rem;
+  padding-left: 0.5rem;
+  margin-top: 0.9rem;
+}
+.chatarea-topbar > span {
+  color: rgb(242, 242, 242);
+  padding-left: 0.2rem;
+  position: absolute;
+  margin-top: -0.1rem;
+}
+.chatarea-container {
+  display: flex;
+  justify-content: center;
+  height: 5.5rem;
+}
+.chatarea-container > input {
+  margin-top: auto;
+  position: relative;
+  bottom: 0.8rem;
+  display: flex;
+  flex: 0.96;
+  height: 2.5rem;
+  padding-left: 2rem;
+  font-size: 0.8rem;
+  color: white;
+  background-color: rgb(60, 60, 60);
+  text-decoration: none;
+  outline: none;
+  border: 1px solid black;
+  margin-left: -1.6rem;
+}
+.chatarea-messages {
+  height: 100%;
+  margin-bottom: auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column-reverse;
+  position: relative;
+  padding-left: 2rem;
+}
+@supports (-ms-ime-align: auto) {
   .chatarea-messages {
-    height: 100%;
-    margin-bottom: auto;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column-reverse;
-    position: relative;
-    padding-left: 2rem; }
-    @supports (-ms-ime-align: auto) {
-      .chatarea-messages {
-        flex-direction: column; } }
-
+    flex-direction: column;
+  }
+}
 @-moz-document url-prefix() {
   .chatarea-messages {
-    flex-direction: column; } }
-    .chatarea-messages > div {
-      display: inline-block;
-      line-height: 1.1rem; }
-    @supports (-ms-ime-align: auto) {
-      .chatarea-messages > div:first-child {
-        margin-top: auto; } }
-
+    flex-direction: column;
+  }
+}
+.chatarea-messages > div {
+  display: inline-block;
+  line-height: 1.1rem;
+}
+@supports (-ms-ime-align: auto) {
+  .chatarea-messages > div:first-child {
+    margin-top: auto;
+  }
+}
 @-moz-document url-prefix() {
   .chatarea-messages > div:first-child {
-    margin-top: auto; } }
-    .chatarea-messages-container {
-      margin-top: 0rem; }
-    .chatarea-messages-user {
-      cursor: context-menu;
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      -khtml-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      font-size: 1.2rem;
-      color: #50d04a;
-      margin-right: 0.3rem; }
-    .chatarea-messages-time {
-      color: #888888;
-      font-size: 0.8rem; }
-    .chatarea-messages-message {
-      font-size: 1rem;
-      margin-top: 0rem;
-      width: 94%;
-      color: white; }
-    .chatarea-messages-editmessage {
-      border: none;
-      outline: none;
-      flex: 1;
-      width: 94%;
-      padding-left: 0.5rem;
-      background-color: #303030;
-      border-radius: 3px;
-      color: white;
-      height: 1.5rem;
-      border: 1px solid black;
-      font-size: 1rem; }
-      .chatarea-messages-editmessage-note {
-        color: white;
-        margin-top: 0.3rem;
-        font-size: 0.6rem;
-        margin-left: 0.1rem; }
-    .chatarea-messages-menu {
-      display: inline-block;
-      position: absolute;
-      right: 2rem;
-      margin-top: 0.5rem;
-      cursor: pointer; }
-    .chatarea-messages-editmenu {
-      background-color: black;
-      width: 4rem;
-      height: 4rem;
-      position: absolute;
-      right: 2rem;
-      z-index: 2;
-      border-radius: 4px;
-      margin-top: -1.8rem; }
-      .chatarea-messages-editmenu > span {
-        cursor: pointer;
-        color: white;
-        position: absolute;
-        right: 0;
-        margin-top: 0.3rem;
-        margin-right: 0.3rem; }
-      .chatarea-messages-editmenu > p {
-        color: white;
-        margin-left: 0.6rem;
-        margin-top: 0.7rem;
-        font-size: 0.8rem;
-        cursor: pointer; }
-    .chatarea-messages-sideusermodal {
-      background-color: black;
-      width: 9rem;
-      height: 3rem;
-      position: absolute;
-      right: 2rem;
-      z-index: 2;
-      border-radius: 4px;
-      margin-top: -1rem; }
-      .chatarea-messages-sideusermodal > span {
-        cursor: pointer;
-        color: white;
-        position: absolute;
-        right: 0;
-        margin-top: 0.3rem;
-        margin-right: 0.3rem; }
-      .chatarea-messages-sideusermodal-privatemessage {
-        color: white;
-        margin-left: 0.6rem;
-        margin-top: 0.7rem;
-        font-size: 0.8rem;
-        cursor: pointer; }
-    .chatarea-messages-sideusermodalmod {
-      background-color: black;
-      width: 12rem;
-      height: 6rem;
-      position: absolute;
-      right: 2rem;
-      z-index: 2;
-      border-radius: 4px;
-      margin-top: -4rem; }
-      .chatarea-messages-sideusermodalmod > span {
-        cursor: pointer;
-        color: white;
-        position: absolute;
-        right: 0;
-        margin-top: 0.3rem;
-        margin-right: 0.3rem; }
-      .chatarea-messages-sideusermodalmod-privatemessage {
-        color: white;
-        margin-left: 0.6rem;
-        margin-top: 0.7rem;
-        font-size: 0.8rem;
-        cursor: pointer; }
-      .chatarea-messages-sideusermodalmod-kick, .chatarea-messages-sideusermodalmod-ban {
-        color: red;
-        margin-left: 0.6rem;
-        margin-top: 0.7rem;
-        font-size: 0.8rem;
-        cursor: pointer; }
-    .chatarea-messages-usermodal {
-      background-color: black;
-      width: 9rem;
-      height: 3rem;
-      position: absolute;
-      left: 2rem;
-      z-index: 2;
-      border-radius: 4px;
-      margin-top: -1rem; }
-      .chatarea-messages-usermodal > span {
-        cursor: pointer;
-        color: white;
-        position: absolute;
-        right: 0;
-        margin-top: 0.3rem;
-        margin-right: 0.3rem; }
-      .chatarea-messages-usermodal-privatemessage {
-        color: white;
-        margin-left: 0.6rem;
-        margin-top: 0.7rem;
-        font-size: 0.8rem;
-        cursor: pointer; }
-    .chatarea-messages-usermodalmod {
-      background-color: black;
-      width: 12rem;
-      height: 6rem;
-      position: absolute;
-      left: 2rem;
-      z-index: 2;
-      border-radius: 4px;
-      margin-top: -4rem; }
-      .chatarea-messages-usermodalmod > span {
-        cursor: pointer;
-        color: white;
-        position: absolute;
-        right: 0;
-        margin-top: 0.3rem;
-        margin-right: 0.3rem; }
-      .chatarea-messages-usermodalmod-privatemessage {
-        color: white;
-        margin-left: 0.6rem;
-        margin-top: 0.7rem;
-        font-size: 0.8rem;
-        cursor: pointer; }
-      .chatarea-messages-usermodalmod-kick, .chatarea-messages-usermodalmod-ban {
-        color: red;
-        margin-left: 0.6rem;
-        margin-top: 0.7rem;
-        font-size: 0.8rem;
-        cursor: pointer; }
-  .chatarea-messages:hover {
-    overflow: auto; }
+    margin-top: auto;
+  }
+}
+.chatarea-messages-container {
+  margin-top: 0rem;
+}
+.chatarea-messages-user {
+  cursor: context-menu;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-size: 1.2rem;
+  color: rgb(80, 208, 74);
+  margin-right: 0.3rem;
+}
+.chatarea-messages-time {
+  color: rgb(136, 136, 136);
+  font-size: 0.8rem;
+}
+.chatarea-messages-message {
+  font-size: 1rem;
+  margin-top: 0rem;
+  width: 94%;
+  color: white;
+}
+.chatarea-messages-editmessage {
+  border: none;
+  outline: none;
+  flex: 1;
+  width: 94%;
+  padding-left: 0.5rem;
+  background-color: #303030;
+  border-radius: 3px;
+  color: white;
+  height: 1.5rem;
+  border: 1px solid black;
+  font-size: 1rem;
+}
+.chatarea-messages-editmessage-note {
+  color: white;
+  margin-top: 0.3rem;
+  font-size: 0.6rem;
+  margin-left: 0.1rem;
+}
+.chatarea-messages-menu {
+  display: inline-block;
+  position: absolute;
+  right: 2rem;
+  margin-top: 0.5rem;
+  cursor: pointer;
+}
+.chatarea-messages-editmenu {
+  background-color: black;
+  width: 4rem;
+  height: 4rem;
+  position: absolute;
+  right: 2rem;
+  z-index: 2;
+  border-radius: 4px;
+  margin-top: -1.8rem;
+}
+.chatarea-messages-editmenu > span {
+  cursor: pointer;
+  color: white;
+  position: absolute;
+  right: 0;
+  margin-top: 0.3rem;
+  margin-right: 0.3rem;
+}
+.chatarea-messages-editmenu > p {
+  color: white;
+  margin-left: 0.6rem;
+  margin-top: 0.7rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.chatarea-messages-sideusermodal {
+  background-color: black;
+  width: 9rem;
+  height: 3rem;
+  position: absolute;
+  right: 2rem;
+  z-index: 2;
+  border-radius: 4px;
+  margin-top: -1rem;
+}
+.chatarea-messages-sideusermodal > span {
+  cursor: pointer;
+  color: white;
+  position: absolute;
+  right: 0;
+  margin-top: 0.3rem;
+  margin-right: 0.3rem;
+}
+.chatarea-messages-sideusermodal-privatemessage {
+  color: white;
+  margin-left: 0.6rem;
+  margin-top: 0.7rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.chatarea-messages-sideusermodalmod {
+  background-color: black;
+  width: 12rem;
+  height: 6rem;
+  position: absolute;
+  right: 2rem;
+  z-index: 2;
+  border-radius: 4px;
+  margin-top: -4rem;
+}
+.chatarea-messages-sideusermodalmod > span {
+  cursor: pointer;
+  color: white;
+  position: absolute;
+  right: 0;
+  margin-top: 0.3rem;
+  margin-right: 0.3rem;
+}
+.chatarea-messages-sideusermodalmod-privatemessage {
+  color: white;
+  margin-left: 0.6rem;
+  margin-top: 0.7rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.chatarea-messages-sideusermodalmod-kick, .chatarea-messages-sideusermodalmod-ban {
+  color: red;
+  margin-left: 0.6rem;
+  margin-top: 0.7rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.chatarea-messages-usermodal {
+  background-color: black;
+  width: 9rem;
+  height: 3rem;
+  position: absolute;
+  left: 2rem;
+  z-index: 2;
+  border-radius: 4px;
+  margin-top: -1rem;
+}
+.chatarea-messages-usermodal > span {
+  cursor: pointer;
+  color: white;
+  position: absolute;
+  right: 0;
+  margin-top: 0.3rem;
+  margin-right: 0.3rem;
+}
+.chatarea-messages-usermodal-privatemessage {
+  color: white;
+  margin-left: 0.6rem;
+  margin-top: 0.7rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.chatarea-messages-usermodalmod {
+  background-color: black;
+  width: 12rem;
+  height: 6rem;
+  position: absolute;
+  left: 2rem;
+  z-index: 2;
+  border-radius: 4px;
+  margin-top: -4rem;
+}
+.chatarea-messages-usermodalmod > span {
+  cursor: pointer;
+  color: white;
+  position: absolute;
+  right: 0;
+  margin-top: 0.3rem;
+  margin-right: 0.3rem;
+}
+.chatarea-messages-usermodalmod-privatemessage {
+  color: white;
+  margin-left: 0.6rem;
+  margin-top: 0.7rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.chatarea-messages-usermodalmod-kick, .chatarea-messages-usermodalmod-ban {
+  color: red;
+  margin-left: 0.6rem;
+  margin-top: 0.7rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.chatarea-messages:hover {
+  overflow: auto;
+}
 
 .sidebarright {
   display: flex;
@@ -260,69 +301,80 @@
   margin-left: auto;
   width: 12rem;
   height: 100%;
-  background-color: #303030;
+  background-color: rgb(48, 48, 48);
   border-left: 1px solid black;
-  border-right: 1px solid black; }
-  .sidebarright-container {
-    display: flex;
-    flex-direction: row;
-    height: 1.5rem;
-    margin-top: 8px;
-    margin-bottom: 11px; }
-    .sidebarright-container > input {
-      background-color: #3c3c3c;
-      text-decoration: none;
-      outline: none;
-      border: 1px solid black;
-      height: 1.5rem;
-      color: white;
-      padding-left: 3%;
-      margin-left: 7%;
-      width: 80%;
-      border-radius: 3px; }
-  .sidebarright-border {
-    border-top: 1px solid #4d4d4d;
-    width: 100%; }
-  .sidebarright-bordertwo {
-    margin-top: 0.4rem;
-    border-top: 1px solid #4d4d4d;
-    width: 100%; }
-  .sidebarright-friendscontainer {
-    display: flex;
-    flex-direction: row;
-    height: 30px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 10%; }
-  .sidebarright-logo {
-    width: 30px; }
-  .sidebarright-friends {
-    color: #A1A1A1;
-    font-size: 1rem;
-    font-family: Arial, Helvetica, sans-serif;
-    margin-top: 7px;
-    margin-left: 10px; }
-  .sidebarright-authority {
-    color: #A1A1A1;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    margin-top: 0.5rem;
-    margin-left: 1rem; }
-  .sidebarright-usercontainer {
-    cursor: context-menu;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    margin-top: 0.5rem;
-    padding-left: 1rem;
-    display: flex;
-    flex-direction: row; }
-  .sidebarright-user {
-    margin-left: 0.5rem;
-    color: white; }
+  border-right: 1px solid black;
+}
+.sidebarright-container {
+  display: flex;
+  flex-direction: row;
+  height: 1.5rem;
+  margin-top: 8px;
+  margin-bottom: 11px;
+}
+.sidebarright-container > input {
+  background-color: rgb(60, 60, 60);
+  text-decoration: none;
+  outline: none;
+  border: 1px solid black;
+  height: 1.5rem;
+  color: white;
+  padding-left: 3%;
+  margin-left: 7%;
+  width: 80%;
+  border-radius: 3px;
+}
+.sidebarright-border {
+  border-top: 1px solid rgb(77, 77, 77);
+  width: 100%;
+}
+.sidebarright-bordertwo {
+  margin-top: 0.4rem;
+  border-top: 1px solid rgb(77, 77, 77);
+  width: 100%;
+}
+.sidebarright-friendscontainer {
+  display: flex;
+  flex-direction: row;
+  height: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10%;
+}
+.sidebarright-logo {
+  width: 30px;
+}
+.sidebarright-friends {
+  color: #A1A1A1;
+  font-size: 1rem;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-top: 7px;
+  margin-left: 10px;
+}
+.sidebarright-authority {
+  color: #A1A1A1;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  margin-left: 1rem;
+}
+.sidebarright-usercontainer {
+  cursor: context-menu;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: row;
+}
+.sidebarright-user {
+  margin-left: 0.5rem;
+  color: white;
+}
 
 .userinfo {
   display: flex;
@@ -332,34 +384,39 @@
   margin-top: auto;
   padding-top: 0.5rem;
   padding-bottom: 0.1rem;
-  padding-left: 0.5rem; }
-  .userinfo-online {
-    background-color: #008000;
-    width: 0.6rem;
-    height: 0.6rem;
-    border-radius: 2rem;
-    border: 3px solid #303030;
-    margin-left: -0.6rem;
-    margin-top: 1rem; }
-  .userinfo-offline {
-    background-color: #e60000;
-    width: 0.6rem;
-    height: 0.6rem;
-    border-radius: 2rem;
-    border: 3px solid #303030;
-    margin-left: -0.6rem;
-    margin-top: 1rem; }
+  padding-left: 0.5rem;
+}
+.userinfo-online {
+  background-color: #008000;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 2rem;
+  border: 3px solid #303030;
+  margin-left: -0.6rem;
+  margin-top: 1rem;
+}
+.userinfo-offline {
+  background-color: rgb(230, 0, 0);
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 2rem;
+  border: 3px solid #303030;
+  margin-left: -0.6rem;
+  margin-top: 1rem;
+}
 
 .username {
   background-color: white;
   width: 1.8rem;
   height: 1.8rem;
-  border-radius: 20px; }
-  .username-image {
-    width: 1.6rem;
-    border-radius: 50%;
-    margin-left: 0.1rem;
-    margin-top: 0.1rem; }
+  border-radius: 20px;
+}
+.username-image {
+  width: 1.6rem;
+  border-radius: 50%;
+  margin-left: 0.1rem;
+  margin-top: 0.1rem;
+}
 
 .emojiselectchatroom {
   width: 1.5rem;
@@ -369,41 +426,56 @@
   bottom: 0;
   margin-right: 14.4rem;
   margin-bottom: 1.4rem;
-  cursor: pointer; }
+  cursor: pointer;
+}
 
 .emojipickerchatroom {
   position: absolute;
   bottom: 0;
   right: 0;
   margin-bottom: 4.3rem;
-  margin-right: 13.9rem; }
+  margin-right: 13.9rem;
+}
 
 @media (max-width: 1800px) {
   .emojiselectchatroom {
-    margin-right: 14.2rem; }
+    margin-right: 14.2rem;
+  }
   .emojipickerchatroom {
-    margin-right: 13.8rem; } }
-
+    margin-right: 13.8rem;
+  }
+}
 @media (max-width: 1600px) {
   .emojiselectchatroom {
-    margin-right: 14rem; }
+    margin-right: 14rem;
+  }
   .emojipickerchatroom {
-    margin-right: 13.5rem; } }
-
+    margin-right: 13.5rem;
+  }
+}
 @media (max-width: 1500px) {
   .emojiselectchatroom {
-    margin-right: 13.8rem; }
+    margin-right: 13.8rem;
+  }
   .emojipickerchatroom {
-    margin-right: 13.4rem; } }
-
+    margin-right: 13.4rem;
+  }
+}
 @media (max-width: 1400px) {
   .emojiselectchatroom {
-    margin-right: 13.6rem; }
+    margin-right: 13.6rem;
+  }
   .emojipickerchatroom {
-    margin-right: 13.2rem; } }
-
+    margin-right: 13.2rem;
+  }
+}
 @media (max-width: 1200px) {
   .emojiselectchatroom {
-    margin-right: 13.4rem; }
+    margin-right: 13.4rem;
+  }
   .emojipickerchatroom {
-    margin-right: 12.95rem; } }
+    margin-right: 12.95rem;
+  }
+}
+
+/*# sourceMappingURL=Chatroom.css.map */

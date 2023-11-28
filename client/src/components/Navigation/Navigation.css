@@ -3,20 +3,26 @@
   height: 8rem;
   flex: 1;
   color: #FFF;
-  font-family: Antonio-Regular; }
-  .navbar-link {
-    display: flex;
-    flex: 1;
-    font-size: 3rem;
-    margin-top: 1rem;
-    margin-left: 1rem;
-    cursor: pointer; }
-  .navbar-home {
-    cursor: pointer; }
-  .navbar-authlink {
-    text-decoration: none;
-    font-size: 2rem;
-    color: white;
-    margin-top: 1.5rem;
-    margin-right: 2rem;
-    cursor: pointer; }
+  font-family: Antonio-Regular;
+}
+.navbar-link {
+  display: flex;
+  flex: 1;
+  font-size: 3rem;
+  margin-top: 1rem;
+  margin-left: 1rem;
+  cursor: pointer;
+}
+.navbar-home {
+  cursor: pointer;
+}
+.navbar-authlink {
+  text-decoration: none;
+  font-size: 2rem;
+  color: white;
+  margin-top: 1.5rem;
+  margin-right: 2rem;
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=Navigation.css.map */

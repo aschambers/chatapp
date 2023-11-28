@@ -2,25 +2,31 @@
   animation-play-state: running;
   opacity: 1;
   position: relative;
-  height: 100vh; }
-
+  height: 100vh;
+}
 @keyframes spinner {
   0% {
-    transform: translate3d(-50%, -50%, 0) rotate(0deg); }
+    transform: translate3d(-50%, -50%, 0) rotate(0deg);
+  }
   100% {
-    transform: translate3d(-50%, -50%, 0) rotate(360deg); } }
-  .loading-spinner::before {
-    animation: 1.5s linear infinite spinner;
-    animation-play-state: inherit;
-    border: solid 3px #dedede;
-    border-bottom-color: #4195de;
-    border-radius: 50%;
-    content: "";
-    height: 40px;
-    left: 50%;
-    opacity: inherit;
-    position: absolute;
-    top: 50%;
-    transform: translate3d(-50%, -50%, 0);
-    width: 40px;
-    will-change: transform; }
+    transform: translate3d(-50%, -50%, 0) rotate(360deg);
+  }
+}
+.loading-spinner::before {
+  animation: 1.5s linear infinite spinner;
+  animation-play-state: inherit;
+  border: solid 3px #dedede;
+  border-bottom-color: rgb(65, 149, 222);
+  border-radius: 50%;
+  content: "";
+  height: 40px;
+  left: 50%;
+  opacity: inherit;
+  position: absolute;
+  top: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  width: 40px;
+  will-change: transform;
+}
+
+/*# sourceMappingURL=Loading.css.map */

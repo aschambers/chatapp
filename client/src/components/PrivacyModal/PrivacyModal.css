@@ -4,47 +4,54 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 10;
-  background-color: #282828;
+  background-color: rgb(40, 40, 40);
   border-radius: 5px;
   width: 32rem;
-  height: 16rem; }
-  .privacymodal-container-title {
-    text-align: center;
-    font-size: 1.4rem;
-    color: white; }
-  .privacymodal-container-name {
-    margin-left: 2rem;
-    font-size: 1.2rem;
-    height: 0.8rem;
-    margin-top: 2.5rem;
-    margin-bottom: 2rem;
-    color: white; }
-  .privacymodal-container-allow {
-    color: white; }
-    .privacymodal-container-allow > span {
-      margin-left: 2rem; }
-  .privacymodal-container-cancel {
-    cursor: pointer;
-    outline: none;
-    border: 1px solid #353535;
-    background-color: #353535;
-    color: white;
-    font-size: 1rem;
-    box-sizing: border-box;
-    padding: 0.5rem 1rem 0.5rem 1rem;
-    margin-top: 2rem;
-    margin-left: 20rem;
-    margin-right: 1rem; }
-  .privacymodal-container-create {
-    cursor: pointer;
-    outline: none;
-    border: none;
-    background-color: #7272cb;
-    color: white;
-    font-size: 1rem;
-    box-sizing: border-box;
-    padding: 0.5rem 1rem 0.5rem 1rem;
-    border-radius: 3px; }
+  height: 16rem;
+}
+.privacymodal-container-title {
+  text-align: center;
+  font-size: 1.4rem;
+  color: white;
+}
+.privacymodal-container-name {
+  margin-left: 2rem;
+  font-size: 1.2rem;
+  height: 0.8rem;
+  margin-top: 2.5rem;
+  margin-bottom: 2rem;
+  color: white;
+}
+.privacymodal-container-allow {
+  color: white;
+}
+.privacymodal-container-allow > span {
+  margin-left: 2rem;
+}
+.privacymodal-container-cancel {
+  cursor: pointer;
+  outline: none;
+  border: 1px solid rgb(53, 53, 53);
+  background-color: rgb(53, 53, 53);
+  color: white;
+  font-size: 1rem;
+  box-sizing: border-box;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  margin-top: 2rem;
+  margin-left: 20rem;
+  margin-right: 1rem;
+}
+.privacymodal-container-create {
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background-color: rgb(114, 114, 203);
+  color: white;
+  font-size: 1rem;
+  box-sizing: border-box;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  border-radius: 3px;
+}
 
 /* The switch - the box around the slider */
 .switchallow {
@@ -53,13 +60,15 @@
   width: 60px;
   height: 34px;
   left: 4.5rem;
-  top: -0.4rem; }
+  top: -0.4rem;
+}
 
 /* Hide default HTML checkbox */
 .switchallow input {
   opacity: 0;
   width: 0;
-  height: 0; }
+  height: 0;
+}
 
 /* The slider */
 .sliderallow {
@@ -70,8 +79,9 @@
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s; }
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
 
 .sliderallow:before {
   position: absolute;
@@ -81,23 +91,31 @@
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s; }
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
 
 input:checked + .sliderallow {
-  background-color: #0066cc; }
+  background-color: #0066cc;
+}
 
 input:focus + .sliderallow {
-  box-shadow: 0 0 1px #0066cc; }
+  box-shadow: 0 0 1px #0066cc;
+}
 
 input:checked + .sliderallow:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
-  transform: translateX(26px); }
+  transform: translateX(26px);
+}
 
 /* Rounded sliders */
 .sliderallow.roundallow {
-  border-radius: 34px; }
+  border-radius: 34px;
+}
 
 .sliderallow.roundallow:before {
-  border-radius: 50%; }
+  border-radius: 50%;
+}
+
+/*# sourceMappingURL=PrivacyModal.css.map */
