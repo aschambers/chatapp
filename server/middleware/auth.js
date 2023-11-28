@@ -5,9 +5,6 @@ module.exports = async(req, res, next) => {
   try {
     if (!req.headers.authorization) return next();
 
-    // prevent making api requests using postman
-    if (req.headers['user-agent'] && req.headers['user-agent'].toLowerCase().includes('postman')) return next();
-
     const type = req.headers.authorization.split(" ")[0];
     const token = req.headers.authorization.split(" ")[1];
 
