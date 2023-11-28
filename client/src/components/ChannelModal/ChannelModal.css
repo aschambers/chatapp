@@ -4,57 +4,64 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 10;
-  background-color: #282828;
+  background-color: rgb(40, 40, 40);
   border-radius: 5px;
   width: 32rem;
-  height: 23rem; }
-  .categorymodal-container-title {
-    text-align: center;
-    font-size: 1.4rem;
-    color: white; }
-  .categorymodal-container-name {
-    margin-left: 2rem;
-    font-size: 1.2rem;
-    height: 0.8rem;
-    margin-top: 2.5rem;
-    color: white; }
-  .categorymodal-container-type {
-    margin-left: 2rem;
-    font-size: 1.2rem;
-    height: 0.8rem;
-    margin-top: 2.5rem;
-    margin-bottom: 2rem;
-    color: white; }
-  .categorymodal-container > input {
-    margin-left: 2rem;
-    width: 80%;
-    height: 2rem;
-    border: none;
-    padding-left: 0.5rem;
-    outline: #3939ac;
-    font-size: 1rem; }
-  .categorymodal-container-cancel {
-    cursor: pointer;
-    outline: none;
-    border: 1px solid #353535;
-    background-color: #353535;
-    color: white;
-    font-size: 1rem;
-    box-sizing: border-box;
-    padding: 0.5rem 1rem 0.5rem 1rem;
-    margin-top: 1rem;
-    margin-left: 17rem;
-    margin-right: 1rem; }
-  .categorymodal-container-create {
-    cursor: pointer;
-    outline: none;
-    border: none;
-    background-color: #7272cb;
-    color: white;
-    font-size: 1rem;
-    box-sizing: border-box;
-    padding: 0.5rem 1rem 0.5rem 1rem;
-    border-radius: 3px; }
+  height: 23rem;
+}
+.categorymodal-container-title {
+  text-align: center;
+  font-size: 1.4rem;
+  color: white;
+}
+.categorymodal-container-name {
+  margin-left: 2rem;
+  font-size: 1.2rem;
+  height: 0.8rem;
+  margin-top: 2.5rem;
+  color: white;
+}
+.categorymodal-container-type {
+  margin-left: 2rem;
+  font-size: 1.2rem;
+  height: 0.8rem;
+  margin-top: 2.5rem;
+  margin-bottom: 2rem;
+  color: white;
+}
+.categorymodal-container > input {
+  margin-left: 2rem;
+  width: 80%;
+  height: 2rem;
+  border: none;
+  padding-left: 0.5rem;
+  outline: rgb(57, 57, 172);
+  font-size: 1rem;
+}
+.categorymodal-container-cancel {
+  cursor: pointer;
+  outline: none;
+  border: 1px solid rgb(53, 53, 53);
+  background-color: rgb(53, 53, 53);
+  color: white;
+  font-size: 1rem;
+  box-sizing: border-box;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  margin-top: 1rem;
+  margin-left: 17rem;
+  margin-right: 1rem;
+}
+.categorymodal-container-create {
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background-color: rgb(114, 114, 203);
+  color: white;
+  font-size: 1rem;
+  box-sizing: border-box;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  border-radius: 3px;
+}
 
 .container {
   display: block;
@@ -67,18 +74,21 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  margin-left: 2rem; }
-  .container > span:first-child {
-    color: white;
-    font-size: 1.2rem;
-    display: block;
-    margin-top: -0.5rem; }
+  margin-left: 2rem;
+}
+.container > span:first-child {
+  color: white;
+  font-size: 1.2rem;
+  display: block;
+  margin-top: -0.5rem;
+}
 
 /* Hide the browser's default radio button */
 .container input {
   position: absolute;
   opacity: 0;
-  cursor: pointer; }
+  cursor: pointer;
+}
 
 /* Create a custom radio button */
 .checkmark {
@@ -88,25 +98,30 @@
   height: 20px;
   width: 20px;
   background-color: #eee;
-  border-radius: 50%; }
+  border-radius: 50%;
+}
 
 /* On mouse-over, add a grey background color */
 .container:hover input ~ .checkmark {
-  background-color: #ccc; }
+  background-color: #ccc;
+}
 
 /* When the radio button is checked, add a blue background */
 .container input:checked ~ .checkmark {
-  background-color: #2196F3; }
+  background-color: #2196F3;
+}
 
 /* Create the indicator (the dot/circle - hidden when not checked) */
 .checkmark:after {
   content: "";
   position: absolute;
-  display: none; }
+  display: none;
+}
 
 /* Show the indicator (dot/circle) when checked */
 .container input:checked ~ .checkmark:after {
-  display: block; }
+  display: block;
+}
 
 /* Style the indicator (dot/circle) */
 .container .checkmark:after {
@@ -115,4 +130,7 @@
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: white; }
+  background: white;
+}
+
+/*# sourceMappingURL=ChannelModal.css.map */
