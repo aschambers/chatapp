@@ -2,117 +2,139 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  min-height: 0; }
-  .privatechatarea-container {
-    display: flex;
-    justify-content: center;
-    height: 5.5rem; }
-    .privatechatarea-container > input {
-      margin-top: auto;
-      position: relative;
-      bottom: 0.8rem;
-      display: flex;
-      flex: 0.96;
-      height: 2.5rem;
-      padding-left: 0.5rem;
-      font-size: 0.8rem;
-      color: white;
-      background-color: #3c3c3c;
-      text-decoration: none;
-      outline: none;
-      border: 1px solid black; }
+  min-height: 0;
+}
+.privatechatarea-container {
+  display: flex;
+  justify-content: center;
+  height: 5.5rem;
+}
+.privatechatarea-container > input {
+  margin-top: auto;
+  position: relative;
+  bottom: 0.8rem;
+  display: flex;
+  flex: 0.96;
+  height: 2.5rem;
+  padding-left: 0.5rem;
+  font-size: 0.8rem;
+  color: white;
+  background-color: rgb(60, 60, 60);
+  text-decoration: none;
+  outline: none;
+  border: 1px solid black;
+}
+.privatechatarea-messages {
+  height: 100%;
+  margin-bottom: auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column-reverse;
+  position: relative;
+  padding-left: 2rem;
+}
+@supports (-ms-ime-align: auto) {
   .privatechatarea-messages {
-    height: 100%;
-    margin-bottom: auto;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column-reverse;
-    position: relative;
-    padding-left: 2rem; }
-    @supports (-ms-ime-align: auto) {
-      .privatechatarea-messages {
-        flex-direction: column; } }
-
+    flex-direction: column;
+  }
+}
 @-moz-document url-prefix() {
   .privatechatarea-messages {
-    flex-direction: column; } }
-    .privatechatarea-messages > div {
-      line-height: 1.1rem; }
-    @supports (-ms-ime-align: auto) {
-      .privatechatarea-messages > div:first-child {
-        margin-top: auto; } }
-
+    flex-direction: column;
+  }
+}
+.privatechatarea-messages > div {
+  line-height: 1.1rem;
+}
+@supports (-ms-ime-align: auto) {
+  .privatechatarea-messages > div:first-child {
+    margin-top: auto;
+  }
+}
 @-moz-document url-prefix() {
   .privatechatarea-messages > div:first-child {
-    margin-top: auto; } }
-    .privatechatarea-messages-container {
-      margin-top: 0rem; }
-    .privatechatarea-messages-user {
-      cursor: context-menu;
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      -khtml-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      font-size: 1.2rem;
-      color: #50d04a;
-      margin-right: 0.3rem; }
-    .privatechatarea-messages-time {
-      color: #888888;
-      font-size: 0.8rem; }
-    .privatechatarea-messages-message {
-      font-size: 1rem;
-      margin-top: -1rem;
-      width: 90%;
-      color: white; }
-    .privatechatarea-messages-editmessage {
-      border: none;
-      outline: none;
-      flex: 1;
-      width: 90%;
-      padding-left: 0.5rem;
-      background-color: #303030;
-      border-radius: 3px;
-      color: white;
-      height: 1.5rem;
-      border: 1px solid black;
-      font-size: 1rem; }
-      .privatechatarea-messages-editmessage-note {
-        color: white;
-        margin-top: 0.3rem;
-        font-size: 0.6rem;
-        margin-left: 0.1rem; }
-    .privatechatarea-messages-menu {
-      display: inline-block;
-      position: absolute;
-      right: 1rem;
-      margin-top: 0.5rem;
-      cursor: pointer; }
-    .privatechatarea-messages-editmenu {
-      background-color: black;
-      width: 4rem;
-      height: 4rem;
-      position: absolute;
-      right: 1rem;
-      z-index: 2;
-      border-radius: 4px;
-      margin-top: -1rem; }
-      .privatechatarea-messages-editmenu > span {
-        cursor: pointer;
-        color: white;
-        position: absolute;
-        right: 0;
-        margin-top: 0.3rem;
-        margin-right: 0.3rem; }
-      .privatechatarea-messages-editmenu > p {
-        color: white;
-        margin-left: 0.6rem;
-        margin-top: 0.7rem;
-        font-size: 0.8rem;
-        cursor: pointer; }
-  .privatechatarea-messages:hover {
-    overflow: auto; }
+    margin-top: auto;
+  }
+}
+.privatechatarea-messages-container {
+  margin-top: 0rem;
+}
+.privatechatarea-messages-user {
+  cursor: context-menu;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-size: 1.2rem;
+  color: rgb(80, 208, 74);
+  margin-right: 0.3rem;
+}
+.privatechatarea-messages-time {
+  color: rgb(136, 136, 136);
+  font-size: 0.8rem;
+}
+.privatechatarea-messages-message {
+  font-size: 1rem;
+  margin-top: -1rem;
+  width: 90%;
+  color: white;
+}
+.privatechatarea-messages-editmessage {
+  border: none;
+  outline: none;
+  flex: 1;
+  width: 90%;
+  padding-left: 0.5rem;
+  background-color: #303030;
+  border-radius: 3px;
+  color: white;
+  height: 1.5rem;
+  border: 1px solid black;
+  font-size: 1rem;
+}
+.privatechatarea-messages-editmessage-note {
+  color: white;
+  margin-top: 0.3rem;
+  font-size: 0.6rem;
+  margin-left: 0.1rem;
+}
+.privatechatarea-messages-menu {
+  display: inline-block;
+  position: absolute;
+  right: 1rem;
+  margin-top: 0.5rem;
+  cursor: pointer;
+}
+.privatechatarea-messages-editmenu {
+  background-color: black;
+  width: 4rem;
+  height: 4rem;
+  position: absolute;
+  right: 1rem;
+  z-index: 2;
+  border-radius: 4px;
+  margin-top: -1rem;
+}
+.privatechatarea-messages-editmenu > span {
+  cursor: pointer;
+  color: white;
+  position: absolute;
+  right: 0;
+  margin-top: 0.3rem;
+  margin-right: 0.3rem;
+}
+.privatechatarea-messages-editmenu > p {
+  color: white;
+  margin-left: 0.6rem;
+  margin-top: 0.7rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.privatechatarea-messages:hover {
+  overflow: auto;
+}
 
 .friendemojiselectchatroom {
   width: 1.5rem;
@@ -122,7 +144,8 @@
   bottom: 0;
   margin-right: 2.4rem;
   margin-bottom: 1.4rem;
-  cursor: pointer; }
+  cursor: pointer;
+}
 
 .friendemojipickerchatroom {
   position: absolute;
@@ -130,34 +153,48 @@
   right: 0;
   margin-bottom: 4.3rem;
   margin-right: 2.1rem;
-  z-index: 5; }
+  z-index: 5;
+}
 
 @media (max-width: 1800px) {
   .friendemojiselectchatroom {
-    margin-right: 2.2rem; }
+    margin-right: 2.2rem;
+  }
   .friendemojipickerchatroom {
-    margin-right: 1.8rem; } }
-
+    margin-right: 1.8rem;
+  }
+}
 @media (max-width: 1600px) {
   .friendemojiselectchatroom {
-    margin-right: 2.1rem; }
+    margin-right: 2.1rem;
+  }
   .friendemojipickerchatroom {
-    margin-right: 1.7rem; } }
-
+    margin-right: 1.7rem;
+  }
+}
 @media (max-width: 1500px) {
   .friendemojiselectchatroom {
-    margin-right: 2rem; }
+    margin-right: 2rem;
+  }
   .friendemojipickerchatroom {
-    margin-right: 1.4rem; } }
-
+    margin-right: 1.4rem;
+  }
+}
 @media (max-width: 1400px) {
   .friendemojiselectchatroom {
-    margin-right: 1.8rem; }
+    margin-right: 1.8rem;
+  }
   .friendemojipickerchatroom {
-    margin-right: 1.3rem; } }
-
+    margin-right: 1.3rem;
+  }
+}
 @media (max-width: 1200px) {
   .friendemojiselectchatroom {
-    margin-right: 1.7rem; }
+    margin-right: 1.7rem;
+  }
   .friendemojipickerchatroom {
-    margin-right: 1.1rem; } }
+    margin-right: 1.1rem;
+  }
+}
+
+/*# sourceMappingURL=ChatroomFriend.css.map */
