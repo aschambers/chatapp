@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import useOnClickOutside from '../../utils/useOnClickOutside';
 import { connect } from 'react-redux';
-import * as actions from '../../redux';
+import * as actions from '../../redux/store';
 import './JoinServer.css';
 
 const JoinServer = (props) => {
@@ -22,11 +22,11 @@ const JoinServer = (props) => {
   );
 }
 
-function mapStateToProps({ usersReducer }) {
+function mapStateToProps({ user }) {
   return {
-    error: usersReducer.error,
-    isLoading: usersReducer.isLoading,
-    success: usersReducer.success
+    error: user.error,
+    isLoading: user.isLoading,
+    success: user.success
   };
 }
 

@@ -51,7 +51,7 @@ import {
 } from '../../types';
 
 // Initial States
-export const initialState = {
+const initialState = {
   isLoading: false,
   error: false,
   success: false,
@@ -59,7 +59,7 @@ export const initialState = {
 };
 
 // Reducers
-export default (state = initialState, action) => {
+const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case SIGNING_UP_USER:
       return {
@@ -270,6 +270,7 @@ export const userLogin = params => async dispatch => {
           dispatch({ type: LOGIN_USER_FAIL });
         }
       });
+      dispatch({ type: LOGIN_USER_SUCCESS });
     } else {
       dispatch({ type: LOGIN_USER_FAIL });
     }
@@ -442,14 +443,12 @@ export const resetPassword = params => async dispatch => {
   }
 };
 
-export function resetValues() {
-  return function(dispatch) {
-    dispatch({ type: RESET_VALUES });
-  };
+export const resetValues = () => dispatch => {
+  dispatch({ type: RESET_VALUES });
 }
 
-export function resetUserValues() {
-  return function(dispatch) {
-    dispatch({ type: RESET_USER_VALUES });
-  };
+export const resetUserValues = () => dispatch => {
+  dispatch({ type: RESET_USER_VALUES });
 }
+
+export default userReducer;

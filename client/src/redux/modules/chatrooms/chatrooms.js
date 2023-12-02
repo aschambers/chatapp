@@ -19,7 +19,7 @@ import {
 } from '../../types';
 
 // Initial States
-export const initialState = {
+const initialState = {
   isLoading: false,
   error: false,
   success: false,
@@ -27,7 +27,7 @@ export const initialState = {
 };
 
 // Reducers
-export default (state = initialState, action) => {
+const chatroomReducer = (state = initialState, action) => {
   switch (action.type) {
     case CREATING_CHATROOM:
       return {
@@ -148,3 +148,5 @@ export function resetChatroomValues() {
     dispatch({ type: RESET_CHATROOM_VALUES });
   };
 }
+
+export default chatroomReducer;
