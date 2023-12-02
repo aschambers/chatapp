@@ -19,7 +19,7 @@ import {
 } from '../../types';
 
 // Initial States
-export const initialState = {
+const initialState = {
   isLoading: false,
   error: false,
   success: false,
@@ -27,7 +27,7 @@ export const initialState = {
 };
 
 // Reducers
-export default (state = initialState, action) => {
+const inviteReducer = (state = initialState, action) => {
   switch (action.type) {
     case CREATING_INVITE:
       return {
@@ -149,3 +149,5 @@ export function resetInviteValues() {
     dispatch({ type: RESET_INVITE_VALUES });
   };
 }
+
+export default inviteReducer;

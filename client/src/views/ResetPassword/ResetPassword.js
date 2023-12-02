@@ -3,9 +3,9 @@ import queryString from 'query-string';
 import Loading from '../../components/Loading/Loading';
 import ToastMessage from '../../components/ToastMessage/ToastMessage';
 import { toast } from 'react-toastify';
-import { Redirect } from 'react-router';
+import { Navigate } from 'react-router';
 import { connect } from 'react-redux';
-import * as actions from '../../redux';
+import * as actions from '../../redux/store';
 import Navigation from '../../components/Navigation/Navigation';
 import './ResetPassword.css';
 
@@ -38,11 +38,11 @@ const ResetPassword = (props) => {
       });
     }
 
-    props.resetUserValues();
+    // props.resetUserValues();
   }, [props, email, token]);
 
   if (isRedirect) {
-    return <Redirect push to="/Login" />;
+    return <Navigate to="/Login" />;
   }
 
   if (isLoading) {
@@ -85,11 +85,11 @@ const ResetPassword = (props) => {
   }
 };
 
-function mapStateToProps({ usersReducer }) {
+function mapStateToProps({ user }) {
   return {
-    resetPassLoading: usersReducer.isLoading,
-    resetPassSuccess: usersReducer.resetPassSuccess,
-    resetPassError: usersReducer.resetPassError
+    resetPassLoading: user.isLoading,
+    resetPassSuccess: user.resetPassSuccess,
+    resetPassError: user.resetPassError
   };
 }
 

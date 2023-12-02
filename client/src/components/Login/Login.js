@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import * as actions from '../../redux';
-import { Redirect } from 'react-router';
+import { connect, useDispatch } from 'react-redux';
+import * as actions from '../../redux/store';
+import { Navigate } from 'react-router';
 import { toast } from 'react-toastify';
 import ToastMessage from '../../components/ToastMessage/ToastMessage';
 import ForgotPassword from '../../components/ForgotPassword/ForgotPassword';
 import './Login.css';
+import { resetUserValues } from '../../redux/modules/users/users';
 
 const Login = (props) => {
   const [email, setEmail] = useState('');
@@ -15,6 +16,8 @@ const Login = (props) => {
   const [isRedirect, setIsRedirect] = useState(false);
   const [resetModal, setResetModal] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (props.error) {
@@ -38,8 +41,8 @@ const Login = (props) => {
       setNotVerified(true);
     }
 
-    props.resetUserValues();
-  }, [props, notVerified]);
+    dispatch(resetUserValues());
+  }, [props, notVerified, dispatch]);
 
   const closeToast = () => {
     setIsRedirect(true);
@@ -56,11 +59,11 @@ const Login = (props) => {
   }
 
   if (isRedirect) {
-    return <Redirect push to="/Verification" />;
+    return <Navigate to="/Verification" />;
   }
 
   if (props.success) {
-    return <Redirect push to="/Dashboard" />;
+    return <Navigate to="/Dashboard" />;
   }
 
   const userLogin = async() => {
@@ -116,14 +119,14 @@ const Login = (props) => {
   );
 };
 
-function mapStateToProps({ usersReducer }) {
+function mapStateToProps({ user }) {
   return {
-    error: usersReducer.error,
-    isLoading: usersReducer.isLoading,
-    success: usersReducer.success,
-    notVerified: usersReducer.notVerified,
-    forgotPassError: usersReducer.forgotPassError,
-    forgotPassSuccess: usersReducer.forgotPassSuccess,
+    error: user.error,
+    isLoading: user.isLoading,
+    success: user.success,
+    notVerified: user.notVerified,
+    forgotPassError: user.forgotPassError,
+    forgotPassSuccess: user.forgotPassSuccess,
   }
 }
 

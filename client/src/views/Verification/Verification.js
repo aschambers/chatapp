@@ -3,9 +3,9 @@ import queryString from 'query-string';
 import Loading from '../../components/Loading/Loading';
 import ToastMessage from '../../components/ToastMessage/ToastMessage';
 import { toast } from 'react-toastify';
-import { Redirect } from 'react-router';
+import { Navigate } from 'react-router';
 import { connect } from 'react-redux';
-import * as actions from '../../redux';
+import * as actions from '../../redux/store';
 import Navigation from '../../components/Navigation/Navigation';
 import './Verification.css';
 
@@ -60,7 +60,7 @@ const Verification = (props) => {
         setEmailAddress(email);
       }
     }
-    props.resetUserValues();
+    // props.resetUserValues();
   }, [props, email, token, isLoading, notVerified]);
 
   const closeToast = () => {
@@ -98,7 +98,7 @@ const Verification = (props) => {
   }
 
   if (isRedirect) {
-    return <Redirect push to="/Login" />;
+    return <Navigate to="/Login" />;
   }
 
   if (isLoading) {
@@ -120,14 +120,14 @@ const Verification = (props) => {
   }
 };
 
-function mapStateToProps({ usersReducer }) {
+function mapStateToProps({ user }) {
   return {
-    error: usersReducer.error,
-    isLoading: usersReducer.isLoading,
-    success: usersReducer.success,
-    already: usersReducer.already,
-    resultEmail: usersReducer.resultEmail,
-    noEmail: usersReducer.noEmail
+    error: user.error,
+    isLoading: user.isLoading,
+    success: user.success,
+    already: user.already,
+    resultEmail: user.resultEmail,
+    noEmail: user.noEmail
   };
 }
 

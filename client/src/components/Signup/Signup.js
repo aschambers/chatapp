@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../redux';
+import * as actions from '../../redux/store';
 import { toast } from 'react-toastify';
-import { Redirect } from 'react-router';
+import { Navigate } from 'react-router';
 import ToastMessage from '../../components/ToastMessage/ToastMessage'
 import { Link } from 'react-router-dom';
 import './Signup.css';
@@ -26,11 +26,11 @@ const Signup = (props) => {
       toast.dismiss();
       toast.error('Email address or username is already in use', { position: 'bottom-center' });
     }
-    props.resetUserValues();
+    // props.resetUserValues();
   }, [props, props.success, props.error]);
 
   if (showSuccess) {
-    return <Redirect push to="/Login" />;
+    return <Navigate to="/Login" />;
   }
 
   const userSignup = () => {
@@ -76,11 +76,11 @@ const Signup = (props) => {
   );
 };
 
-function mapStateToProps({ usersReducer }) {
+function mapStateToProps({ user }) {
   return {
-    error: usersReducer.error,
-    isLoading: usersReducer.isLoading,
-    success: usersReducer.success
+    error: user.error,
+    isLoading: user.isLoading,
+    success: user.success
   }
 }
 

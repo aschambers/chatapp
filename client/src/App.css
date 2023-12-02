@@ -1,17 +1,20 @@
 @font-face {
   font-family: "BebasNeue Bold";
-  src: url("./assets/fonts/BebasNeue Bold.ttf");
-}
+  src: url("./assets/fonts/BebasNeue Bold.ttf"); }
+
 @font-face {
   font-family: "BebasNeue Regular";
-  src: url("./assets/fonts/BebasNeue Regular.ttf");
-}
+  src: url("./assets/fonts/BebasNeue Regular.ttf"); }
+
 @font-face {
   font-family: "Antonio-Regular";
-  src: url("./assets/fonts/Antonio-Regular.ttf");
-}
-button:focus {
-  outline: 0;
-}
+  src: url("./assets/fonts/Antonio-Regular.ttf"); }
 
-/*# sourceMappingURL=app.css.map */
+button:focus {
+  outline: 0; }
+
+.allison {
+  background-color: green;
+  border: 1px solid red;
+  height: 50rem;
+  width: 50rem; }

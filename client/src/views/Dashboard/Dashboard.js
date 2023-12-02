@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import useOnClickOutside from '../../utils/useOnClickOutside';
 import { connect } from 'react-redux';
-import * as actions from '../../redux';
-import { Redirect } from 'react-router';
+import * as actions from '../../redux/store';
+import { Navigate } from 'react-router';
 import { toast } from 'react-toastify';
 import Moment from 'react-moment';
 import 'moment-timezone';
@@ -433,7 +433,7 @@ const Dashboard = (props) => {
   }
 
   if (props.logout) {
-    return <Redirect push to="/" />;
+    return <Navigate to="/" />;
   }
 
   const userLogout = () => {
@@ -1335,48 +1335,48 @@ const Dashboard = (props) => {
   );
 }
 
-const mapStateToProps = ({ usersReducer, serversReducer, categoriesReducer, chatroomsReducer, invitesReducer, friendsReducer }) => {
+const mapStateToProps = ({ user, server, category, chatroom, invite, friend }) => {
   return {
-    error: usersReducer.error,
-    isLoading: usersReducer.isLoading,
-    success: usersReducer.success,
-    logout: usersReducer.logout,
-    user: usersReducer.user,
-    users: usersReducer.users,
-    retrieveUserError: usersReducer.retrieveUserError,
-    retrieveUserSuccess: usersReducer.retrieveUserSuccess,
-    retrieveUpdatedUserError: usersReducer.retrieveUpdatedUserError,
-    retrieveUpdatedUserSuccess: usersReducer.retrieveUpdatedUserSuccess,
-    createServerError: serversReducer.createServerError,
-    createServerSuccess: serversReducer.createServerSuccess,
-    findServerSuccess: serversReducer.findServerSuccess,
-    serverUserList: serversReducer.serverUserList,
-    serverUserBans: serversReducer.serverUserBans,
-    deleteServerError: serversReducer.deleteServerError,
-    deleteServerSuccess: serversReducer.deleteServerSuccess,
-    updateRoleSuccess: serversReducer.updateRoleSuccess,
-    updateRoleError: serversReducer.updateRoleError,
-    unbanUserSuccess: serversReducer.unbanUserSuccess,
-    findBansSuccess: serversReducer.findBansSuccess,
-    toggleServerError: serversReducer.toggleServerError,
-    toggleServerSuccess: serversReducer.toggleServerSuccess,
-    categoryList: categoriesReducer.categoryList,
-    findCategorySuccess: categoriesReducer.findCategorySuccess,
-    chatroomList: chatroomsReducer.chatroomList,
-    chatroomSuccess: chatroomsReducer.success,
-    chatroomError: chatroomsReducer.error,
-    inviteEmailError: invitesReducer.inviteEmailError,
-    inviteEmailSuccess: invitesReducer.inviteEmailSuccess,
-    inviteCode: invitesReducer.inviteCode,
-    verifySuccess: invitesReducer.verifySuccess,
-    verifyError: invitesReducer.verifyError,
-    inviteServersList: invitesReducer.inviteServersList,
-    findInvitesSuccess: invitesReducer.findInvitesSuccess,
-    findInvitesError: invitesReducer.findInvitesError,
-    createFriendSuccess: friendsReducer.createFriendSuccess,
-    deleteFriendSuccess: friendsReducer.deleteFriendSuccess,
-    findFriendsSuccess: friendsReducer.findFriendsSuccess,
-    friendsList: friendsReducer.friendsList
+    error: user.error,
+    isLoading: user.isLoading,
+    success: user.success,
+    logout: user.logout,
+    user: user.user,
+    users: user.users,
+    retrieveUserError: user.retrieveUserError,
+    retrieveUserSuccess: user.retrieveUserSuccess,
+    retrieveUpdatedUserError: user.retrieveUpdatedUserError,
+    retrieveUpdatedUserSuccess: user.retrieveUpdatedUserSuccess,
+    createServerError: server.createServerError,
+    createServerSuccess: server.createServerSuccess,
+    findServerSuccess: server.findServerSuccess,
+    serverUserList: server.serverUserList,
+    serverUserBans: server.serverUserBans,
+    deleteServerError: server.deleteServerError,
+    deleteServerSuccess: server.deleteServerSuccess,
+    updateRoleSuccess: server.updateRoleSuccess,
+    updateRoleError: server.updateRoleError,
+    unbanUserSuccess: server.unbanUserSuccess,
+    findBansSuccess: server.findBansSuccess,
+    toggleServerError: server.toggleServerError,
+    toggleServerSuccess: server.toggleServerSuccess,
+    categoryList: category.categoryList,
+    findCategorySuccess: category.findCategorySuccess,
+    chatroomList: chatroom.chatroomList,
+    chatroomSuccess: chatroom.success,
+    chatroomError: chatroom.error,
+    inviteEmailError: invite.inviteEmailError,
+    inviteEmailSuccess: invite.inviteEmailSuccess,
+    inviteCode: invite.inviteCode,
+    verifySuccess: invite.verifySuccess,
+    verifyError: invite.verifyError,
+    inviteServersList: invite.inviteServersList,
+    findInvitesSuccess: invite.findInvitesSuccess,
+    findInvitesError: invite.findInvitesError,
+    createFriendSuccess: friend.createFriendSuccess,
+    deleteFriendSuccess: friend.deleteFriendSuccess,
+    findFriendsSuccess: friend.findFriendsSuccess,
+    friendsList: friend.friendsList
   };
 }
 

@@ -16,7 +16,7 @@ import {
 } from '../../types';
 
 // Initial States
-export const initialState = {
+const initialState = {
   isLoading: false,
   error: false,
   success: false,
@@ -24,7 +24,7 @@ export const initialState = {
 };
 
 // Reducers
-export default (state = initialState, action) => {
+const friendReducer = (state = initialState, action) => {
   switch (action.type) {
     case CREATING_FRIEND:
       return {
@@ -119,3 +119,5 @@ export function resetFriendValues() {
     dispatch({ type: RESET_FRIEND_VALUES });
   };
 }
+
+export default friendReducer;

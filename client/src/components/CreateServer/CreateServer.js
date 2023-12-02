@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import useOnClickOutside from '../../utils/useOnClickOutside';
 import { connect } from 'react-redux';
-import * as actions from '../../redux';
+import * as actions from '../../redux/store';
 import usregion from '../../assets/images/usregion.png';
 import europe from '../../assets/images/europe.png';
 import russia from '../../assets/images/russia.png';
@@ -121,11 +121,11 @@ const CreateServer = (props) => {
   );
 }
 
-function mapStateToProps({ serversReducer }) {
+function mapStateToProps({ server }) {
   return {
-    createServerError: serversReducer.createServerError,
-    isLoading: serversReducer.isLoading,
-    createServerSuccess: serversReducer.createServerSuccess
+    createServerError: server.createServerError,
+    isLoading: server.isLoading,
+    createServerSuccess: server.createServerSuccess
   };
 }
 
