@@ -4,32 +4,32 @@
   height: 22rem;
   width: 30rem;
   margin: 0 auto;
-  margin-top: 1rem;
-}
+  margin-top: 1rem; }
+
 .authcontainerlogin > span {
   font-family: Arial, Helvetica, sans-serif;
   color: white;
   font-size: 1.6rem;
   display: block;
   margin-top: 2rem;
-  text-align: center;
-}
+  text-align: center; }
+
 .authcontainerlogin__section {
   display: flex;
   flex-direction: column;
-  padding: 1rem 3rem 0rem 3rem;
-}
+  padding: 1rem 3rem 0rem 3rem; }
+
 .authcontainerlogin__section > span {
   display: flex;
   justify-self: flex-start;
   color: white;
   margin-bottom: 0.1rem;
   font-size: 1rem;
-  font-family: Arial, Helvetica, sans-serif;
-}
+  font-family: Arial, Helvetica, sans-serif; }
+
 .authcontainerlogin__section > span:first-child {
-  margin-top: 0.5rem;
-}
+  margin-top: 0.5rem; }
+
 .authcontainerlogin__section > input {
   margin-bottom: 1rem;
   background-color: rgba(62, 59, 59, 0.666);
@@ -38,8 +38,8 @@
   padding-left: 0.5rem;
   color: white;
   font-size: 1.2rem;
-  outline: none;
-}
+  outline: none; }
+
 .authcontainerlogin__section > input:last-child {
   margin-bottom: 0rem;
   background-color: rgba(62, 59, 59, 0.666);
@@ -47,8 +47,8 @@
   height: 2rem;
   padding-left: 0.5rem;
   color: white;
-  font-size: 1.2rem;
-}
+  font-size: 1.2rem; }
+
 .authcontainerlogin__section > button {
   background-color: #3D59AB;
   border: none;
@@ -57,8 +57,8 @@
   font-size: 1.2rem;
   margin-bottom: 1rem;
   margin-top: 1rem;
-  cursor: pointer;
-}
+  cursor: pointer; }
+
 .authcontainerlogin__section > p {
   cursor: pointer;
   display: flex;
@@ -67,11 +67,10 @@
   color: white;
   margin-bottom: 0.1rem;
   font-size: 1rem;
-  font-family: Arial, Helvetica, sans-serif;
-}
+  font-family: Arial, Helvetica, sans-serif; }
+
 .authcontainerlogin__section > a {
-  text-decoration: none;
-}
+  text-decoration: none; }
 
 .register {
   display: flex;
@@ -82,7 +81,4 @@
   color: white;
   margin-bottom: 0.1rem;
   font-size: 1rem;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-/*# sourceMappingURL=Login.css.map */
+  font-family: Arial, Helvetica, sans-serif; }

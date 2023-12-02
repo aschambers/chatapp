@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../redux';
+import * as actions from '../../redux/store';
 import { ROOT_URL } from '../../config/networkSettings';
 import io from 'socket.io-client';
 import Moment from 'react-moment';
@@ -741,13 +741,13 @@ class Chatroom extends Component {
   }
 }
 
-function mapStateToProps({ usersReducer }) {
+function mapStateToProps({ user }) {
   return {
-    error: usersReducer.error,
-    isLoading: usersReducer.isLoading,
-    success: usersReducer.success,
-    user: usersReducer.user,
-    users: usersReducer.users
+    error: user.error,
+    isLoading: user.isLoading,
+    success: user.success,
+    user: user.user,
+    users: user.users
   };
 }
 

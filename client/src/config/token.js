@@ -1,5 +1,5 @@
 import secret from '../config/secret';
-import jwt from 'jsonwebtoken';
+const jwt = require('jsonwebtoken');
 
 const token = jwt.sign({ website: 'chattersanctum' }, secret);
 export const config = {

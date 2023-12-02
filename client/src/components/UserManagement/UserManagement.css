@@ -6,23 +6,23 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 10;
-  background-color: rgb(40, 40, 40);
+  background-color: #282828;
   border-radius: 5px;
   width: 32rem;
-  height: 18rem;
-}
+  height: 18rem; }
+
 .usermanagementroles > h1 {
   text-align: center;
   color: white;
   font-size: 1.4rem;
-  margin-top: 2rem;
-}
+  margin-top: 2rem; }
+
 .usermanagementroles > p {
   margin-left: 3rem;
   color: white;
   margin-top: 2rem;
-  font-size: 1.2rem;
-}
+  font-size: 1.2rem; }
+
 .usermanagementroles > select {
   margin-left: 18rem;
   position: absolute;
@@ -44,12 +44,12 @@
   height: 2rem;
   padding-left: 1rem;
   font-family: Antonio-Regular;
-  font-size: 1.2rem;
-}
+  font-size: 1.2rem; }
+
 .usermanagementroles-activity {
   display: flex;
-  flex-direction: row;
-}
+  flex-direction: row; }
+
 .usermanagementroles-cancel {
   cursor: pointer;
   outline: none;
@@ -62,13 +62,13 @@
   width: 5rem;
   height: 2.1rem;
   margin-top: 5rem;
-  margin-left: 18rem;
-}
+  margin-left: 18rem; }
+
 .usermanagementroles-save {
   cursor: pointer;
   outline: none;
   border: none;
-  background-color: rgb(114, 114, 203);
+  background-color: #7272cb;
   color: white;
   font-size: 1rem;
   box-sizing: border-box;
@@ -76,7 +76,4 @@
   width: 5rem;
   height: 2rem;
   margin-top: 5rem;
-  margin-left: 1rem;
-}
-
-/*# sourceMappingURL=UserManagement.css.map */
+  margin-left: 1rem; }
