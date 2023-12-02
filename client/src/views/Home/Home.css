@@ -1,4 +1,8 @@
 .homepage {
-  height: 100rem;
+  height: 100vh;
   min-width: 31rem;
   background-color: rgba(14, 14, 14, 0.893); }
+
+@media (max-width: 1000px) {
+  .homepage {
+    height: 100rem; } }
