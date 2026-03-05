@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ROOT_URL } from '../../../config/networkSettings';
-import { config, authToken } from '../../../config/token';
+import { config, getAuthToken } from '../../../config/token';
 
 import {
   CREATING_SERVER,
@@ -139,7 +139,7 @@ export const serverCreate = params => async dispatch => {
       headers: {
         'Content-Type': 'multipart/form-data',
         'Accept': 'application/json',
-        'Authorization': authToken
+        'Authorization': getAuthToken()
       }
     }
     const response = await axios.post(`${ROOT_URL}/api/v1/serverCreate`, params, headers);

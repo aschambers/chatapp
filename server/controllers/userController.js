@@ -26,39 +26,46 @@ module.exports = {
    * @returns {object} user object
    */
   userSignup: async(req, res) => {
-    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+    try {
+      // if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
 
-    const { username, password, email } = req.body;
+      const { username, password, email } = req.body;
 
-    if (!username && !password && !email) {
-      return res.status(400).send({'error':'Missing required fields'});
+      if (!username && !password && !email) {
+        return res.status(400).send({'error':'Missing required fields'});
+      }
+
+      const token = crypto.randomBytes(64).toString('hex');
+      req.body.token = token;
+
+      // check if username or email already exist
+      const user = await UserModel.findOne({ where: {
+        [Op.or]: [{username: username}, {email: email}]
+      }});
+      if (user) return res.status(422).json({'error':'User exists'});
+
+      req.body.isVerified = false;
+
+      const result = await UserModel.create(req.body);
+      if (!result) return res.status(422).send({'error':'Unknown error creating user'});
+
+      try {
+        const msg = {
+          to: req.body.email,
+          from: keys.sendgrid_from || 'verification@chatter.com',
+          subject: 'Verify your account',
+          html: 'Please click this link to verify your account. <br>' + `${keys.email_link}/Verification?token=${token}&email=${email}`
+        };
+        await sgMail.send(msg);
+      } catch(emailErr) {
+        console.error('Email send failed:', emailErr.message);
+      }
+
+      res.status(200).send(result);
+    } catch(err) {
+      console.error('Signup error:', err.message);
+      res.status(500).send({'error':'Signup failed'});
     }
-
-    const token = crypto.randomBytes(64).toString('hex');
-    req.body.token = token;
-
-    // check if username or email already exist
-    const user = await UserModel.findOne({ where: {
-      [Op.or]: [{username: username}, {email: email}]
-    }});
-    if (user) return res.status(422).json({'error':'User exists'});
-
-    req.body.isVerified = false;
-
-    const result = await UserModel.create(req.body);
-    if (!result) return res.status(422).send({'error':'Unknown error creating user'});
-
-    const msg = {
-      to: req.body.email,
-      from: 'verification@chatter.com',
-      subject: 'Verify your account',
-      html: 'Please click this link to verify your account. <br>' + `${keys.email_link}/Verification?token=${token}&email=${email}`
-    };
-    const sentEmail = await sgMail.send(msg);
-
-    if (!sentEmail) return res.status(422).send({'error':'Unknown error creating user'});
-
-    res.status(200).send(result);
   },
 
   /**

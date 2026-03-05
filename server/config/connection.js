@@ -12,7 +12,6 @@ const sequelize = new Sequelize(keys.database_name, keys.database_username, keys
     aquire: 60000
   },
   dialectOptions: {
-    socketPath: keys.connection,
     ssl: keys.ssl,
     sslfactory: keys.sslfactory
   }
