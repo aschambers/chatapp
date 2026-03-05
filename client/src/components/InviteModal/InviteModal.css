@@ -50,7 +50,8 @@
   height: 1.5rem;
   cursor: pointer;
   margin-top: 1.5rem;
-  margin-left: 29rem; }
+  margin-left: 29rem;
+  filter: brightness(0) invert(1); }
 
 .personal-invite {
   width: 64%;
@@ -76,7 +77,8 @@
   width: 16rem;
   color: white;
   margin-left: 8rem;
-  margin-top: 1rem; }
+  margin-top: 1rem;
+  filter: brightness(0) invert(1); }
 
 .changeinvite {
   margin-bottom: 2rem;

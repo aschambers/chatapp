@@ -14,6 +14,7 @@ const Login = (props) => {
   const [password, setPassword] = useState('');
   const [notVerified, setNotVerified] = useState(false);
   const [isRedirect, setIsRedirect] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [resetModal, setResetModal] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
 
@@ -37,32 +38,25 @@ const Login = (props) => {
       toast.success('Success, please check your email for instructions!', { position: toast.POSITION.BOTTOM_CENTER });
     }
 
+    if (props.success && !isLoggedIn) {
+      setIsLoggedIn(true);
+    }
+
     if (props.notVerified && !notVerified) {
       setNotVerified(true);
+      toast.dismiss();
+      toast.error('Your account has not been verified!', { position: 'bottom-center' });
+      setTimeout(() => setIsRedirect(true), 3000);
     }
 
     dispatch(resetUserValues());
-  }, [props, notVerified, dispatch]);
-
-  const closeToast = () => {
-    setIsRedirect(true);
-  }
-
-  if (notVerified && !isRedirect) {
-    toast.error('Your account has not been verified!', {
-      position: 'bottom-center'
-    });
-
-    setTimeout(() => {
-      closeToast();
-    }, 3000);
-  }
+  }, [props, notVerified, dispatch, isLoggedIn]);
 
   if (isRedirect) {
     return <Navigate to="/Verification" />;
   }
 
-  if (props.success) {
+  if (isLoggedIn) {
     return <Navigate to="/Dashboard" />;
   }
 

@@ -7,13 +7,13 @@ import { Navigate, useLocation } from 'react-router';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/store';
 import Navigation from '../../components/Navigation/Navigation';
+import chatterapp from '../../assets/images/chatterapp.png';
 import './Verification.css';
 
 const Verification = (props) => {
   const location = useLocation();
   const [emailAddress, setEmailAddress] = useState("");
   const [isVerified, setIsVerified] = useState(false);
-  const [notVerified, setNotVerified] = useState(false);
   const [alreadyVerified, setAlreadyVerified] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isRedirect, setIsRedirect] = useState(false);
@@ -21,52 +21,67 @@ const Verification = (props) => {
   const email = params.email;
   const token = params.token;
 
-  useEffect(() => {
-    if (email && token && !isLoading && !notVerified) {
-      setIsLoading(true);
-      props.userVerification({
-        email: email,
-        token: token
-      });
-    }
+  const verificationCalled = React.useRef(false);
 
+  useEffect(() => {
+    if (email && token && !verificationCalled.current) {
+      verificationCalled.current = true;
+      setIsLoading(true);
+      props.userVerification({ email, token });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [email, token]);
+
+  useEffect(() => {
     if (props.resultEmail) {
       toast.success("Please check your email for a verification link!", {
         position: toast.POSITION.BOTTOM_CENTER
       });
-      setTimeout(() => {
-        setIsRedirect(true);
-      }, 3000);
+      setTimeout(() => setIsRedirect(true), 3000);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.resultEmail]);
 
+  useEffect(() => {
     if (props.noEmail) {
       toast.error("Email Address does not exist.", {
         position: toast.POSITION.BOTTOM_CENTER
       });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.noEmail]);
 
-    if (props.success && !notVerified) {
+  useEffect(() => {
+    if (props.success) {
+      toast.success("Your account has been verified!", {
+        position: toast.POSITION.BOTTOM_CENTER
+      });
       setIsVerified(true);
       setIsLoading(false);
+      setTimeout(() => setIsRedirect(true), 3000);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.success]);
 
-    if (props.already && !notVerified) {
+  useEffect(() => {
+    if (props.already) {
+      toast.success("Your account has already been verified!", {
+        position: toast.POSITION.BOTTOM_CENTER
+      });
       setAlreadyVerified(true);
       setIsLoading(false);
+      setTimeout(() => setIsRedirect(true), 3000);
     }
-    if (props.error && !notVerified) {
-      setIsLoading(false);
-      setNotVerified(true);
-      if (email) {
-        setEmailAddress(email);
-      }
-    }
-    // props.resetUserValues();
-  }, [props, email, token, isLoading, notVerified]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.already]);
 
-  const closeToast = () => {
-    setIsRedirect(true);
-  }
+  useEffect(() => {
+    if (props.error) {
+      setIsLoading(false);
+      if (email) setEmailAddress(email);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.error]);
 
   const sendEmail = () => {
     if (!emailAddress) {
@@ -78,23 +93,12 @@ const Verification = (props) => {
     }
   }
 
-  if (alreadyVerified && !isRedirect) {
+  if ((isVerified || alreadyVerified) && !isRedirect) {
     return (
-      toast.success("Your account has already been verified!", {
-        position: toast.POSITION.BOTTOM_CENTER
-      }, {
-        onClose: closeToast()
-      })
-    );
-  }
-
-  if (isVerified && !isRedirect) {
-    return (
-      toast.success("Your account has been verified!", {
-        position: toast.POSITION.BOTTOM_CENTER
-      }, {
-        onClose: closeToast()
-      })
+      <div className="verification-success">
+        <img src={chatterapp} alt="chatter-logo" className="verification-success-logo" />
+        <ToastMessage />
+      </div>
     );
   }
 
@@ -104,7 +108,10 @@ const Verification = (props) => {
 
   if (isLoading) {
     return (
-      <Loading />
+      <div>
+        <Loading />
+        <ToastMessage />
+      </div>
     );
   }
 

@@ -15,8 +15,6 @@ const Loading = () => {
     <div className='sweet-loading'>
       <FadeLoader
         css={override}
-        heightUnit={"px"}
-        widthUnit={"px"}
         height={15}
         width={5}
         radius={2}
