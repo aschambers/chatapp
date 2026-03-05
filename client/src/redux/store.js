@@ -10,12 +10,19 @@ import userReducer from './modules/users/users';
 const store = configureStore({
   reducer: {
     category: categoryReducer,
-    charoom: chatroomReducer,
+    chatroom: chatroomReducer,
     friend: friendReducer,
     invite: inviteReducer,
     server: serverReducer,
     user: userReducer
   }
 });
+
+export * from './modules/categories/categories';
+export * from './modules/chatrooms/chatrooms';
+export * from './modules/friends/friends';
+export * from './modules/invites/invites';
+export * from './modules/servers/servers';
+export * from './modules/users/users';
 
 export default store;

@@ -3,20 +3,21 @@ import queryString from 'query-string';
 import Loading from '../../components/Loading/Loading';
 import ToastMessage from '../../components/ToastMessage/ToastMessage';
 import { toast } from 'react-toastify';
-import { Navigate } from 'react-router';
+import { Navigate, useLocation } from 'react-router';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/store';
 import Navigation from '../../components/Navigation/Navigation';
 import './Verification.css';
 
 const Verification = (props) => {
+  const location = useLocation();
   const [emailAddress, setEmailAddress] = useState("");
   const [isVerified, setIsVerified] = useState(false);
   const [notVerified, setNotVerified] = useState(false);
   const [alreadyVerified, setAlreadyVerified] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isRedirect, setIsRedirect] = useState(false);
-  const params = queryString.parse(props.location.search);
+  const params = queryString.parse(location.search);
   const email = params.email;
   const token = params.token;
 

@@ -229,7 +229,7 @@ const userReducer = (state = initialState, action) => {
 export const userSignup = params => async dispatch => {
   dispatch({ type: SIGNING_UP_USER });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/userSignup`, params, config);
+    const response = await axios.post(`${ROOT_URL}/api/v1/userSignup`, params);
     if (response.data) {
       dispatch({ type: SIGNUP_USER_SUCCESS });
     } else {
@@ -243,7 +243,7 @@ export const userSignup = params => async dispatch => {
 export const userVerification = params => async dispatch => {
   dispatch({ type: VERIFYING_USER });
   try {
-    const response = await axios.put(`${ROOT_URL}/api/v1/userVerification`, params, config);
+    const response = await axios.put(`${ROOT_URL}/api/v1/userVerification`, params);
     if (response.data.success === "Account has already been verified") {
       dispatch({ type: ALREADY_VERIFIED });
     } else if (response.data.success === "Success verifying account") {
@@ -259,7 +259,7 @@ export const userVerification = params => async dispatch => {
 export const userLogin = params => async dispatch => {
   dispatch({ type: LOGGING_IN_USER });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/userLogin`, params, config);
+    const response = await axios.post(`${ROOT_URL}/api/v1/userLogin`, params);
     if (response.data) {
       const decoded = decodeToken(response.data);
       if (decoded) {

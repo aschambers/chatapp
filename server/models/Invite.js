@@ -38,9 +38,8 @@ const Invite = sequelize.define('invites', {
     type: Sequelize.INTEGER,
     allowNull: false,
     references: {
-      type: Sequelize.INTEGER,
-      references: 'servers',
-      referencesKey: 'id'
+      model: 'servers',
+      key: 'id'
     }
   }
 });
