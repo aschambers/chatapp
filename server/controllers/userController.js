@@ -5,8 +5,8 @@ const FriendModel = require('../models/Friend');
 const Sequelize = require('sequelize');
 const bcrypt = require('bcryptjs');
 const keys = require('../config/keys');
-const jwt = require('jsonwebtoken');
-const cloudinary = require('cloudinary');
+const { SignJWT } = require('jose');
+const cloudinary = require('cloudinary').v2;
 const sgMail = require('@sendgrid/mail');
 const crypto = require('crypto');
 const moment = require('moment');
@@ -139,7 +139,11 @@ module.exports = {
     const authentication = bcrypt.compareSync(password, loginUser.password);
     if (!authentication) return res.status(422).send({'error':'Invalid password'});
 
-    const token = jwt.sign({ loginUser }, keys.secret);
+    const jwtSecret = new TextEncoder().encode(keys.secret);
+    const token = await new SignJWT({ loginUser })
+      .setProtectedHeader({ alg: 'HS256' })
+      .setExpirationTime('24h')
+      .sign(jwtSecret);
     res.status(200).send(token);
   },
 
@@ -240,12 +244,12 @@ module.exports = {
     const originalUsername = user.username;
 
     if (imageUrl && req.files && req.files.mainFile) {
-      if (req.files.mainFile[0].mimetype !== 'image/jpeg' || req.files.mainFile[0].mimetype !== 'image/png' || req.files.mainFile[0].mimetype !== 'image/gif') {
+      if (req.files.mainFile.mimetype !== 'image/jpeg' || req.files.mainFile.mimetype !== 'image/png' || req.files.mainFile.mimetype !== 'image/gif') {
         return res.status(422).send({'error':'User update failed'});
       }
 
-      const encoded = req.files.mainFile[0].data.toString('base64');
-      await cloudinary.uploader.upload('data:image/png;base64,' + encoded, async(result, err) => {
+      const encoded = req.files.mainFile.data.toString('base64');
+      await cloudinary.uploader.upload('data:image/png;base64,' + encoded, async(_error, result) => {
         const newImage = result && result.url ? result.url.replace(/^http:\/\//i, 'https://') : null;
 
         const updateServer = await ServerModel.findAll();
@@ -371,13 +375,13 @@ module.exports = {
     const user = await UserModel.findByPk(id);
     if (!user) return res.status(422).send({'error':'User not found'});
 
-    if (req.files.myFile[0].mimetype !== 'image/jpeg' || req.files.myFile[0].mimetype !== 'image/png' || req.files.myFile[0].mimetype !== 'image/gif') {
+    if (req.files.myFile.mimetype !== 'image/jpeg' || req.files.myFile.mimetype !== 'image/png' || req.files.myFile.mimetype !== 'image/gif') {
       res.status(422).send({'error':'Error reading file'});
     }
 
-    const encoded = req.files.myFile[0].data.toString('base64');
+    const encoded = req.files.myFile.data.toString('base64');
 
-    cloudinary.uploader.upload('data:image/png;base64,' + encoded, async(result, err) => {
+    cloudinary.uploader.upload('data:image/png;base64,' + encoded, async(_error, result) => {
       if (!result) return res.status(422).send({'error':'Uploading file failed'});
 
       user.imageUrl = result.url.replace(/^http:\/\//i, 'https://');

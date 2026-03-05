@@ -1,14 +1,14 @@
 const express = require('express');
 const helmet = require('helmet');
 const path = require('path');
-const busboyBodyParser = require('busboy-body-parser');
+const fileUpload = require('express-fileupload');
 
 // express setup
 const app = express();
 const auth = require('./server/middleware/auth');
 app.use(helmet());
 app.use(auth);
-app.use(busboyBodyParser({ limit: '50mb', multi: true }));
+app.use(fileUpload({ limits: { fileSize: 50 * 1024 * 1024 } }));
 app.use(express.json());
 
 // cors

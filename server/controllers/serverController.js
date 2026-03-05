@@ -2,7 +2,7 @@ const ServerModel = require('../models/Server');
 const UserModel = require('../models/User');
 const ChatroomModel = require('../models/Chatroom');
 const keys = require('../config/keys');
-const cloudinary = require('cloudinary');
+const cloudinary = require('cloudinary').v2;
 
 cloudinary.config({
   cloud_name: keys.cloudinary_name,
@@ -32,8 +32,8 @@ module.exports = {
 
     // Step 2: Upload image to cloudinary and set imageUrl to uploaded image.
     if (req.files.imageUrl) {
-      if (req.files.imageUrl[0] && req.files.imageUrl[0].mimetype === 'image/jpeg' || req.files.imageUrl[0].mimetype === 'image/png' || req.files.imageUrl[0].mimetype === 'image/gif') {
-        const encoded = req.files.imageUrl[0].data.toString('base64');
+      if (req.files.imageUrl && req.files.imageUrl.mimetype === 'image/jpeg' || req.files.imageUrl.mimetype === 'image/png' || req.files.imageUrl.mimetype === 'image/gif') {
+        const encoded = req.files.imageUrl.data.toString('base64');
         const result = await cloudinary.uploader.upload('data:image/png;base64,' + encoded);
         if (!result) return res.status(422).send({'error':'Failed to upload image URL'});
         req.body.imageUrl = result.url.replace(/^http:\/\//i, 'https://');
