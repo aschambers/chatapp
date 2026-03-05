@@ -1,14 +1,18 @@
 const axios = require('axios');
 const keys = require('../config/keys');
 const SERVER_URL = keys.server_url;
-const jwt = require('jsonwebtoken');
-const token = jwt.sign({ website: 'chattersanctum' }, keys.secret);
-const config = {
-  headers: { 'Authorization': 'bearer ' + token }
-}
+const { SignJWT } = require('jose');
 
 module.exports = async(server) => {
-  const io = require('socket.io')(server);
+  const jwtSecret = new TextEncoder().encode(keys.secret);
+  const token = await new SignJWT({ website: 'chattersanctum' })
+    .setProtectedHeader({ alg: 'HS256' })
+    .sign(jwtSecret);
+  const config = {
+    headers: { 'Authorization': 'bearer ' + token }
+  };
+
+  const io = require('socket.io')(server, { cors: { origin: '*' } });
 
   io.on('connection', (socket) => {
     socket.on('SEND_ICE_CANDIDATE', async(data) => {
