@@ -1,11 +1,7 @@
-import secret from '../config/secret';
-const jwt = require('jsonwebtoken');
-
-const token = jwt.sign({ website: 'chattersanctum' }, secret);
 export const config = {
-  headers: {
-    'Authorization': 'bearer ' + token 
+  get headers() {
+    return { 'Authorization': 'bearer ' + localStorage.getItem('token') };
   }
-}
+};
 
-export const authToken = 'bearer ' + token;
+export const getAuthToken = () => 'bearer ' + localStorage.getItem('token');
