@@ -19,8 +19,6 @@ module.exports = async(req, res, next) => {
     req.authorizedRequest = true;
     next();
   } catch (error) {
-    return res.status(401).json({
-      message: 'Auth failed'
-    });
+    return next();
   }
 }

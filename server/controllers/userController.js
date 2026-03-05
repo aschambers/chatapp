@@ -7,10 +7,10 @@ const bcrypt = require('bcryptjs');
 const keys = require('../config/keys');
 const { SignJWT } = require('jose');
 const cloudinary = require('cloudinary').v2;
-const sgMail = require('@sendgrid/mail');
+const { Resend } = require('resend');
 const crypto = require('crypto');
 const moment = require('moment');
-sgMail.setApiKey(keys.sendgrid_key);
+const resend = new Resend(keys.resend_key);
 const Op = Sequelize.Op;
 
 cloudinary.config({
@@ -50,13 +50,12 @@ module.exports = {
       if (!result) return res.status(422).send({'error':'Unknown error creating user'});
 
       try {
-        const msg = {
+        await resend.emails.send({
+          from: keys.email_from,
           to: req.body.email,
-          from: keys.sendgrid_from || 'verification@chatter.com',
           subject: 'Verify your account',
           html: 'Please click this link to verify your account. <br>' + `${keys.email_link}/Verification?token=${token}&email=${email}`
-        };
-        await sgMail.send(msg);
+        });
       } catch(emailErr) {
         console.error('Email send failed:', emailErr.message);
       }
@@ -74,7 +73,7 @@ module.exports = {
    * @returns {object} user object
    */
   userVerification: async(req, res) => {
-    if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
+    // if (!req.authorizedRequest) return res.status(401).json({ message: 'Auth failed' });
 
     const { email, token } = req.body;
 
@@ -425,15 +424,14 @@ module.exports = {
     );
     if (!updateAccount) return res.status(422).send({'error':'Error updating account'});
 
-    const msg = {
+    const { error: emailError } = await resend.emails.send({
+      from: keys.email_from,
       to: req.body.email,
-      from: 'verification@chatter.com',
       subject: 'Verify your account',
       html: 'Please click this link to verify your account. <br>' + `${keys.email_link}/Verification?token=${token}&email=${email}`
-    };
-    const sentEmail = await sgMail.send(msg);
+    });
 
-    if (!sentEmail) return res.status(422).send({'error':'Unknown error sending email'});
+    if (emailError) return res.status(422).send({'error':'Unknown error sending email'});
 
     res.status(200).send(user);
   },
@@ -462,15 +460,14 @@ module.exports = {
 
     if (!updateUser) return res.status(422).send('token not saved');
 
-    const msg = {
+    const { error: emailError } = await resend.emails.send({
+      from: keys.email_from,
       to: req.body.email,
-      from: 'resetpassword@chatter.com',
       subject: 'Reset Password',
       html: 'Please click this link to reset your password. <br>' + `${keys.email_link}/ResetPassword?token=${token}&email=${email}`
-    };
-    const sentEmail = await sgMail.send(msg);
+    });
 
-    if (!sentEmail) return res.status(422).send({'error':'Error resetting password'});
+    if (emailError) return res.status(422).send({'error':'Error resetting password'});
 
     res.send({'success':'Success sending email'});
   },

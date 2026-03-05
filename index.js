@@ -6,10 +6,6 @@ const fileUpload = require('express-fileupload');
 // express setup
 const app = express();
 const auth = require('./server/middleware/auth');
-app.use(helmet());
-app.use(auth);
-app.use(fileUpload({ limits: { fileSize: 50 * 1024 * 1024 } }));
-app.use(express.json());
 
 // cors
 const cors = require('cors');
@@ -28,6 +24,11 @@ const corsOptions = {
 }
 app.use(cors(corsOptions));
 app.options('*', cors());
+
+app.use(helmet());
+app.use(auth);
+app.use(fileUpload({ limits: { fileSize: 50 * 1024 * 1024 } }));
+app.use(express.json());
 
 // routes
 require('./server/routes/userRoutes')(app);
