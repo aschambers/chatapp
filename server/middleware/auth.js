@@ -1,5 +1,5 @@
 const keys = require('../config/keys');
-const jwt = require('jsonwebtoken');
+const { jwtVerify } = require('jose');
 
 module.exports = async(req, res, next) => {
   try {
@@ -14,10 +14,9 @@ module.exports = async(req, res, next) => {
       });
     }
 
-    // verify and return decoded value
-    await jwt.verify(token, keys.secret);
+    const secret = new TextEncoder().encode(keys.secret);
+    await jwtVerify(token, secret);
     req.authorizedRequest = true;
-    //successfully authenticated user
     next();
   } catch (error) {
     return res.status(401).json({

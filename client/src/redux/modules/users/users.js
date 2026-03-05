@@ -1,8 +1,7 @@
 import axios from 'axios';
-import jwt from 'jsonwebtoken';
-import secret from '../../../config/secret';
+import { decodeToken } from 'react-jwt';
 import { ROOT_URL } from '../../../config/networkSettings';
-import { config, authToken } from '../../../config/token';
+import { config, getAuthToken } from '../../../config/token';
 
 import {
   SIGNING_UP_USER,
@@ -262,15 +261,14 @@ export const userLogin = params => async dispatch => {
   try {
     const response = await axios.post(`${ROOT_URL}/api/v1/userLogin`, params, config);
     if (response.data) {
-      jwt.verify(response.data, secret, function(err, decoded) {
-        if (!err) {
-          localStorage.setItem('user', JSON.stringify(decoded.loginUser));
-          dispatch({ type: LOGIN_USER_SUCCESS, payload: decoded.loginUser });
-        } else {
-          dispatch({ type: LOGIN_USER_FAIL });
-        }
-      });
-      dispatch({ type: LOGIN_USER_SUCCESS });
+      const decoded = decodeToken(response.data);
+      if (decoded) {
+        localStorage.setItem('token', response.data);
+        localStorage.setItem('user', JSON.stringify(decoded.loginUser));
+        dispatch({ type: LOGIN_USER_SUCCESS, payload: decoded.loginUser });
+      } else {
+        dispatch({ type: LOGIN_USER_FAIL });
+      }
     } else {
       dispatch({ type: LOGIN_USER_FAIL });
     }
@@ -288,6 +286,7 @@ export const userLogout = params => async dispatch => {
   try {
     const response = await axios.post(`${ROOT_URL}/api/v1/userLogout`, params, config);
     if (response.data) {
+      localStorage.removeItem('token');
       localStorage.removeItem('user');
       dispatch({ type: LOGOUT_USER_SUCCESS });
     } else {
@@ -350,7 +349,7 @@ export const userUpdate = params => async (dispatch) => {
       headers: {
         'Content-Type': 'multipart/form-data',
         'Accept': 'application/json',
-        'Authorization': authToken
+        'Authorization': getAuthToken()
       }
     }
     const response = await axios.put(`${ROOT_URL}/api/v1/userUpdate`, params, headers);
@@ -386,7 +385,7 @@ export const uploadProfileImage = params => async dispatch => {
       headers: {
         'Content-Type': 'multipart/form-data',
         'Accept': 'application/json',
-        'Authorization': authToken
+        'Authorization': getAuthToken()
       }
     }
     const response = await axios.put(`${ROOT_URL}/api/v1/uploadProfileImage`, params, headers);
