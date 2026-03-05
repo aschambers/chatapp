@@ -34,27 +34,24 @@ const Message = sequelize.define('messages', {
     type: Sequelize.INTEGER,
     allowNull: false,
     references: {
-      type: Sequelize.INTEGER,
-      references: 'users',
-      referencesKey: 'id'
+      model: 'users',
+      key: 'id'
     }
   },
   chatroomId: {
     type: Sequelize.INTEGER,
     allowNull: true,
     references: {
-      type: Sequelize.INTEGER,
-      references: 'chatrooms',
-      referencesKey: 'id'
+      model: 'chatrooms',
+      key: 'id'
     }
   },
   friendId: {
     type: Sequelize.INTEGER,
     allowNull: true,
     references: {
-      type: Sequelize.INTEGER,
-      references: 'friends',
-      referencesKey: 'id'
+      model: 'friends',
+      key: 'id'
     }
   }
 });

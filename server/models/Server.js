@@ -41,9 +41,8 @@ const Server = sequelize.define('servers', {
     type: Sequelize.INTEGER,
     allowNull: false,
     references: {
-      type: Sequelize.INTEGER,
-      references: 'users',
-      referencesKey: 'id'
+      model: 'users',
+      key: 'id'
     }
   },
   userList: {

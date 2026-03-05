@@ -229,7 +229,7 @@ const userReducer = (state = initialState, action) => {
 export const userSignup = params => async dispatch => {
   dispatch({ type: SIGNING_UP_USER });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/userSignup`, params, config);
+    const response = await axios.post(`${ROOT_URL}/api/v1/userSignup`, params);
     if (response.data) {
       dispatch({ type: SIGNUP_USER_SUCCESS });
     } else {

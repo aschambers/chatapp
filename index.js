@@ -13,9 +13,15 @@ app.use(express.json());
 
 // cors
 const cors = require('cors');
-const whitelist = ['https://chattersanctum.com'];
+const whitelist = ['https://chattersanctum.com', 'http://localhost:3000', 'http://localhost:5001'];
 const corsOptions = {
-  origin: whitelist && whitelist.indexOf(origin) > -1,
+  origin: function(origin, callback) {
+    if (!origin || whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   allowedHeaders: ["Access-Control-Allow-Origin", "Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
   credentials: true
@@ -38,11 +44,14 @@ app.get('/*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
 });
 
-// listen for api requests
-const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, function() {
-  console.log('Server is listening on port: ' + PORT);
-});
+// sync database tables and start server
+const sequelize = require('./server/config/connection');
+require('./server/models/User');
 
-// chatroom
-require('./server/chatroom/chatroom')(server);
+const PORT = process.env.PORT || 5001;
+sequelize.sync().then(() => {
+  const server = app.listen(PORT, function() {
+    console.log('Server is listening on port: ' + PORT);
+  });
+  require('./server/chatroom/chatroom')(server);
+});
