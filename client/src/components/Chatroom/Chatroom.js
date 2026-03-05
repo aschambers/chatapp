@@ -581,7 +581,7 @@ class Chatroom extends Component {
             <img src={emoji} className="emojiselectchatroom" onClick={() => { this.showEmojiPicker(); }} alt="emoji-picker-icon" />
           </div>
         </div>
-        <div className="sidebarright" onClick={() => { this.hideEmojiPicker() }}>
+        <div className="sidebarright" onClick={() => { this.setState({ showEmojiPicker: false }) }}>
           <div className="sidebarright-container">
             <input placeholder="Filter users in server"></input>
           </div>

@@ -83,8 +83,8 @@ const User = sequelize.define('users', {
     allowNull: false
   },
   token: {
-    type: Sequelize.BOOLEAN,
-    allowNull: false
+    type: Sequelize.STRING,
+    allowNull: true
   }
 },
 {

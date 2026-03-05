@@ -23,7 +23,6 @@ const CreateServer = (props) => {
   useEffect(() => {
     if (props.createServerSuccess) {
       props.getUpdatedServerList(true);
-      props.resetServerValues();
     } else if (props.createServerError) {
       props.getUpdatedServerList(false);
       props.resetServerValues();

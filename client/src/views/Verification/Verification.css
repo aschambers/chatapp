@@ -1,3 +1,16 @@
+.verification-success {
+  height: 100vh;
+  background-color: #0e0e0e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.verification-success-logo {
+  opacity: 0.15;
+  width: 300px;
+}
+
 .verification {
   height: 100vh;
   background-color: rgba(14, 14, 14, 0.893);

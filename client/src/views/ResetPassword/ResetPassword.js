@@ -3,7 +3,7 @@ import queryString from 'query-string';
 import Loading from '../../components/Loading/Loading';
 import ToastMessage from '../../components/ToastMessage/ToastMessage';
 import { toast } from 'react-toastify';
-import { Navigate } from 'react-router';
+import { Navigate, useLocation } from 'react-router';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/store';
 import Navigation from '../../components/Navigation/Navigation';
@@ -14,7 +14,8 @@ const ResetPassword = (props) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isRedirect, setIsRedirect] = useState(false);
-  const params = queryString.parse(props.location.search);
+  const location = useLocation();
+  const params = queryString.parse(location.search);
   const email = params.email;
   const token = params.token;
 

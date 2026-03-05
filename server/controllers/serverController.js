@@ -22,7 +22,7 @@ module.exports = {
     const { name, userId, public, region } = req.body;
     req.body.active = true;
 
-    if (!name || !userId || !public || !region) {
+    if (!name || !userId || public == null || !region) {
       return res.status(400).send({'error':'Missing required fields'});
     }
 
@@ -31,7 +31,7 @@ module.exports = {
     if (existingServer) return res.status(400).send({'error':'Server exists'});
 
     // Step 2: Upload image to cloudinary and set imageUrl to uploaded image.
-    if (req.files.imageUrl) {
+    if (req.files && req.files.imageUrl) {
       if (req.files.imageUrl && req.files.imageUrl.mimetype === 'image/jpeg' || req.files.imageUrl.mimetype === 'image/png' || req.files.imageUrl.mimetype === 'image/gif') {
         const encoded = req.files.imageUrl.data.toString('base64');
         const result = await cloudinary.uploader.upload('data:image/png;base64,' + encoded);
@@ -59,12 +59,11 @@ module.exports = {
     });
 
     // Step 6: Update list of servers by userId
-    const serversUpdate = await updateUser.update(
-      { serversList: updateUser.serversList },
-      { where: { id: userId }}
-    );
+    updateUser.changed('serversList', true);
+    const serversUpdate = await updateUser.save();
 
     // Step 7: Add user to new server list
+    if (!newServer.userList) newServer.userList = [];
     newServer.userList.push({
       userId: userId,
       username: updateUser.username,
@@ -74,10 +73,8 @@ module.exports = {
     });
 
     // Step 8: Update list of users in server
-    const userListUpdate = await newServer.update(
-      { userList: newServer.userList },
-      { where:  { id: newServer.id }}
-    );
+    newServer.changed('userList', true);
+    const userListUpdate = await newServer.save();
 
     if (!userListUpdate) return res.status(422).send({'error':'Failed to update user list on server'});
 
@@ -196,7 +193,8 @@ module.exports = {
       }
     }
 
-    const updateAccount = await user.update({ serversList: user.serversList }, { where:  { id: userId } });
+    user.changed('serversList', true);
+    const updateAccount = await user.save();
     if (!updateAccount) return res.status(422).send({'error':'Account update failed'});
 
     res.status(200).send(user.serversList);
@@ -230,10 +228,8 @@ module.exports = {
       username: username
     }
 
-    const result = await updateServer.update(
-      { userList: updateServer.userList },
-      { where: { id: serverId }}
-    );
+    updateServer.changed('userList', true);
+    const result = await updateServer.save();
     if (!result) return res.status(422).send({'error':'Error finding server'});
 
     res.status(200).send(updateServer.userList);
@@ -262,10 +258,8 @@ module.exports = {
 
     updateUser.serversList.splice(userIndex, 1);
 
-    const updateUserSuccess = await updateUser.update(
-      { serversList: updateUser.serversList },
-      { where: { id: userId }}
-    );
+    updateUser.changed('serversList', true);
+    const updateUserSuccess = await updateUser.save();
     if (!updateUserSuccess) return res.status(422).json({'error':'Error saving user'});
 
     // server
@@ -277,10 +271,8 @@ module.exports = {
 
     updateServer.userList.splice(index, 1);
 
-    const updateSuccess = await updateServer.update(
-      { userList: updateServer.userList },
-      { where: { id: serverId }}
-    );
+    updateServer.changed('userList', true);
+    const updateSuccess = await updateServer.save();
 
     if (!updateSuccess) return res.status(422).send({'error':'Error fetching all server users'});
 
@@ -310,10 +302,8 @@ module.exports = {
 
     updateUser.serversList.splice(userIndex, 1);
 
-    const updateUserSuccess = await updateUser.update(
-      { serversList: updateUser.serversList },
-      { where: { id: userId }}
-    );
+    updateUser.changed('serversList', true);
+    const updateUserSuccess = await updateUser.save();
     if (!updateUserSuccess) return res.status(422).json({'error':'Error saving user'});
 
     // server
@@ -335,11 +325,9 @@ module.exports = {
       type: updateUser.type
     });
 
-    const updateSuccess = await updateServer.update(
-      { userList: updateServer.userList,
-        userBans: updateServer.userBans },
-      { where: { id: serverId }}
-    );
+    updateServer.changed('userList', true);
+    updateServer.changed('userBans', true);
+    const updateSuccess = await updateServer.save();
 
     if (!updateSuccess) return res.status(422).send({'error':'Error fetching all server users'});
 
@@ -363,10 +351,8 @@ module.exports = {
 
     updateUser.serversList[serverIndex].active = active;
     
-    const newServerList = await updateUser.update(
-      { serversList: updateUser.serversList },
-      { where: { id: userId }}
-    );
+    updateUser.changed('serversList', true);
+    const newServerList = await updateUser.save();
 
     if (!newServerList) return res.status(422).json({'error':'Error updating user server list'});
 

@@ -27,18 +27,16 @@ const Chatroom = sequelize.define('chatrooms', {
     type: Sequelize.INTEGER,
     allowNull: true,
     references: {
-      type: Sequelize.INTEGER,
-      references: 'categories',
-      referencesKey: 'id'
+      model: 'categories',
+      key: 'id'
     }
   },
   serverId: {
     type: Sequelize.INTEGER,
     allowNull: false,
     references: {
-      type: Sequelize.INTEGER,
-      references: 'categories',
-      referencesKey: 'id'
+      model: 'servers',
+      key: 'id'
     }
   },
   type: {

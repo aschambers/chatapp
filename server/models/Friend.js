@@ -30,18 +30,16 @@ const Friend = sequelize.define('friends', {
     type: Sequelize.INTEGER,
     allowNull: false,
     references: {
-      type: Sequelize.INTEGER,
-      references: 'users',
-      referencesKey: 'id'
+      model: 'users',
+      key: 'id'
     }
   },
   friendId: {
     type: Sequelize.INTEGER,
     allowNull: false,
     references: {
-      type: Sequelize.INTEGER,
-      references: 'users',
-      referencesKey: 'id'
+      model: 'users',
+      key: 'id'
     }
   },
   activeFriend: {
