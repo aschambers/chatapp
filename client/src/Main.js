@@ -13,13 +13,13 @@ const Main = () => (
   <Suspense fallback={<Loading />}>
     <BrowserRouter>
       <Routes>
-        <Route path='/Dashboard' element={<PrivateRoute/>}>
-          <Route path='/Dashboard' element={<Dashboard />}/>
+        <Route path='/dashboard' element={<PrivateRoute/>}>
+          <Route path='/dashboard' element={<Dashboard />}/>
         </Route>
-        <Route path="/Verification" element={<Verification />} />
-        <Route path="/ResetPassword" element={<ResetPassword />} />
-        <Route path="/Login" element={<Home />} />
-        <Route path="/Signup" element={<Home />} />
+        <Route path="/verification" element={<Verification />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/login" element={<Home />} />
+        <Route path="/signup" element={<Home />} />
         <Route path="/" element={<Home />} />
       </Routes>
     </BrowserRouter>

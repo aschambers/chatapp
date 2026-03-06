@@ -30,7 +30,7 @@ const Signup = (props) => {
   }, [props, props.success, props.error]);
 
   if (showSuccess) {
-    return <Navigate to="/Login" />;
+    return <Navigate to="/login" />;
   }
 
   const userSignup = () => {
@@ -70,7 +70,7 @@ const Signup = (props) => {
         <span>Password</span>
         <input type="password" onChange={event => setPassword(event.target.value)} />
         <button onClick={userSignup}>Sign-up</button>
-        <Link to="/Login"><p className="login">Already have an account? Login.</p></Link>
+        <Link to="/login"><p className="login">Already have an account? Login.</p></Link>
       </div>
     </div>
   );

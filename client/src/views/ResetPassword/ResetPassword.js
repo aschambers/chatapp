@@ -43,7 +43,7 @@ const ResetPassword = (props) => {
   }, [props, email, token]);
 
   if (isRedirect) {
-    return <Navigate to="/Login" />;
+    return <Navigate to="/login" />;
   }
 
   if (isLoading) {
