@@ -103,7 +103,7 @@ const Verification = (props) => {
   }
 
   if (isRedirect) {
-    return <Navigate to="/Login" />;
+    return <Navigate to="/login" />;
   }
 
   if (isLoading) {

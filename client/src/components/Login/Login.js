@@ -53,11 +53,11 @@ const Login = (props) => {
   }, [props, notVerified, dispatch, isLoggedIn]);
 
   if (isRedirect) {
-    return <Navigate to="/Verification" />;
+    return <Navigate to="/verification" />;
   }
 
   if (isLoggedIn) {
-    return <Navigate to="/Dashboard" />;
+    return <Navigate to="/dashboard" />;
   }
 
   const userLogin = async() => {
@@ -98,7 +98,7 @@ const Login = (props) => {
         <input onChange={event => setPassword(event.target.value)} value={password} type="password" />
         <p onClick={showForgotPassword}>Forgot your password?</p>
         <button onClick={userLogin}>Login</button>
-        <Link to="/Signup"><p className="register">Need an account? Register.</p></Link>
+        <Link to="/signup"><p className="register">Need an account? Register.</p></Link>
       </div>
 
       {resetModal ?

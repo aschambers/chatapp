@@ -10,7 +10,7 @@ const Home = () => {
   const pathname = route ? (route.pathname || null) : null;
   console.log(pathname);
 
-  if (pathname === "/Signup") {
+  if (pathname === "/signup") {
     console.log('signup??');
     return (
       <div className="App">
@@ -22,7 +22,7 @@ const Home = () => {
         </div>
       </div>
     );
-  } else if (pathname === "/" || pathname === "/Login") {
+  } else if (pathname === "/" || pathname === "/login") {
     console.log('login??');
     return (
       <div className="App">

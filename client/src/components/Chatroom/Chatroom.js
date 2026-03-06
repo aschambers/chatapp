@@ -61,7 +61,8 @@ class Chatroom extends Component {
       remoteConnection: null,
       voiceUsers: [],
       negotiating: false,
-      showEmojiPicker: false
+      showEmojiPicker: false,
+      filterQuery: ""
     }
   }
 
@@ -87,7 +88,7 @@ class Chatroom extends Component {
   async componentDidMount() {
     window.addEventListener('keydown', this.detectEscape);
 
-    this.socket = io(ROOT_URL);
+    this.socket = io(ROOT_URL, { transports: ['websocket'] });
 
     this.socket.on('connect', () => {
       this.setState({ serverUserList: this.props.serverUserList, socketId: this.socket.id, namespace: `${ROOT_URL}/${this.props.serverId}`, room: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`, previousRoom: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`, serverId: this.props.serverId, currentChatroom: this.props.activeChatroom, chatroomId: this.props.activeChatroomId, username: this.props.username });
@@ -149,45 +150,41 @@ class Chatroom extends Component {
     // -- end webrtc socket events -- //
   }
 
-  async componentWillReceiveProps(nextProps) {
-    if (nextProps.username) {
-      this.setState({ username: nextProps.username });
+  componentDidUpdate(prevProps) {
+    if (this.props.username !== prevProps.username) {
+      this.setState({ username: this.props.username });
     }
-    if (nextProps.serverUserList) {
-      this.setState({ serverUserList: nextProps.serverUserList });
+    if (this.props.serverUserList !== prevProps.serverUserList) {
+      this.setState({ serverUserList: this.props.serverUserList });
     }
-    if (nextProps.activeChatroomId !== this.state.chatroomId && this.state.chatroomId !== undefined) {
-      await this.setState({
-        previousRoom: `${ROOT_URL}/chatroom/${nextProps.serverId}/${this.state.chatroomId}`,
-        room: `${ROOT_URL}/chatroom/${nextProps.serverId}/${nextProps.activeChatroomId}`,
-        serverId: nextProps.serverId,
-        currentChatroom: nextProps.activeChatroom,
-        chatroomId: nextProps.activeChatroomId
+    if (this.props.activeChatroomId !== prevProps.activeChatroomId && prevProps.activeChatroomId !== undefined) {
+      this.setState({
+        previousRoom: `${ROOT_URL}/chatroom/${this.props.serverId}/${prevProps.activeChatroomId}`,
+        room: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`,
+        serverId: this.props.serverId,
+        currentChatroom: this.props.activeChatroom,
+        chatroomId: this.props.activeChatroomId
       });
       this.socket.emit('GET_CHATROOM_MESSAGES', {
         socketId: this.state.socketId,
-        chatroomId: nextProps.activeChatroomId,
-        previousRoom: `${ROOT_URL}/chatroom/${nextProps.serverId}/${this.state.chatroomId}`,
-        room: `${ROOT_URL}/chatroom/${nextProps.serverId}/${nextProps.activeChatroomId}`
+        chatroomId: this.props.activeChatroomId,
+        previousRoom: `${ROOT_URL}/chatroom/${this.props.serverId}/${prevProps.activeChatroomId}`,
+        room: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`
       });
     }
 
-    if (nextProps.users && nextProps.users.length) {
-      const userList = [];
-      for (let i = 0; i < nextProps.users.length; i++) {
-        userList.push(nextProps.users[i]);
-      }
-      this.setState({ users: userList });
+    if (this.props.users !== prevProps.users && this.props.users && this.props.users.length) {
+      this.setState({ users: [...this.props.users] });
     }
 
     // -- start webrtc audio setup -- //
-    if (nextProps.activeChatroomType === "voice" && nextProps.audioStream) {
-      await this.setState({ localStream: nextProps.audioStream });
-      this.recordAudioInput(nextProps.audioStream);
+    if (this.props.activeChatroomType === "voice" && this.props.audioStream !== prevProps.audioStream) {
+      this.setState({ localStream: this.props.audioStream });
+      this.recordAudioInput(this.props.audioStream);
     }
 
-    if (nextProps.activeChatroomType !== "voice") {
-      await this.setState({ localStream: null });
+    if (this.props.activeChatroomType !== "voice" && prevProps.activeChatroomType === "voice") {
+      this.setState({ localStream: null });
       this.recordAudioInput(null);
     }
     // -- end webrtc audio setup -- //
@@ -583,14 +580,14 @@ class Chatroom extends Component {
         </div>
         <div className="sidebarright" onClick={() => { this.setState({ showEmojiPicker: false }) }}>
           <div className="sidebarright-container">
-            <input placeholder="Filter users in server"></input>
+            <input placeholder="Filter users in server" value={this.state.filterQuery} onChange={(event) => { this.setState({ filterQuery: event.target.value }); }}></input>
           </div>
           <div className="sidebarright-border" />
           <div className="sidebarright-authority">
             <span>Room Owners</span>
           </div>
           <div className="sidebarright-bordertwo" />
-          {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index) => {
+          {this.state.serverUserList.length > 0 ? this.state.serverUserList.filter(u => u.username.toLowerCase().includes(this.state.filterQuery.toLowerCase())).map((user, index) => {
             return (
               <div key={index} className={user.type === 'owner' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.sideContextMenu(event, user); }}>
                 {user.type === 'owner' ? <div className="username">
@@ -617,7 +614,7 @@ class Chatroom extends Component {
             <span>Administrators</span>
           </div>
           <div className="sidebarright-bordertwo" />
-          {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index) => {
+          {this.state.serverUserList.length > 0 ? this.state.serverUserList.filter(u => u.username.toLowerCase().includes(this.state.filterQuery.toLowerCase())).map((user, index) => {
             return (
               <div key={index} className={user.type === 'admin' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.sideContextMenu(event, user); }}>
                 {user.type === 'admin' ? <div className="username">
@@ -644,7 +641,7 @@ class Chatroom extends Component {
             <span>Moderators</span>
           </div>
           <div className="sidebarright-bordertwo" />
-          {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index) => {
+          {this.state.serverUserList.length > 0 ? this.state.serverUserList.filter(u => u.username.toLowerCase().includes(this.state.filterQuery.toLowerCase())).map((user, index) => {
             const moderate = (user.username !== this.state.username);
             return (
               <div key={index} className={user.type === 'moderator' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.sideContextMenu(event, user); }}>
@@ -676,7 +673,7 @@ class Chatroom extends Component {
             <span>Voice</span>
           </div>
           <div className="sidebarright-bordertwo" />
-          {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index) => {
+          {this.state.serverUserList.length > 0 ? this.state.serverUserList.filter(u => u.username.toLowerCase().includes(this.state.filterQuery.toLowerCase())).map((user, index) => {
             const moderate = (user.username !== this.state.username);
             return (
               <div key={index} className={user.type === 'voice' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.sideContextMenu(event, user); }}>
@@ -708,7 +705,7 @@ class Chatroom extends Component {
             <span>Users</span>
           </div>
           <div className="sidebarright-bordertwo" />
-          {this.state.serverUserList.length > 0 ? this.state.serverUserList.map((user, index) => {
+          {this.state.serverUserList.length > 0 ? this.state.serverUserList.filter(u => u.username.toLowerCase().includes(this.state.filterQuery.toLowerCase())).map((user, index) => {
             const moderate = (user.username !== this.state.username);
             return (
               <div key={index} className={user.type === 'user' ? "sidebarright-usercontainer" : ""} onClick={this.handleClick} onContextMenu={(event) => { this.sideContextMenu(event, user); }}>

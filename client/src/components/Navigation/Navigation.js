@@ -23,9 +23,9 @@ const Navigation = () => {
     <div>
       <div className="navbar row">
         <Link to="/" className="navbar-link"><img src={chatotlogo} height="80" width="140" alt="chatter-icon-logo" /></Link>
-        {open === true ? <Link to="/Dashboard" className="navbar-authlink"><span>Open</span></Link> : null}
-        <Link to="/Signup" className="navbar-authlink"><span>Signup</span></Link>
-        <Link to="/Login" className="navbar-authlink"><span>Login</span></Link>
+        {open === true ? <Link to="/dashboard" className="navbar-authlink"><span>Open</span></Link> : null}
+        <Link to="/signup" className="navbar-authlink"><span>Signup</span></Link>
+        <Link to="/login" className="navbar-authlink"><span>Login</span></Link>
       </div>
     </div>
   );
