@@ -273,7 +273,7 @@ export const userLogin = params => async dispatch => {
       dispatch({ type: LOGIN_USER_FAIL });
     }
   } catch (err) {
-    if (err.response.data.error === "Account not verified") {
+    if (err.response?.data?.error === "Account not verified") {
       dispatch({ type: NOT_VERIFIED });
     } else {
       dispatch({ type: LOGIN_USER_FAIL });
@@ -288,6 +288,7 @@ export const userLogout = params => async dispatch => {
     if (response.data) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
+      localStorage.removeItem('activeServerId');
       dispatch({ type: LOGOUT_USER_SUCCESS });
     } else {
       dispatch({ type: LOGOUT_USER_FAIL });

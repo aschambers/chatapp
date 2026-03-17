@@ -109,6 +109,7 @@ const Dashboard = (props) => {
   const [serverEditModalOpen, setServerEditModalOpen] = useState(false);
 
   const ref = useRef();
+  const chatroomRef = useRef(null);
   useOnClickOutside(ref, () => setShowCategoryModal(false));
 
   useEffect(() => {
@@ -219,6 +220,8 @@ const Dashboard = (props) => {
       setShowUserManagement(false);
       setServerUserRole("admin");
       setServerUser(null);
+      refreshServerUsers();
+      if (chatroomRef.current) chatroomRef.current.emitRefreshServerList();
     }
   }, [props]);
 
@@ -280,7 +283,7 @@ const Dashboard = (props) => {
 
   useEffect(() => {
     if (props.chatroomList && props.chatroomList.length > 0 && props.chatroomSuccess) {
-      setChatrooms(props.chatroomList);
+      setChatrooms([...props.chatroomList]);
       if (props.chatroomList.length > 0 && !activeChatroom) {
         setActiveChatroom(props.chatroomList[0].name);
         setActiveChatroomId(props.chatroomList[0].id);
@@ -292,9 +295,16 @@ const Dashboard = (props) => {
   }, [props, activeChatroom]);
 
   useEffect(() => {
+    if (props.updateChatroomSuccess) {
+      props.resetChatroomValues();
+      props.getChatrooms({ serverId: serverId });
+    }
+  }, [props, serverId]);
+
+  useEffect(() => {
     if (props.categoryList && props.findCategorySuccess) {
       props.resetCategoryValues();
-      setCategories(props.categoryList);
+      setCategories([...props.categoryList]);
       setShowCategoryModal(false);
     }
   }, [props]);
@@ -334,6 +344,14 @@ const Dashboard = (props) => {
       props.findFriends({
         userId: id
       });
+      const savedServerId = localStorage.getItem('activeServerId');
+      if (savedServerId && serversList) {
+        const savedServer = serversList.find(s => s.serverId === parseInt(savedServerId));
+        if (savedServer && savedServer.active) {
+          props.getUpdatedUser({ userId: id });
+          setOpenServerItem(savedServer);
+        }
+      }
     }
   }, [props]);
 
@@ -549,41 +567,40 @@ const Dashboard = (props) => {
   const dropItem = (event) => {
     if (!isAdmin) return false;
     event.preventDefault();
-    const newChatrooms = chatrooms || [];
     if (event.target.id !== currentDragItem.category && event.target.id) {
-      for (let i = 0; i < newChatrooms.length; i++) {
-        if (newChatrooms[i].categoryId === currentDragItem.categoryId && newChatrooms[i].name === currentDragItem.name) {
-          newChatrooms[i] = {
+      const newCategoryId = +event.target.id.split('-')[0] === 0 ? null : +event.target.id.split('-')[0];
+      const newChatrooms = (chatrooms || []).map(room => {
+        if (room.categoryId === currentDragItem.categoryId && room.name === currentDragItem.name) {
+          return {
             id: currentDragItem.id,
             name: currentDragItem.name,
             createdAt: currentDragItem.createdAt,
             updatedAt: currentDragItem.updatedAt,
-            categoryId: +event.target.id.split('-')[0] === 0 ? null : +event.target.id.split('-')[0],
+            categoryId: newCategoryId,
             serverId: currentDragItem.serverId,
             type: currentDragItem.type
-          }
-          props.chatroomUpdate({
-            chatroomId: currentDragItem.id,
-            categoryId: +event.target.id.split('-')[0] === 0 ? null : +event.target.id.split('-')[0]
-          });
-          break;
+          };
         }
-      }
+        return room;
+      });
+      props.chatroomUpdate({
+        chatroomId: currentDragItem.id,
+        categoryId: newCategoryId
+      });
       setChatrooms(newChatrooms);
       setTriggerReload(!triggerReload);
     }
   }
 
   const setItemVisibility = (group) => {
-    for (let i = 0; i < categories.length; i++) {
-      if (categories[i].name === group.name) {
-        categories[i].visible = !categories[i].visible;
-      }
-    }
+    setCategories(categories.map(cat =>
+      cat.name === group.name ? { ...cat, visible: !cat.visible } : cat
+    ));
     setTriggerReload(!triggerReload);
   }
 
   const setServerProperties = (item) => {
+    localStorage.setItem('activeServerId', item.serverId);
     props.getUpdatedUser({ userId: id });
     setOpenServerItem(item);
   }
@@ -638,6 +655,7 @@ const Dashboard = (props) => {
   }
 
   const setHomeServer = () => {
+    localStorage.removeItem('activeServerId');
     setServer('');
     props.findFriends({
       userId: id
@@ -997,6 +1015,7 @@ const Dashboard = (props) => {
 
       {server !== '' && activeChatroom !== '' && activeChatroomId !== null ?
         <Chatroom
+          ref={chatroomRef}
           activeChatroom={activeChatroom}
           activeChatroomId={activeChatroomId}
           activeChatroomType={activeChatroomType}
@@ -1365,6 +1384,7 @@ const mapStateToProps = ({ user, server, category, chatroom, invite, friend }) =
     chatroomList: chatroom.chatroomList,
     chatroomSuccess: chatroom.success,
     chatroomError: chatroom.error,
+    updateChatroomSuccess: chatroom.updateChatroomSuccess,
     inviteEmailError: invite.inviteEmailError,
     inviteEmailSuccess: invite.inviteEmailSuccess,
     inviteCode: invite.inviteCode,

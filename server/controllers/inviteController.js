@@ -115,10 +115,8 @@ module.exports = {
       active: true
     });
 
-    const updateServerList = await user.update(
-      { serversList: user.serversList },
-      { where: { id: user.id }}
-    );
+    user.changed('serversList', true);
+    const updateServerList = await user.save();
 
     if (!updateServerList) return res.status(422).send({"error":"Error adding server to user servers list"});
 
@@ -141,10 +139,8 @@ module.exports = {
       });
     }
 
-    const updateUserList = await server.update(
-      { userList: server.userList },
-      { where: { id: server.id }}
-    );
+    server.changed('userList', true);
+    const updateUserList = await server.save();
 
     if (!updateUserList) return res.status(422).send({"error":"Error adding users to server list"});
 
