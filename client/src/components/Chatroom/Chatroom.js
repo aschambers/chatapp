@@ -96,6 +96,7 @@ class Chatroom extends Component {
       this.socket.emit('GET_CHATROOM_MESSAGES', {
         socketId: this.socket.id,
         chatroomId: this.props.activeChatroomId,
+        serverId: this.props.serverId,
         previousRoom: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`,
         room: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`
       });
@@ -168,6 +169,7 @@ class Chatroom extends Component {
       this.socket.emit('GET_CHATROOM_MESSAGES', {
         socketId: this.state.socketId,
         chatroomId: this.props.activeChatroomId,
+        serverId: this.props.serverId,
         previousRoom: `${ROOT_URL}/chatroom/${this.props.serverId}/${prevProps.activeChatroomId}`,
         room: `${ROOT_URL}/chatroom/${this.props.serverId}/${this.props.activeChatroomId}`
       });
@@ -463,9 +465,16 @@ class Chatroom extends Component {
     this.setState({ showEmojiPicker: !showEmojiPicker });
   }
 
-  handleEmojiClick = (code) => {
+  emitRefreshServerList = () => {
+    this.socket.emit('REFRESH_SERVER_LIST', {
+      serverId: this.state.serverId,
+      room: this.state.room
+    });
+  }
+
+  handleEmojiClick = (emojiObject) => {
     this.setState({
-      message: this.state.message + String.fromCodePoint("0x" + code)
+      message: this.state.message + emojiObject.emoji
     });
   }
 
@@ -748,4 +757,4 @@ function mapStateToProps({ user }) {
   };
 }
 
-export default connect(mapStateToProps, actions)(Chatroom);
+export default connect(mapStateToProps, actions, null, { forwardRef: true })(Chatroom);

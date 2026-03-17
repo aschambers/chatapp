@@ -37,6 +37,12 @@ module.exports = async(server) => {
       socket.join(data.room);
       let messages = await axios.get(`${SERVER_URL}/api/v1/getChatroomMessages`, { data: data }) || [];
       io.to(data.socketId).emit('RECEIVE_CHATROOM_MESSAGES', messages.data);
+      if (data.serverId) {
+        let userList = await axios.get(`${SERVER_URL}/api/v1/findUserList`, { params: { serverId: data.serverId } });
+        if (userList) {
+          io.in(data.room).emit('RECEIVE_SERVER_LIST', userList.data);
+        }
+      }
     });
 
     socket.on('CHATROOM_MESSAGE', async(data) => {
@@ -165,6 +171,13 @@ module.exports = async(server) => {
         type: data.type,
         userId: data.userId
       }, config);
+      if (userList) {
+        io.in(data.room).emit('RECEIVE_SERVER_LIST', userList.data);
+      }
+    });
+
+    socket.on('REFRESH_SERVER_LIST', async(data) => {
+      let userList = await axios.get(`${SERVER_URL}/api/v1/findUserList`, { params: { serverId: data.serverId } });
       if (userList) {
         io.in(data.room).emit('RECEIVE_SERVER_LIST', userList.data);
       }

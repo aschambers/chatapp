@@ -71,15 +71,15 @@ const chatroomReducer = (state = initialState, action) => {
       };
     case UPDATE_CHATROOM_SUCCESS:
       return {
-        ...state, isLoading: false, error: false, success: true
+        ...state, isLoading: false, error: false, success: false, updateChatroomSuccess: true
       };
     case UPDATE_CHATROOM_FAIL:
       return {
-        ...state, isLoading: false, error: true, success: false
+        ...state, isLoading: false, error: true, success: false, updateChatroomSuccess: false
       };
     case RESET_CHATROOM_VALUES:
       return {
-        ...state, isLoading: false, error: false, success: false
+        ...state, isLoading: false, error: false, success: false, updateChatroomSuccess: false
       };
     default:
       return state;
