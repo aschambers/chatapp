@@ -9,7 +9,7 @@ const sequelize = new Sequelize(keys.database_name, keys.database_username, keys
     max: 5,
     min: 0,
     idle: 30000,
-    aquire: 60000
+    acquire: 60000
   },
   dialectOptions: {
     ssl: keys.ssl,

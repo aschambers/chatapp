@@ -58,6 +58,7 @@ const ResetPassword = (props) => {
       toast.error("Password and Confirm Password do not match.", {
         position: toast.POSITION.BOTTOM_CENTER
       });
+      return;
     }
     setIsLoading(true);
     props.resetPassword({

@@ -87,7 +87,7 @@ class ChatroomFriend extends Component {
             }
           }
         });
-      } else if (navigator.userAgent.search("Firefox") < 0 || navigator.userAgent.search("Edge") < 0) {
+      } else if (navigator.userAgent.search("Firefox") < 0 && navigator.userAgent.search("Edge") < 0) {
         this.setState({ messages: data });
       }
     });
@@ -110,21 +110,21 @@ class ChatroomFriend extends Component {
     });
   }
 
-  async componentWillReceiveProps(nextProps) {
-    if (nextProps.groupId !== this.state.groupId && this.state.groupId !== undefined) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.groupId !== this.props.groupId && this.props.groupId !== undefined) {
       this.setState({
-        userId: nextProps.userId,
-        friendId: nextProps.friendId,
-        groupId: nextProps.groupId,
-        room: `${ROOT_URL}/friends/${nextProps.groupId}`,
-        previousRoom: `${ROOT_URL}/friends/${this.state.groupId}`
+        userId: this.props.userId,
+        friendId: this.props.friendId,
+        groupId: this.props.groupId,
+        room: `${ROOT_URL}/friends/${this.props.groupId}`,
+        previousRoom: `${ROOT_URL}/friends/${prevProps.groupId}`
       });
       const data = {
         socketId: this.state.socketId,
-        userId: nextProps.userId,
-        friendId: nextProps.friendId,
-        room: `${ROOT_URL}/friends/${nextProps.groupId}`,
-        previousRoom: `${ROOT_URL}/friends/${this.state.groupId}`
+        userId: this.props.userId,
+        friendId: this.props.friendId,
+        room: `${ROOT_URL}/friends/${this.props.groupId}`,
+        previousRoom: `${ROOT_URL}/friends/${prevProps.groupId}`
       };
       if (data.userId === data.friendId) {
         this.socket.emit('GET_PERSONAL_MESSAGES', data);
@@ -205,9 +205,9 @@ class ChatroomFriend extends Component {
     this.setState({ showEmojiPicker: !showEmojiPicker });
   }
 
-  handleEmojiClick = (code) => {
+  handleEmojiClick = (emojiObject) => {
     this.setState({
-      message: this.state.message + String.fromCodePoint("0x" + code)
+      message: this.state.message + emojiObject.emoji
     });
   }
 
@@ -259,7 +259,7 @@ class ChatroomFriend extends Component {
               <EmojiPicker
                 style={{ width: "-webkit-fill-available", zIndex: 10 }}
                 emojiResolution={32}
-                onEmojiClick={(event) => { this.handleEmojiClick(event); }}
+                onEmojiClick={this.handleEmojiClick}
               />
             </div>
           : null}

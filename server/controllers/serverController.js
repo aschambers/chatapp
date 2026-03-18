@@ -112,7 +112,7 @@ module.exports = {
   findUserList: async(req, res, next) => {
     const server = await ServerModel.findByPk(req.query.serverId);
 
-    if (!server && !server.userList) return res.status(422).send({'error':'Error finding server'});
+    if (!server || !server.userList) return res.status(422).send({'error':'Error finding server'});
 
     res.status(200).send(server.userList);
   },
@@ -125,8 +125,8 @@ module.exports = {
   findUserBans: async(req, res, next) => {
     const server = await ServerModel.findByPk(req.query.serverId);
 
+    if (!server) return res.status(422).send({'error':'Error finding server'});
     if (!server.userBans) server.userBans = [];
-    if (!server && !server.userBans) return res.status(422).send({'error':'Error finding server'});
 
     res.status(200).send(server.userBans);
   },
@@ -142,6 +142,7 @@ module.exports = {
     const { userId, serverId } = req.body;
 
     const server = await ServerModel.findByPk(serverId);
+    if (!server) return res.status(422).send({'error':'Error finding server'});
     if (!server.userBans) server.userBans = [];
 
     const length = server.userBans.length;
@@ -162,8 +163,6 @@ module.exports = {
     if (!updateServerSuccess) return res.status(422).json({'error':'Error saving server bans'});
 
     if (server.userBans === null) server.userBans = [];
-
-    if (!server && !server.userBans) return res.status(422).send({'error':'Error finding server bans'});
 
     res.status(200).send(server.userBans);
   },

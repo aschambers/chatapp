@@ -2,10 +2,10 @@ const InviteModel = require('../models/Invite');
 const ServerModel = require('../models/Server');
 const UserModel = require('../models/User');
 const keys = require('../config/keys');
-const sgMail = require('@sendgrid/mail');
+const { Resend } = require('resend');
 const crypto = require('crypto');
 const moment = require('moment');
-sgMail.setApiKey(keys.sendgrid_key);
+const resend = new Resend(keys.resend_key);
 
 module.exports = {
   /**
@@ -54,14 +54,13 @@ module.exports = {
     const server = await ServerModel.findOne({ where: { id: serverId }});
     if (!server) return res.status(422).send({'error': 'Failed to find server'});
 
-    const msg = {
-      to: req.body.email,
+    const { error: emailError } = await resend.emails.send({
       from: 'invite@chatter.com',
+      to: req.body.email,
       subject: 'Invitation to join server',
       html: 'Please use this invite code to join the server ' + server.name + '.\n\n' + `${result.code}`
-    };
-    const sentEmail = await sgMail.send(msg);
-    if (!sentEmail) return res.status(422).send({"error":"Unknown error creating user"});
+    });
+    if (emailError) return res.status(422).send({"error":"Unknown error creating user"});
 
     res.status(200).send({"success":"Invite created successfully"});
   },
@@ -124,7 +123,7 @@ module.exports = {
     let foundUser = false;
 
     for (let x = 0; x < server.userList.length; x++) {
-      if (server.userList[x].id === user.id) {
+      if (server.userList[x].userId === user.id) {
         foundUser = true;
       }
     }

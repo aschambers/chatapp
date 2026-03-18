@@ -30,7 +30,7 @@ module.exports = {
       if (!result) return res.status(422).json({'error':'Unable to create friend'});
     } else if (friendFinder) {
       const result = await friendFinder.update(
-        { activeFriend: req.body.activeFriend }, { where: { id: userId } }
+        { activeFriend: req.body.activeFriend }, { where: { id: friendFinder.id } }
       );
       if (!result) return res.status(422).json({'error':'Unable to add friend back'});
     }
@@ -50,8 +50,8 @@ module.exports = {
       const result = await FriendModel.create(req.body);
       if (!result) return res.status(422).json({'error':'Unable to create friend'});
     } else if (userFinder) {
-      const result = await FriendModel.update(
-        { activeFriend: req.body.activeFriend }, { where: { id: userId } }
+      const result = await userFinder.update(
+        { activeFriend: req.body.activeFriend }, { where: { id: userFinder.id } }
       );
       if (!result) return res.status(422).json({'error':'Unable to add friend back'});
     }
