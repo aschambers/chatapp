@@ -13,7 +13,7 @@ module.exports = {
 
     const { name, serverId } = req.body;
 
-    if (!name && !serverId) {
+    if (!name || !serverId) {
       return res.status(400).send({'error':'Missing required fields'});
     }
 

@@ -43,7 +43,7 @@ const Friend = sequelize.define('friends', {
     }
   },
   activeFriend: {
-    type: Sequelize.STRING,
+    type: Sequelize.BOOLEAN,
     allowNull: false
   },
   groupId: {

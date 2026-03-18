@@ -634,7 +634,7 @@ const Dashboard = (props) => {
       userId: id,
       friendId: user.userId,
       username: user.username,
-      friendUsername: username,
+      friendUsername: user.username,
       imageUrl: user.imageUrl
     });
   }

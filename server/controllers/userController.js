@@ -54,7 +54,7 @@ module.exports = {
           from: keys.email_from,
           to: req.body.email,
           subject: 'Verify your account',
-          html: 'Please click this link to verify your account. <br>' + `${keys.email_link}/Verification?token=${token}&email=${email}`
+          html: 'Please click this link to verify your account. <br>' + `${keys.email_link}/verification?token=${token}&email=${email}`
         });
       } catch(emailErr) {
         console.error('Email send failed:', emailErr.message);
@@ -87,7 +87,7 @@ module.exports = {
     }});
     if (!user) return res.status(422).send({'error':'Error verifying account'});
 
-    if (moment(user.updatedAt).valueOf() >= moment().add(2, 'hours').valueOf()) {
+    if (moment().valueOf() >= moment(user.updatedAt).add(2, 'hours').valueOf()) {
       return res.status(422).send({'error':'Error verifying account'});
     }
 
@@ -250,7 +250,7 @@ module.exports = {
     const originalUsername = user.username;
 
     if (imageUrl && req.files && req.files.mainFile) {
-      if (req.files.mainFile.mimetype !== 'image/jpeg' || req.files.mainFile.mimetype !== 'image/png' || req.files.mainFile.mimetype !== 'image/gif') {
+      if (req.files.mainFile.mimetype !== 'image/jpeg' && req.files.mainFile.mimetype !== 'image/png' && req.files.mainFile.mimetype !== 'image/gif') {
         return res.status(422).send({'error':'User update failed'});
       }
 
@@ -264,7 +264,7 @@ module.exports = {
           if (updateServer[i].userList && updateServer[i].userList.length) {
             for (let j = 0; j < updateServer[i].userList.length; j++) {
               if (+updateServer[i].userList[j].userId === +id) {
-                newImage ? updateServer[i].userList[j].imageUrl = newImage : update[i].userList[j].imageUrl = update[i].userList[j].imageUrl;
+                if (newImage) updateServer[i].userList[j].imageUrl = newImage;
                 updateServer[i].userList[j].username = username;
 
                 await updateServer[i].update(
@@ -381,7 +381,7 @@ module.exports = {
     const user = await UserModel.findByPk(id);
     if (!user) return res.status(422).send({'error':'User not found'});
 
-    if (req.files.myFile.mimetype !== 'image/jpeg' || req.files.myFile.mimetype !== 'image/png' || req.files.myFile.mimetype !== 'image/gif') {
+    if (req.files.myFile.mimetype !== 'image/jpeg' && req.files.myFile.mimetype !== 'image/png' && req.files.myFile.mimetype !== 'image/gif') {
       res.status(422).send({'error':'Error reading file'});
     }
 
@@ -428,7 +428,7 @@ module.exports = {
       from: keys.email_from,
       to: req.body.email,
       subject: 'Verify your account',
-      html: 'Please click this link to verify your account. <br>' + `${keys.email_link}/Verification?token=${token}&email=${email}`
+      html: 'Please click this link to verify your account. <br>' + `${keys.email_link}/verification?token=${token}&email=${email}`
     });
 
     if (emailError) return res.status(422).send({'error':'Unknown error sending email'});
@@ -464,7 +464,7 @@ module.exports = {
       from: keys.email_from,
       to: req.body.email,
       subject: 'Reset Password',
-      html: 'Please click this link to reset your password. <br>' + `${keys.email_link}/ResetPassword?token=${token}&email=${email}`
+      html: 'Please click this link to reset your password. <br>' + `${keys.email_link}/reset-password?token=${token}&email=${email}`
     });
 
     if (emailError) return res.status(422).send({'error':'Error resetting password'});
@@ -489,7 +489,7 @@ module.exports = {
     const user = await UserModel.findOne({ where: { resetPasswordToken: token } });
     if (!user) return res.status(422).send({'error':'Error resetting password'});
 
-    if (moment(user.updatedAt).valueOf() >= moment().add(2, 'hours').valueOf()) {
+    if (moment().valueOf() >= moment(user.updatedAt).add(2, 'hours').valueOf()) {
       return res.status(422).send({'error':'Error resetting password'});
     }
 

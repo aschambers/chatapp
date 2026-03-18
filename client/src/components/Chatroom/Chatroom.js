@@ -114,7 +114,7 @@ class Chatroom extends Component {
             }
           }
         });
-      } else if (navigator.userAgent.search("Firefox") < 0 || navigator.userAgent.search("Edge") < 0) {
+      } else if (navigator.userAgent.search("Firefox") < 0 && navigator.userAgent.search("Edge") < 0) {
         this.setState({ messages: data });
       }
     });
@@ -521,7 +521,7 @@ class Chatroom extends Component {
       // setEditImageUrl(reader.result);
     }
 
-    reader.readAsText(file);
+    reader.readAsDataURL(file);
   }
 
   render() {

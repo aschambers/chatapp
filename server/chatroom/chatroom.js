@@ -14,6 +14,8 @@ module.exports = async(server) => {
 
   const io = require('socket.io')(server, { cors: { origin: '*' } });
 
+  let users = [];
+
   io.on('connection', (socket) => {
     socket.on('SEND_ICE_CANDIDATE', async(data) => {
       socket.to(data.room).emit('RECEIVE_ICE_CANDIDATE', data);
@@ -35,7 +37,7 @@ module.exports = async(server) => {
     socket.on('GET_CHATROOM_MESSAGES', async(data) => {
       socket.leave(data.previousRoom);
       socket.join(data.room);
-      let messages = await axios.get(`${SERVER_URL}/api/v1/getChatroomMessages`, { data: data }) || [];
+      let messages = await axios.get(`${SERVER_URL}/api/v1/getChatroomMessages`, { params: data }) || [];
       io.to(data.socketId).emit('RECEIVE_CHATROOM_MESSAGES', messages.data);
       if (data.serverId) {
         let userList = await axios.get(`${SERVER_URL}/api/v1/findUserList`, { params: { serverId: data.serverId } });
@@ -81,14 +83,14 @@ module.exports = async(server) => {
     socket.on('GET_PERSONAL_MESSAGES', async(data) => {
       socket.leave(data.previousRoom);
       socket.join(data.room);
-      let messages = await axios.get(`${SERVER_URL}/api/v1/getPersonalMessages`, { data: data }) || [];
+      let messages = await axios.get(`${SERVER_URL}/api/v1/getPersonalMessages`, { params: data }) || [];
       io.to(data.socketId).emit('RECEIVE_PERSONAL_MESSAGES', messages.data);
     });
 
     socket.on('GET_PRIVATE_MESSAGES', async(data) => {
       socket.leave(data.previousRoom);
       socket.join(data.room);
-      let messages = await axios.get(`${SERVER_URL}/api/v1/getPrivateMessages`, { data: data }) || [];
+      let messages = await axios.get(`${SERVER_URL}/api/v1/getPrivateMessages`, { params: data }) || [];
       io.to(data.socketId).emit('RECEIVE_PRIVATE_MESSAGES', messages.data);
     });
 
@@ -187,7 +189,6 @@ module.exports = async(server) => {
 
     // user actions
     socket.on('SEND_USER', function(data) {
-      let users = [];
       if (users.length > 0) {
         const result = users.filter((item) => {
           return (item.username === data.username);
@@ -211,7 +212,6 @@ module.exports = async(server) => {
     });
 
     socket.on('LOGOUT_USER', function(data) {
-      let users = [];
       for(let i = 0; i < users.length; i++) {
         if (users[i].username === data.username) {
           users[i].active = false;
